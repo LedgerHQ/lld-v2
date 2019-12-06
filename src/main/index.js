@@ -19,7 +19,7 @@ async function createWindow() {
   mainWindow.loadURL(
     isDev
       ? 'http://localhost:8080/dist/renderer'
-      : `file://${path.resolve(__dirname, 'dist/renderer/index.html')}`
+      : `file://${path.resolve(__dirname, 'dist/renderer/index.html')}`,
   )
 
   if (isDev) {
