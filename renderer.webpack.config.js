@@ -25,8 +25,7 @@ const babelConfig = {
 
 module.exports = {
   target: 'electron-renderer',
-  mode: process.env.NODE_ENV,
-  entry: './src/renderer/index.js',
+  entry: ['./src/renderer/index.js'],
   output: {
     path: path.resolve(__dirname, 'dist/renderer'),
     publicPath: '/dist/renderer',
@@ -49,11 +48,9 @@ module.exports = {
       },
     ],
   },
-  devServer: {
-    contentBase: './dist/renderer',
-    hot: true,
-},
   resolve: {
-    alias: { 'react-dom': '@hot-loader/react-dom'  }
+    alias: {
+
+    }
   }
 }
