@@ -5,6 +5,7 @@ const ProgressPlugin = require('webpack/lib/ProgressPlugin')
 const Listr = require('listr')
 const { Observable } = require('rxjs')
 const express = require('express')
+const execa = require('execa')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 const webpackDevMiddleware = require('webpack-dev-middleware')
 
@@ -83,17 +84,17 @@ const runWebpackDevServer = compiler =>
     })
   })
 
-const tasks = new Listr(
+const bundlingTasks = new Listr(
   [
     {
-      title: 'Building main bundle',
+      title: '- main',
       task: () => {
         const compiler = webpack(configs.main)
         return runWebpack(compiler)
       },
     },
     {
-      title: 'Building and serving renderer bundle',
+      title: '- renderer',
       task: () => {
         const compiler = webpack(configs.renderer)
         return runWebpackDevServer(compiler)
@@ -103,4 +104,18 @@ const tasks = new Listr(
   { concurrent: true },
 )
 
-tasks.run()
+const mainTasks = new Listr([
+  {
+    title: 'Building bundles',
+    task: () => bundlingTasks,
+  },
+  {
+    title: 'Starting electron',
+    task: async ctx => {
+      const electronRuntime = execa('./node_modules/.bin/electron', ['./dist/main/main.bundle.js'])
+      ctx.electronRuntime = electronRuntime
+    },
+  },
+])
+
+mainTasks.run()

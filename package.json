@@ -5,7 +5,7 @@
   "author": "Ledger Live Team <team-live@ledger.fr>",
   "license": "MIT",
   "scripts": {
-    "start": "node ./internals/start.js",
+    "start:dev": "NODE_ENV=development node ./internals/start.js",
     "lint": "eslint src internals",
     "prettier": "prettier --write \"{src,internals}/**/*.{js,json}\"",
     "prettier:check": "prettier -c \"{src,internals}/**/*.{js,json}\""
