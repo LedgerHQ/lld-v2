@@ -5,7 +5,8 @@
   "author": "Ledger Live Team <team-live@ledger.fr>",
   "license": "MIT",
   "scripts": {
-    "start": "node ./internals/start.js"
+    "start": "node ./internals/start.js",
+    "prettier:check": "prettier -c \"{src,internals}/**/*.{js,json}\""
   },
   "dependencies": {
     "@hot-loader/react-dom": "^16.11.0",
@@ -40,5 +41,10 @@
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.9.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "yarn prettier:check"
+    }
   }
 }
