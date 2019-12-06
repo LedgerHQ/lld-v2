@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 
-const HelloMessage = ({ name }) =>
-{
+const HelloMessage = ({ name }) => {
   useEffect(() => {
     console.log('SALUUUUUUUUUUUUUUT')
   }, [])
@@ -11,7 +10,7 @@ const HelloMessage = ({ name }) =>
   })
   return (
     <h1>
-      suppp { name }
+      suppp {name}
       <div>ll</div>
     </h1>
   )
