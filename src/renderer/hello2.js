@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-const HelloMessage2 = ({ name }) => {
+const HelloMessage2 = () => {
   useEffect(() => {
     console.log('je rerun a chaque fois 2')
   })
