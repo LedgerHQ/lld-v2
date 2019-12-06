@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const babelConfig = {
@@ -7,20 +7,20 @@ const babelConfig = {
       '@babel/preset-env',
       {
         targets: {
-          electron: '7.1.3'
-        }
-      }
+          electron: '7.1.3',
+        },
+      },
     ],
-    '@babel/preset-react'
+    '@babel/preset-react',
   ],
   plugins: [
-    "@babel/plugin-proposal-export-default-from",
-    "@babel/plugin-proposal-export-namespace-from",
-    "@babel/plugin-syntax-dynamic-import",
-    "@babel/plugin-syntax-import-meta",
-    ["@babel/plugin-proposal-class-properties", { "loose": true }],
-    "react-hot-loader/babel"
-  ]
+    '@babel/plugin-proposal-export-default-from',
+    '@babel/plugin-proposal-export-namespace-from',
+    '@babel/plugin-syntax-dynamic-import',
+    '@babel/plugin-syntax-import-meta',
+    ['@babel/plugin-proposal-class-properties', { loose: true }],
+    'react-hot-loader/babel',
+  ],
 }
 
 module.exports = {
@@ -30,7 +30,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist/renderer'),
     publicPath: '/dist/renderer',
-    filename: 'renderer.bundle.js'
+    filename: 'renderer.bundle.js',
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -45,15 +45,15 @@ module.exports = {
         test: /\.js$/i,
         loader: 'babel-loader',
         exclude: /node_modules/,
-        options: babelConfig
+        options: babelConfig,
       },
     ],
   },
   devServer: {
     contentBase: './dist/renderer',
     hot: true,
-},
+  },
   resolve: {
-    alias: { 'react-dom': '@hot-loader/react-dom'  }
-  }
+    alias: { 'react-dom': '@hot-loader/react-dom' },
+  },
 }
