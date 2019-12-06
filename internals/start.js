@@ -1,41 +1,44 @@
 #!/usr/bin/env node
 
 const webpack = require('webpack');
+const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 const Listr = require('listr');
+const { Observable } = require('rxjs');
 
-const config = {
-  renderer: require('./renderer.webpack.config'),
-  main: require('./main.webpack.config')
+console.log(process.env.INIT_CWD)
+
+const configs = {
+  renderer: require('../renderer.webpack.config'),
+  main: require('../main.webpack.config')
 }
+
+const runWebpack = config => new Observable(observer => {
+  const compiler = webpack(config)
+
+  compiler.apply(new ProgressPlugin((percentage, msg) => {
+    observer.next(`${msg} ${Math.floor(percentage * 100)}%`)
+  }))
+
+  compiler.run((err, stats) => {
+    if (err) {
+      return observer.error(err)
+    }
+    if (stats.hasErrors()) {
+      return observer.error(stats.toString({ colors: true }))
+    }
+    observer.complete()
+  })
+})
+
 
 const tasks = new Listr([
   {
     title: 'Building main bundle',
-    task: () => new Promise((resolve, reject) => {
-      webpack(config.main, (err, stats) => {
-        if (err) {
-          return reject(err)
-        }
-        if (stats.hasErrors()) {
-          return reject(stats.toString({ colors: true }))
-        }
-        resolve()
-      })
-    })
+    task: () => runWebpack(configs.main)
   },
   {
     title: 'Building renderer bundle',
-    task: () => new Promise((resolve, reject) => {
-      webpack(config.main, (err, stats) => {
-        if (err) {
-          return reject(err)
-        }
-        if (stats.hasErrors()) {
-          return reject(stats.toString({ colors: true }))
-        }
-        resolve()
-      })
-    })
+    task: () => runWebpack(configs.renderer)
   }
 ], { concurrent: true })
 
