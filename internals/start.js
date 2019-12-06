@@ -9,19 +9,22 @@ const webpackHotMiddleware = require('webpack-hot-middleware')
 const webpackDevMiddleware = require('webpack-dev-middleware')
 
 const createRendererConfig = (mode, config) => {
-  const entry = mode === 'development' ? (
-    Array.isArray(config.entry) ?
-      ['webpack-hot-middleware/client', ...config.entry] :
-      ['webpack-hot-middleware/client', config.entry]
-  ) : config.entry
+  const entry =
+    mode === 'development'
+      ? Array.isArray(config.entry)
+        ? ['webpack-hot-middleware/client', ...config.entry]
+        : ['webpack-hot-middleware/client', config.entry]
+      : config.entry
 
-  const plugins = mode === 'development' ?
-    [...config.plugins, new webpack.HotModuleReplacementPlugin()] :
-    config.plugins
+  const plugins =
+    mode === 'development'
+      ? [...config.plugins, new webpack.HotModuleReplacementPlugin()]
+      : config.plugins
 
-  const alias = mode === 'development' ?
-    { ...config.resolve.alias, 'react-dom': '@hot-loader/react-dom' } :
-    config.resolve.alias
+  const alias =
+    mode === 'development'
+      ? { ...config.resolve.alias, 'react-dom': '@hot-loader/react-dom' }
+      : config.resolve.alias
 
   return {
     ...config,
@@ -30,8 +33,8 @@ const createRendererConfig = (mode, config) => {
     plugins,
     resolve: {
       ...config.resolve,
-      alias
-    }
+      alias,
+    },
   }
 }
 
@@ -71,13 +74,13 @@ const runWebpackDevServer = compiler =>
       publicPath: '/dist/renderer',
     })
 
-    const server = express();
+    const server = express()
     server.use(devServer)
     server.use(webpackHotMiddleware(compiler))
 
     server.listen(8080, () => {
       observer.complete()
-    });
+    })
   })
 
 const tasks = new Listr(

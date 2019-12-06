@@ -11,9 +11,7 @@ async function createWindow() {
     height: 768,
     minWidth: 1024,
     minHeight: 768,
-    webPreferences: {
-
-    },
+    webPreferences: {},
   })
 
   mainWindow.loadURL(
