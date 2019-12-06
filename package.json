@@ -4,6 +4,9 @@
   "main": "index.js",
   "author": "Hugo Morosini <hugo.morosini@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "node ./internals/start.js"
+  },
   "dependencies": {
     "@hot-loader/react-dom": "^16.11.0",
     "electron": "^7.1.3",
