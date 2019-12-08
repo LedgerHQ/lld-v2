@@ -5,7 +5,7 @@
   "author": "Ledger Live Team <team-live@ledger.fr>",
   "license": "MIT",
   "scripts": {
-    "start:dev": "NODE_ENV=development node ./internals/start.js",
+    "start:dev": "NODE_ENV=development node ./internals/dev.js",
     "lint": "eslint src internals",
     "prettier": "prettier --write \"{src,internals}/**/*.{js,json}\"",
     "prettier:check": "prettier -c \"{src,internals}/**/*.{js,json}\""
@@ -16,7 +16,8 @@
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-hot-loader": "^4.12.18",
-    "rxjs": "^6.5.3"
+    "rxjs": "^6.5.3",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.7.4",
@@ -29,6 +30,7 @@
     "@babel/preset-react": "^7.7.4",
     "babel": "^6.23.0",
     "babel-loader": "^8.0.6",
+    "cli-progress": "^3.4.0",
     "eslint": "^6.7.2",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-import": "^2.18.2",
@@ -36,8 +38,8 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-standard": "^4.0.1",
-    "express": "^4.17.1",
     "execa": "^3.4.0",
+    "express": "^4.17.1",
     "html-webpack-plugin": "^3.2.0",
     "husky": "^3.1.0",
     "listr": "^0.14.3",
@@ -45,7 +47,8 @@
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
     "webpack-dev-middleware": "^3.7.2",
-    "webpack-hot-middleware": "^2.25.0"
+    "webpack-hot-middleware": "^2.25.0",
+    "webpackbar": "^4.0.0"
   },
   "husky": {
     "hooks": {

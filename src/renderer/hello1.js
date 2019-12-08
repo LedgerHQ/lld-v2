@@ -10,8 +10,7 @@ const HelloMessage = ({ name }) => {
   })
   return (
     <h1>
-      supddddsdsdsdsddddsdpdp {name}
-      <div>ll</div>
+      sup {name} !!!
     </h1>
   )
 }

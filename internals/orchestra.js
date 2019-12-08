@@ -5,23 +5,28 @@ const ProgressPlugin = require('webpack/lib/ProgressPlugin')
 const Listr = require('listr')
 const { Observable } = require('rxjs')
 const express = require('express')
-const execa = require('execa')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 const webpackDevMiddleware = require('webpack-dev-middleware')
+const execa = require('execa')
 const winston = require('winston')
 const path = require('path')
+const Electron = require('./utils/Electron')
 
 const webpackDir = path.resolve(__dirname, '../.webpack')
 
-
-const rendererLogger = winston.createLogger({
+const createLogger = name => winston.createLogger({
   format: winston.format.simple(),
   transports: [
     new winston.transports.File({
-      filename: 'renderer.log',
+      filename: path.resolve(webpackDir, name, `${name}.log`),
     }),
   ]
 })
+
+const electron = new Electron('./dist/main/main.bundle.js')
+
+const mainLogger = createLogger('main')
+const rendererLogger = createLogger('renderer')
 
 const createRendererConfig = (mode, config) => {
   const entry =
@@ -58,26 +63,43 @@ const configs = {
   main: require('../main.webpack.config'),
 }
 
-const runWebpack = (config) =>
-  new Observable(observer => {
+const runWebpack = (name, config) => ctx => {
+  let started = false
+
+  return new Observable(observer => {
     const compiler = webpack(config)
 
     compiler.apply(
       new ProgressPlugin((percentage, msg) => {
-        observer.next(`${msg} ${Math.floor(percentage * 100)}%`)
+        if (!started) {
+          observer.next(`${msg} ${Math.floor(percentage * 100)}%`)
+        }
       }),
     )
 
-    compiler.run((err, stats) => {
+    const watcher = compiler.watch({}, (err, stats) => {
+      if (stats) {
+        mainLogger.info(stats.toString({ colors: true }))
+      }
       if (err) {
+        mainLogger.error(err)
         return observer.error(err)
       }
       if (stats.hasErrors()) {
-        return observer.error(stats.toString({ colors: true }))
+        return observer.error("Error while bundling, please check the logs")
       }
-      observer.complete()
+
+      if (!started) {
+        started = true
+        observer.complete()
+      } else {
+        console.log('reloading electron')
+        electron.reload()
+      }
     })
   })
+
+}
 
 const runWebpackDevServer = config =>
   new Observable(observer => {
@@ -86,6 +108,9 @@ const runWebpackDevServer = config =>
     compiler.apply(
       new ProgressPlugin((percentage, msg) => {
         observer.next(`${msg} ${Math.floor(percentage * 100)}%`)
+        if (percentage === 1) {
+          observer.complete()
+        }
       }),
     )
 
@@ -105,7 +130,6 @@ const runWebpackDevServer = config =>
     server.use(webpackHotMiddleware(compiler))
 
     server.listen(8080, () => {
-      observer.complete()
     })
   })
 
@@ -116,9 +140,7 @@ const mainTasks = new Listr([
       [
         {
           title: '- main',
-          task: () => {
-            return runWebpack(configs.main)
-          },
+          task: runWebpack('main', configs.main),
         },
         {
           title: '- renderer',
@@ -127,18 +149,21 @@ const mainTasks = new Listr([
           },
         },
       ],
-      { concurrent: true },
+      { concurrent: true, collapse: false},
     )
   },
   {
     title: 'Starting electron',
     task: async ctx => {
-      const electronRuntime = execa('./node_modules/.bin/electron', ['./dist/main/main.bundle.js'])
-      ctx.electronRuntime = electronRuntime
+      electron.start()
     },
   },
-])
+], { collapse: false })
 
-mainTasks.run().catch(err => {
+const initialContext = {
+  watchers: {}
+}
+
+mainTasks.run(initialContext).catch(err => {
   console.log('ERROR: ', err)
 })
