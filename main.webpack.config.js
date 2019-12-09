@@ -10,6 +10,7 @@ const babelConfig = {
         },
       },
     ],
+    '@babel/preset-flow',
   ],
   plugins: [
     '@babel/plugin-proposal-export-default-from',

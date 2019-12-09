@@ -1,6 +1,11 @@
+// @flow
 import React, { useEffect } from 'react'
 
-const HelloMessage = ({ name }) => {
+type Props = {
+  name?: string,
+}
+
+const HelloMessage = ({ name }: Props) => {
   useEffect(() => {
     console.log('SALUUUUUUUUUUUUUUT')
   }, [])

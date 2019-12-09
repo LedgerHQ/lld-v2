@@ -90,6 +90,7 @@ yargs
     builder: yargs =>
       yargs.option('p', {
         alias: 'port',
+        type: 'number',
         default: 8080,
       }),
     handler: args => {
