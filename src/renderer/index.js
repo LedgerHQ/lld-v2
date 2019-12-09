@@ -1,15 +1,13 @@
 import React from 'react'
 import { hot } from 'react-hot-loader/root'
 import { render } from 'react-dom'
-import HelloMessage from './hello1'
-import HelloMessage2 from './hello2'
+import App from './App'
 
 const HotReloader = hot(({ children }) => children)
 
 render(
   <HotReloader>
-    <HelloMessage name="mr. Thierry Boustanot" />
-    <HelloMessage2 />
+    <App />
   </HotReloader>,
   document.getElementById('react-root'),
 )

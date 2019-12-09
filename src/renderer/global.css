@@ -1,0 +1,9 @@
+body {
+    background-color: red;
+    font-family: Inter;
+}
+
+@font-face {
+    font-family: "Inter";
+    src: url("./static/fonts/inter/Inter-Bold.woff2") format("woff2")
+}
