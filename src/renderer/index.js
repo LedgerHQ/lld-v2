@@ -4,11 +4,6 @@ import { hot } from 'react-hot-loader/root'
 import { render } from 'react-dom'
 import App from './App'
 
-type Props = {
-  children: React$Node,
-}
-
-const HotReloader = hot(({ children }: Props) => children)
 const root = document.getElementById('react-root')
 
 function r(Comp, rootNode) {
@@ -17,8 +12,4 @@ function r(Comp, rootNode) {
   }
 }
 
-r((
-  <HotReloader>
-    <App />
-  </HotReloader>,
-), root)
+r(hot(App), root)

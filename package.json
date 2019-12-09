@@ -7,7 +7,7 @@
 
   "scripts": {
     "dev": "NODE_ENV=development node ./internals/main.js dev",
-    "build": "NODE_ENV=development node ./internals/main.js build",
+    "build": "NODE_ENV=production node ./internals/main.js build",
     "lint": "eslint src internals",
     "prettier": "prettier --write \"{src,internals}/**/*.{js,json}\"",
     "prettier:check": "prettier -c \"{src,internals}/**/*.{js,json}\"",
@@ -22,6 +22,7 @@
     "react-dom": "^16.11.0",
     "react-hot-loader": "^4.12.18",
     "rxjs": "^6.5.3",
+    "source-map-support": "^0.5.16",
     "winston": "^3.2.1"
   },
   "devDependencies": {

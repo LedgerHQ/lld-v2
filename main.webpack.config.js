@@ -27,7 +27,6 @@ module.exports = {
   entry: './src/main/index.js',
   output: {
     path: path.resolve(__dirname, 'dist/main'),
-    publicPath: '/dist/main',
     filename: 'main.bundle.js',
   },
   plugins: [],

@@ -9,6 +9,7 @@ const babelConfig = {
         targets: {
           electron: '7.1.3',
         },
+        modules: 'commonjs',
       },
     ],
     '@babel/preset-react',
@@ -29,7 +30,6 @@ module.exports = {
   entry: ['./src/renderer/index.js'],
   output: {
     path: path.resolve(__dirname, 'dist/renderer'),
-    publicPath: '/dist/renderer',
     filename: 'renderer.bundle.js',
   },
   plugins: [
@@ -52,7 +52,7 @@ module.exports = {
         use: ['style-loader', 'css-loader'],
       },
       {
-        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
         use: ['file-loader'],
       },
     ],

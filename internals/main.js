@@ -3,6 +3,7 @@ const Electron = require('./utils/Electron')
 const WebpackWorker = require('./utils/WebpackWorker')
 const WebpackBar = require('webpackbar')
 const webpack = require('webpack')
+const path = require('path')
 const yargs = require('yargs')
 
 const bundles = {
@@ -37,11 +38,16 @@ const createRendererConfig = (mode, config) => {
   return {
     ...config,
     mode: mode === 'production' ? 'production' : 'development',
+    devtool: mode === 'development' ? 'eval-source-map' : 'none',
     entry,
     plugins: [...plugins, new WebpackBar({ name: 'renderer', color: 'indigo' })],
     resolve: {
       ...config.resolve,
       alias,
+    },
+    output: {
+      ...config.output,
+      publicPath: mode === 'production' ? config.path : '/dist/renderer',
     },
   }
 }
@@ -50,7 +56,18 @@ const createMainConfig = (mode, config) => {
   return {
     ...config,
     mode: mode === 'production' ? 'production' : 'development',
-    plugins: [...config.plugins, new WebpackBar({ name: 'main', color: 'purple' })],
+    devtool: mode === 'development' ? 'eval-source-map' : 'none',
+    plugins: [
+      ...config.plugins,
+      new WebpackBar({ name: 'main', color: 'purple' }),
+      new webpack.DefinePlugin({
+        INDEX_URL: JSON.stringify(
+          mode === 'production'
+            ? `file://${path.resolve(bundles.renderer.config.output.path, 'index.html')}`
+            : `http://localhost:${8080}${path.resolve('/dist/renderer', 'index.html')}`,
+        ),
+      }),
+    ],
   }
 }
 
@@ -81,7 +98,6 @@ const build = async port => {
   await Promise.all([mainWorker.bundle(), rendererWorker.bundle()])
 }
 
-/* eslint-disable no-unused-expressions */
 yargs
   .usage('Usage: $0 <command> [options]')
   .command({
@@ -105,5 +121,5 @@ yargs
     },
   })
   .help('h')
-  .alias('h', 'help').argv
-/* eslint-enable no-unused-expressions */
+  .alias('h', 'help')
+  .parse()

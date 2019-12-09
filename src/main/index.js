@@ -1,5 +1,4 @@
-import { app, BrowserWindow } from 'electron'
-import path from 'path'
+import { app, BrowserWindow, ipcMain } from 'electron'
 
 let mainWindow
 
@@ -7,18 +6,21 @@ const isDev = process.env.NODE_ENV === 'development'
 
 async function createWindow() {
   mainWindow = new BrowserWindow({
+    show: false,
     width: 1024,
     height: 768,
     minWidth: 1024,
     minHeight: 768,
-    webPreferences: {},
+    webPreferences: {
+      nodeIntegration: true,
+    },
   })
 
-  mainWindow.loadURL(
-    isDev
-      ? 'http://localhost:8080/dist/renderer'
-      : `file://${path.resolve(__dirname, 'dist/renderer/index.html')}`,
-  )
+  ipcMain.once('main-window-ready', () => {
+    mainWindow.show()
+  })
+
+  mainWindow.loadURL(INDEX_URL)
 
   if (isDev) {
     mainWindow.webContents.openDevTools()
