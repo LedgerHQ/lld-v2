@@ -17,15 +17,23 @@ class WebpackWorker {
         new winston.transports.File({
           filename: path.resolve(config.output.path, `${name}.log`),
         }),
-      ]
+      ],
     })
   }
 
-  run() {
+  bundle() {
     return new Promise((resolve, reject) => {
       this.compiler.run((err, stats) => {
+        if (err) {
+          this.logger.error(err)
+        } else if (stats.hasErrors()) {
+          this.logger.error(stats.toString())
+        } else {
+          this.logger.info(stats.toString())
+        }
+
         if (err || stats.hasErrors()) {
-          return reject()
+          return reject(err || stats)
         }
         return resolve()
       })
@@ -38,15 +46,15 @@ class WebpackWorker {
         if (err) {
           this.logger.error(err)
         } else if (stats.hasErrors()) {
-          this.logger.error(stats.toString({ colors: true }))
+          this.logger.error(stats.toString())
         } else {
-          this.logger.info(stats.toString({ colors: true }))
+          this.logger.info(stats.toString())
         }
 
         if (!this.running) {
           this.running = true
           if (err || stats.hasErrors()) {
-            return reject()
+            return reject(err || stats)
           }
           return resolve()
         } else {
@@ -68,7 +76,7 @@ class WebpackWorker {
           info: this.logger.info.bind(this.logger),
           error: this.logger.error.bind(this.logger),
           warn: this.logger.warn.bind(this.logger),
-        }
+        },
       })
 
       const server = express()

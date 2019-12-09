@@ -49,8 +49,6 @@ module.exports = {
     ],
   },
   resolve: {
-    alias: {
-
-    }
-  }
+    alias: {},
+  },
 }

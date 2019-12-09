@@ -6,7 +6,7 @@ let mainWindow
 const isDev = process.env.NODE_ENV === 'development'
 
 async function createWindow() {
-  console.log('dsdsdsddsd')
+  console.log(__dirname)
 
   mainWindow = new BrowserWindow({
     width: 1024,

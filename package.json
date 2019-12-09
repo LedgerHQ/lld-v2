@@ -5,7 +5,8 @@
   "author": "Ledger Live Team <team-live@ledger.fr>",
   "license": "MIT",
   "scripts": {
-    "start:dev": "NODE_ENV=development node ./internals/dev.js",
+    "dev": "NODE_ENV=development node ./internals/main.js dev",
+    "build": "NODE_ENV=development node ./internals/main.js build",
     "lint": "eslint src internals",
     "prettier": "prettier --write \"{src,internals}/**/*.{js,json}\"",
     "prettier:check": "prettier -c \"{src,internals}/**/*.{js,json}\""
@@ -48,7 +49,8 @@
     "webpack-cli": "^3.3.10",
     "webpack-dev-middleware": "^3.7.2",
     "webpack-hot-middleware": "^2.25.0",
-    "webpackbar": "^4.0.0"
+    "webpackbar": "^4.0.0",
+    "yargs": "^15.0.2"
   },
   "husky": {
     "hooks": {

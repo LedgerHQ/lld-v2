@@ -8,11 +8,7 @@ const HelloMessage = ({ name }) => {
   useEffect(() => {
     console.log('je rerun a chaque fois')
   })
-  return (
-    <h1>
-      sup {name} !!!
-    </h1>
-  )
+  return <h1>sup {name} !!!</h1>
 }
 
 export default HelloMessage

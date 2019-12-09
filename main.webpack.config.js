@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('path')
 
 const babelConfig = {
   presets: [
@@ -6,18 +6,18 @@ const babelConfig = {
       '@babel/preset-env',
       {
         targets: {
-          node: 'current'
-        }
-      }
+          node: 'current',
+        },
+      },
     ],
   ],
   plugins: [
-    "@babel/plugin-proposal-export-default-from",
-    "@babel/plugin-proposal-export-namespace-from",
-    "@babel/plugin-syntax-dynamic-import",
-    "@babel/plugin-syntax-import-meta",
-    ["@babel/plugin-proposal-class-properties", { "loose": true }]
-  ]
+    '@babel/plugin-proposal-export-default-from',
+    '@babel/plugin-proposal-export-namespace-from',
+    '@babel/plugin-syntax-dynamic-import',
+    '@babel/plugin-syntax-import-meta',
+    ['@babel/plugin-proposal-class-properties', { loose: true }],
+  ],
 }
 
 module.exports = {
@@ -27,17 +27,16 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist/main'),
     publicPath: '/dist/main',
-    filename: 'main.bundle.js'
+    filename: 'main.bundle.js',
   },
-  plugins: [
-  ],
+  plugins: [],
   module: {
     rules: [
       {
         test: /\.js$/i,
         loader: 'babel-loader',
         exclude: /node_modules/,
-        options: babelConfig
+        options: babelConfig,
       },
     ],
   },
