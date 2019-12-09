@@ -4,13 +4,17 @@
   "main": "index.js",
   "author": "Ledger Live Team <team-live@ledger.fr>",
   "license": "MIT",
+
   "scripts": {
     "dev": "NODE_ENV=development node ./internals/main.js dev",
     "build": "NODE_ENV=development node ./internals/main.js build",
     "lint": "eslint src internals",
     "prettier": "prettier --write \"{src,internals}/**/*.{js,json}\"",
-    "prettier:check": "prettier -c \"{src,internals}/**/*.{js,json}\""
+    "prettier:check": "prettier -c \"{src,internals}/**/*.{js,json}\"",
+    "flow-typed": "yarn run install-flow-typed",
+    "install-flow-typed": "flow-typed install -s"
   },
+
   "dependencies": {
     "@hot-loader/react-dom": "^16.11.0",
     "electron": "^7.1.3",
@@ -28,13 +32,16 @@
     "@babel/plugin-syntax-dynamic-import": "^7.7.4",
     "@babel/plugin-syntax-import-meta": "^7.7.4",
     "@babel/preset-env": "^7.7.4",
+    "@babel/preset-flow": "^7.7.4",
     "@babel/preset-react": "^7.7.4",
     "babel": "^6.23.0",
+    "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
     "cli-progress": "^3.4.0",
     "css-loader": "^3.2.1",
     "eslint": "^6.7.2",
     "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-flowtype": "^4.5.2",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-promise": "^4.2.1",
@@ -43,8 +50,11 @@
     "execa": "^3.4.0",
     "express": "^4.17.1",
     "file-loader": "^5.0.2",
+    "flow-bin": "^0.113.0",
+    "flow-typed": "^2.6.2",
     "html-webpack-plugin": "^3.2.0",
     "husky": "^3.1.0",
+    "lint-staged": "^9.5.0",
     "listr": "^0.14.3",
     "prettier": "^1.19.1",
     "style-loader": "^1.0.1",
@@ -55,9 +65,14 @@
     "webpackbar": "^4.0.0",
     "yargs": "^15.0.2"
   },
+
   "husky": {
     "hooks": {
-      "pre-push": "yarn prettier:check"
+      "pre-commit": "lint-staged"
     }
+  },
+
+  "lint-staged": {
+    "*.js": ["yarn lint", "yarn prettier", "git add"]
   }
 }
