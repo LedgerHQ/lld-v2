@@ -3,7 +3,6 @@ const Electron = require('./utils/Electron')
 const WebpackWorker = require('./utils/WebpackWorker')
 const WebpackBar = require('webpackbar')
 const webpack = require('webpack')
-const path = require('path')
 const yargs = require('yargs')
 
 const bundles = {
@@ -47,7 +46,7 @@ const createRendererConfig = (mode, config) => {
     },
     output: {
       ...config.output,
-      publicPath: mode === 'production' ? config.path : '/dist/renderer',
+      publicPath: mode === 'production' ? './' : '/webpack',
     },
   }
 }
@@ -61,11 +60,8 @@ const createMainConfig = (mode, config) => {
       ...config.plugins,
       new WebpackBar({ name: 'main', color: 'purple' }),
       new webpack.DefinePlugin({
-        INDEX_URL: JSON.stringify(
-          mode === 'production'
-            ? `file://${path.resolve(bundles.renderer.config.output.path, 'index.html')}`
-            : `http://localhost:${8080}${path.resolve('/dist/renderer', 'index.html')}`,
-        ),
+        INDEX_URL: JSON.stringify(`http://localhost:${8080}/webpack/index.html`),
+        DEV: JSON.stringify(mode === 'development'),
       }),
     ],
   }
@@ -77,7 +73,7 @@ const startDev = async port => {
     'renderer',
     createRendererConfig('development', bundles.renderer.config),
   )
-  const electron = new Electron('./dist/main/main.bundle.js')
+  const electron = new Electron('./.webpack/main.bundle.js')
 
   await Promise.all([
     mainWorker.watch(() => {

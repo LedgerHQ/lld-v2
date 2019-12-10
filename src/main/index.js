@@ -2,7 +2,7 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 
 let mainWindow
 
-const isDev = process.env.NODE_ENV === 'development'
+const isDev = DEV
 
 async function createWindow() {
   mainWindow = new BrowserWindow({
@@ -20,9 +20,16 @@ async function createWindow() {
     mainWindow.show()
   })
 
-  mainWindow.loadURL(INDEX_URL)
-
   if (isDev) {
+    mainWindow.loadURL(INDEX_URL)
+  } else {
+    console.log(app.getAppPath())
+    const path = `file://${__dirname}/index.html`
+    console.log('opening ', path)
+    mainWindow.loadURL(path)
+  }
+
+  if (true) {
     mainWindow.webContents.openDevTools()
   }
 

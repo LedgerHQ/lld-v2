@@ -29,7 +29,7 @@ module.exports = {
   target: 'electron-renderer',
   entry: ['./src/renderer/index.js'],
   output: {
-    path: path.resolve(__dirname, 'dist/renderer'),
+    path: path.resolve(__dirname, '.webpack'),
     filename: 'renderer.bundle.js',
   },
   plugins: [

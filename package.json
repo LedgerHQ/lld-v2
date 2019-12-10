@@ -6,7 +6,7 @@
   "author": "Ledger Live Team <team-live@ledger.fr>",
   "license": "MIT",
   "private": true,
-  "main": "./dist/main/main.bundle.js",
+  "main": "./.webpack/main.bundle.js",
   "scripts": {
     "dev": "NODE_ENV=development node ./internals/main.js dev",
     "build": "NODE_ENV=production node ./internals/main.js build",
@@ -26,7 +26,7 @@
   "build": {
     "appId": "com.ledger.live",
     "files": [
-      "dist/**/*",
+      ".webpack/**/*",
       "node_modules/**/*",
       "package.json"
     ],
