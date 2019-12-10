@@ -84,7 +84,7 @@ const startDev = async port => {
   electron.start()
 }
 
-const build = async port => {
+const build = async () => {
   const mainWorker = new WebpackWorker('main', createMainConfig('production', bundles.main.config))
   const rendererWorker = new WebpackWorker(
     'renderer',
@@ -97,7 +97,7 @@ const build = async port => {
 yargs
   .usage('Usage: $0 <command> [options]')
   .command({
-    command: 'dev',
+    command: ['dev', '$0'],
     desc: 'start the development workflow',
     builder: yargs =>
       yargs.option('p', {
