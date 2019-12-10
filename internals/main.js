@@ -112,7 +112,7 @@ const build = async argv => {
 yargs
   .usage('Usage: $0 <command> [options]')
   .command({
-    command: 'dev',
+    command: ['dev', '$0'],
     desc: 'start the development workflow',
     builder: yargs =>
       yargs.option('port', {

@@ -8,29 +8,20 @@
   "private": true,
   "main": "./.webpack/main.bundle.js",
   "scripts": {
-    "dev": "NODE_ENV=development node ./internals/main.js dev",
+    "dev": "NODE_ENV=development node ./internals/main.js",
     "build": "NODE_ENV=production node ./internals/main.js build",
     "lint": "eslint src internals",
     "prettier": "prettier --write \"{src,internals}/**/*.{js,json}\"",
     "prettier:check": "prettier -c \"{src,internals}/**/*.{js,json}\"",
     "flow-typed": "yarn run install-flow-typed",
     "install-flow-typed": "flow-typed install -s",
-    "pack": "DEBUG=electron-builder electron-builder --dir",
-    "dist": "DEBUG=electron-builder electron-builder",
-    "prepack": "electron-builder install-app-deps",
-    "predist": "electron-builder install-app-deps"
+    "install-deps": "electron-builder install-app-deps",
+    "dist:internal": "DEBUG=electron-builder NODE_ENV=production electron-builder",
+    "dist": "node ./internals/dist.js",
+    "pack": "node ./internals/dist.js -p"
   },
   "engines": {
     "node": ">=12"
-  },
-  "build": {
-    "appId": "com.ledger.live",
-    "files": [
-      ".webpack/**/*",
-      "node_modules/**/*",
-      "package.json"
-    ],
-    "publish": null
   },
   "dependencies": {
     "@hot-loader/react-dom": "^16.11.0",
@@ -78,6 +69,7 @@
     "lint-staged": "^9.5.0",
     "listr": "^0.14.3",
     "prettier": "^1.19.1",
+    "rimraf": "^3.0.0",
     "style-loader": "^1.0.1",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
