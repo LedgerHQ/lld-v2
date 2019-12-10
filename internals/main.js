@@ -16,7 +16,7 @@ const bundles = {
   },
 }
 
-const createRendererConfig = (mode, config) => {
+const buildRendererConfig = (mode, config) => {
   const entry =
     mode === 'development'
       ? Array.isArray(config.entry)
@@ -39,7 +39,7 @@ const createRendererConfig = (mode, config) => {
     mode: mode === 'production' ? 'production' : 'development',
     devtool: mode === 'development' ? 'eval-source-map' : 'none',
     entry,
-    plugins: [...plugins, new WebpackBar({ name: 'renderer', color: 'indigo' })],
+    plugins: [...plugins, new WebpackBar({ name: 'renderer', color: '#8ABEB7' })],
     resolve: {
       ...config.resolve,
       alias,
@@ -51,27 +51,39 @@ const createRendererConfig = (mode, config) => {
   }
 }
 
-const createMainConfig = (mode, config) => {
+const buildMainEnv = (mode, config, argv) => {
+  const env = {
+    DEV: JSON.stringify(mode === 'development'),
+  }
+
+  if (mode === 'development') {
+    env['INDEX_URL'] = JSON.stringify(`http://localhost:${argv.port}/webpack/index.html`)
+  }
+
+  return env
+}
+
+const buildMainConfig = (mode, config, argv) => {
   return {
     ...config,
     mode: mode === 'production' ? 'production' : 'development',
     devtool: mode === 'development' ? 'eval-source-map' : 'none',
     plugins: [
       ...config.plugins,
-      new WebpackBar({ name: 'main', color: 'purple' }),
-      new webpack.DefinePlugin({
-        INDEX_URL: JSON.stringify(`http://localhost:${8080}/webpack/index.html`),
-        DEV: JSON.stringify(mode === 'development'),
-      }),
+      new WebpackBar({ name: 'main', color: '#F0C674' }),
+      new webpack.DefinePlugin(buildMainEnv(mode, config, argv)),
     ],
   }
 }
 
-const startDev = async port => {
-  const mainWorker = new WebpackWorker('main', createMainConfig('development', bundles.main.config))
+const startDev = async argv => {
+  const mainWorker = new WebpackWorker(
+    'main',
+    buildMainConfig('development', bundles.main.config, argv),
+  )
   const rendererWorker = new WebpackWorker(
     'renderer',
-    createRendererConfig('development', bundles.renderer.config),
+    buildRendererConfig('development', bundles.renderer.config, argv),
   )
   const electron = new Electron('./.webpack/main.bundle.js')
 
@@ -79,16 +91,19 @@ const startDev = async port => {
     mainWorker.watch(() => {
       electron.reload()
     }),
-    rendererWorker.serve(port),
+    rendererWorker.serve(argv.port),
   ])
   electron.start()
 }
 
-const build = async port => {
-  const mainWorker = new WebpackWorker('main', createMainConfig('production', bundles.main.config))
+const build = async argv => {
+  const mainWorker = new WebpackWorker(
+    'main',
+    buildMainConfig('production', bundles.main.config, argv),
+  )
   const rendererWorker = new WebpackWorker(
     'renderer',
-    createRendererConfig('production', bundles.renderer.config),
+    buildRendererConfig('production', bundles.renderer.config, argv),
   )
 
   await Promise.all([mainWorker.bundle(), rendererWorker.bundle()])
@@ -100,21 +115,17 @@ yargs
     command: 'dev',
     desc: 'start the development workflow',
     builder: yargs =>
-      yargs.option('p', {
-        alias: 'port',
+      yargs.option('port', {
+        alias: 'p',
         type: 'number',
         default: 8080,
       }),
-    handler: args => {
-      startDev(args.p)
-    },
+    handler: startDev,
   })
   .command({
     command: 'build',
     desc: 'build the app for production',
-    handler: () => {
-      build()
-    },
+    handler: build,
   })
   .help('h')
   .alias('h', 'help')

@@ -5,5 +5,5 @@ body {
 
 @font-face {
     font-family: "Inter";
-    src: url("./static/fonts/inter/Inter-Bold.woff2") format("woff2")
+    src: url("./fonts/inter/Inter-Bold.woff2") format("woff2")
 }

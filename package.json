@@ -34,9 +34,11 @@
   },
   "dependencies": {
     "@hot-loader/react-dom": "^16.11.0",
+    "i18next": "^19.0.1",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-hot-loader": "^4.12.18",
+    "react-i18next": "^11.2.5",
     "rxjs": "^6.5.3",
     "source-map-support": "^0.5.16",
     "winston": "^3.2.1"

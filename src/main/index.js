@@ -23,10 +23,7 @@ async function createWindow() {
   if (isDev) {
     mainWindow.loadURL(INDEX_URL)
   } else {
-    console.log(app.getAppPath())
-    const path = `file://${__dirname}/index.html`
-    console.log('opening ', path)
-    mainWindow.loadURL(path)
+    mainWindow.loadFile(`file://${__dirname}/index.html`)
   }
 
   if (true) {
