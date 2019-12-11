@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import { ipcRenderer } from 'electron'
 import './global.css'
-import './i18n'
+import locales from './i18n'
 
 class App extends Component {
   constructor(props) {

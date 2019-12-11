@@ -31,77 +31,86 @@ const cleaningTasks = new Listr(
         }),
     },
   ],
-  { concurrent: true },
+  { concurrent: true, collapse: false },
 )
 
-const setupTasks = new Listr([
-  {
-    title: 'Installing packages',
-    task: async () => {
-      try {
-        const { stdout } = await execa('yarn')
-        return stdout
-      } catch (error) {
-        throw new Error('Could not install node_modules')
-      }
+const setupTasks = new Listr(
+  [
+    {
+      title: 'Installing packages',
+      task: async () => {
+        try {
+          const { stdout } = await execa('yarn')
+          return stdout
+        } catch (error) {
+          throw new Error('Could not install node_modules')
+        }
+      },
     },
-  },
-  {
-    title: 'Rebuilding app deps',
-    task: async () => {
-      try {
-        const { stdout } = await execa('yarn', ['install-deps'])
-        return stdout
-      } catch (error) {
-        throw new Error('Could not rebuild app deps')
-      }
+    {
+      title: 'Rebuilding app deps',
+      task: async () => {
+        try {
+          const { stdout } = await execa('yarn', ['install-deps'])
+          return stdout
+        } catch (error) {
+          throw new Error('Could not rebuild app deps')
+        }
+      },
     },
-  },
-])
+  ],
+  { collapse: false },
+)
 
 const buildTasks = (pack = false) =>
-  new Listr([
-    {
-      title: 'Compiling assets',
-      task: async () => {
-        try {
-          const { stdout } = await execa('yarn', ['build'])
-          return stdout
-        } catch (error) {
-          throw new Error('Could not build the app')
-        }
+  new Listr(
+    [
+      {
+        title: 'Compiling assets',
+        task: async () => {
+          try {
+            const { stdout } = await execa('yarn', ['build'])
+            return stdout
+          } catch (error) {
+            throw new Error('Could not build the app')
+          }
+        },
       },
-    },
-    {
-      title: pack
-        ? 'Packing the electron application (for debug purpose)'
-        : 'Bundling the electron application',
-      task: async () => {
-        try {
-          const { stdout } = await execa('yarn', ['dist:internal', pack ? '--dir' : null])
-          return stdout
-        } catch (error) {
-          throw new Error(`Could not ${pack ? 'pack' : 'bundle'} the electron app`)
-        }
+      {
+        title: pack
+          ? 'Packing the electron application (for debug purpose)'
+          : 'Bundling the electron application',
+        task: async () => {
+          try {
+            const { stdout } = await execa('yarn', ['dist:internal', pack ? '--dir' : null])
+            return stdout
+          } catch (error) {
+            throw new Error(`Could not ${pack ? 'pack' : 'bundle'} the electron app`)
+          }
+        },
       },
-    },
-  ])
+    ],
+    { collapse: false },
+  )
 
 const mainTask = (pack = false) =>
-  new Listr([
-    {
-      title: 'Cleanup',
-      task: () => cleaningTasks,
-    },
-    {
-      title: 'Setup',
-      task: () => setupTasks,
-    },
-    {
-      title: 'Build',
-      task: () => buildTasks(pack),
-    },
-  ])
+  new Listr(
+    [
+      {
+        title: 'Cleanup',
+        task: () => cleaningTasks,
+      },
+      {
+        title: 'Setup',
+        task: () => setupTasks,
+      },
+      {
+        title: 'Build',
+        task: () => buildTasks(pack),
+      },
+    ],
+    { collapse: false },
+  )
 
 yargs
   .usage('Usage: $0 <command> [options]')
