@@ -57,7 +57,13 @@ module.exports = {
       },
       {
         test: /\.(png|jpe?g|gif|svg)$/i,
-        use: ['file-loader'],
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 8192,
+            fallback: require.resolve('file-loader'),
+          },
+        },
       },
     ],
   },
