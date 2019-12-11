@@ -1,7 +1,9 @@
-import { Component } from 'react'
+import React, { Component } from 'react'
 import { ipcRenderer } from 'electron'
 import './global.css'
-import locales from './i18n'
+
+import Title from './components/title'
+import Switcher from './components/switcher'
 
 class App extends Component {
   constructor(props) {
@@ -26,7 +28,12 @@ class App extends Component {
     if (this.state.error) {
       return this.state.error.toString()
     }
-    return 'hello world'
+    return (
+      <>
+        <Title />
+        <Switcher />
+      </>
+    )
   }
 }
 
