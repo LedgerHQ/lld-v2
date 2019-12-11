@@ -4,6 +4,7 @@ import './global.css'
 
 import Title from './components/title'
 import Switcher from './components/switcher'
+import Img from './components/img'
 
 class App extends Component {
   constructor(props) {
@@ -32,6 +33,9 @@ class App extends Component {
       <>
         <Title />
         <Switcher />
+        <div>
+          <Img />
+        </div>
       </>
     )
   }
