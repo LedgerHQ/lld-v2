@@ -1,0 +1,37 @@
+name: nightly build
+on:
+  - push
+  - schedule:
+      - cron: '0 22 * * 1-5'
+
+jobs:
+  bundle:
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v1
+      - uses: action/setup=node@master
+        with:
+          node-version: 12.x
+      - name: build the app
+        run: yarn dist
+      - name: upload macOS app
+        if: runner.os == 'macOS'
+        uses: actions/upload-artifact@v1
+        with:
+          name: lld-macos.dmg
+          path: dist/ledger-live-desktop-v2-1.0.0-mac.zip
+      - name: upload windows app
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v1
+        with:
+          name: lld-windows.dmg
+          path: dist/ledger-live-desktop-v2-1.0.0-win.exe
+      - name: upload linux app
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v1
+        with:
+          name: lld-linux.dmg
+          path: dist/ledger-live-desktop-v2-1.0.0-linux-x86_64.AppImage

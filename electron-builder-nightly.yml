@@ -15,8 +15,8 @@ mac:
     - dmg
     - zip
 
-appImage:
-  systemIntegration: doNotAsk
+# appImage:
+# systemIntegration: doNotAsk // DEPRECATED
 
 linux:
   # asarUnpack:

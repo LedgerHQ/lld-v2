@@ -19,6 +19,7 @@
     "dist:internal": "DEBUG=electron-builder NODE_ENV=production electron-builder",
     "dist": "node ./internals/dist.js",
     "pack": "node ./internals/dist.js -p",
+    "nightly": "node ./internals/dist.js --nightly",
     "ci": "node ./internals/ci.js"
   },
   "engines": {
