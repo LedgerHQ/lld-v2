@@ -23,7 +23,7 @@ async function createWindow() {
   if (isDev) {
     mainWindow.loadURL(INDEX_URL)
   } else {
-    mainWindow.loadFile(`file://${__dirname}/index.html`)
+    mainWindow.loadURL(`file://${__dirname}/index.html`)
   }
 
   if (true) {
