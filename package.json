@@ -18,7 +18,8 @@
     "install-deps": "electron-builder install-app-deps",
     "dist:internal": "DEBUG=electron-builder NODE_ENV=production electron-builder",
     "dist": "node ./internals/dist.js",
-    "pack": "node ./internals/dist.js -p"
+    "pack": "node ./internals/dist.js -p",
+    "ci": "node ./internals/ci.js"
   },
   "engines": {
     "node": ">=12"
