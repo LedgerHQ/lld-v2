@@ -62,7 +62,7 @@ const setupTasks = new Listr(
   { collapse: false },
 )
 
-const buildTasks = (args = { p: false, n: false }) =>
+const buildTasks = (args = {}) =>
   new Listr(
     [
       {
@@ -82,13 +82,16 @@ const buildTasks = (args = { p: false, n: false }) =>
           : 'Bundling the electron application',
         task: async () => {
           try {
-            const { stdout } = await execa('yarn', [
-              'dist:internal',
-              args.p ? '--dir' : args.n ? '--config electron-builder-nightly.yml' : null,
-            ])
+            const commands = ['dist:internal']
+            if (args.p) commands.push('--dir')
+            if (args.n) {
+              commands.push('--config')
+              commands.push('electron-builder-nightly.yml')
+            }
+
+            const { stdout } = await execa('yarn', commands)
             return stdout
           } catch (error) {
-            console.log(error)
             throw new Error(`Could not ${args.p ? 'pack' : 'bundle'} the electron app`)
           }
         },
@@ -132,6 +135,7 @@ yargs
           type: 'boolean',
         }),
     handler: args => {
+      console.log(args)
       mainTask(args)
         .run()
         .catch(() => {
