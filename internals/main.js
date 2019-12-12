@@ -4,6 +4,7 @@ const WebpackWorker = require('./utils/WebpackWorker')
 const WebpackBar = require('webpackbar')
 const webpack = require('webpack')
 const yargs = require('yargs')
+const nodeExternals = require('webpack-node-externals')
 
 const bundles = {
   renderer: {
@@ -14,6 +15,18 @@ const bundles = {
     config: require('../main.webpack.config'),
     color: 'orange',
   },
+}
+
+const buildMainEnv = (mode, config, argv) => {
+  const env = {
+    DEV: JSON.stringify(mode === 'development'),
+  }
+
+  if (mode === 'development') {
+    env['INDEX_URL'] = JSON.stringify(`http://localhost:${argv.port}/webpack/index.html`)
+  }
+
+  return env
 }
 
 const buildRendererConfig = (mode, config) => {
@@ -51,23 +64,16 @@ const buildRendererConfig = (mode, config) => {
   }
 }
 
-const buildMainEnv = (mode, config, argv) => {
-  const env = {
-    DEV: JSON.stringify(mode === 'development'),
-  }
-
-  if (mode === 'development') {
-    env['INDEX_URL'] = JSON.stringify(`http://localhost:${argv.port}/webpack/index.html`)
-  }
-
-  return env
-}
-
 const buildMainConfig = (mode, config, argv) => {
   return {
     ...config,
     mode: mode === 'production' ? 'production' : 'development',
     devtool: mode === 'development' ? 'eval-source-map' : 'none',
+    externals: [nodeExternals()],
+    node: {
+      __dirname: false,
+      __filename: false,
+    },
     plugins: [
       ...config.plugins,
       new WebpackBar({ name: 'main', color: '#F0C674' }),
@@ -97,14 +103,11 @@ const startDev = async argv => {
 }
 
 const build = async argv => {
-  const mainWorker = new WebpackWorker(
-    'main',
-    buildMainConfig('production', bundles.main.config, argv),
-  )
-  const rendererWorker = new WebpackWorker(
-    'renderer',
-    buildRendererConfig('production', bundles.renderer.config, argv),
-  )
+  const mainConfig = buildMainConfig('production', bundles.main.config, argv)
+  const rendererConfig = buildRendererConfig('production', bundles.renderer.config, argv)
+
+  const mainWorker = new WebpackWorker('main', mainConfig)
+  const rendererWorker = new WebpackWorker('renderer', rendererConfig)
 
   await Promise.all([mainWorker.bundle(), rendererWorker.bundle()])
 }
