@@ -5,6 +5,7 @@ const WebpackBar = require('webpackbar')
 const webpack = require('webpack')
 const yargs = require('yargs')
 const nodeExternals = require('webpack-node-externals')
+const reduce = require('lodash/reduce')
 
 const bundles = {
   renderer: {
@@ -19,14 +20,23 @@ const bundles = {
 
 const buildMainEnv = (mode, config, argv) => {
   const env = {
-    DEV: JSON.stringify(mode === 'development'),
+    DEV: mode === 'development',
   }
 
   if (mode === 'development') {
-    env.INDEX_URL = JSON.stringify(`http://localhost:${argv.port}/webpack/index.html`)
+    env.INDEX_URL = `http://localhost:${argv.port}/webpack/index.html`
   }
 
-  return env
+  console.log('current env:', env)
+
+  return reduce(
+    env,
+    (acc, value, key) => {
+      acc[key] = JSON.stringify(value)
+      return acc
+    },
+    {},
+  )
 }
 
 const buildRendererConfig = (mode, config) => {

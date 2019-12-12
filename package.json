@@ -28,6 +28,7 @@
   "dependencies": {
     "@hot-loader/react-dom": "^16.11.0",
     "i18next": "^19.0.1",
+    "lodash": "^4.17.15",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-hot-loader": "^4.12.18",

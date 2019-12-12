@@ -1,17 +1,14 @@
 const execa = require('execa')
 
-const defaultElectronPath = './node_modules/.bin/electron'
-
 class Electron {
-  constructor(bundlePath, electronPath = defaultElectronPath) {
+  constructor(bundlePath) {
     this.instance = null
     this.bundlePath = bundlePath
-    this.electronPath = electronPath
   }
 
   start() {
     if (!this.instance) {
-      this.instance = execa(this.electronPath, [this.bundlePath])
+      this.instance = execa('electron', [this.bundlePath], { preferLocal: true })
       this.instance.stdout.pipe(process.stdout)
     }
   }

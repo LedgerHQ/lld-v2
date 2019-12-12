@@ -1,48 +1,18 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import cluster from 'cluster'
+import electronMain from './electron'
+import coreMain from './core'
 
-let mainWindow
+const spawnCoreProcess = () => {
+  cluster.fork()
 
-const isDev = DEV
-
-async function createWindow() {
-  mainWindow = new BrowserWindow({
-    show: false,
-    width: 1024,
-    height: 768,
-    minWidth: 1024,
-    minHeight: 768,
-    webPreferences: {
-      nodeIntegration: true,
-    },
+  cluster.on('exit', (worker, code, signal) => {
+    console.log(`worker ${worker.process.pid} died with error code ${code} and signal ${signal}`)
   })
-
-  ipcMain.once('main-window-ready', () => {
-    mainWindow.show()
-  })
-
-  if (isDev) {
-    mainWindow.loadURL(INDEX_URL)
-  } else {
-    mainWindow.loadURL(`file://${__dirname}/index.html`)
-  }
-
-  if (DEV) {
-    mainWindow.webContents.openDevTools()
-  }
-
-  mainWindow.on('closed', () => (mainWindow = null))
 }
 
-app.on('ready', createWindow)
-
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
-})
-
-app.on('activate', () => {
-  if (mainWindow === null) {
-    createWindow()
-  }
-})
+if (cluster.isMaster) {
+  spawnCoreProcess()
+  electronMain()
+} else {
+  coreMain()
+}

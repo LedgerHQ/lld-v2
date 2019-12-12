@@ -1,14 +1,5 @@
-console.log('this is core')
-
-async function test() {
-  const p = new Promise(resolve => {
-    setTimeout(() => {
-      resolve('yolo')
-    }, 2000)
-  })
-
-  const result = await p
-  console.log(result)
+const coreMain = () => {
+  console.log('core started')
 }
 
-test()
+export default coreMain
