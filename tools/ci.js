@@ -17,13 +17,24 @@ const tasks = new Listr(
       },
     },
     {
-      title: 'Run prettier formatting',
+      title: 'Run prettier check',
       task: async () => {
         try {
           const { stdout } = await execa('yarn', ['prettier:check'])
           return stdout
         } catch (error) {
           throw new Error('eslint test failed')
+        }
+      },
+    },
+    {
+      title: 'Run flow',
+      task: async () => {
+        try {
+          const { stdout } = await execa('yarn', ['flow'])
+          return stdout
+        } catch (error) {
+          throw new Error('flow test failed')
         }
       },
     },

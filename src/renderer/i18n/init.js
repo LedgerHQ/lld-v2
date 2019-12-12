@@ -1,4 +1,5 @@
 // @flow
+
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import locales from '.'
@@ -11,8 +12,7 @@ const config = {
   interpolation: {
     escapeValue: false,
   },
-
-  debug: true, // TODO disable when not in dev
+  debug: true,
   react: {
     useSuspense: false,
   },

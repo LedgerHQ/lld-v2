@@ -135,7 +135,6 @@ yargs
           type: 'boolean',
         }),
     handler: args => {
-      console.log(args)
       mainTask(args)
         .run()
         .catch(() => {

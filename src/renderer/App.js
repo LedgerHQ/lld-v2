@@ -1,25 +1,26 @@
+// @flow
 import React, { Component } from 'react'
 import { ipcRenderer } from 'electron'
-import './global.css'
+import '~/renderer/global.css'
 
-import Title from './components/title'
-import Switcher from './components/switcher'
-import Img from './components/img'
+import Title from '~/renderer/components/title'
+import Switcher from '~/renderer/components/switcher'
+import Img from '~/renderer/components/img'
 
-class App extends Component {
-  constructor(props) {
-    super(props)
+type State = {
+  error: ?Error,
+}
 
-    this.state = {
-      error: null,
-    }
+class App extends Component<{}, State> {
+  state = {
+    error: null,
   }
 
   componentDidMount() {
     ipcRenderer.send('main-window-ready', {})
   }
 
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error: any, errorInfo: any) {
     this.setState({
       error,
     })
@@ -29,6 +30,7 @@ class App extends Component {
     if (this.state.error) {
       return this.state.error.toString()
     }
+
     return (
       <>
         <Title />
