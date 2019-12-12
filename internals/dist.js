@@ -62,7 +62,7 @@ const setupTasks = new Listr(
   { collapse: false },
 )
 
-const buildTasks = (pack = false) =>
+const buildTasks = (args = {}) =>
   new Listr(
     [
       {
@@ -77,15 +77,22 @@ const buildTasks = (pack = false) =>
         },
       },
       {
-        title: pack
+        title: args.p
           ? 'Packing the electron application (for debug purpose)'
           : 'Bundling the electron application',
         task: async () => {
           try {
-            const { stdout } = await execa('yarn', ['dist:internal', pack ? '--dir' : null])
+            const commands = ['dist:internal']
+            if (args.p) commands.push('--dir')
+            if (args.n) {
+              commands.push('--config')
+              commands.push('electron-builder-nightly.yml')
+            }
+
+            const { stdout } = await execa('yarn', commands)
             return stdout
           } catch (error) {
-            throw new Error(`Could not ${pack ? 'pack' : 'bundle'} the electron app`)
+            throw new Error(`Could not ${args.p ? 'pack' : 'bundle'} the electron app`)
           }
         },
       },
@@ -118,12 +125,18 @@ yargs
     command: ['build', '$0'],
     desc: 'bundles the electron app',
     builder: yrgs =>
-      yrgs.option('p', {
-        alias: 'pack',
-        type: 'boolean',
-      }),
+      yrgs
+        .option('p', {
+          alias: 'pack',
+          type: 'boolean',
+        })
+        .option('n', {
+          alias: 'nightly',
+          type: 'boolean',
+        }),
     handler: args => {
-      mainTask(args.p)
+      console.log(args)
+      mainTask(args)
         .run()
         .catch(() => {
           process.exit(-1)

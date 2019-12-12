@@ -26,7 +26,7 @@ async function createWindow() {
     mainWindow.loadURL(`file://${__dirname}/index.html`)
   }
 
-  if (true) {
+  if (DEV) {
     mainWindow.webContents.openDevTools()
   }
 

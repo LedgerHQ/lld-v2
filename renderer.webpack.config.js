@@ -55,6 +55,16 @@ module.exports = {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
         use: ['file-loader'],
       },
+      {
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 8192,
+            fallback: require.resolve('file-loader'),
+          },
+        },
+      },
     ],
   },
   resolve: {

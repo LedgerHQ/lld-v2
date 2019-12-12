@@ -1,0 +1,20 @@
+name: CI
+on: [push]
+
+jobs:
+  ci:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@master
+        with:
+          node-version: 12.x
+      - name: install dependencies
+        run: yarn
+      - name: rebuild app deps
+        run: yarn install-deps
+      - name: test
+        run: yarn ci
