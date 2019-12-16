@@ -4,7 +4,7 @@ import type { Dispatch } from 'redux'
 import type { PortfolioRange } from '@ledgerhq/live-common/lib/types/portfolio'
 import type { Currency } from '@ledgerhq/live-common/lib/types'
 
-import { setEnvOnAllThreads } from './../helpers/env'
+import { setEnvOnAllThreads } from './../../helpers/env'
 import type { SettingsState as Settings } from './../reducers/settings'
 
 export type SaveSettings = ($Shape<Settings>) => { type: string, payload: $Shape<Settings> }

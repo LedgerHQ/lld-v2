@@ -11,11 +11,11 @@ import {
 import type { CryptoCurrency, Currency } from '@ledgerhq/live-common/lib/types'
 import { getEnv } from '@ledgerhq/live-common/lib/env'
 
-import { currencySettingsDefaults } from '../helpers/SettingsDefault'
-import { getSystemLocale } from '../helpers/systemLocale'
-import { getLanguages } from '../config/languages'
+import { currencySettingsDefaults } from './../../helpers/SettingsDefault'
+import { getSystemLocale } from './../../helpers/systemLocale'
+import { getLanguages } from './../../config/languages'
 
-import type { CurrencySettings } from './../types/common'
+import type { CurrencySettings } from './../../types/common'
 import type { State } from '.'
 
 const bitcoin = getCryptoCurrencyById('bitcoin')

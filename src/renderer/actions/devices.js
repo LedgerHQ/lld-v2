@@ -1,6 +1,6 @@
 // @flow
 
-import type { Device } from './../types/common'
+import type { Device } from './../../types/common'
 
 export type SetCurrentDevice = (Device | null) => { type: string, payload: Device | null }
 export const setCurrentDevice: SetCurrentDevice = payload => ({

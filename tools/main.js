@@ -41,8 +41,6 @@ const buildRendererEnv = (mode, config) => {
   const env = {
     __DEV__: JSON.stringify(mode === 'development'),
     __APP_VERSION__: JSON.stringify(pkg.version),
-    __GLOBAL_STYLES__: JSON.stringify(__GLOBAL_STYLES__),
-    __PROD__,
     __GIT_REVISION__: JSON.stringify(GIT_REVISION),
     __SENTRY_URL__: JSON.stringify(SENTRY_URL || null),
   }

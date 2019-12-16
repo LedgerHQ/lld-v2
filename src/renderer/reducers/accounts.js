@@ -11,9 +11,9 @@ import {
 } from '@ledgerhq/live-common/lib/account'
 import { getEnv } from '@ledgerhq/live-common/lib/env'
 
-import logger from '../logger'
-import accountModel from '../helpers/accountModel'
-import { OUTDATED_CONSIDERED_DELAY, DEBUG_SYNC } from '../config/constants'
+import logger from './../../logger/logger'
+import accountModel from './../../helpers/accountModel'
+import { OUTDATED_CONSIDERED_DELAY, DEBUG_SYNC } from './../../config/constants'
 
 import { currenciesStatusSelector, currencyDownStatusLocal } from './currenciesStatus'
 import { starredAccountIdsSelector } from './settings'

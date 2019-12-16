@@ -13,8 +13,6 @@ module.exports = {
     __SENTRY_URL__: 'readonly',
     __APP_VERSION__: 'readonly',
     __GIT_REVISION__: 'readonly',
-    __GLOBAL_STYLES__: 'readonly',
-    __PROD__: 'readonly',
     __static: 'readonly',
   },
   parserOptions: {

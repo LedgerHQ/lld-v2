@@ -5,7 +5,7 @@ import React from 'react'
 import { hot } from 'react-hot-loader/root'
 import { render } from 'react-dom'
 
-import dbMiddlewares from './../middlewares/db'
+import dbMiddlewares from './middlewares/db'
 
 import createStore from './createStore'
 import App from './App'

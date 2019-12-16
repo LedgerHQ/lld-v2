@@ -3,7 +3,7 @@
 import type { DeviceModelId } from '@ledgerhq/devices'
 import { handleActions, createAction } from 'redux-actions'
 
-import { SKIP_ONBOARDING } from '../config/constants'
+import { SKIP_ONBOARDING } from '../../config/constants'
 import type { State } from '.'
 
 type Step = {
