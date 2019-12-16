@@ -1,6 +1,6 @@
 import cluster from 'cluster'
-import electronMain from './electron'
-import coreMain from './core'
+
+// this module handle multi processing
 
 const spawnCoreProcess = () => {
   cluster.fork()
@@ -12,7 +12,11 @@ const spawnCoreProcess = () => {
 
 if (cluster.isMaster) {
   spawnCoreProcess()
-  electronMain()
+  require('./electron')
 } else {
-  coreMain()
+  try {
+    require('./core')
+  } catch (err) {
+    console.log(err)
+  }
 }

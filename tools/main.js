@@ -20,7 +20,7 @@ const bundles = {
 
 const buildMainEnv = (mode, config, argv) => {
   const env = {
-    DEV: mode === 'development',
+    __DEV__: mode === 'development',
   }
 
   if (mode === 'development') {
