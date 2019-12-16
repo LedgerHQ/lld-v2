@@ -24,7 +24,7 @@ const babelConfig = {
 module.exports = {
   target: 'electron-main',
   mode: process.env.NODE_ENV,
-  entry: './src/main/index.js',
+  entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, '.webpack'),
     filename: 'main.bundle.js',

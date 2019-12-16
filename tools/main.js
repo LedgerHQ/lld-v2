@@ -19,7 +19,7 @@ const bundles = {
 
 const buildMainEnv = (mode, config, argv) => {
   const env = {
-    DEV: JSON.stringify(mode === 'development'),
+    __DEV__: JSON.stringify(mode === 'development'),
   }
 
   if (mode === 'development') {
@@ -27,6 +27,12 @@ const buildMainEnv = (mode, config, argv) => {
   }
 
   return env
+}
+
+const buildRendererEnv = (mode, config) => {
+  return {
+    __DEV__: JSON.stringify(mode === 'development'),
+  }
 }
 
 const buildRendererConfig = (mode, config) => {
@@ -52,7 +58,11 @@ const buildRendererConfig = (mode, config) => {
     mode: mode === 'production' ? 'production' : 'development',
     devtool: mode === 'development' ? 'eval-source-map' : 'none',
     entry,
-    plugins: [...plugins, new WebpackBar({ name: 'renderer', color: '#8ABEB7' })],
+    plugins: [
+      ...plugins,
+      new WebpackBar({ name: 'renderer', color: '#8ABEB7' }),
+      new webpack.DefinePlugin(buildRendererEnv(mode, config)),
+    ],
     resolve: {
       ...config.resolve,
       alias,

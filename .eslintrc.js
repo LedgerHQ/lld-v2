@@ -6,7 +6,7 @@ module.exports = {
   },
   extends: ['plugin:react/recommended', 'plugin:flowtype/recommended', 'standard'],
   globals: {
-    DEV: 'readonly',
+    __DEV__: 'readonly',
     INDEX_URL: 'readonly',
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',

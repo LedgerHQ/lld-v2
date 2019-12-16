@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain, screen, Menu } from 'electron'
 import contextMenu from 'electron-context-menu'
 import debounce from 'lodash/debounce'
+import cluster from 'cluster'
 
 import menu from './menu'
 
@@ -11,9 +12,23 @@ import {
   DEFAULT_WINDOW_HEIGHT,
 } from './../config/constants'
 
+const spawnCoreProcess = () => {
+  cluster.fork({
+    // FIXME
+    LEDGER_LIVE_SQLITE_PATH: '_libcore_tmp_folder_',
+  })
+
+  cluster.on('exit', (worker, code, signal) => {
+    // TODO handle more logic!!
+    console.log(`worker ${worker.process.pid} died with error code ${code} and signal ${signal}`)
+  })
+}
+
+spawnCoreProcess() // FIXME only on demand
+
 let mainWindow = null
 
-const isDev = DEV
+const isDev = __DEV__
 
 const gotLock = app.requestSingleInstanceLock()
 
@@ -123,10 +138,6 @@ async function createMainWindow() {
 
   mainWindow.name = 'MainWindow'
 
-  ipcMain.once('main-window-ready', () => {
-    mainWindow.show()
-  })
-
   saveWindowSettings(mainWindow)
 
   if (isDev) {
@@ -142,6 +153,32 @@ async function createMainWindow() {
   mainWindow.on('closed', () => (mainWindow = null))
 }
 
+app.on('window-all-closed', () => {
+  app.quit()
+})
+
+app.on('activate', () => {
+  if (mainWindow) {
+    mainWindow.focus()
+  }
+})
+
+const show = win => {
+  win.show()
+  setImmediate(() => win.focus())
+}
+
+const showTimeout = setTimeout(() => {
+  if (mainWindow) show(mainWindow)
+}, 5000)
+
+ipcMain.on('ready-to-show', () => {
+  if (mainWindow) {
+    clearTimeout(showTimeout)
+    show(mainWindow)
+  }
+})
+
 app.on('ready', async () => {
   if (isDev) {
     await installExtensions()
@@ -150,16 +187,12 @@ app.on('ready', async () => {
   Menu.setApplicationMenu(menu)
 
   await createMainWindow()
+
+  await clearSessionCache(mainWindow.webContents.session)
 })
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
-})
-
-app.on('activate', () => {
-  if (mainWindow === null) {
-    createMainWindow()
-  }
-})
+function clearSessionCache(session) {
+  return new Promise(resolve => {
+    session.clearCache(resolve)
+  })
+}

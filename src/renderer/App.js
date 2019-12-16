@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { ipcRenderer } from 'electron'
 import './global.css'
 
+import libcoreGetVersion from '../commands/libcoreGetVersion'
 import Title from './components/title'
 import Switcher from './components/switcher'
 import Img from './components/img'
@@ -17,7 +18,18 @@ class App extends Component<{}, State> {
   }
 
   componentDidMount() {
-    ipcRenderer.send('main-window-ready', {})
+    ipcRenderer.send('ready-to-show', {})
+    libcoreGetVersion
+      .send()
+      .toPromise()
+      .then(
+        version => {
+          console.log('libcoreGetVersion', version)
+        },
+        e => {
+          console.error('libcoreGetVersion', e)
+        },
+      )
   }
 
   componentDidCatch(error: any, errorInfo: any) {

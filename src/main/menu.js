@@ -2,7 +2,7 @@ import { BrowserWindow, app, Menu } from 'electron'
 
 // const { DEV_TOOLS, DEV_TOOLS_MODE } = process.env
 
-const isDev = DEV
+const isDev = __DEV__
 
 const props = (predicate, values, defaultValue = {}) => (predicate ? values : defaultValue)
 
