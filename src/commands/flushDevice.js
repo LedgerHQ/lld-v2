@@ -1,7 +1,7 @@
 // @flow
 import { from } from 'rxjs'
 import flush from '@ledgerhq/live-common/lib/hw/flush'
-import { createCommand, Command } from './ipcCommand'
+import { createCommand, Command } from './ipc'
 
 type Input = string
 type Result = Promise<void>

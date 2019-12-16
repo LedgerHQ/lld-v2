@@ -1,7 +1,7 @@
 // @flow
 
 import invariant from 'invariant'
-import type { Command } from './ipcCommand'
+import type { Command } from './ipc'
 
 import getAppAndVersion from './getAppAndVersion'
 import firmwarePrepare from './firmwarePrepare'

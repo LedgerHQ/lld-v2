@@ -3,7 +3,7 @@
 // This is a test example for dev testing purpose.
 
 import { interval } from 'rxjs/observable/interval'
-import { createCommand, Command } from './ipcCommand'
+import { createCommand, Command } from './ipc'
 
 type Input = number
 type Result = number

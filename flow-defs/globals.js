@@ -1,5 +1,6 @@
 /* eslint-disable */
 
+declare var INDEX_URL: string
 declare var __DEV__: boolean
 declare var __TEST__: boolean
 declare var __ENV__: string

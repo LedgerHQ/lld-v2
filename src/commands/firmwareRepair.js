@@ -1,7 +1,7 @@
 // @flow
 
 import repair from '@ledgerhq/live-common/lib/hw/firmwareUpdate-repair'
-import { createCommand, Command } from './ipcCommand'
+import { createCommand, Command } from './ipc'
 
 type Input = {
   version: ?string,

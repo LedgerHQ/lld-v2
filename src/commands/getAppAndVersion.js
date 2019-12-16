@@ -1,7 +1,7 @@
 // @flow
 
 import getAppAndVersion from '@ledgerhq/live-common/lib/hw/getAppAndVersion'
-import { createCommand, Command } from './ipcCommand'
+import { createCommand, Command } from './ipc'
 import { from } from 'rxjs'
 import { withDevice } from '@ledgerhq/live-common/lib/hw/deviceAccess'
 

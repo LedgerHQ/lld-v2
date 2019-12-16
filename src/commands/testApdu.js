@@ -2,7 +2,7 @@
 
 // This is a test example for dev testing purpose.
 
-import { createCommand, Command } from './ipcCommand'
+import { createCommand, Command } from './ipc'
 import { from } from 'rxjs'
 import { withDevice } from '@ledgerhq/live-common/lib/hw/deviceAccess'
 

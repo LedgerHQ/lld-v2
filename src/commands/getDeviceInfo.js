@@ -1,6 +1,6 @@
 // @flow
 
-import { createCommand, Command } from './ipcCommand'
+import { createCommand, Command } from './ipc'
 import { from } from 'rxjs'
 import { withDevice } from '@ledgerhq/live-common/lib/hw/deviceAccess'
 import getDeviceInfo from '@ledgerhq/live-common/lib/hw/getDeviceInfo'

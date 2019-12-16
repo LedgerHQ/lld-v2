@@ -2,7 +2,7 @@
 
 import { fromPromise } from 'rxjs/observable/fromPromise'
 
-import { createCommand, Command } from './ipcCommand'
+import { createCommand, Command } from './ipc'
 import { withLibcore } from '@ledgerhq/live-common/lib/libcore/access'
 
 type Input = void

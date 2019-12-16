@@ -1,7 +1,7 @@
 // @flow
 
 import { getCryptoCurrencyById } from '@ledgerhq/live-common/lib/currencies'
-import { createCommand, Command } from './ipcCommand'
+import { createCommand, Command } from './ipc'
 import { from } from 'rxjs'
 import type { DerivationMode } from '@ledgerhq/live-common/lib/types'
 import { withDevice } from '@ledgerhq/live-common/lib/hw/deviceAccess'

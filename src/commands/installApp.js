@@ -1,5 +1,5 @@
 // @flow
-import { createCommand, Command } from './ipcCommand'
+import { createCommand, Command } from './ipc'
 import installApp from '@ledgerhq/live-common/lib/hw/installApp'
 import { withDevice } from '@ledgerhq/live-common/lib/hw/deviceAccess'
 import type { ApplicationVersion } from '@ledgerhq/live-common/lib/types/manager'

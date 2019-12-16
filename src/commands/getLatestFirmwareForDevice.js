@@ -1,6 +1,6 @@
 // @flow
 
-import { createCommand, Command } from './ipcCommand'
+import { createCommand, Command } from './ipc'
 import { from } from 'rxjs'
 import type { DeviceInfo, FirmwareUpdateContext } from '@ledgerhq/live-common/lib/types/manager'
 import manager from '@ledgerhq/live-common/lib/manager'

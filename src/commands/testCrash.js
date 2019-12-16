@@ -2,7 +2,7 @@
 
 // This is a test example for dev testing purpose.
 
-import { createCommand, Command } from './ipcCommand'
+import { createCommand, Command } from './ipc'
 
 type Input = void
 type Result = void

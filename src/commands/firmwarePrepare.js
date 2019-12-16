@@ -2,7 +2,7 @@
 
 import prepare from '@ledgerhq/live-common/lib/hw/firmwareUpdate-prepare'
 import type { FirmwareUpdateContext } from '@ledgerhq/live-common/lib/types/manager'
-import { createCommand, Command } from './ipcCommand'
+import { createCommand, Command } from './ipc'
 
 type Input = {
   devicePath: string,

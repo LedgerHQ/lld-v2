@@ -1,6 +1,6 @@
 // @flow
 
-import { createCommand, Command } from './ipcCommand'
+import { createCommand, Command } from './ipc'
 import { from } from 'rxjs'
 import { reset } from '@ledgerhq/live-common/lib/libcore/access'
 

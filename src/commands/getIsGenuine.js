@@ -1,6 +1,6 @@
 // @flow
 
-import { createCommand, Command } from './ipcCommand'
+import { createCommand, Command } from './ipc'
 import { of } from 'rxjs'
 import { delay } from 'rxjs/operators'
 import checkDeviceForManager from '@ledgerhq/live-common/lib/hw/checkDeviceForManager'

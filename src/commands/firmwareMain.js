@@ -2,7 +2,7 @@
 
 import main from '@ledgerhq/live-common/lib/hw/firmwareUpdate-main'
 import type { FirmwareUpdateContext } from '@ledgerhq/live-common/lib/types/manager'
-import { createCommand, Command } from './ipcCommand'
+import { createCommand, Command } from './ipc'
 
 type Input = FirmwareUpdateContext
 

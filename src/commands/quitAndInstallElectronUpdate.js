@@ -1,6 +1,6 @@
 // @flow
 
-import { createCommand, Command } from './ipcCommand'
+import { createCommand, Command } from './ipc'
 import { Observable } from 'rxjs'
 
 type Input = void
