@@ -3,9 +3,9 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
-import type { UserState } from '~/renderer/reducers/user'
+import type { UserState } from './../reducers/user'
 
-import { userSelector } from '~/renderer/selectors/user'
+import { userSelector } from './../selectors/user'
 
 const Title = () => {
   const { t } = useTranslation()

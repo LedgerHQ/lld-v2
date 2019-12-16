@@ -1,11 +1,11 @@
 // @flow
 import React, { Component } from 'react'
 import { ipcRenderer } from 'electron'
-import '~/renderer/global.css'
+import './global.css'
 
-import Title from '~/renderer/components/title'
-import Switcher from '~/renderer/components/switcher'
-import Img from '~/renderer/components/img'
+import Title from './components/title'
+import Switcher from './components/switcher'
+import Img from './components/img'
 
 type State = {
   error: ?Error,

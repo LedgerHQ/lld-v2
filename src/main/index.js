@@ -9,7 +9,7 @@ import {
   MIN_WIDTH,
   DEFAULT_WINDOW_WIDTH,
   DEFAULT_WINDOW_HEIGHT,
-} from '~/config/constants'
+} from './../config/constants'
 
 let mainWindow = null
 

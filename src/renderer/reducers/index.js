@@ -1,7 +1,7 @@
 // @flow
 import { combineReducers } from 'redux'
 
-import type { UserAction } from '~/renderer/actions/user'
+import type { UserAction } from './../actions/user'
 import type { UserState } from './user'
 import user from './user'
 

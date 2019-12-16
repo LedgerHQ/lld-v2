@@ -6,7 +6,7 @@ import { render } from 'react-dom'
 import './i18n/init'
 import App from './App'
 
-import store from '~/renderer/store'
+import store from './store'
 
 const root = document.getElementById('react-root')
 

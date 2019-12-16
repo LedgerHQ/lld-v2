@@ -1,6 +1,6 @@
 // @flow
-import type { UserAction } from '~/renderer/actions/user'
-import { SET_NAME, REMOVE_NAME } from '~/renderer/actions/user'
+import type { UserAction } from './../actions/user'
+import { SET_NAME, REMOVE_NAME } from './../actions/user'
 
 export type UserState = {
   +name: string,
