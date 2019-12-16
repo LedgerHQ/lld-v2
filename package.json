@@ -14,6 +14,7 @@
     "prettier": "prettier --write \"{src,tools}/**/*.{js,json}\"",
     "prettier:check": "prettier -c \"{src,tools}/**/*.{js,json}\"",
     "flow-typed": "yarn run install-flow-typed",
+    "remove-breaking-flow-typed": "rm -f flow-typed/npm/{reselect_*,redux-actions_*,react-redux_*,react-i18next_v7.x.x.js,styled-components_v3.x.x.js,winston*}",
     "install-flow-typed": "flow-typed install -s",
     "install-deps": "electron-builder install-app-deps",
     "dist:internal": "DEBUG=electron-builder NODE_ENV=production electron-builder",
