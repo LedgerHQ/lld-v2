@@ -10,6 +10,12 @@ module.exports = {
     INDEX_URL: 'readonly',
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
+    __SENTRY_URL__: 'readonly',
+    __APP_VERSION__: 'readonly',
+    __GIT_REVISION__: 'readonly',
+    __GLOBAL_STYLES__: 'readonly',
+    __PROD__: 'readonly',
+    __static: 'readonly',
   },
   parserOptions: {
     ecmaFeatures: {
@@ -22,6 +28,8 @@ module.exports = {
   rules: {
     'space-before-function-paren': 0,
     'comma-dangle': 0,
+    'no-prototype-builtins': 0,
+    'promise/param-names': 0,
   },
   settings: {
     react: {

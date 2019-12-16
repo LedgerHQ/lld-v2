@@ -1,24 +1,21 @@
 // @flow
 import './live-common-setup'
+import './i18n/init'
 import React from 'react'
 import { hot } from 'react-hot-loader/root'
-import { Provider } from 'react-redux'
 import { render } from 'react-dom'
-import './i18n/init'
+
+import dbMiddlewares from './../middlewares/db'
+
+import createStore from './createStore'
 import App from './App'
 
-import store from './store'
-
+const store = createStore({ dbMiddlewares })
 const root = document.getElementById('react-root')
 
 function r(Comp, rootNode) {
   if (rootNode) {
-    render(
-      <Provider store={store}>
-        <Comp />
-      </Provider>,
-      rootNode,
-    )
+    render(<Comp store={store} />, rootNode)
   }
 }
 

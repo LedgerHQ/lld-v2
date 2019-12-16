@@ -28,8 +28,6 @@ spawnCoreProcess() // FIXME only on demand
 
 let mainWindow = null
 
-const isDev = __DEV__
-
 const gotLock = app.requestSingleInstanceLock()
 
 if (!gotLock) {
@@ -47,12 +45,12 @@ if (!gotLock) {
 }
 
 // eslint-disable-next-line no-console
-// console.log(`Ledger Live ${__APP_VERSION__}`)
+console.log(`Ledger Live ${__APP_VERSION__}`)
 
 export const getMainWindow = () => mainWindow
 
 contextMenu({
-  showInspectElement: isDev,
+  showInspectElement: __DEV__,
   showCopyImageAddress: false,
   // TODO: i18n for labels
   labels: {
@@ -100,7 +98,7 @@ const defaultWindowOptions = {
   backgroundColor: '#fff',
   webPreferences: {
     blinkFeatures: 'OverlayScrollbars',
-    devTools: isDev,
+    devTools: __DEV__,
     experimentalFeatures: true,
     nodeIntegration: true,
   },
@@ -140,13 +138,13 @@ async function createMainWindow() {
 
   saveWindowSettings(mainWindow)
 
-  if (isDev) {
+  if (__DEV__) {
     mainWindow.loadURL(INDEX_URL)
   } else {
     mainWindow.loadURL(`file://${__dirname}/index.html`)
   }
 
-  if (isDev) {
+  if (__DEV__) {
     mainWindow.webContents.openDevTools()
   }
 
@@ -180,7 +178,7 @@ ipcMain.on('ready-to-show', () => {
 })
 
 app.on('ready', async () => {
-  if (isDev) {
+  if (__DEV__) {
     await installExtensions()
   }
 

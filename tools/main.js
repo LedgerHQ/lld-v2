@@ -6,6 +6,13 @@ const webpack = require('webpack')
 const yargs = require('yargs')
 const nodeExternals = require('webpack-node-externals')
 
+const pkg = require('./../package.json')
+require('./../src/globals')
+
+const { SENTRY_URL, GIT_REVISION } = process.env
+
+// TODO: ADD BUNDLE ANALYZER
+
 const bundles = {
   renderer: {
     config: require('../renderer.webpack.config'),
@@ -20,6 +27,7 @@ const bundles = {
 const buildMainEnv = (mode, config, argv) => {
   const env = {
     __DEV__: JSON.stringify(mode === 'development'),
+    __APP_VERSION__: JSON.stringify(pkg.version),
   }
 
   if (mode === 'development') {
@@ -30,12 +38,19 @@ const buildMainEnv = (mode, config, argv) => {
 }
 
 const buildRendererEnv = (mode, config) => {
-  return {
+  const env = {
     __DEV__: JSON.stringify(mode === 'development'),
+    __APP_VERSION__: JSON.stringify(pkg.version),
+    __GLOBAL_STYLES__: JSON.stringify(__GLOBAL_STYLES__),
+    __PROD__,
+    __GIT_REVISION__: JSON.stringify(GIT_REVISION),
+    __SENTRY_URL__: JSON.stringify(SENTRY_URL || null),
   }
+
+  return env
 }
 
-const buildRendererConfig = (mode, config) => {
+const buildRendererConfig = (mode, config, argv) => {
   const entry =
     mode === 'development'
       ? Array.isArray(config.entry)
@@ -61,7 +76,7 @@ const buildRendererConfig = (mode, config) => {
     plugins: [
       ...plugins,
       new WebpackBar({ name: 'renderer', color: '#8ABEB7' }),
-      new webpack.DefinePlugin(buildRendererEnv(mode, config)),
+      new webpack.DefinePlugin(buildRendererEnv(mode, config, argv)),
     ],
     resolve: {
       ...config.resolve,
@@ -99,7 +114,7 @@ const startDev = async argv => {
   )
   const rendererWorker = new WebpackWorker(
     'renderer',
-    buildRendererConfig('development', bundles.renderer.config, argv),
+    buildRendererConfig('development', bundles.renderer.config),
   )
   const electron = new Electron('./.webpack/main.bundle.js')
 

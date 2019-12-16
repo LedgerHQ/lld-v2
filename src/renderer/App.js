@@ -4,6 +4,8 @@ import { ipcRenderer } from 'electron'
 import './global.css'
 
 import libcoreGetVersion from '../commands/libcoreGetVersion'
+import { Provider } from 'react-redux'
+
 import Title from './components/title'
 import Switcher from './components/switcher'
 import Img from './components/img'
@@ -12,7 +14,11 @@ type State = {
   error: ?Error,
 }
 
-class App extends Component<{}, State> {
+type Props = {
+  store: any,
+}
+
+class App extends Component<Props, State> {
   state = {
     error: null,
   }
@@ -39,18 +45,19 @@ class App extends Component<{}, State> {
   }
 
   render() {
+    const { store } = this.props
     if (this.state.error) {
       return this.state.error.toString()
     }
 
     return (
-      <>
+      <Provider store={store}>
         <Title />
         <Switcher />
         <div>
           <Img />
         </div>
-      </>
+      </Provider>
     )
   }
 }

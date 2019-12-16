@@ -12,7 +12,7 @@ const config = {
   interpolation: {
     escapeValue: false,
   },
-  debug: true, // TODO: MAKE IT DYNAMIC
+  debug: __DEV__,
   react: {
     useSuspense: false,
   },
