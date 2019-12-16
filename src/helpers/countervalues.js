@@ -6,7 +6,7 @@ import { implementCountervalues, getCountervalues } from '@ledgerhq/live-common/
 import uniq from 'lodash/uniq'
 
 import logger from './../logger'
-import network from './../api/network'
+import network from './../network'
 
 import { setExchangePairsAction } from './../renderer/actions/settings'
 import { currenciesSelector } from './../renderer/reducers/accounts'

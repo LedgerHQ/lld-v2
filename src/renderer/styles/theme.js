@@ -1,7 +1,7 @@
 // @flow
 
 import { rgba } from './helpers'
-import { WARN_LEGACY_COLORS } from '../config/constants'
+import { WARN_LEGACY_COLORS } from './../../config/constants'
 
 export const space = [0, 5, 10, 15, 20, 30, 40, 50, 70]
 export const fontSizes = [8, 9, 10, 12, 13, 16, 18, 22, 32]

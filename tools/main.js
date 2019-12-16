@@ -7,7 +7,6 @@ const yargs = require('yargs')
 const nodeExternals = require('webpack-node-externals')
 
 const pkg = require('./../package.json')
-require('./../src/globals')
 
 const { SENTRY_URL, GIT_REVISION } = process.env
 

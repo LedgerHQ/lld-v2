@@ -1,20 +1,17 @@
 // @flow
 import pathModule from 'path'
 
-const { NODE_ENV, STORYBOOK_ENV } = process.env
+const { NODE_ENV } = process.env
 
-const isRunningInAsar =
-  !STORYBOOK_ENV && process.mainModule && process.mainModule.filename.indexOf('app.asar') !== -1
+const isRunningInAsar = process.mainModule && process.mainModule.filename.indexOf('app.asar') !== -1
 
 // prettier-ignore
 const staticPath =
-  __DEV__ && !STORYBOOK_ENV && NODE_ENV !== 'test'
-    ? ''
+  __DEV__ && NODE_ENV !== 'test'
+    ? __static
     : isRunningInAsar
       ? pathModule.join(pathModule.dirname(__dirname), 'static')
-      : !STORYBOOK_ENV
-        ? pathModule.join(__dirname, '/../../static')
-        : 'static'
+      : pathModule.join(__dirname, '/../../static')
 
 export function unixify(path: string): string {
   return process.platform === 'win32' ? path.replace(/\\/g, '/') : path

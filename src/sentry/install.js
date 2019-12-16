@@ -1,7 +1,7 @@
 // @flow
 import os from 'os'
-import pname from './../helpers/pname'
-import anonymizer from './../helpers/anonymizer'
+import pname from './../logger/pname'
+import anonymizer from './../logger/anonymizer'
 /* eslint-disable no-continue */
 
 require('../env')

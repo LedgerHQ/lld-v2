@@ -3,7 +3,7 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 // import { routerMiddleware } from 'react-router-redux'
 import thunk from 'redux-thunk'
-import createHistory from 'history/createHashHistory'
+import { createHashHistory } from 'history'
 import type { HashHistory } from 'history'
 import logger from './middlewares/logger'
 import reducers from './reducers'
@@ -17,7 +17,7 @@ type Props = {
 
 export default ({ state, history, dbMiddleware }: Props) => {
   if (!history) {
-    history = createHistory()
+    history = createHashHistory()
   }
   // const middlewares = [routerMiddleware(history), thunk, logger]
   const middlewares = [thunk, logger]
