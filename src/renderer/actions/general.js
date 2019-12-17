@@ -1,8 +1,9 @@
 // @flow
 
 import type { BigNumber } from 'bignumber.js'
+import type { OutputSelector } from 'reselect'
 import { createSelector } from 'reselect'
-import type { Currency } from '@ledgerhq/live-common/lib/types'
+import type { Currency, AccountLikeArray, Account } from '@ledgerhq/live-common/lib/types'
 import { isAccountDelegating } from '@ledgerhq/live-common/lib/families/tezos/bakers'
 import {
   nestedSortAccounts,
@@ -44,7 +45,7 @@ export const calculateCountervalueSelector = (state: State) => {
   }
 }
 
-export const sortAccountsComparatorSelector = createSelector(
+export const sortAccountsComparatorSelector: OutputSelector<State, void, *> = createSelector(
   getOrderAccounts,
   calculateCountervalueSelector,
   sortAccountsComparatorFromOrder,
@@ -56,28 +57,35 @@ const nestedSortAccountsSelector = createSelector(
   nestedSortAccounts,
 )
 
-export const flattenSortAccountsSelector = createSelector(
-  accountsSelector,
-  sortAccountsComparatorSelector,
-  flattenSortAccounts,
+export const flattenSortAccountsSelector: OutputSelector<
+  State,
+  void,
+  AccountLikeArray,
+> = createSelector(accountsSelector, sortAccountsComparatorSelector, flattenSortAccounts)
+
+export const flattenSortAccountsEnforceHideEmptyTokenSelector: OutputSelector<
+  State,
+  void,
+  AccountLikeArray,
+> = createSelector(accountsSelector, sortAccountsComparatorSelector, (accounts, comparator) =>
+  flattenSortAccounts(accounts, comparator, { enforceHideEmptySubAccounts: true }),
 )
 
-export const flattenSortAccountsEnforceHideEmptyTokenSelector = createSelector(
-  accountsSelector,
-  sortAccountsComparatorSelector,
-  (accounts, comparator) =>
-    flattenSortAccounts(accounts, comparator, { enforceHideEmptySubAccounts: true }),
+export const haveUndelegatedAccountsSelector: OutputSelector<
+  State,
+  void,
+  boolean,
+> = createSelector(flattenSortAccountsEnforceHideEmptyTokenSelector, accounts =>
+  accounts.some(
+    acc => acc.currency && acc.currency.family === 'tezos' && !isAccountDelegating(acc),
+  ),
 )
 
-export const haveUndelegatedAccountsSelector = createSelector(
-  flattenSortAccountsEnforceHideEmptyTokenSelector,
-  accounts =>
-    accounts.some(
-      acc => acc.currency && acc.currency.family === 'tezos' && !isAccountDelegating(acc),
-    ),
-)
-
-export const delegatableAccountsSelector = createSelector(activeAccountsSelector, accounts =>
+export const delegatableAccountsSelector: OutputSelector<
+  State,
+  void,
+  Account[],
+> = createSelector(activeAccountsSelector, accounts =>
   accounts.filter(acc => acc.currency.family === 'tezos' && !isAccountDelegating(acc)),
 )
 

@@ -72,13 +72,13 @@ export const accountsSelector = (state: { accounts: AccountsState }): Account[] 
 
 export const activeAccountsSelector: OutputSelector<
   State,
-  {},
+  void,
   Account[],
 > = createSelector(accountsSelector, currenciesStatusSelector, (accounts, currenciesStatus) =>
   accounts.filter(a => !currencyDownStatusLocal(currenciesStatus, a.currency)),
 )
 
-export const isUpToDateSelector: OutputSelector<State, {}, boolean> = createSelector(
+export const isUpToDateSelector: OutputSelector<State, void, boolean> = createSelector(
   activeAccountsSelector,
   accounts =>
     accounts.every(a => {
@@ -94,19 +94,19 @@ export const isUpToDateSelector: OutputSelector<State, {}, boolean> = createSele
     }),
 )
 
-export const hasAccountsSelector: OutputSelector<State, {}, boolean> = createSelector(
+export const hasAccountsSelector: OutputSelector<State, void, boolean> = createSelector(
   accountsSelector,
   accounts => accounts.length > 0,
 )
 
 export const someAccountsNeedMigrationSelector: OutputSelector<
   State,
-  {},
+  void,
   boolean,
 > = createSelector(accountsSelector, accounts => accounts.some(canBeMigrated))
 
 // TODO: FIX RETURN TYPE
-export const currenciesSelector: OutputSelector<State, {}, *> = createSelector(
+export const currenciesSelector: OutputSelector<State, void, *> = createSelector(
   accountsSelector,
   accounts =>
     [...new Set(flattenAccounts(accounts).map(a => getAccountCurrency(a)))].sort((a, b) =>
@@ -117,7 +117,7 @@ export const currenciesSelector: OutputSelector<State, {}, *> = createSelector(
 // TODO: FIX RETURN TYPE
 export const cryptoCurrenciesSelector: OutputSelector<
   State,
-  {},
+  void,
   *,
 > = createSelector(accountsSelector, accounts =>
   [...new Set(accounts.map(a => a.currency))].sort((a, b) => a.name.localeCompare(b.name)),
@@ -145,7 +145,7 @@ const flattenFilterAndSort = (accounts, ids, flattenOptions) =>
 export const migratableAccountsSelector = (s: *): Account[] => s.accounts.filter(canBeMigrated)
 
 // TODO: FIX RETURN TYPE
-export const starredAccountsSelector: OutputSelector<State, {}, any[]> = createSelector(
+export const starredAccountsSelector: OutputSelector<State, void, any[]> = createSelector(
   accountsSelector,
   starredAccountIdsSelector,
   flattenFilterAndSort,
@@ -154,7 +154,7 @@ export const starredAccountsSelector: OutputSelector<State, {}, any[]> = createS
 // TODO: FIX RETURN TYPE
 export const starredAccountsEnforceHideEmptyTokenSelector: OutputSelector<
   State,
-  {},
+  void,
   any[],
 > = createSelector(
   accountsSelector,

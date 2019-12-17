@@ -1,5 +1,6 @@
 // @flow
 
+import type { OutputSelector } from 'reselect'
 import { createSelector } from 'reselect'
 import { getEnv } from '@ledgerhq/live-common/lib/env'
 import { implementCountervalues, getCountervalues } from '@ledgerhq/live-common/lib/countervalues'
@@ -16,7 +17,7 @@ import {
   intermediaryCurrency,
 } from './../renderer/reducers/settings'
 
-export const pairsSelector = createSelector(
+export const pairsSelector: OutputSelector<*, *, *> = createSelector(
   currenciesSelector,
   counterValueCurrencySelector,
   state => state,
