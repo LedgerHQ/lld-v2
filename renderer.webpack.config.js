@@ -1,5 +1,6 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 
 const babelConfig = {
   presets: [
@@ -37,6 +38,9 @@ module.exports = {
       template: './src/renderer/index.html',
       filename: 'index.html',
       title: 'Ledger Live',
+    }),
+    new HardSourceWebpackPlugin({
+      cacheDirectory: path.resolve(__dirname, '.webpack', 'cacheRenderer'),
     }),
   ],
   module: {

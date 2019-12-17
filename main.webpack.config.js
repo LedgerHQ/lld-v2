@@ -1,4 +1,5 @@
 const path = require('path')
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 
 const babelConfig = {
   presets: [
@@ -29,7 +30,11 @@ module.exports = {
     path: path.resolve(__dirname, '.webpack'),
     filename: 'main.bundle.js',
   },
-  plugins: [],
+  plugins: [
+    new HardSourceWebpackPlugin({
+      cacheDirectory: path.resolve(__dirname, '.webpack', 'cacheMain'),
+    }),
+  ],
   module: {
     rules: [
       {
