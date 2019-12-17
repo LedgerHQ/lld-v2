@@ -1,9 +1,8 @@
 body {
-    background-color: red;
-    font-family: Inter;
+  font-family: Inter;
 }
 
 @font-face {
-    font-family: "Inter";
-    src: url("./fonts/inter/Inter-Bold.woff2") format("woff2")
+  font-family: 'Inter';
+  src: url('./fonts/inter/Inter-Bold.woff2') format('woff2');
 }

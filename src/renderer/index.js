@@ -5,18 +5,14 @@ import React from 'react'
 import { hot } from 'react-hot-loader/root'
 import { render } from 'react-dom'
 
-import dbMiddlewares from './middlewares/db'
+import ReactRoot from './ReactRoot'
 
-import createStore from './createStore'
-import App from './App'
-
-const store = createStore({ dbMiddlewares })
 const root = document.getElementById('react-root')
 
 function r(Comp, rootNode) {
   if (rootNode) {
-    render(<Comp store={store} />, rootNode)
+    render(<Comp />, rootNode)
   }
 }
 
-r(hot(App), root)
+r(hot(ReactRoot), root)
