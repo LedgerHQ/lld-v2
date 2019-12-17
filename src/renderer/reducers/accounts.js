@@ -1,6 +1,7 @@
 // @flow
 
 import { createSelector } from 'reselect'
+import type { OutputSelector } from 'reselect'
 import { handleActions } from 'redux-actions'
 import type { Account } from '@ledgerhq/live-common/lib/types'
 import {
@@ -17,6 +18,7 @@ import { OUTDATED_CONSIDERED_DELAY, DEBUG_SYNC } from './../../config/constants'
 
 import { currenciesStatusSelector, currencyDownStatusLocal } from './currenciesStatus'
 import { starredAccountIdsSelector } from './settings'
+import type { State } from '.'
 
 export type AccountsState = Account[]
 const state: AccountsState = []
@@ -68,44 +70,64 @@ const handlers: Object = {
 
 export const accountsSelector = (state: { accounts: AccountsState }): Account[] => state.accounts
 
-export const activeAccountsSelector = createSelector(
+export const activeAccountsSelector: OutputSelector<
+  State,
+  {},
+  Account[],
+> = createSelector(accountsSelector, currenciesStatusSelector, (accounts, currenciesStatus) =>
+  accounts.filter(a => !currencyDownStatusLocal(currenciesStatus, a.currency)),
+)
+
+export const isUpToDateSelector: OutputSelector<State, {}, boolean> = createSelector(
+  activeAccountsSelector,
+  accounts =>
+    accounts.every(a => {
+      const { lastSyncDate } = a
+      const { blockAvgTime } = a.currency
+      if (!blockAvgTime) return true
+      const outdated =
+        Date.now() - (lastSyncDate || 0) > blockAvgTime * 1000 + OUTDATED_CONSIDERED_DELAY
+      if (outdated && DEBUG_SYNC) {
+        logger.log('account not up to date', a)
+      }
+      return !outdated
+    }),
+)
+
+export const hasAccountsSelector: OutputSelector<State, {}, boolean> = createSelector(
   accountsSelector,
-  currenciesStatusSelector,
-  (accounts, currenciesStatus) =>
-    accounts.filter(a => !currencyDownStatusLocal(currenciesStatus, a.currency)),
+  accounts => accounts.length > 0,
 )
 
-export const isUpToDateSelector = createSelector(activeAccountsSelector, accounts =>
-  accounts.every(a => {
-    const { lastSyncDate } = a
-    const { blockAvgTime } = a.currency
-    if (!blockAvgTime) return true
-    const outdated =
-      Date.now() - (lastSyncDate || 0) > blockAvgTime * 1000 + OUTDATED_CONSIDERED_DELAY
-    if (outdated && DEBUG_SYNC) {
-      logger.log('account not up to date', a)
-    }
-    return !outdated
-  }),
+export const someAccountsNeedMigrationSelector: OutputSelector<
+  State,
+  {},
+  boolean,
+> = createSelector(accountsSelector, accounts => accounts.some(canBeMigrated))
+
+// TODO: FIX RETURN TYPE
+export const currenciesSelector: OutputSelector<State, {}, *> = createSelector(
+  accountsSelector,
+  accounts =>
+    [...new Set(flattenAccounts(accounts).map(a => getAccountCurrency(a)))].sort((a, b) =>
+      a.name.localeCompare(b.name),
+    ),
 )
 
-export const hasAccountsSelector = createSelector(accountsSelector, accounts => accounts.length > 0)
-
-export const someAccountsNeedMigrationSelector = createSelector(accountsSelector, accounts =>
-  accounts.some(canBeMigrated),
-)
-
-export const currenciesSelector = createSelector(accountsSelector, accounts =>
-  [...new Set(flattenAccounts(accounts).map(a => getAccountCurrency(a)))].sort((a, b) =>
-    a.name.localeCompare(b.name),
-  ),
-)
-
-export const cryptoCurrenciesSelector = createSelector(accountsSelector, accounts =>
+// TODO: FIX RETURN TYPE
+export const cryptoCurrenciesSelector: OutputSelector<
+  State,
+  {},
+  *,
+> = createSelector(accountsSelector, accounts =>
   [...new Set(accounts.map(a => a.currency))].sort((a, b) => a.name.localeCompare(b.name)),
 )
 
-export const accountSelector = createSelector(
+export const accountSelector: OutputSelector<
+  State,
+  { accountId: string },
+  ?Account,
+> = createSelector(
   accountsSelector,
   (_, { accountId }: { accountId: string }) => accountId,
   (accounts, accountId) => accounts.find(a => a.id === accountId),
@@ -122,28 +144,40 @@ const flattenFilterAndSort = (accounts, ids, flattenOptions) =>
 
 export const migratableAccountsSelector = (s: *): Account[] => s.accounts.filter(canBeMigrated)
 
-export const starredAccountsSelector = createSelector(
+// TODO: FIX RETURN TYPE
+export const starredAccountsSelector: OutputSelector<State, {}, any[]> = createSelector(
   accountsSelector,
   starredAccountIdsSelector,
   flattenFilterAndSort,
 )
 
-export const starredAccountsEnforceHideEmptyTokenSelector = createSelector(
+// TODO: FIX RETURN TYPE
+export const starredAccountsEnforceHideEmptyTokenSelector: OutputSelector<
+  State,
+  {},
+  any[],
+> = createSelector(
   accountsSelector,
   starredAccountIdsSelector,
   () => getEnv('HIDE_EMPTY_TOKEN_ACCOUNTS'), // The result of this func is not used but it allows the input params to be different so that reselect recompute the output
   (accounts, ids) => flattenFilterAndSort(accounts, ids, { enforceHideEmptySubAccounts: true }),
 )
 
-export const isStarredAccountSelector = createSelector(
+export const isStarredAccountSelector: OutputSelector<
+  State,
+  { accountId: string },
+  boolean,
+> = createSelector(
   starredAccountIdsSelector,
   (_, { accountId }: { accountId: string }) => accountId,
   (ids, accountId) => ids.includes(accountId),
 )
 
-export const accountNeedsMigrationSelector = createSelector(accountSelector, account =>
-  canBeMigrated(account),
-)
+export const accountNeedsMigrationSelector: OutputSelector<
+  State,
+  { accountId: string },
+  boolean,
+> = createSelector(accountSelector, account => canBeMigrated(account))
 
 const isUpToDateAccount = a => {
   const { lastSyncDate } = a
@@ -157,7 +191,11 @@ const isUpToDateAccount = a => {
   return !outdated
 }
 
-export const isUpToDateAccountSelector = createSelector(accountSelector, isUpToDateAccount)
+export const isUpToDateAccountSelector: OutputSelector<
+  State,
+  { accountId: string },
+  boolean,
+> = createSelector(accountSelector, isUpToDateAccount)
 export const decodeAccountsModel = (raws: *) => (raws || []).map(accountModel.decode)
 
 export const encodeAccountsModel = (accounts: *) => (accounts || []).map(accountModel.encode)

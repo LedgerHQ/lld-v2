@@ -60,9 +60,6 @@ const App = () => (
         </Link>
       </Nav>
       <Switch>
-        <Route path="/" exact>
-          <Index />
-        </Route>
         <Route path="/account">
           <Account />
         </Route>
@@ -83,6 +80,9 @@ const App = () => (
         </Route>
         <Route path="/settings">
           <Settings />
+        </Route>
+        <Route path="/" exact>
+          <Index />
         </Route>
       </Switch>
     </Router>
