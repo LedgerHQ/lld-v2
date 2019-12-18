@@ -2,12 +2,12 @@
 // flow-typed version: c6154227d1/react-hot-loader_v4.6.x/flow_>=v0.104.x
 
 // @flow
-declare module "react-hot-loader" {
-  declare type Module = { id: string, ... };
+declare module 'react-hot-loader' {
+  declare type Module = { id: string, ... }
 
   declare type ErrorReporterProps = {|
     error: Error,
-    errorInfo: { componentStack: string, ... }
+    errorInfo: { componentStack: string, ... },
   |}
 
   declare export type ContainerProps = {|
@@ -18,16 +18,18 @@ declare module "react-hot-loader" {
 
   declare export class AppContainer extends React$Component<ContainerProps> {}
 
-  declare export function hot(module: Module): <T: React$ComponentType<any>>(
+  declare export function hot(
+    module: Module,
+  ): <T: React$ComponentType<any>>(
     Component: T,
-    props?: $Diff<ContainerProps, { children: React$Element<any>, ... }>
+    props?: $Diff<ContainerProps, { children: React$Element<any>, ... }>,
   ) => T
 
   declare export function cold<T: React$ComponentType<any>>(component: T): T
 
   declare export function areComponentsEqual<T>(
     typeA: React$ComponentType<T>,
-    typeB: React$ComponentType<T>
+    typeB: React$ComponentType<T>,
   ): boolean
 
   declare type Config = {|
@@ -48,11 +50,11 @@ declare module "react-hot-loader" {
   declare export function setConfig(config: $Shape<Config>): void
 }
 
-declare module "react-hot-loader/root" {
-  import type { ContainerProps } from 'react-hot-loader';
+declare module 'react-hot-loader/root' {
+  import type { ContainerProps } from 'react-hot-loader'
 
   declare export function hot<T: React$ComponentType<any>>(
     Component: T,
-    props?: $Diff<ContainerProps, { children: React$Element<any>, ... }>
-  ): T;
+    props?: $Diff<ContainerProps, { children: React$Element<any>, ... }>,
+  ): T
 }

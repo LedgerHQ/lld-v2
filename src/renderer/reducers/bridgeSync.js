@@ -1,5 +1,6 @@
 // @flow
 
+import type { OutputSelector } from 'reselect'
 import { createSelector } from 'reselect'
 import { handleActions } from 'redux-actions'
 import type { State } from '.'
@@ -47,7 +48,7 @@ export const syncStateLocalSelector = (
 export const accountSyncStateSelector = (s: State, o: { accountId: string }): AsyncState =>
   syncStateLocalSelector(bridgeSyncSelector(s), o)
 
-export const globalSyncStateSelector = createSelector(
+export const globalSyncStateSelector: OutputSelector<State, void, AsyncState> = createSelector(
   activeAccountsSelector,
   bridgeSyncSelector,
   (accounts, bridgeSync) => {

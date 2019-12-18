@@ -2,7 +2,7 @@
 
 import { handleActions } from 'redux-actions'
 import { createSelector } from 'reselect'
-import type { InputSelector as Selector } from 'reselect'
+import type { OutputSelector, InputSelector as Selector } from 'reselect'
 import {
   findCurrencyByTicker,
   getCryptoCurrencyById,
@@ -183,12 +183,15 @@ export const getCounterValueCode = (state: State) => state.settings.counterValue
 export const counterValueCurrencyLocalSelector = (state: SettingsState): Currency =>
   findCurrencyByTicker(state.counterValue) || getFiatCurrencyByTicker('USD')
 
-export const counterValueCurrencySelector = createSelector(
+export const counterValueCurrencySelector: OutputSelector<State, void, Currency> = createSelector(
   storeSelector,
   counterValueCurrencyLocalSelector,
 )
 
-export const countervalueFirstSelector = createSelector(storeSelector, s => s.countervalueFirst)
+export const countervalueFirstSelector: OutputSelector<State, void, boolean> = createSelector(
+  storeSelector,
+  s => s.countervalueFirst,
+)
 
 export const developerModeSelector = (state: State): boolean => state.settings.developerMode
 
@@ -214,9 +217,16 @@ export const langAndRegionSelector = (
   return { language, region, useSystem: true }
 }
 
-export const languageSelector = createSelector(langAndRegionSelector, o => o.language)
+export const languageSelector: OutputSelector<State, void, string> = createSelector(
+  langAndRegionSelector,
+  o => o.language,
+)
 
-export const localeSelector = createSelector(langAndRegionSelector, ({ language, region }) =>
+export const localeSelector: OutputSelector<
+  State,
+  void,
+  string,
+> = createSelector(langAndRegionSelector, ({ language, region }) =>
   region ? `${language}-${region}` : language,
 )
 
@@ -277,7 +287,7 @@ export const dismissedBannerSelector = (state: State, { bannerKey }: { bannerKey
 export const hideEmptyTokenAccountsSelector = (state: State) =>
   state.settings.hideEmptyTokenAccounts
 
-export const exportSettingsSelector = createSelector(
+export const exportSettingsSelector: OutputSelector<State, void, *> = createSelector(
   counterValueCurrencySelector,
   state => state.settings.currenciesSettings,
   state => state.settings.pairExchanges,

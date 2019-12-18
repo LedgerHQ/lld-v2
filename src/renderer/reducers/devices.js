@@ -2,7 +2,12 @@
 
 import { handleActions } from 'redux-actions'
 import { getEnv } from '@ledgerhq/live-common/lib/env'
-import type { Device } from './../../types/common'
+import type { DeviceModelId } from '@ledgerhq/devices'
+
+export type Device = {
+  path: string,
+  modelId: DeviceModelId,
+}
 
 export type DevicesState = {
   currentDevice: ?Device,

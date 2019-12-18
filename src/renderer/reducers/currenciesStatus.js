@@ -2,6 +2,7 @@
 import React from 'react'
 import { Trans } from 'react-i18next'
 import { createSelector } from 'reselect'
+import type { OutputSelector } from 'reselect'
 import { handleActions, createAction } from 'redux-actions'
 import type { CryptoCurrency } from '@ledgerhq/live-common/lib/types'
 import { listSupportedCurrencies } from '@ledgerhq/live-common/lib/currencies'
@@ -77,12 +78,18 @@ export const currencyDownStatusLocal = (
   currency: CryptoCurrency,
 ): ?CurrencyStatus => currenciesStatus.find(c => c.id === currency.id)
 
-export const currencyDownStatus = createSelector(
+export const currencyDownStatus: OutputSelector<
+  State,
+  { currency: CryptoCurrency },
+  ?CurrencyStatus,
+> = createSelector(
   currenciesStatusSelector,
-  (_, { currency }) => currency,
+  (_, { currency }): CryptoCurrency => currency,
   currencyDownStatusLocal,
 )
 
 // Exporting reducer
 
-export default handleActions(handlers, state)
+const reducer = handleActions(handlers, state)
+
+export default reducer

@@ -1,6 +1,5 @@
 body {
-    background-color: red;
-    font-family: Inter;
+  font-family: Inter;
 }
 
 @font-face {
@@ -50,4 +49,5 @@ body {
     src: url("./fonts/inter/Inter-ExtraBold.woff2") format("woff2");
     font-weight: 900;
     font-style: normal;
+=======
 }
