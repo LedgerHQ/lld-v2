@@ -28,5 +28,4 @@ const themes = context.keys().reduce((acc, filename) => {
   return acc
 }, {})
 
-console.log(themes)
 export default themes

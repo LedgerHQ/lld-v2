@@ -15,8 +15,10 @@ const path = (
   </Fragment>
 )
 
-export default ({ size, ...p }: { size: number }) => (
+const Home = ({ size, ...p }: { size: number }) => (
   <svg viewBox="0 0 20 22.014" height={size} width={size} {...p}>
     {path}
   </svg>
 )
+
+export default Home

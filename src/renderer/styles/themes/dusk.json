@@ -8,8 +8,8 @@
     "main": "#FFFFFF"
   },
   "background": {
-    "paper": "#1C1D1F",
-    "default": "#182528"
+    "paper": "#182532",
+    "default": "#131E28"
   },
   "action": {
     "active": "#182532",

@@ -9,7 +9,7 @@ const path = (
   />
 )
 
-export default ({ size, ...p }: { size: number }) => (
+const spinner = ({ size, ...p }: { size: number }) => (
   <svg viewBox="0 0 16 16" height={size} width={size} {...p}>
     {path}
   </svg>

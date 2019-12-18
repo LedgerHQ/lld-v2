@@ -10,8 +10,10 @@ const innerStyle = {
   maxWidth: '100%',
 }
 
-export default ({ children, canSelect, ...p }: { children: any, canSelect?: boolean }) => (
+const Ellipsis = ({ children, canSelect, ...p }: { children: any, canSelect?: boolean }) => (
   <Text style={{ ...innerStyle, userSelect: canSelect ? 'text' : 'none' }} {...p}>
     {children}
   </Text>
 )
+
+export default Ellipsis

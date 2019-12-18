@@ -32,8 +32,10 @@ const path = (
   </Fragment>
 )
 
-export default ({ size, ...p }: { size: number }) => (
+const Donjon = ({ size, ...p }: { size: number }) => (
   <svg viewBox="0 0 1668 1668" width={size} {...p}>
     {path}
   </svg>
 )
+
+export default Donjon

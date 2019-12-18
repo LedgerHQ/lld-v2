@@ -10,8 +10,10 @@ const path = (
   />
 )
 
-export default ({ size, ...p }: { size: number }) => (
+const CameraError = ({ size, ...p }: { size: number }) => (
   <svg viewBox="0 0 70 56" width={size} height={(size * 70) / 56} {...p}>
     {path}
   </svg>
 )
+
+export default CameraError

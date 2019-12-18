@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react'
+import User from '~/renderer/icons/User'
 
 const path = (
   <path
@@ -9,8 +10,10 @@ const path = (
   />
 )
 
-export default ({ size, ...p }: { size: number }) => (
+const Help = ({ size, ...p }: { size: number }) => (
   <svg viewBox="0 0 16 16" height={size} width={size} {...p}>
     {path}
   </svg>
 )
+
+export default Help

@@ -10,8 +10,10 @@ const path = (
   />
 )
 
-export default ({ size, ...p }: { size: number }) => (
+const Portfolio = ({ size, ...p }: { size: number }) => (
   <svg viewBox="0 0 15 15" height={size} width={size} {...p}>
     {path}
   </svg>
 )
+
+export default Portfolio

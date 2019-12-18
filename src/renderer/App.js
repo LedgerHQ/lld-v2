@@ -16,6 +16,7 @@ import Dashboard from '~/renderer/screens/dashboard'
 import Manager from '~/renderer/screens/manager'
 import Partners from '~/renderer/screens/partners'
 import Settings from '~/renderer/screens/settings'
+import StyleProvider from '~/renderer/styles/StyleProvider'
 
 const store = createStore({ dbMiddlewares })
 
@@ -31,60 +32,7 @@ const Span = styled.span`
 
 const App = () => (
   <Provider store={store}>
-    <Router>
-      <Nav style={{ marginTop: 40 }}>
-        <Link to="/">
-          <Span>index</Span>
-        </Link>
-        <Link to="/accounts">
-          <Span>accounts</Span>
-        </Link>
-        <Link to="/account">
-          <Span>account</Span>
-        </Link>
-        <Link to="/asset">
-          <Span>asset</Span>
-        </Link>
-        <Link to="/dashboard">
-          <Span>dashboard</Span>
-        </Link>
-        <Link to="/manager">
-          <Span>manager</Span>
-        </Link>
-        <Link to="/partners">
-          <Span>partners</Span>
-        </Link>
-        <Link to="/settings">
-          <Span>settings</Span>
-        </Link>
-      </Nav>
-      <Switch>
-        <Route path="/account">
-          <Account />
-        </Route>
-        <Route path="/accounts">
-          <Accounts />
-        </Route>
-        <Route path="/asset">
-          <Asset />
-        </Route>
-        <Route path="/dashboard">
-          <Dashboard />
-        </Route>
-        <Route path="/manager">
-          <Manager />
-        </Route>
-        <Route path="/partners">
-          <Partners />
-        </Route>
-        <Route path="/settings">
-          <Settings />
-        </Route>
-        <Route path="/" exact>
-          <Index />
-        </Route>
-      </Switch>
-    </Router>
+    <StyleProvider selectedTheme="dusk"></StyleProvider>
   </Provider>
 )
 

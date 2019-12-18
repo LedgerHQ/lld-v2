@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 
-export default ({ size, ...p }: { size: number }) => (
+const UserPlus = ({ size, ...p }: { size: number }) => (
   <svg viewBox="0 0 640 512" width={size} height={(size * 512) / 640} {...p}>
     <path
       fill="currentColor"
@@ -9,3 +9,5 @@ export default ({ size, ...p }: { size: number }) => (
     />
   </svg>
 )
+
+export default UserPlus

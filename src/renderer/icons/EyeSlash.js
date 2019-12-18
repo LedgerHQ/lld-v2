@@ -10,8 +10,10 @@ const path = (
   />
 )
 
-export default ({ width = 16, height = 13, ...p }: { width?: number, height?: number }) => (
+const EyeSlash = ({ width = 16, height = 13, ...p }: { width?: number, height?: number }) => (
   <svg viewBox="0 0 16 13" height={height} width={width} {...p}>
     {path}
   </svg>
 )
+
+export default EyeSlash

@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-export default ({ size = 30, ...p }: { size: number }) => (
+const NanoXBanner = ({ size = 30, ...p }: { size: number }) => (
   <svg viewBox="0 0 6 16" height={size} width={size} {...p}>
     <defs>
       <path
@@ -28,3 +28,5 @@ export default ({ size = 30, ...p }: { size: number }) => (
     </g>
   </svg>
 )
+
+export default NanoXBanner

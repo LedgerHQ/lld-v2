@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-export default () => (
+const SensitiveOperationShield = () => (
   <svg width="27" height="31">
     <defs>
       <path
@@ -56,3 +56,5 @@ export default () => (
     </g>
   </svg>
 )
+
+export default SensitiveOperationShield

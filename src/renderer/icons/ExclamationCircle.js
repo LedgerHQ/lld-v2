@@ -2,7 +2,14 @@
 
 import React from 'react'
 
-export default ({ size, color = 'currentColor', ...p }: { size: number, color?: string }) => (
+const ExclamationCircle = ({
+  size,
+  color = 'currentColor',
+  ...p
+}: {
+  size: number,
+  color?: string,
+}) => (
   <svg viewBox="0 0 16 16" height={size} width={size} {...p}>
     <path
       fill={color}
@@ -10,3 +17,5 @@ export default ({ size, color = 'currentColor', ...p }: { size: number, color?: 
     />
   </svg>
 )
+
+export default ExclamationCircle

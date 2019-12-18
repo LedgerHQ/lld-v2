@@ -9,8 +9,10 @@ const path = (
   />
 )
 
-export default ({ size, ...p }: { size: number }) => (
+const ExclamationCircleThin = ({ size, ...p }: { size: number }) => (
   <svg viewBox="0 0 24 24" height={size} width={size} {...p}>
     {path}
   </svg>
 )
+
+export default ExclamationCircleThin

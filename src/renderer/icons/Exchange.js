@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-export default ({ size, ...p }: { size: number }) => (
+const Exchange = ({ size, ...p }: { size: number }) => (
   <svg viewBox="0 0 16 16" height={size} width={size} {...p}>
     <path
       fill="currentColor"
@@ -10,3 +10,5 @@ export default ({ size, ...p }: { size: number }) => (
     />
   </svg>
 )
+
+export default Exchange

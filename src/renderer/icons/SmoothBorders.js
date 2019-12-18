@@ -11,8 +11,10 @@ const inner = (
   />
 )
 
-export default ({ size, ...p }: { size: number }) => (
+const SmoothBorders = ({ size, ...p }: { size: number }) => (
   <svg viewBox="0 0 29.5 29.5" height={size} width={size} {...p}>
     {inner}
   </svg>
 )
+
+export default SmoothBorders

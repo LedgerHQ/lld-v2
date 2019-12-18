@@ -16,8 +16,10 @@ const path = (
   </g>
 )
 
-export default ({ size, ...p }: { size?: number }) => (
+const DownloadCloud = ({ size, ...p }: { size?: number }) => (
   <svg viewBox="0 0 18 15" height={size} width={size} {...p}>
     {path}
   </svg>
 )
+
+export default DownloadCloud

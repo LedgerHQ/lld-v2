@@ -9,8 +9,10 @@ const path = (
   />
 )
 
-export default ({ size, ...p }: { size: number }) => (
+const AngleDown = ({ size, ...p }: { size: number }) => (
   <svg viewBox="0 0 16 14" height={size} width={size * 0.875} {...p}>
     {path}
   </svg>
 )
+
+export default AngleDown

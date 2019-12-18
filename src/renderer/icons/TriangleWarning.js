@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-export default ({
+const TriangleWarning = ({
   height,
   width,
   size = 16,
@@ -20,3 +20,5 @@ export default ({
     />
   </svg>
 )
+
+export default TriangleWarning

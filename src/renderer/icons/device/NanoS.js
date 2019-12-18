@@ -9,8 +9,10 @@ const path = (
   />
 )
 
-export default ({ size, ...p }: { size: number }) => (
+const NanoS = ({ size, ...p }: { size: number }) => (
   <svg viewBox="0 0 9 34" height={size} width={size} {...p}>
     {path}
   </svg>
 )
+
+export default NanoS

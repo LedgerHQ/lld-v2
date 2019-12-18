@@ -42,9 +42,11 @@ const group = (
   </g>
 )
 
-export default ({ size, ...p }: { size: number }) => (
+const LockScreen = ({ size, ...p }: { size: number }) => (
   <svg width={size} height={size} {...p}>
     {defs}
     {group}
   </svg>
 )
+
+export default LockScreen

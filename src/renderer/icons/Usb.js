@@ -10,8 +10,10 @@ const inner = (
   />
 )
 
-export default ({ size, ...p }: { size: number }) => (
+const Usb = ({ size, ...p }: { size: number }) => (
   <svg viewBox="0 0 14 14" height={size} width={size} {...p}>
     {inner}
   </svg>
 )
+
+export default Usb

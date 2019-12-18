@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-export default ({ size }: { size?: number }) => (
+const CoinWallet = ({ size }: { size?: number }) => (
   <svg viewBox="0 0 106 144" width={size}>
     <defs>
       <linearGradient x1=".015%" y1="49.989%" x2="100%" y2="49.989%" id="CoinWallet-a">
@@ -635,3 +635,5 @@ export default ({ size }: { size?: number }) => (
     </g>
   </svg>
 )
+
+export default CoinWallet

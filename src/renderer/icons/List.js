@@ -10,8 +10,10 @@ const path = (
   />
 )
 
-export default ({ size = 16, ...p }: { size?: number }) => (
+const List = ({ size = 16, ...p }: { size?: number }) => (
   <svg viewBox="0 0 16 16" height={size} width={size} {...p}>
     {path}
   </svg>
 )
+
+export default List

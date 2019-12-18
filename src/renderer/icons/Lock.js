@@ -9,8 +9,10 @@ const path = (
   />
 )
 
-export default ({ size, ...p }: { size: number }) => (
+const Lock = ({ size, ...p }: { size: number }) => (
   <svg width={size} height={size} {...p}>
     {path}
   </svg>
 )
+
+export default Lock
