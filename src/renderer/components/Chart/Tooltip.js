@@ -2,7 +2,7 @@
 
 import React from 'react'
 import styled from 'styled-components'
-import Box from '~/components/base/Box'
+import Box from '~/renderer/components/Box'
 import type { Item } from './types'
 
 const Container = styled(Box).attrs(() => ({

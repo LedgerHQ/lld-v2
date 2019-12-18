@@ -3,7 +3,7 @@
 import styled from 'styled-components'
 import get from 'lodash/get'
 
-import Box from '~/renderer/components/base/Box'
+import Box from '~/components/Box'
 
 const Bar = styled(Box)`
   background: ${p => get(p.theme.colors, p.color)};

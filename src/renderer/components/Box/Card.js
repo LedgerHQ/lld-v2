@@ -3,7 +3,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import Text from '~/renderer/components/base/Text'
+import Text from '~/renderer/components/Text'
 import Box from './Box'
 
 const RawCard = styled(Box).attrs(p => ({

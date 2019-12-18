@@ -3,12 +3,9 @@ import React, { Component } from 'react'
 import { ipcRenderer } from 'electron'
 import './global.css'
 
-import libcoreGetVersion from '../commands/libcoreGetVersion'
+import Text from '~/renderer/components/Text'
+import libcoreGetVersion from '~/commands/libcoreGetVersion'
 import { Provider } from 'react-redux'
-
-import Title from './components/title'
-import Switcher from './components/switcher'
-import Img from './components/img'
 
 type State = {
   error: ?Error,
@@ -52,10 +49,8 @@ class App extends Component<Props, State> {
 
     return (
       <Provider store={store}>
-        <Title />
-        <Switcher />
         <div>
-          <Img />
+          <Text ff="Inter|Bold">looool</Text>
         </div>
       </Provider>
     )

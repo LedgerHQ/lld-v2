@@ -10,9 +10,9 @@ import get from 'lodash/get'
 import { isGlobalTabEnabled } from '~/config/global-tab'
 import { darken, lighten, rgba } from '~/renderer/styles/helpers'
 import fontFamily from '~/renderer/styles/styled/fontFamily'
-import { focusedShadowStyle } from '~/renderer/components/base/Box/Tabbable'
+import { focusedShadowStyle } from '~/renderer/components/Box/Tabbable'
 
-import Spinner from '~/renderer/components/base/Spinner'
+import Spinner from '~/components/Spinner'
 
 type Style = any // FIXME
 

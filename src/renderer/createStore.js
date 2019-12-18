@@ -30,7 +30,7 @@ export default ({ state, history, dbMiddleware }: Props) => {
   }
   const enhancers = compose(
     applyMiddleware(...middlewares),
-    window.devToolsExtension ? window.devToolsExtension() : f => f, // eslint-disable-line
+    window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f, // eslint-disable-line
   )
   // $FlowFixMe
   return createStore(reducers, state, enhancers)

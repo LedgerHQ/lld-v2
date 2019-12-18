@@ -1,0 +1,19 @@
+{
+  "type": "dark",
+  "primary": {
+    "main": "#6490F1",
+    "contrastText": "#FFFFFF"
+  },
+  "secondary": {
+    "main": "#FFFFFF"
+  },
+  "background": {
+    "paper": "#1C1D1F",
+    "default": "#182528"
+  },
+  "action": {
+    "active": "#182532",
+    "hover": "rgba(100,144,241, 0.1)",
+    "disabled": "rgba(255,255,255, 0.1)"
+  }
+}

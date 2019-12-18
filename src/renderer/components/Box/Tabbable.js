@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import { isGlobalTabEnabled } from '~/config/global-tab'
-import { rgba } from '~/styles/helpers'
+import { rgba } from '~/renderer/styles/helpers'
 
 import Box from './Box'
 
