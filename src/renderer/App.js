@@ -2,21 +2,14 @@
 import React from 'react'
 import '~/renderer/global.css'
 import { Provider } from 'react-redux'
-import { HashRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import { HashRouter as Router, Link, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 
 import dbMiddlewares from '~/renderer/middlewares/db'
 import createStore from '~/renderer/createStore'
 
-import Index from '~/renderer/screens/index'
-import Account from '~/renderer/screens/account'
-import Accounts from '~/renderer/screens/accounts'
-import Asset from '~/renderer/screens/asset'
-import Dashboard from '~/renderer/screens/dashboard'
-import Manager from '~/renderer/screens/manager'
-import Partners from '~/renderer/screens/partners'
-import Settings from '~/renderer/screens/settings'
 import StyleProvider from '~/renderer/styles/StyleProvider'
+import Default from '~/renderer/Default'
 
 const store = createStore({ dbMiddlewares })
 
@@ -32,7 +25,39 @@ const Span = styled.span`
 
 const App = () => (
   <Provider store={store}>
-    <StyleProvider selectedTheme="dusk"></StyleProvider>
+    <StyleProvider selectedTheme="dusk">
+      <Router>
+        <Nav style={{ marginTop: 40 }}>
+          <Link to="/">
+            <Span>dashboard</Span>
+          </Link>
+          <Link to="/accounts">
+            <Span>accounts</Span>
+          </Link>
+          <Link to="/settings">
+            <Span>settings</Span>
+          </Link>
+          <Link to="/account/1">
+            <Span>account</Span>
+          </Link>
+          <Link to="/account/1/2">
+            <Span>account</Span>
+          </Link>
+          <Link to="/manager">
+            <Span>manager</Span>
+          </Link>
+          <Link to="/asset/tezos">
+            <Span>asset</Span>
+          </Link>
+          <Link to="/partners">
+            <Span>partners</Span>
+          </Link>
+        </Nav>
+        <Switch>
+          <Default />
+        </Switch>
+      </Router>
+    </StyleProvider>
   </Provider>
 )
 
