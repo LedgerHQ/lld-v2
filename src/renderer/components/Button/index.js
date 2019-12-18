@@ -12,7 +12,7 @@ import { darken, lighten, rgba } from '~/renderer/styles/helpers'
 import fontFamily from '~/renderer/styles/styled/fontFamily'
 import { focusedShadowStyle } from '~/renderer/components/Box/Tabbable'
 
-import Spinner from '~/components/Spinner'
+import Spinner from '~/renderer/components/Spinner'
 
 type Style = any // FIXME
 

@@ -1,4 +1,4 @@
-/* eslint-disable */
+// @flow
 
 declare var INDEX_URL: string
 declare var __DEV__: boolean
