@@ -3,23 +3,15 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 // import { routerMiddleware } from 'react-router-redux'
 import thunk from 'redux-thunk'
-import { createHashHistory } from 'history'
-import type { HashHistory } from 'history'
-import logger from './middlewares/logger'
-import reducers from './reducers'
+import logger from '~/renderer/middlewares/logger'
+import reducers from '~/renderer/reducers'
 
 type Props = {
-  history: HashHistory,
   state?: Object,
-  history?: any,
   dbMiddleware?: Function,
 }
 
-export default ({ state, history, dbMiddleware }: Props) => {
-  if (!history) {
-    history = createHashHistory()
-  }
-  // const middlewares = [routerMiddleware(history), thunk, logger]
+export default ({ state, dbMiddleware }: Props) => {
   const middlewares = [thunk, logger]
 
   // middlewares.push(require('./../middlewares/sentry').default)

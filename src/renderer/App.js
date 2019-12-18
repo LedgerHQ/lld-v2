@@ -1,24 +1,22 @@
 // @flow
 import React from 'react'
-import './global.css'
+import '~/renderer/global.css'
 
 import { Provider } from 'react-redux'
 import { HashRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import dbMiddlewares from './middlewares/db'
-import createStore from './createStore'
+import dbMiddlewares from '~/renderer/middlewares/db'
+import createStore from '~/renderer/createStore'
 
-import './global.css'
-
-import Index from './screens/index'
-import Account from './screens/account'
-import Accounts from './screens/accounts'
-import Asset from './screens/asset'
-import Dashboard from './screens/dashboard'
-import Manager from './screens/manager'
-import Partners from './screens/partners'
-import Settings from './screens/settings'
+import Index from '~/renderer/screens/index'
+import Account from '~/renderer/screens/account'
+import Accounts from '~/renderer/screens/accounts'
+import Asset from '~/renderer/screens/asset'
+import Dashboard from '~/renderer/screens/dashboard'
+import Manager from '~/renderer/screens/manager'
+import Partners from '~/renderer/screens/partners'
+import Settings from '~/renderer/screens/settings'
 
 const store = createStore({ dbMiddlewares })
 
@@ -28,7 +26,7 @@ const Nav = styled.nav`
   flex-wrap: wrap;
 `
 
-const A = styled.a`
+const Span = styled.span`
   margin-right: 8px;
 `
 
@@ -37,28 +35,28 @@ const App = () => (
     <Router>
       <Nav style={{ marginTop: 40 }}>
         <Link to="/">
-          <A>index</A>
+          <Span>index</Span>
         </Link>
         <Link to="/accounts">
-          <A>accounts</A>
+          <Span>accounts</Span>
         </Link>
         <Link to="/account">
-          <A>account</A>
+          <Span>account</Span>
         </Link>
         <Link to="/asset">
-          <A>asset</A>
+          <Span>asset</Span>
         </Link>
         <Link to="/dashboard">
-          <A>dashboard</A>
+          <Span>dashboard</Span>
         </Link>
         <Link to="/manager">
-          <A>manager</A>
+          <Span>manager</Span>
         </Link>
         <Link to="/partners">
-          <A>partners</A>
+          <Span>partners</Span>
         </Link>
         <Link to="/settings">
-          <A>settings</A>
+          <Span>settings</Span>
         </Link>
       </Nav>
       <Switch>
