@@ -12,8 +12,10 @@ const path = (
   </g>
 )
 
-export default ({ size, ...p }: { size: number }) => (
+const Refresh = ({ size, ...p }: { size: number }) => (
   <svg viewBox="0 0 16 13.344" height={size} width={size} {...p}>
     {path}
   </svg>
 )
+
+export default Refresh

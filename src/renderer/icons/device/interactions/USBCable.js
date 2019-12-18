@@ -27,7 +27,7 @@ const plugAnim = keyframes`
   }
 `
 
-const USBCable = styled.svg`
+const USBCableSvg = styled.svg`
   overflow: visible;
 
   .cable-plug-hint {
@@ -62,23 +62,23 @@ type Props = {
   vertical?: boolean,
 }
 
-export default ({ active, state, vertical, ...props }: Props) => {
+const UsbCable = ({ active, state, vertical, ...props }: Props) => {
   const type = useTheme('colors.palette.type')
 
   return (
-    <USBCable {...props} width="126" height="23">
+    <USBCableSvg {...props} width="126" height="23">
       <defs>
-        <linearGradient id="USBCable-gradient">
+        <linearGradient id="USBCableSvg-gradient">
           <stop offset="0" stopColor="black" stopOpacity="1" />
           <stop offset="1" stopColor="white" stopOpacity="1" />
         </linearGradient>
-        <mask id="USBCable-myMask">
-          <rect x="20" y="0" width="36" height="25" fill="url(#USBCable-gradient)" />
+        <mask id="USBCableSvg-myMask">
+          <rect x="20" y="0" width="36" height="25" fill="url(#USBCableSvg-gradient)" />
           <rect x="56" y="0" width="57" height="25" fill="white" />
         </mask>
       </defs>
       <g
-        mask="url(#USBCable-myMask)"
+        mask="url(#USBCableSvg-myMask)"
         opacity={active ? 1 : 0}
         transform={`rotate(${vertical ? -90 : 0} 126 11.5)`}
       >
@@ -107,6 +107,8 @@ export default ({ active, state, vertical, ...props }: Props) => {
           </g>
         </g>
       </g>
-    </USBCable>
+    </USBCableSvg>
   )
 }
+
+export default UsbCable

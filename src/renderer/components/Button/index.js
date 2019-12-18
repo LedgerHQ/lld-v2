@@ -231,7 +231,7 @@ const buttonStyles: { [_: string]: Style } = {
 }
 
 function getStyles(props, state) {
-  let output = ``
+  let output = ''
   let hasModifier = false
   for (const s in buttonStyles) {
     if (buttonStyles.hasOwnProperty(s) && props[s] === true) {

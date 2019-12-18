@@ -25,7 +25,7 @@ const Tooltip = ({ item, renderTooltip }: { item: Item, renderTooltip: Item => *
         position: 'absolute',
         bottom: '100%',
         left: 0,
-        transform: `translate3d(-50%, 0, 0)`,
+        transform: 'translate3d(-50%, 0, 0)',
         whiteSpace: 'nowrap',
         marginBottom: -5,
       }}

@@ -1,15 +1,14 @@
 // @flow
 import React from 'react'
-import './global.css'
 
 import { Provider } from 'react-redux'
 import { HashRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import styled from 'styled-components'
 
+import './global.css'
+
 import dbMiddlewares from './middlewares/db'
 import createStore from './createStore'
-
-import './global.css'
 
 import Index from './screens/index'
 import Account from './screens/account'

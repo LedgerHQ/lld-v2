@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-export default ({ size = 18, color = 'currentColor' }: { size?: number, color?: string }) => (
+const QrCode = ({ size = 18, color = 'currentColor' }: { size?: number, color?: string }) => (
   <svg viewBox="0 0 18 18" width={size} height={size}>
     <defs>
       <path
@@ -13,3 +13,5 @@ export default ({ size = 18, color = 'currentColor' }: { size?: number, color?: 
     <use fill={color} fillRule="nonzero" xlinkHref="#prefix__a" />
   </svg>
 )
+
+export default QrCode

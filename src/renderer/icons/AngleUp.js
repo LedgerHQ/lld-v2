@@ -9,8 +9,10 @@ const path = (
   />
 )
 
-export default ({ size, ...p }: { size: number }) => (
+const AngleUp = ({ size, ...p }: { size: number }) => (
   <svg viewBox="0 0 20 20" height={size} width={size} {...p}>
     {path}
   </svg>
 )
+
+export default AngleUp

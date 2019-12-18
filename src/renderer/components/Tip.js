@@ -15,9 +15,11 @@ const TokenTipsContainer = styled(Box)`
   line-height: 1.38;
 `
 
-export default ({ children }: *) => (
+const Tip = ({ children }: *) => (
   <TokenTipsContainer mt={4} horizontal alignItems="center">
     <InfoCircle size={16} color={useTheme('colors.palette.primary.main')} />
     <div style={{ flex: 1, marginLeft: 20 }}>{children}</div>
   </TokenTipsContainer>
 )
+
+export default Tip

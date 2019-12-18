@@ -4,7 +4,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import Text from '~/renderer/components/Text'
-import Box from './Box'
+import Box from '~/renderer/components/Box'
 
 const RawCard = styled(Box).attrs(p => ({
   bg: p.bg || 'palette.background.paper',
@@ -13,7 +13,7 @@ const RawCard = styled(Box).attrs(p => ({
   color: p.color || 'inherit',
 }))``
 
-export default ({ title, ...props }: { title?: any }) => {
+const Card = ({ title, ...props }: { title?: any }) => {
   if (title) {
     return (
       <Box flow={4} grow>
@@ -26,3 +26,5 @@ export default ({ title, ...props }: { title?: any }) => {
   }
   return <RawCard {...props} />
 }
+
+export default Card

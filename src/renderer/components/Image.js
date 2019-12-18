@@ -32,10 +32,12 @@ const Img = styled.img`
   pointer-events: none;
 `
 
-export default ({ resource, alt, themeTyped = false, resourcePath, className, ...rest }: Props) => {
+const Image = ({ resource, alt, themeTyped = false, resourcePath, className, ...rest }: Props) => {
   const type = useTheme('colors.palette.type')
   const fileName = themeTyped ? `${type}-${resource}` : resource
   const finalPath = resourcePath ? path.join(resourcePath, fileName) : fileName
 
   return <Img {...rest} alt={alt} className={className} src={i(finalPath)} />
 }
+
+export default Image

@@ -4,7 +4,12 @@ module.exports = {
     es6: true,
     node: true,
   },
-  extends: ['plugin:react/recommended', 'plugin:flowtype/recommended', 'standard'],
+  extends: [
+    'plugin:react/recommended',
+    'plugin:flowtype/recommended',
+    'standard',
+    'plugin:prettier/recommended',
+  ],
   globals: {
     __DEV__: 'readonly',
     INDEX_URL: 'readonly',

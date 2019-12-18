@@ -9,8 +9,10 @@ const path = (
   />
 )
 
-export default ({ size, ...p }: { size: number }) => (
+const Github = ({ size, ...p }: { size: number }) => (
   <svg viewBox="0 0 16 16" height={size} width={size} {...p}>
     {path}
   </svg>
 )
+
+export default Github

@@ -49,9 +49,11 @@ const group = (
   </g>
 )
 
-export default (p: Object) => (
+const Shield = (p: Object) => (
   <svg viewBox="0 0 28 32" height={32} width={28} {...p}>
     {defs}
     {group}
   </svg>
 )
+
+export default Shield

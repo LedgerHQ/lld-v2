@@ -32,11 +32,6 @@ export function generateMargins(hideAxis) {
     left: hideAxis ? 0 : 40,
   }
 
-  // FIXME: Forced to "use" margins here to prevent babel/uglify to believe
-  // there is a constant variable re-assignment. I don't get it, but it
-  // works, so, eh.
-  void margins
-
   return margins
 }
 

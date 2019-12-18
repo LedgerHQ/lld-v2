@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-export default ({ size = 16, color = 'currentColor', ...p }: { size: number, color?: string }) => (
+const Update = ({ size = 16, color = 'currentColor', ...p }: { size: number, color?: string }) => (
   <svg viewBox="0 0 16 16" height={size} width={size} {...p}>
     <path
       fill={color}
@@ -10,3 +10,5 @@ export default ({ size = 16, color = 'currentColor', ...p }: { size: number, col
     />
   </svg>
 )
+
+export default Update
