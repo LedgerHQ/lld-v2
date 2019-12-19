@@ -40,7 +40,13 @@ const ChoiceBox = styled.div`
   justify-content: space-between;
 `
 
-const Choice = React.memo(({ selected, choice, onSelect }) => (
+type ChoiceProps = {
+  selected: any,
+  choice: any,
+  onSelect: any,
+}
+
+const Choice = React.memo(({ selected, choice, onSelect }: ChoiceProps) => (
   <ChoiceBox selected={selected} onClick={() => onSelect(selected ? null : choice)}>
     <Text ff="Inter|SemiBold" fontSize={4}>
       {choice.label}

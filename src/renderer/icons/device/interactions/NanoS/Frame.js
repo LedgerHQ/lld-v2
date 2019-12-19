@@ -15,7 +15,7 @@ type Props = {
   error?: boolean,
 }
 
-export default ({ children, overlay, error }: Props) => {
+const NanoSFrame = ({ children, overlay, error }: Props) => {
   const type = useTheme('colors.palette.type')
 
   return (
@@ -44,3 +44,5 @@ export default ({ children, overlay, error }: Props) => {
     </FrameSVG>
   )
 }
+
+export default NanoSFrame

@@ -2,15 +2,21 @@
 
 import React from 'react'
 import { ThemeProvider } from 'styled-components'
-import t from './theme'
-import themes from './themes'
 import { GlobalStyle } from '~/renderer/styles/global'
 
-const StyleProvider = ({ children, selectedTheme }) => {
+import defaultTheme from './theme'
+import themes from './themes'
+
+type Props = {
+  children: React$Node,
+  selectedTheme: any,
+}
+
+const StyleProvider = ({ children, selectedTheme }: Props) => {
   const theme = {
-    ...t,
+    ...defaultTheme,
     colors: {
-      ...t.colors,
+      ...defaultTheme.colors,
       palette: themes[selectedTheme],
     },
   }

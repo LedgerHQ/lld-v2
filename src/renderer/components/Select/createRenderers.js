@@ -21,7 +21,7 @@ export default ({
   renderValue: Option => Node,
 }) => ({
   ...STYLES_OVERRIDE,
-  Option: (props: OptionProps) => {
+  Option: function Option(props: OptionProps) {
     const { data, isSelected } = props
     return (
       <components.Option {...props}>
@@ -36,7 +36,7 @@ export default ({
       </components.Option>
     )
   },
-  SingleValue: (props: OptionProps) => {
+  SingleValue: function SingleValue(props: OptionProps) {
     const { data } = props
     return (
       <components.SingleValue {...props}>
@@ -47,16 +47,20 @@ export default ({
 })
 
 const STYLES_OVERRIDE = {
-  DropdownIndicator: (props: OptionProps) => (
-    <components.DropdownIndicator {...props}>
-      <IconAngleDown size={20} />
-    </components.DropdownIndicator>
-  ),
-  ClearIndicator: (props: OptionProps) => (
-    <components.ClearIndicator {...props}>
-      <IconCross size={16} />
-    </components.ClearIndicator>
-  ),
+  DropdownIndicator: function DropdownIndicator(props: OptionProps) {
+    return (
+      <components.DropdownIndicator {...props}>
+        <IconAngleDown size={20} />
+      </components.DropdownIndicator>
+    )
+  },
+  ClearIndicator: function ClearIndicator(props: OptionProps) {
+    return (
+      <components.ClearIndicator {...props}>
+        <IconCross size={16} />
+      </components.ClearIndicator>
+    )
+  },
 }
 
 const CheckContainer = styled(Box).attrs(() => ({

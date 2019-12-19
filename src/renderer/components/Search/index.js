@@ -34,7 +34,8 @@ class Search extends PureComponent<Props, State> {
     results: [],
   }
 
-  componentWillMount() {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount() {
     this.initFuse(this.props)
   }
 

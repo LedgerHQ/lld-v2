@@ -14,7 +14,7 @@ type Props = {
   angle: number,
 }
 
-export default ({ angle, ...props }: Props) => {
+const NanoSSwivel = ({ angle, ...props }: Props) => {
   const type = useTheme('colors.palette.type')
 
   return (
@@ -49,3 +49,5 @@ export default ({ angle, ...props }: Props) => {
     </Motion>
   )
 }
+
+export default NanoSSwivel

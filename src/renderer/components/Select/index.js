@@ -11,6 +11,12 @@ import debounce from 'lodash/debounce'
 import createStyles from './createStyles'
 import createRenderers from './createRenderers'
 
+export type Option = {
+  value: 'string',
+  label: 'string',
+  data: any,
+}
+
 type Props = {
   // required
   value: ?Option,
@@ -35,12 +41,6 @@ type Props = {
   width: number,
   minWidth: number,
   autoFocus: boolean,
-}
-
-export type Option = {
-  value: 'string',
-  label: 'string',
-  data: any,
 }
 
 const Row = styled.div``

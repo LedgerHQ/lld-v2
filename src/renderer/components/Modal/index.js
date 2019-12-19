@@ -1,8 +1,5 @@
 // @flow
 
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-
 import React, { PureComponent, Fragment } from 'react'
 import { createPortal } from 'react-dom'
 import { connect } from 'react-redux'

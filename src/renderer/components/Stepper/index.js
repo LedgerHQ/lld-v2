@@ -9,19 +9,9 @@ import type { T } from 'types/common'
 import { ModalBody } from '~/renderer/components/Modal'
 import Breadcrumb from '~/renderer/components/Breadcrumb'
 
-type Props = {
+export type StepProps = {
   t: T,
-  title: string,
-  steps: Step[],
-  initialStepId: string,
-  hideBreadcrumb?: boolean,
-  onClose: void => void,
-  onStepChange?: Step => void,
-  disabledSteps?: number[],
-  errorSteps?: number[],
-  children: any,
-  error?: Error,
-  signed?: boolean,
+  transitionTo: string => void,
 }
 
 export type Step = {
@@ -40,9 +30,19 @@ type State = {
   stepId: string,
 }
 
-export type StepProps = {
+type Props = {
   t: T,
-  transitionTo: string => void,
+  title: string,
+  steps: Step[],
+  initialStepId: string,
+  hideBreadcrumb?: boolean,
+  onClose: void => void,
+  onStepChange?: Step => void,
+  disabledSteps?: number[],
+  errorSteps?: number[],
+  children: any,
+  error?: Error,
+  signed?: boolean,
 }
 
 class Stepper extends PureComponent<Props, State> {

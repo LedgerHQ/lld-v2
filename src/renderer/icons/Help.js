@@ -1,7 +1,6 @@
 // @flow
 
 import React from 'react'
-import User from '~/renderer/icons/User'
 
 const path = (
   <path

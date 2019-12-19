@@ -37,7 +37,7 @@ type Props = {
   error?: boolean,
 }
 
-export default ({ xOffset = 0, open, usb, screen, error }: Props) => (
+const Blue = ({ xOffset = 0, open, usb, screen, error }: Props) => (
   <DeviceContainer>
     <DeviceSVG width="118px" height="144px" viewBox="0 0 118 144">
       <g className="device" transform={`translate(${xOffset}, 0)`}>
@@ -56,3 +56,5 @@ export default ({ xOffset = 0, open, usb, screen, error }: Props) => (
     </DeviceSVG>
   </DeviceContainer>
 )
+
+export default Blue

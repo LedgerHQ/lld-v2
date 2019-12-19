@@ -8,47 +8,6 @@ import { rgba } from './helpers'
 import { radii } from './theme'
 import reset from './reset'
 
-// TODO: USE WITH global.css
-// const fonts = {
-//   Inter: [
-//     {
-//       style: 'normal',
-//       weight: 100,
-//       file: 'inter/Inter-ExtraLight-BETA',
-//     },
-//     {
-//       style: 'normal',
-//       weight: 300,
-//       file: 'inter/Inter-Light-BETA',
-//     },
-//     {
-//       style: 'normal',
-//       weight: 400,
-//       file: 'inter/Inter-Regular',
-//     },
-//     {
-//       style: 'normal',
-//       weight: 500,
-//       file: 'inter/Inter-Medium',
-//     },
-//     {
-//       style: 'normal',
-//       weight: 600,
-//       file: 'inter/Inter-SemiBold',
-//     },
-//     {
-//       style: 'normal',
-//       weight: 700,
-//       file: 'inter/Inter-Bold',
-//     },
-//     {
-//       style: 'normal',
-//       weight: 900,
-//       file: 'inter/Inter-ExtraBold',
-//     },
-//   ],
-// }
-
 export const GlobalStyle = createGlobalStyle`
   body, #preload {
     background-color: ${p => p.theme.colors.palette.background.default} !important;

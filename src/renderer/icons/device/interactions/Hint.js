@@ -16,7 +16,7 @@ type Props = {
   horizontal?: boolean,
 }
 
-export default ({ active, horizontal, ...props }: Props) => (
+const Hint = ({ active, horizontal, ...props }: Props) => (
   <HintSVG {...props} width="12" height="72">
     <defs />
     <defs>
@@ -43,3 +43,5 @@ export default ({ active, horizontal, ...props }: Props) => (
     </g>
   </HintSVG>
 )
+
+export default Hint

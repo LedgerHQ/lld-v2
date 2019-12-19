@@ -74,7 +74,7 @@ type Props = {
   error?: boolean,
 }
 
-export default ({ active, display, error, ...props }: Props) => {
+const BlueScreen = ({ active, display, error, ...props }: Props) => {
   const type = useTheme('colors.palette.type')
   const screens = getScreens(error ? '#EA2E49' : colors[type].screenColor)
   return (
@@ -99,3 +99,5 @@ export default ({ active, display, error, ...props }: Props) => {
     </ScreenSVG>
   )
 }
+
+export default BlueScreen
