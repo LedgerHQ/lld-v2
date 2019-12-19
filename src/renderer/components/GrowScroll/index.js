@@ -2,7 +2,6 @@
 
 import React, { PureComponent } from 'react'
 
-// TODO: IMPORTED FORM measure-scrollbar
 // DIRTY HACK, THERE IS PROBABLY A BETTER WAY TO DO THIS
 import measureScrollbar from '~/renderer/measureScrollbar'
 

@@ -2,19 +2,19 @@
 
 import React, { Fragment, PureComponent } from 'react'
 import styled from 'styled-components'
-import { translate } from 'react-i18next'
+import { withTranslation } from 'react-i18next'
 import zxcvbn from 'zxcvbn'
-
-import type { T } from 'types/common'
 
 import debounce from 'lodash/debounce'
 import noop from 'lodash/noop'
 
+import type { T } from '~/types/common'
+
 import Box from '~/renderer/components/Box'
 import Input from '~/renderer/components/Input'
 
-import IconEye from '~/icons/Eye'
-import IconEyeOff from '~/icons/EyeOff'
+import IconEye from '~/renderer/icons/Eye'
+import IconEyeOff from '~/renderer/icons/EyeOff'
 
 const InputRight = styled(Box).attrs(() => ({
   color: 'palette.text.shade60',
@@ -131,4 +131,4 @@ class InputPassword extends PureComponent<Props, State> {
   }
 }
 
-export default translate()(InputPassword)
+export default withTranslation()(InputPassword)

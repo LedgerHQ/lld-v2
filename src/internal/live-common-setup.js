@@ -1,8 +1,8 @@
 // @flow
-import '../live-common-setup'
+import '~/live-common-setup'
 import './implement-libcore'
 
-import { throwError, Observable } from 'rxjs'
+import { throwError } from 'rxjs'
 import throttle from 'lodash/throttle'
 import '@ledgerhq/live-common/lib/load/tokens/ethereum/erc20'
 import { registerTransportModule } from '@ledgerhq/live-common/lib/hw'
@@ -77,5 +77,3 @@ if (getEnv('DEVICE_PROXY_URL')) {
     disconnect: () => Promise.resolve(),
   })
 }
-
-export const listenDevices = (): * => Observable.create(TransportNodeHidSingleton.listen)

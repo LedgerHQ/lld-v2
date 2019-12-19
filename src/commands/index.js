@@ -15,6 +15,7 @@ import getLatestFirmwareForDevice from './getLatestFirmwareForDevice'
 import installApp from './installApp'
 import libcoreGetVersion from './libcoreGetVersion'
 import libcoreReset from './libcoreReset'
+import listenDevices from './listenDevices'
 import listApps from './listApps'
 import ping from './ping'
 import quitAndInstallElectronUpdate from './quitAndInstallElectronUpdate'
@@ -41,6 +42,7 @@ const all: Array<Command<any, any>> = [
   installApp,
   libcoreGetVersion,
   libcoreReset,
+  listenDevices,
   listApps,
   ping,
   quitAndInstallElectronUpdate,

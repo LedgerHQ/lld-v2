@@ -7,9 +7,9 @@ import path from 'path'
 import rimraf from 'rimraf'
 import cluster from 'cluster'
 import { setEnvUnsafe, getAllEnvs } from '@ledgerhq/live-common/lib/env'
-import { isRestartNeeded } from '../helpers/env'
-import { ipcMainListenReceiveCommands } from '../commands/ipc'
-import logger from '../logger'
+import { isRestartNeeded } from '~/helpers/env'
+import { ipcMainListenReceiveCommands } from '~/commands/ipc'
+import logger from '~/logger'
 import { setInternalProcessPID } from './terminator'
 import { getMainWindow } from './window-lifecycle'
 
@@ -27,8 +27,9 @@ const cleanUpBeforeClosingSync = () => {
   rimraf.sync(path.resolve(LEDGER_CONFIG_DIRECTORY, 'sqlite/*.log'))
 }
 
-const handleExit = (worker, code, signal) => {
-  console.log(`worker ${worker.process.pid} died with error code ${code} and signal ${signal}`)
+const handleExit = (worker: cluster$Worker, code, signal) => {
+  const { process } = worker
+  console.log(`worker ${process && process.pid} died with error code ${code} and signal ${signal}`)
   logger.warn(`Internal process ended with code ${code}`)
   internalProcess = null
 }
@@ -50,7 +51,7 @@ const sentryEnabled = false
 const userId = 'TODO'
 
 const spawnCoreProcess = () => {
-  const worker = cluster.fork({
+  const env = {
     ...getAllEnvs(),
     // $FlowFixMe
     ...process.env,
@@ -59,10 +60,11 @@ const spawnCoreProcess = () => {
     LEDGER_LIVE_SQLITE_PATH,
     INITIAL_SENTRY_ENABLED: sentryEnabled,
     SENTRY_USER_ID: userId,
-  })
+  }
+
+  const worker = cluster.fork(env)
   setInternalProcessPID(worker.process.pid)
 
-  worker.on('exit', handleExit)
   worker.on('message', handleGlobalInternalMessage)
   worker.on('exit', handleExit)
   worker.send({

@@ -1,3 +1,4 @@
+// TODO: IMPORTED FORM measure-scrollbar npm package
 export default () => {
   const div = document.createElement('div')
 

@@ -9,6 +9,9 @@ import styled from 'styled-components'
 
 import Box from '~/renderer/components/Box/Box'
 import GrowScroll from '~/renderer/components/GrowScroll'
+import ListenDevices from '~/renderer/components/ListenDevices'
+import ExportLogsBtn from '~/renderer/components/ExportLogsButton'
+import Idler from '~/renderer/components/Idler'
 
 import Dashboard from '~/renderer/screens/dashboard'
 import Settings from '~/renderer/screens/settings'
@@ -17,6 +20,7 @@ import Manager from '~/renderer/screens/manager'
 import Partners from '~/renderer/screens/partners'
 import Account from '~/renderer/screens/account'
 import Asset from '~/renderer/screens/asset'
+import IsUnlocked from './components/IsUnlocked'
 
 const Main = styled(GrowScroll).attrs(() => ({
   px: 6,
@@ -52,50 +56,57 @@ const Default = () => {
 
   return (
     <>
-      {/* TODO: ADD ALL CONTEXTS/PROVIDERS AND STUFF */}
-      {/* <div id="sticky-back-to-top-root" /> */}
+      <ListenDevices />
+      <ExportLogsBtn hookToShortcut />
 
-      <Box grow horizontal bg="palette.background.paper">
-        {/* TODO: SIDEBAR HERE */}
-        <Box
-          className="main-container"
-          // shrink
-          grow
-          bg="palette.background.default"
-          color="palette.text.shade60"
-          overflow="visible"
-          relative
-        >
-          <Main ref={ref} tabIndex={-1}>
-            <Switch>
-              <Route path="/" exact>
-                <Dashboard />
-              </Route>
-              <Route path="/settings">
-                <Settings />
-              </Route>
-              <Route path="/accounts">
-                <Accounts />
-              </Route>
-              <Route path="/manager">
-                <Manager />
-              </Route>
-              <Route path="/partners">
-                <Partners />
-              </Route>
-              <Route path="/account/:parentId/:id">
-                <Account />
-              </Route>
-              <Route path="/account/:id">
-                <Account />
-              </Route>
-              <Route path="/asset/:assetId+">
-                <Asset />
-              </Route>
-            </Switch>
-          </Main>
+      {/* TODO: ANALYTICS: v1 = analytics/track */}
+      {/* <Track mandatory onMount event="App Starts" /> */}
+      <Idler />
+
+      <div id="sticky-back-to-top-root" />
+      <IsUnlocked>
+        <Box grow horizontal bg="palette.background.paper">
+          {/* TODO: SIDEBAR HERE */}
+          <Box
+            className="main-container"
+            shrink
+            grow
+            bg="palette.background.default"
+            color="palette.text.shade60"
+            overflow="visible"
+            relative
+          >
+            <Main ref={ref} tabIndex={-1} full>
+              <Switch>
+                <Route path="/" exact>
+                  <Dashboard />
+                </Route>
+                <Route path="/settings">
+                  <Settings />
+                </Route>
+                <Route path="/accounts">
+                  <Accounts />
+                </Route>
+                <Route path="/manager">
+                  <Manager />
+                </Route>
+                <Route path="/partners">
+                  <Partners />
+                </Route>
+                <Route path="/account/:parentId/:id">
+                  <Account />
+                </Route>
+                <Route path="/account/:id">
+                  <Account />
+                </Route>
+                <Route path="/asset/:assetId+">
+                  <Asset />
+                </Route>
+              </Switch>
+            </Main>
+          </Box>
         </Box>
-      </Box>
+      </IsUnlocked>
     </>
   )
 }

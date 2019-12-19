@@ -2,7 +2,7 @@
 import React from 'react'
 import '~/renderer/global.css'
 import { Provider } from 'react-redux'
-import { HashRouter as Router, Link, Switch } from 'react-router-dom'
+import { HashRouter as Router, Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 import dbMiddlewares from '~/renderer/middlewares/db'
@@ -25,7 +25,7 @@ const Span = styled.span`
 
 const App = () => (
   <Provider store={store}>
-    <StyleProvider selectedTheme="dusk">
+    <StyleProvider selectedTheme="light">
       <Router>
         <Nav style={{ marginTop: 40 }}>
           <Link to="/">
@@ -53,9 +53,7 @@ const App = () => (
             <Span>partners</Span>
           </Link>
         </Nav>
-        <Switch>
-          <Default />
-        </Switch>
+        <Default />
       </Router>
     </StyleProvider>
   </Provider>
