@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import { space, fontSize, fontWeight, color } from 'styled-system'
 import noop from 'lodash/noop'
-import { track } from '~/analytics/segment'
+// import { track } from '~/analytics/segment'
 import get from 'lodash/get'
 
 import { isGlobalTabEnabled } from '~/config/global-tab'
@@ -350,9 +350,9 @@ class Button extends PureComponent<
     const isClickDisabled = disabled || isLoading
     const onClickHandler = e => {
       if (onClick) {
-        if (event) {
-          track(event, eventProperties)
-        }
+        // if (event) {
+        //   track(event, eventProperties)
+        // }
         onClick(e)
       }
     }

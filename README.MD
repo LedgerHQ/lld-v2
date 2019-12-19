@@ -10,10 +10,9 @@ jsconfig.json
 ```json
 {
   "compilerOptions": {
-    "target": "es2017",
-    "module": "commonjs",
+    "target": "esnext",
     "allowSyntheticDefaultImports": false,
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
       "~/*": ["./src/*"]
     }

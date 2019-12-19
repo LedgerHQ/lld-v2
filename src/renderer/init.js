@@ -20,7 +20,6 @@ import LoggerTransport from '~/logger/logger-transport-renderer'
 import { DEBUG_TICK_REDUX } from '~/config/constants'
 import { enableGlobalTab, disableGlobalTab, isGlobalTabEnabled } from '~/config/global-tab'
 
-import { commandsById } from '~/commands'
 import libcoreGetVersion from '~/commands/libcoreGetVersion'
 
 import resolveUserDataDirectory from '~/helpers/resolveUserDataDirectory'
@@ -162,7 +161,6 @@ async function init() {
 
   // expose stuff in Windows for DEBUG purpose
   window.ledger = {
-    commands: commandsById,
     store,
     db,
   }
