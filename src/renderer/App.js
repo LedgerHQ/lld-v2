@@ -6,14 +6,8 @@ import { HashRouter as Router, Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 import '~/renderer/global.css'
-
-import dbMiddlewares from '~/renderer/middlewares/db'
-import createStore from '~/renderer/createStore'
-
 import StyleProvider from '~/renderer/styles/StyleProvider'
 import Default from '~/renderer/Default'
-
-const store = createStore({ dbMiddlewares })
 
 const Nav = styled.nav`
   display: flex;
@@ -25,7 +19,7 @@ const Span = styled.span`
   margin-right: 8px;
 `
 
-const App = () => (
+const App = ({ store }: { store: * }) => (
   <Provider store={store}>
     <StyleProvider selectedPalette="light">
       <Router>
