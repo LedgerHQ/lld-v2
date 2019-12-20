@@ -105,3 +105,6 @@ dist
 
 # Webpack cache
 .webpack
+
+# Don't Ignore
+!jsconfig.json

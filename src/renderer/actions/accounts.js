@@ -2,7 +2,7 @@
 
 import type { Account } from '@ledgerhq/live-common/lib/types'
 
-import db from '~/renderer/helpers/db'
+import db from '~/helpers/db'
 
 export const replaceAccounts = (payload: Account[]) => ({
   type: 'DB:REPLACE_ACCOUNTS',

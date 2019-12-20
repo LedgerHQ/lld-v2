@@ -87,21 +87,21 @@ const exportedColors = WARN_LEGACY_COLORS
 export { exportedColors as colors }
 
 type Font = {
-  weight: Number,
-  style: String,
+  weight: number,
+  style: string,
 }
 
 export type Theme = {
   sizes: {
-    topBarHeight: Number,
-    sideBarWidth: Number,
+    topBarHeight: number,
+    sideBarWidth: number,
   },
-  radii: Number[],
-  fontFamilies: { [String]: { [String]: Font } },
-  fontSizes: Number[],
-  space: Number[],
-  shadows: String[],
-  colors: { [String]: String },
+  radii: number[],
+  fontFamilies: { [string]: { [string]: Font } },
+  fontSizes: number[],
+  space: number[],
+  shadows: string[],
+  colors: { [string]: string },
 }
 
 const theme: Theme = {

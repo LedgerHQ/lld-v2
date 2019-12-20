@@ -26,6 +26,7 @@ import AppRegionDrag from '~/renderer/components/AppRegionDrag'
 import CheckTermsAccepted from '~/renderer/components/CheckTermsAccepted'
 import IsNewVersion from '~/renderer/components/IsNewVersion'
 import HSMStatusBanner from '~/renderer/components/HSMStatusBanner'
+import TopBar from '~/renderer/components/TopBar'
 
 const Main = styled(GrowScroll).attrs(() => ({
   px: 6,
@@ -102,6 +103,8 @@ const Default = () => {
               relative
             >
               <HSMStatusBanner />
+              <TopBar />
+
               <Main ref={ref} tabIndex={-1} full>
                 <Switch>
                   <Route path="/" exact component={Dashboard} />

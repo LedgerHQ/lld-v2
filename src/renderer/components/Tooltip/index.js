@@ -4,12 +4,13 @@ import React from 'react'
 import Tippy from '@tippy.js/react'
 import styled from 'styled-components'
 import get from 'lodash/get'
-import useTheme from '~/hooks/useTheme'
 import { followCursor as followCursorPlugin } from 'tippy.js'
 
 import 'tippy.js/dist/tippy.css'
 import 'tippy.js/animations/shift-toward.css'
 import 'tippy.js/dist/svg-arrow.css'
+
+import useTheme from '~/renderer/hooks/useTheme'
 
 const ContentContainer = styled.div.attrs(p => ({
   style: {
@@ -54,6 +55,7 @@ const ToolTip = ({ followCursor, tooltipBg, children, content, delay, ...props }
   const colors = useTheme('colors')
 
   const bg = tooltipBg ? get(colors, tooltipBg, tooltipBg) : colors.palette.text.shade100
+
   return (
     <Tippy
       {...defaultTippyOptions}

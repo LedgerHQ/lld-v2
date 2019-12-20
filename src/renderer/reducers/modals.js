@@ -1,6 +1,6 @@
 // @flow
 
-import { handleActions, createAction } from 'redux-actions'
+import { handleActions } from 'redux-actions'
 
 export type ModalsState = {
   [key: string]: {

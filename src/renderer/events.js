@@ -4,7 +4,7 @@ import { ipcRenderer } from 'electron'
 import debug from 'debug'
 
 import network from '~/network'
-import db from '~/renderer/helpers/db'
+import db from '~/helpers/db'
 
 import { CHECK_UPDATE_DELAY, DISABLE_ACTIVITY_INDICATORS } from './../config/constants'
 

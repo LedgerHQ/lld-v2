@@ -3,9 +3,9 @@
 import { log } from '@ledgerhq/logs'
 import { ipcRenderer, shell, remote } from 'electron'
 
-import resolveUserDataDirectory from '~/renderer/helpers/resolveUserDataDirectory'
-import { delay } from '~/renderer/helpers/promise'
-import db from '~/renderer/helpers/db'
+import resolveUserDataDirectory from '~/helpers/resolveUserDataDirectory'
+import { delay } from '~/helpers/promise'
+import db from '~/helpers/db'
 import { disable as disableDBMiddleware } from '~/renderer/middlewares/db'
 import libcoreReset from '~/commands/libcoreReset'
 // TODO: BRIDGE /!\

@@ -9,7 +9,7 @@ import KeyHandler from 'react-key-handler'
 
 import logger from '~/logger'
 
-import getUser from '~/renderer/helpers/user'
+import getUser from '~/helpers/user'
 
 import Button from '~/renderer/components/Button'
 

@@ -10,8 +10,8 @@ import { NoDBPathGiven, DBWrongPassword } from '@ledgerhq/errors'
 import {} from '@ledgerhq/live-common/lib/promise'
 
 import logger from '~/logger'
-import { promisify, debounce } from '~/renderer/helpers/promise'
-import { fsReadFile, fsUnlink } from '~/renderer/helpers/fs'
+import { promisify, debounce } from '~/helpers/promise'
+import { fsReadFile, fsUnlink } from '~/helpers/fs'
 
 const ALGORITHM_NONCE_SIZE = 12
 

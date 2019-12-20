@@ -10,12 +10,13 @@ import Box from '~/renderer/components/Box'
 // TODO: TRANSLATED ERROR
 // import TranslatedError from '~/renderer/components/TranslatedError'
 import Text from '~/renderer/components/Text'
+import type { ThemedComponent } from '~/renderer/styles/StyleProvider'
 
-const RenderLeftWrapper = styled(Box)`
+const RenderLeftWrapper: ThemedComponent<void> = styled(Box)`
   align-items: center;
   justify-content: center;
 `
-const RenderRightWrapper = styled(Box)`
+const RenderRightWrapper: ThemedComponent<void> = styled(Box)`
   margin-left: -10px;
   display: flex;
   align-items: center;
@@ -236,13 +237,9 @@ const Input = React.forwardRef(function Input(
           onKeyDown={handleKeyDown}
         />
         {error ? (
-          <ErrorDisplay>
-            <TranslatedError error={error} />
-          </ErrorDisplay>
+          <ErrorDisplay>{/* <TranslatedError error={error} /> */}</ErrorDisplay>
         ) : warning ? (
-          <WarningDisplay>
-            <TranslatedError error={warning} />
-          </WarningDisplay>
+          <WarningDisplay>{/* <TranslatedError error={warning} /> */}</WarningDisplay>
         ) : null}
         {loading && !isFocus ? (
           <LoadingDisplay>

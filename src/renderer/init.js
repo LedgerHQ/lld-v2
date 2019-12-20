@@ -22,10 +22,10 @@ import { enableGlobalTab, disableGlobalTab, isGlobalTabEnabled } from '~/config/
 
 import libcoreGetVersion from '~/commands/libcoreGetVersion'
 
-import resolveUserDataDirectory from '~/renderer/helpers/resolveUserDataDirectory'
-import db from '~/renderer/helpers/db'
-import Countervalues from '~/renderer/helpers/countervalues'
-import { setEnvOnAllThreads } from '~/renderer/helpers/env'
+import resolveUserDataDirectory from '~/helpers/resolveUserDataDirectory'
+import db from '~/helpers/db'
+import Countervalues from '~/helpers/countervalues'
+import { setEnvOnAllThreads } from '~/helpers/env'
 
 // import sentry from '~/sentry/browser'
 
