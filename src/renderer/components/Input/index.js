@@ -12,11 +12,11 @@ import Box from '~/renderer/components/Box'
 import Text from '~/renderer/components/Text'
 import type { ThemedComponent } from '~/renderer/styles/StyleProvider'
 
-const RenderLeftWrapper: ThemedComponent<void> = styled(Box)`
+const RenderLeftWrapper: ThemedComponent<{}> = styled(Box)`
   align-items: center;
   justify-content: center;
 `
-const RenderRightWrapper: ThemedComponent<void> = styled(Box)`
+const RenderRightWrapper: ThemedComponent<{}> = styled(Box)`
   margin-left: -10px;
   display: flex;
   align-items: center;

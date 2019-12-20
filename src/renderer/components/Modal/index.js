@@ -7,9 +7,11 @@ import noop from 'lodash/noop'
 import Animated from 'animated/lib/targets/react-dom'
 import Easing from 'animated/lib/Easing'
 import { withTheme } from 'styled-components'
+// TODO: SNOOOOOOOOWW
 // import Snow, { isSnowTime } from '~/renderer/components/extra/Snow'
 
-import { closeModal, isModalOpened, getModalData } from '~/renderer/reducers/modals'
+import { closeModal } from '~/renderer/actions/modals'
+import { isModalOpened, getModalData } from '~/renderer/reducers/modals'
 
 export { default as ModalBody } from './ModalBody'
 
@@ -213,8 +215,8 @@ class Modal extends PureComponent<Props, State> {
     const modal = (
       <Fragment>
         <Animated.div style={backdropStyle}>
-          {// Will only render at the end of december
-          isSnowTime() ? <Snow numFlakes={200} /> : null}
+          {/* {// Will only render at the end of december
+          isSnowTime() ? <Snow numFlakes={200} /> : null} */}
         </Animated.div>
         <div style={containerStyle} onClick={this.handleClickOnBackdrop}>
           <Animated.div style={bodyWrapperStyle} onClick={this.swallowClick}>

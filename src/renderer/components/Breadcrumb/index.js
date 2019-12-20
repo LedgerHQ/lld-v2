@@ -9,7 +9,7 @@ import type { ThemedComponent } from '~/renderer/styles/StyleProvider'
 import AccountCrumb from './AccountCrumb'
 import AssetCrumb from './AssetCrumb'
 
-const Wrapper: ThemedComponent<void> = styled.div`
+const Wrapper: ThemedComponent<{}> = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;

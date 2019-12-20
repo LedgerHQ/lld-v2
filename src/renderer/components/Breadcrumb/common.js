@@ -4,7 +4,9 @@ import styled from 'styled-components'
 import Text from '~/renderer/components/Text'
 import { Base } from '~/renderer/components/Button'
 
-export const Separator = styled.div`
+import type { ThemedComponent } from '~/renderer/styles/StyleProvider'
+
+export const Separator: ThemedComponent<{}> = styled.div`
   &::after {
     content: '/';
     font-size: 13px;
@@ -13,7 +15,7 @@ export const Separator = styled.div`
   }
 `
 
-export const Item = styled.div`
+export const Item: ThemedComponent<{ isActive?: boolean }> = styled.div`
   align-items: center;
   display: flex;
   flex-direction: row;
@@ -35,7 +37,7 @@ export const Item = styled.div`
   }
 `
 
-export const TextLink = styled.div`
+export const TextLink: ThemedComponent<{ shrink?: boolean }> = styled.div`
   font-family: 'Inter';
   font-size: 12px;
   align-items: center;
@@ -60,7 +62,7 @@ export const TextLink = styled.div`
     margin-right: 7px;
   }
 `
-export const AngleDown = styled.div`
+export const AngleDown: ThemedComponent<{}> = styled.div`
   width: 16px;
   height: 16px;
   border-radius: 20px;
@@ -72,7 +74,7 @@ export const AngleDown = styled.div`
   }
 `
 
-export const Check = styled.div`
+export const Check: ThemedComponent<{}> = styled.div`
   color: ${p => p.theme.colors.wallet};
   align-items: center;
   display: flex;

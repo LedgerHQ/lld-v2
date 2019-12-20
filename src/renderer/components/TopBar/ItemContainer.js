@@ -9,7 +9,9 @@ import { Tabbable } from '~/renderer/components/Box'
 
 const ItemContainer: ThemedComponent<{
   ['data-e2e']: string,
-  isInteractive: boolean,
+  isInteractive?: boolean,
+  children: React$Node,
+  justifyContent?: string,
   onClick: () => void,
 }> = styled(Tabbable).attrs(p => ({
   px: 3,

@@ -27,7 +27,7 @@ import IconSettings from '~/renderer/icons/Settings'
 import ActivityIndicator from './ActivityIndicator'
 import ItemContainer from './ItemContainer'
 
-const Container: ThemedComponent<void> = styled(Box).attrs(() => ({
+const Container: ThemedComponent<{}> = styled(Box).attrs(() => ({
   px: 6,
 }))`
   height: ${p => p.theme.sizes.topBarHeight}px;
@@ -52,7 +52,7 @@ const Bar = styled.div`
   background: ${p => p.theme.colors.palette.divider};
 `
 
-export const SeparatorBar: ThemedComponent<void> = styled.div`
+export const SeparatorBar: ThemedComponent<{}> = styled.div`
   height: 1px;
   border-bottom: 1px solid ${p => p.theme.colors.palette.divider};
 `
