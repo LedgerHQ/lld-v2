@@ -16,9 +16,10 @@ const OnboardingOrElse = ({ children }: Props) => {
   const hasCompletedOnboarding = useSelector(hasCompletedOnboardingSelector)
   const onboardingRelaunched = useSelector(onboardingRelaunchedSelector)
 
-  if (!hasCompletedOnboarding || onboardingRelaunched) {
-    return <h1>Onboarding</h1>
-  }
+  // TODO: UNCOMMENT WHEN ONBOARDING IS DONE
+  // if (!hasCompletedOnboarding || onboardingRelaunched) {
+  //   return <h1>Onboarding</h1>
+  // }
 
   return children
 }

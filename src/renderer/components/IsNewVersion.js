@@ -1,7 +1,7 @@
 // @flow
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import semver from 'semver'
+import gt from 'semver/functions/gt'
 
 import { MODAL_RELEASES_NOTES } from '~/config/constants'
 
@@ -16,7 +16,7 @@ const IsNewVersion = () => {
   const currentVersion = __APP_VERSION__
 
   useEffect(() => {
-    if (semver.git(currentVersion, lastUsedVersion)) {
+    if (gt(currentVersion, lastUsedVersion)) {
       dispatch(openModal(MODAL_RELEASES_NOTES, currentVersion))
       dispatch(saveSettings({ lastUsedVersion: currentVersion }))
     }

@@ -25,6 +25,7 @@ import OnboardingOrElse from '~/renderer/components/OnboardingOrElse'
 import AppRegionDrag from '~/renderer/components/AppRegionDrag'
 import CheckTermsAccepted from '~/renderer/components/CheckTermsAccepted'
 import IsNewVersion from '~/renderer/components/IsNewVersion'
+import HSMStatusBanner from '~/renderer/components/HSMStatusBanner'
 
 const Main = styled(GrowScroll).attrs(() => ({
   px: 6,
@@ -69,7 +70,6 @@ const Default = () => {
       {/* <Track mandatory onMount event="App Starts" /> */}
       <Idler />
 
-      <div id="sticky-back-to-top-root" />
       <IsUnlocked>
         <OnboardingOrElse>
           {/* TODO: MODALS */}
@@ -84,6 +84,12 @@ const Default = () => {
           {/* TODO: UpdaterContext and autoUpdate command */}
           {/* {process.env.DEBUG_UPDATE && <DebugUpdater />} */}
 
+          {/* TODO: Bridge / BridgeSyncContext */}
+          {/* <SyncContinuouslyPendingOperations priority={20} interval={SYNC_PENDING_INTERVAL} />
+          <SyncBackground /> */}
+
+          <div id="sticky-back-to-top-root" />
+
           <Box grow horizontal bg="palette.background.paper">
             {/* TODO: SIDEBAR HERE */}
             <Box
@@ -95,32 +101,17 @@ const Default = () => {
               overflow="visible"
               relative
             >
+              <HSMStatusBanner />
               <Main ref={ref} tabIndex={-1} full>
                 <Switch>
-                  <Route path="/" exact>
-                    <Dashboard />
-                  </Route>
-                  <Route path="/settings">
-                    <Settings />
-                  </Route>
-                  <Route path="/accounts">
-                    <Accounts />
-                  </Route>
-                  <Route path="/manager">
-                    <Manager />
-                  </Route>
-                  <Route path="/partners">
-                    <Partners />
-                  </Route>
-                  <Route path="/account/:parentId/:id">
-                    <Account />
-                  </Route>
-                  <Route path="/account/:id">
-                    <Account />
-                  </Route>
-                  <Route path="/asset/:assetId+">
-                    <Asset />
-                  </Route>
+                  <Route path="/" exact component={Dashboard} />
+                  <Route path="/settings" component={Settings} />
+                  <Route path="/accounts" component={Accounts} />
+                  <Route path="/manager" component={Manager} />
+                  <Route path="/partners" component={Partners} />
+                  <Route path="/account/:parentId/:id" component={Account} />
+                  <Route path="/account/:id" component={Account} />
+                  <Route path="/asset/:assetId+" component={Asset} />
                 </Switch>
               </Main>
             </Box>

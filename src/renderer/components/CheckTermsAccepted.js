@@ -2,7 +2,7 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
-import { openModal } from '~/renderer/reducers/modals'
+import { openModal } from '~/renderer/actions/modals'
 import { isAcceptedTerms } from '~/renderer/terms'
 
 const CheckTermsAccepted = () => {
