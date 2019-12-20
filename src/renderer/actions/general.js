@@ -11,7 +11,7 @@ import {
   sortAccountsComparatorFromOrder,
 } from '@ledgerhq/live-common/lib/account'
 
-import CounterValues from './../../helpers/countervalues'
+import CounterValues from '../countervalues'
 import {
   intermediaryCurrency,
   exchangeSettingsForPairSelector,

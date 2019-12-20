@@ -23,13 +23,12 @@ import testApdu from './testApdu'
 import testCrash from './testCrash'
 import testInterval from './testInterval'
 import uninstallApp from './uninstallApp'
-// FIXME
-// import { commands as bridgeProxyCommands } from '../renderer/bridge/proxy'
 import appOpExec from './appOpExec'
+import { commands as bridgeProxyCommands } from '~/renderer/bridge/proxy'
 
 const all: Array<Command<any, any>> = [
   appOpExec,
-  // ...bridgeProxyCommands,
+  ...bridgeProxyCommands,
   getAppAndVersion,
   firmwarePrepare,
   firmwareMain,

@@ -2,17 +2,14 @@
 import path from 'path'
 import { ipcRenderer } from 'electron'
 import debug from 'debug'
-
 import network from '~/network'
 import db from '~/helpers/db'
-
-import { CHECK_UPDATE_DELAY, DISABLE_ACTIVITY_INDICATORS } from './../config/constants'
-
+import { CHECK_UPDATE_DELAY, DISABLE_ACTIVITY_INDICATORS } from '../config/constants'
+import { killInternalProcess } from './reset'
+import { lock } from './actions/application'
 // TODO: import these
 // import { onSetDeviceBusy } from 'components/DeviceBusyIndicator'
 // import { onSetLibcoreBusy } from 'components/LibcoreBusyIndicator'
-
-import { lock } from './actions/application'
 
 const d = {
   sync: debug('lwd:sync'),
@@ -28,7 +25,7 @@ export function sendEvent(channel: string, msgType: string, data: any) {
 
 export default ({ store }: { store: Object }) => {
   // Ensure all sub-processes are killed before creating new ones (dev mode...)
-  ipcRenderer.send('clean-processes')
+  killInternalProcess()
 
   ipcRenderer.on('lock', () => {
     if (db.hasEncryptionKey('app', 'accounts')) {
@@ -62,7 +59,7 @@ export default ({ store }: { store: Object }) => {
 
 if (module.hot) {
   module.hot.accept(path.resolve(__dirname, '..', 'commands'), () => {
-    ipcRenderer.send('clean-processes')
+    killInternalProcess()
   })
 }
 

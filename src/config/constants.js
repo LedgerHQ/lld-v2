@@ -1,5 +1,7 @@
 // @flow
 
+// TODO we need to move everything that we want to keep to live-common
+
 const intFromEnv = (key: string, def: number): number => {
   const v = process.env[key]
   if (!isNaN(v)) return parseInt(v, 10)

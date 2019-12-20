@@ -24,7 +24,7 @@ import libcoreGetVersion from '~/commands/libcoreGetVersion'
 
 import resolveUserDataDirectory from '~/helpers/resolveUserDataDirectory'
 import db from '~/helpers/db'
-import Countervalues from '~/helpers/countervalues'
+import Countervalues from '~/renderer/countervalues'
 import { setEnvOnAllThreads } from '~/helpers/env'
 
 // import sentry from '~/sentry/browser'

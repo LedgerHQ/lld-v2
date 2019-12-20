@@ -3,7 +3,7 @@
 /* eslint-disable consistent-return */
 
 import db from './../../helpers/db'
-import CounterValues from './../../helpers/countervalues'
+import CounterValues from '../countervalues'
 
 import { accountsSelector } from './../reducers/accounts'
 import { settingsExportSelector, areSettingsLoaded } from './../reducers/settings'

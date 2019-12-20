@@ -106,14 +106,14 @@ const captureException = (_error: Error) => {
   */
 }
 
-const logCmds = !__DEV__ || process.env.DEBUG_COMMANDS
-const logDb = !__DEV__ || process.env.DEBUG_DB
-const logRedux = !__DEV__ || process.env.DEBUG_ACTION
-const logTabkey = !__DEV__ || process.env.DEBUG_TAB_KEY
-const logWS = !__DEV__ || process.env.DEBUG_WS
-const logNetwork = !__DEV__ || process.env.DEBUG_NETWORK
-const logAnalytics = !__DEV__ || process.env.DEBUG_ANALYTICS
-const logApdu = !__DEV__ || process.env.DEBUG_DEVICE
+const logCmds = !process.env.NO_DEBUG_COMMANDS
+const logDb = !process.env.NO_DEBUG_DB
+const logRedux = !process.env.NO_DEBUG_ACTION
+const logTabkey = !process.env.NO_DEBUG_TAB_KEY
+const logWS = !process.env.NO_DEBUG_WS
+const logNetwork = !process.env.NO_DEBUG_NETWORK
+const logAnalytics = !process.env.NO_DEBUG_ANALYTICS
+const logApdu = !process.env.NO_DEBUG_DEVICE
 
 const blacklistTooVerboseCommandInput = [
   'CurrencyScanAccountsOnDevice',

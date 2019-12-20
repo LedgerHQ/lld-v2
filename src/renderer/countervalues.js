@@ -5,17 +5,15 @@ import { createSelector } from 'reselect'
 import { getEnv } from '@ledgerhq/live-common/lib/env'
 import { implementCountervalues, getCountervalues } from '@ledgerhq/live-common/lib/countervalues'
 import uniq from 'lodash/uniq'
-
-import logger from './../logger'
-import network from './../network'
-
-import { setExchangePairsAction } from './../renderer/actions/settings'
-import { currenciesSelector } from './../renderer/reducers/accounts'
+import logger from '~/logger'
+import network from '~/network'
+import { setExchangePairsAction } from './actions/settings'
+import { currenciesSelector } from './reducers/accounts'
 import {
   counterValueCurrencySelector,
   exchangeSettingsForPairSelector,
   intermediaryCurrency,
-} from './../renderer/reducers/settings'
+} from './reducers/settings'
 
 export const pairsSelector: OutputSelector<*, *, *> = createSelector(
   currenciesSelector,

@@ -8,11 +8,12 @@ import type { ThemedComponent } from '~/renderer/styles/StyleProvider'
 import { Tabbable } from '~/renderer/components/Box'
 
 const ItemContainer: ThemedComponent<{
-  ['data-e2e']: string,
+  'data-e2e'?: string,
   isInteractive?: boolean,
+  onClick?: () => void,
+  disabled?: boolean,
   children: React$Node,
   justifyContent?: string,
-  onClick: () => void,
 }> = styled(Tabbable).attrs(p => ({
   px: 3,
   ml: 0,

@@ -9,7 +9,7 @@ import { PasswordIncorrectError } from '@ledgerhq/errors'
 import IconTriangleWarning from '~/renderer/icons/TriangleWarning'
 
 import db from '~/helpers/db'
-import { hardReset } from '~/helpers/reset'
+import { hardReset } from '~/renderer/reset'
 
 import { fetchAccounts } from '~/renderer/actions/accounts'
 import { unlock } from '~/renderer/actions/application'

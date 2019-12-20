@@ -12,7 +12,7 @@ import type {
 } from '@ledgerhq/live-common/lib/types'
 import { flattenAccounts, getAccountCurrency } from '@ledgerhq/live-common/lib/account'
 
-import CounterValues from './../../helpers/countervalues'
+import CounterValues from '../countervalues'
 
 import {
   exchangeSettingsForPairSelector,

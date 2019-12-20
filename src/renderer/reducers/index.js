@@ -7,7 +7,7 @@ import { combineReducers } from 'redux'
 // import type { LocationShape } from 'react-router'
 import type { CounterValuesState } from '@ledgerhq/live-common/lib/countervalues/types'
 
-import CounterValues from './../../helpers/countervalues'
+import CounterValues from '../countervalues'
 import accounts from './accounts'
 import application from './application'
 import currenciesStatus from './currenciesStatus'
