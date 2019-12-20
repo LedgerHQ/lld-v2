@@ -20,7 +20,11 @@ import Manager from '~/renderer/screens/manager'
 import Partners from '~/renderer/screens/partners'
 import Account from '~/renderer/screens/account'
 import Asset from '~/renderer/screens/asset'
-import IsUnlocked from './components/IsUnlocked'
+import IsUnlocked from '~/renderer/components/IsUnlocked'
+import OnboardingOrElse from '~/renderer/components/OnboardingOrElse'
+import AppRegionDrag from '~/renderer/components/AppRegionDrag'
+import CheckTermsAccepted from '~/renderer/components/CheckTermsAccepted'
+import IsNewVersion from '~/renderer/components/IsNewVersion'
 
 const Main = styled(GrowScroll).attrs(() => ({
   px: 6,
@@ -59,53 +63,69 @@ const Default = () => {
       <ListenDevices />
       <ExportLogsBtn hookToShortcut />
 
+      {process.platform === 'darwin' ? <AppRegionDrag /> : null}
+
       {/* TODO: ANALYTICS: v1 = analytics/track */}
       {/* <Track mandatory onMount event="App Starts" /> */}
       <Idler />
 
       <div id="sticky-back-to-top-root" />
       <IsUnlocked>
-        <Box grow horizontal bg="palette.background.paper">
-          {/* TODO: SIDEBAR HERE */}
-          <Box
-            className="main-container"
-            shrink
-            grow
-            bg="palette.background.default"
-            color="palette.text.shade60"
-            overflow="visible"
-            relative
-          >
-            <Main ref={ref} tabIndex={-1} full>
-              <Switch>
-                <Route path="/" exact>
-                  <Dashboard />
-                </Route>
-                <Route path="/settings">
-                  <Settings />
-                </Route>
-                <Route path="/accounts">
-                  <Accounts />
-                </Route>
-                <Route path="/manager">
-                  <Manager />
-                </Route>
-                <Route path="/partners">
-                  <Partners />
-                </Route>
-                <Route path="/account/:parentId/:id">
-                  <Account />
-                </Route>
-                <Route path="/account/:id">
-                  <Account />
-                </Route>
-                <Route path="/asset/:assetId+">
-                  <Asset />
-                </Route>
-              </Switch>
-            </Main>
+        <OnboardingOrElse>
+          {/* TODO: MODALS */}
+          {/* {visibleModals.map(([name, ModalComponent]) => (
+            <ModalComponent key={name} />
+          ))} */}
+
+          <CheckTermsAccepted />
+
+          <IsNewVersion />
+
+          {/* TODO: UpdaterContext and autoUpdate command */}
+          {/* {process.env.DEBUG_UPDATE && <DebugUpdater />} */}
+
+          <Box grow horizontal bg="palette.background.paper">
+            {/* TODO: SIDEBAR HERE */}
+            <Box
+              className="main-container"
+              shrink
+              grow
+              bg="palette.background.default"
+              color="palette.text.shade60"
+              overflow="visible"
+              relative
+            >
+              <Main ref={ref} tabIndex={-1} full>
+                <Switch>
+                  <Route path="/" exact>
+                    <Dashboard />
+                  </Route>
+                  <Route path="/settings">
+                    <Settings />
+                  </Route>
+                  <Route path="/accounts">
+                    <Accounts />
+                  </Route>
+                  <Route path="/manager">
+                    <Manager />
+                  </Route>
+                  <Route path="/partners">
+                    <Partners />
+                  </Route>
+                  <Route path="/account/:parentId/:id">
+                    <Account />
+                  </Route>
+                  <Route path="/account/:id">
+                    <Account />
+                  </Route>
+                  <Route path="/asset/:assetId+">
+                    <Asset />
+                  </Route>
+                </Switch>
+              </Main>
+            </Box>
           </Box>
-        </Box>
+        </OnboardingOrElse>
       </IsUnlocked>
     </>
   )

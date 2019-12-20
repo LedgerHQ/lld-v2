@@ -1,9 +1,11 @@
 // @flow
 import React from 'react'
-import '~/renderer/global.css'
+import { hot } from 'react-hot-loader/root'
 import { Provider } from 'react-redux'
 import { HashRouter as Router, Link } from 'react-router-dom'
 import styled from 'styled-components'
+
+import '~/renderer/global.css'
 
 import dbMiddlewares from '~/renderer/middlewares/db'
 import createStore from '~/renderer/createStore'
@@ -59,4 +61,4 @@ const App = () => (
   </Provider>
 )
 
-export default App
+export default hot(App)
