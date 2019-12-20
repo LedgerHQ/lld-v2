@@ -8,7 +8,7 @@ import type { T } from 'types/common'
 
 import { darken, lighten } from '~/renderer/styles/helpers'
 
-import IconCopy from '~/icons/Copy'
+import IconCopy from '~/renderer/icons/Copy'
 import Box from '~/renderer/components/Box'
 
 let clipboard = null

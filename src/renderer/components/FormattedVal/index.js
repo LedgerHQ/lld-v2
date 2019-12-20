@@ -7,20 +7,20 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 
 import type { Unit } from '@ledgerhq/live-common/lib/types'
-import type { State } from '~/reducers'
+import type { State } from '~/renderer/reducers'
 
 import { formatCurrencyUnit } from '@ledgerhq/live-common/lib/currencies'
 
 import { DISABLE_TICKER_ANIMATION } from '~/config/constants'
-import { marketIndicatorSelector, localeSelector } from '~/reducers/settings'
+import { marketIndicatorSelector, localeSelector } from '~/renderer/reducers/settings'
 
 import { getMarketColor } from '~/renderer/styles/helpers'
 
 import Box from '~/renderer/components/Box'
 import FlipTicker from '~/renderer/components/FlipTicker'
 
-import IconBottom from '~/icons/ArrowDownRight'
-import IconTop from '~/icons/ArrowUpRight'
+import IconBottom from '~/renderer/icons/ArrowDownRight'
+import IconTop from '~/renderer/icons/ArrowUpRight'
 import Ellipsis from '../Ellipsis'
 
 const T = styled(Box).attrs(p => ({

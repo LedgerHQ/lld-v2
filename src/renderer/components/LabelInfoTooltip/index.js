@@ -4,7 +4,7 @@ import React from 'react'
 
 import Box from '~/renderer/components/Box'
 import Tooltip from '~/renderer/components/Tooltip'
-import IconInfoCircle from '~/icons/InfoCircle'
+import IconInfoCircle from '~/renderer/icons/InfoCircle'
 
 type Props = {
   text: string,

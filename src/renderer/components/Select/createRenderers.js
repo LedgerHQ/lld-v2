@@ -7,9 +7,9 @@ import { components } from 'react-select'
 import type { OptionProps } from 'react-select/lib/types'
 
 import Box from '~/renderer/components/Box'
-import IconCheck from '~/icons/Check'
-import IconAngleDown from '~/icons/AngleDown'
-import IconCross from '~/icons/Cross'
+import IconCheck from '~/renderer/icons/Check'
+import IconAngleDown from '~/renderer/icons/AngleDown'
+import IconCross from '~/renderer/icons/Cross'
 
 import type { Option } from './index'
 

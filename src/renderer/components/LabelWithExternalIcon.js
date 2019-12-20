@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import Label from '~/renderer/components/Label'
 import Box from '~/renderer/components/Box'
-import IconExternalLink from '~/icons/ExternalLink'
+import IconExternalLink from '~/renderer/icons/ExternalLink'
 
 const LabelWrapper = styled(Label).attrs(p => ({ ff: p.ff ? p.ff : 'Inter|Medium' }))`
   display: inline-flex;

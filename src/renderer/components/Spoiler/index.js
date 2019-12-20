@@ -6,7 +6,7 @@ import styled from 'styled-components'
 
 import Box from '~/renderer/components/Box'
 import Text from '~/renderer/components/Text'
-import IconChevronRight from '~/icons/ChevronRight'
+import IconChevronRight from '~/renderer/icons/ChevronRight'
 
 type Props = {
   children: any,

@@ -3,7 +3,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import Check from '~/icons/Check'
+import Check from '~/renderer/icons/Check'
 import { Tabbable } from '~/renderer/components/Box'
 
 const Base = styled(Tabbable).attrs(() => ({

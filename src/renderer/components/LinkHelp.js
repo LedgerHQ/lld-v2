@@ -4,7 +4,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import Box from '~/renderer/components/Box'
-import IconHelp from '~/icons/Help'
+import IconHelp from '~/renderer/icons/Help'
 
 import Label from './Label'
 import { rgba } from '../../styles/helpers'

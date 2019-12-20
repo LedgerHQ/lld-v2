@@ -4,7 +4,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import Box from '~/renderer/components/Box'
-import IconExternalLink from '~/icons/ExternalLink'
+import IconExternalLink from '~/renderer/icons/ExternalLink'
 
 import Label from './Label'
 import { rgba } from '../../styles/helpers'
