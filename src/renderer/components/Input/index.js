@@ -139,124 +139,122 @@ type Props = {
 }
 
 // $FlowFixMe @IAmMorrow
-const Input = React.forwardRef(
-  (
-    {
-      renderLeft = null,
-      renderRight = null,
-      containerProps,
-      editInPlace,
-      small = false,
-      error,
-      loading,
-      warning,
-      disabled,
-      onChange,
-      keepEvent,
-      onEnter,
-      onEsc,
-      onFocus = noop,
-      onBlur = noop,
-      ...props
-    }: Props,
-    inputRef,
-  ) => {
-    const [isFocus, setFocus] = useState(false)
+const Input = React.forwardRef(function Input(
+  {
+    renderLeft = null,
+    renderRight = null,
+    containerProps,
+    editInPlace,
+    small = false,
+    error,
+    loading,
+    warning,
+    disabled,
+    onChange,
+    keepEvent,
+    onEnter,
+    onEsc,
+    onFocus = noop,
+    onBlur = noop,
+    ...props
+  }: Props,
+  inputRef,
+) {
+  const [isFocus, setFocus] = useState(false)
 
-    const handleChange = useCallback(
-      (e: SyntheticInputEvent<HTMLInputElement>) => {
-        if (onChange) {
-          onChange(keepEvent ? e : e.target.value)
-        }
-      },
-      [onChange, keepEvent],
-    )
-
-    const handleKeyDown = useCallback(
-      (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
-        // handle enter key
-        if (e.which === 13 && onEnter) {
-          onEnter(e)
-        } else if (e.which === 27 && onEsc) {
-          onEsc(e)
-        }
-      },
-      [onEnter, onEsc],
-    )
-
-    const handleClick = useCallback(() => {
-      if (inputRef && inputRef.current) {
-        // $FlowFixMe @IAmMorrow
-        inputRef.current.focus()
+  const handleChange = useCallback(
+    (e: SyntheticInputEvent<HTMLInputElement>) => {
+      if (onChange) {
+        onChange(keepEvent ? e : e.target.value)
       }
-    }, [inputRef])
+    },
+    [onChange, keepEvent],
+  )
 
-    const handleFocus = useCallback(
-      (e: SyntheticInputEvent<HTMLInputElement>) => {
-        setFocus(true)
-        if (onFocus) {
-          onFocus(e)
-        }
-      },
-      [onFocus],
-    )
+  const handleKeyDown = useCallback(
+    (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
+      // handle enter key
+      if (e.which === 13 && onEnter) {
+        onEnter(e)
+      } else if (e.which === 27 && onEsc) {
+        onEsc(e)
+      }
+    },
+    [onEnter, onEsc],
+  )
 
-    const handleBlur = useCallback(
-      (e: SyntheticInputEvent<HTMLInputElement>) => {
-        setFocus(false)
-        if (onBlur) {
-          onBlur(e)
-        }
-      },
-      [onBlur],
-    )
+  const handleClick = useCallback(() => {
+    if (inputRef && inputRef.current) {
+      // $FlowFixMe @IAmMorrow
+      inputRef.current.focus()
+    }
+  }, [inputRef])
 
-    return (
-      <Container
-        onClick={handleClick}
-        isFocus={isFocus}
-        shrink
-        {...containerProps}
-        disabled={disabled}
-        small={small}
-        error={error}
-        warning={warning}
-        editInPlace={editInPlace}
-      >
-        {!loading || isFocus ? <RenderLeftWrapper>{renderLeft}</RenderLeftWrapper> : null}
-        <Box px={3} grow shrink>
-          <Base
-            {...props}
-            small={small}
-            disabled={disabled}
-            ref={inputRef}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
-          />
-          {error ? (
-            <ErrorDisplay>
-              <TranslatedError error={error} />
-            </ErrorDisplay>
-          ) : warning ? (
-            <WarningDisplay>
-              <TranslatedError error={warning} />
-            </WarningDisplay>
-          ) : null}
-          {loading && !isFocus ? (
-            <LoadingDisplay>
-              <Spinner size={16} color="palette.text.shade50" />
-              <Text ff="Inter" color="palette.text.shade50" fontSize={4}>
-                {'Loading'}
-              </Text>
-            </LoadingDisplay>
-          ) : null}
-        </Box>
-        {renderRight ? <RenderRightWrapper>{renderRight}</RenderRightWrapper> : null}
-      </Container>
-    )
-  },
-)
+  const handleFocus = useCallback(
+    (e: SyntheticInputEvent<HTMLInputElement>) => {
+      setFocus(true)
+      if (onFocus) {
+        onFocus(e)
+      }
+    },
+    [onFocus],
+  )
+
+  const handleBlur = useCallback(
+    (e: SyntheticInputEvent<HTMLInputElement>) => {
+      setFocus(false)
+      if (onBlur) {
+        onBlur(e)
+      }
+    },
+    [onBlur],
+  )
+
+  return (
+    <Container
+      onClick={handleClick}
+      isFocus={isFocus}
+      shrink
+      {...containerProps}
+      disabled={disabled}
+      small={small}
+      error={error}
+      warning={warning}
+      editInPlace={editInPlace}
+    >
+      {!loading || isFocus ? <RenderLeftWrapper>{renderLeft}</RenderLeftWrapper> : null}
+      <Box px={3} grow shrink>
+        <Base
+          {...props}
+          small={small}
+          disabled={disabled}
+          ref={inputRef}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+        />
+        {error ? (
+          <ErrorDisplay>
+            <TranslatedError error={error} />
+          </ErrorDisplay>
+        ) : warning ? (
+          <WarningDisplay>
+            <TranslatedError error={warning} />
+          </WarningDisplay>
+        ) : null}
+        {loading && !isFocus ? (
+          <LoadingDisplay>
+            <Spinner size={16} color="palette.text.shade50" />
+            <Text ff="Inter" color="palette.text.shade50" fontSize={4}>
+              {'Loading'}
+            </Text>
+          </LoadingDisplay>
+        ) : null}
+      </Box>
+      {renderRight ? <RenderRightWrapper>{renderRight}</RenderRightWrapper> : null}
+    </Container>
+  )
+})
 
 export default Input

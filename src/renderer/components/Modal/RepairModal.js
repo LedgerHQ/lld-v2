@@ -46,18 +46,20 @@ type ChoiceProps = {
   onSelect: any,
 }
 
-const Choice = React.memo(({ selected, choice, onSelect }: ChoiceProps) => (
-  <ChoiceBox selected={selected} onClick={() => onSelect(selected ? null : choice)}>
-    <Text ff="Inter|SemiBold" fontSize={4}>
-      {choice.label}
-    </Text>
-    {selected ? (
-      <Box color="wallet">
-        <IconCheck size={16} />
-      </Box>
-    ) : null}
-  </ChoiceBox>
-))
+const Choice = React.memo(function Choice({ selected, choice, onSelect }: ChoiceProps) {
+  return (
+    <ChoiceBox selected={selected} onClick={() => onSelect(selected ? null : choice)}>
+      <Text ff="Inter|SemiBold" fontSize={4}>
+        {choice.label}
+      </Text>
+      {selected ? (
+        <Box color="wallet">
+          <IconCheck size={16} />
+        </Box>
+      ) : null}
+    </ChoiceBox>
+  )
+})
 
 const DisclaimerStep = ({ desc }: { desc?: string }) => (
   <Box>

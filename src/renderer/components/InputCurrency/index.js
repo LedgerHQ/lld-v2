@@ -80,7 +80,8 @@ class InputCurrency extends PureComponent<Props, State> {
     this.syncInput({ isFocused: false })
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const { locale, value, showAllDigits, unit } = this.props
     const needsToBeReformatted =
       !this.state.isFocused &&
@@ -214,5 +215,6 @@ const Connected = uncontrollable(
   },
 )
 
-// $FlowFixMe
-export default React.forwardRef((props, ref) => <Connected {...props} forwardedRef={ref} />)
+export default React.forwardRef(function InputCurrency(props, ref) {
+  return <Connected {...props} forwardedRef={ref} />
+})
