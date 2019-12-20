@@ -26,12 +26,6 @@ body {
   cursor: default;
 }
 
-#app {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
 b {
   font-weight: bold;
 }

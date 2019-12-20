@@ -1,8 +1,11 @@
 // @flow
 
 import React, { PureComponent } from 'react'
+
+// DIRTY HACK, THERE IS PROBABLY A BETTER WAY TO DO THIS
+import measureScrollbar from '~/renderer/measureScrollbar'
+
 import Box from '~/renderer/components/Box'
-import measureScrollbar from 'measure-scrollbar/commonjs'
 
 type Props = {
   children: any,
@@ -15,6 +18,7 @@ export const GrowScrollContext = React.createContext()
 
 const scrollbarWidth = measureScrollbar()
 
+// TODO: REWORK THIS ?
 class GrowScroll extends PureComponent<Props> {
   static defaultProps = {
     full: false,

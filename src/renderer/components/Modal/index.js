@@ -7,9 +7,9 @@ import noop from 'lodash/noop'
 import Animated from 'animated/lib/targets/react-dom'
 import Easing from 'animated/lib/Easing'
 import { withTheme } from 'styled-components'
-import Snow, { isSnowTime } from '~/renderer/components/extra/Snow'
+// import Snow, { isSnowTime } from '~/renderer/components/extra/Snow'
 
-import { closeModal, isModalOpened, getModalData } from '~/reducers/modals'
+import { closeModal, isModalOpened, getModalData } from '~/renderer/reducers/modals'
 
 export { default as ModalBody } from './ModalBody'
 

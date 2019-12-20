@@ -7,7 +7,8 @@ import noop from 'lodash/noop'
 import fontFamily from '~/renderer/styles/styled/fontFamily'
 import Spinner from '~/renderer/components/Spinner'
 import Box from '~/renderer/components/Box'
-import TranslatedError from '~/renderer/components/TranslatedError'
+// TODO: TRANSLATED ERROR
+// import TranslatedError from '~/renderer/components/TranslatedError'
 import Text from '~/renderer/components/Text'
 
 const RenderLeftWrapper = styled(Box)`
@@ -62,7 +63,7 @@ const Container = styled(Box).attrs(() => ({
 
   ${p =>
     (p.error || p.warning || p.isFocus) &&
-    `> ${RenderRightWrapper} *, 
+    `> ${RenderRightWrapper} *,
     > ${RenderLeftWrapper} *{
       color: var(--status-color);
       border-color: var(--status-color);

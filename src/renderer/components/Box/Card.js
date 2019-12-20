@@ -4,7 +4,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import Text from '~/renderer/components/Text'
-import Box from '~/renderer/components/Box'
+import Box from './Box'
 
 const RawCard = styled(Box).attrs(p => ({
   bg: p.bg || 'palette.background.paper',

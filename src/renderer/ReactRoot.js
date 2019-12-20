@@ -18,8 +18,11 @@ class ReactRoot extends Component<Props, State> {
     error: null,
   }
 
+  _timeout: *
+
   componentDidMount() {
     ipcRenderer.send('ready-to-show', {})
+    window.requestAnimationFrame(() => (this._timeout = setTimeout(() => window.onAppReady(), 300)))
     libcoreGetVersion
       .send()
       .toPromise()
@@ -31,6 +34,10 @@ class ReactRoot extends Component<Props, State> {
           console.error('libcoreGetVersion', e)
         },
       )
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this._timeout)
   }
 
   componentDidCatch(error: any, errorInfo: any) {
