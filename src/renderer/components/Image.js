@@ -15,7 +15,7 @@
 
 import React from 'react'
 import useTheme from '~/hooks/useTheme'
-import { i } from '~/helpers/staticPath'
+import { i } from '~/renderer/helpers/staticPath'
 import styled from 'styled-components'
 import path from 'path'
 

@@ -9,7 +9,7 @@ import IconCheck from '~/renderer/icons/Check'
 import Box from '~/renderer/components/Box'
 import ParentCryptoCurrencyIcon from '~/renderer/components/ParentCryptoCurrencyIcon'
 import useTheme from '~/hooks/useTheme'
-import ensureContrast from '~/helpers/ensureContrast'
+import ensureContrast from '~/renderer/helpers/ensureContrast'
 
 import Spinner from './Spinner'
 

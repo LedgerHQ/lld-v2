@@ -8,7 +8,7 @@ const regexp = /\.\/(.+).json/
 
 const shades = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 
-type RawTheme = {
+type RawPalette = {
   type: 'light' | 'dark',
   primary: {
     main: String,
@@ -29,7 +29,7 @@ type RawTheme = {
 }
 
 export type Theme = {
-  ...RawTheme,
+  ...RawPalette,
   text: {
     shade10: String,
     shade20: String,
@@ -44,11 +44,11 @@ export type Theme = {
   },
 }
 
-const enrichTheme = (rawTheme: RawTheme): Theme => {
+const enrichPalette = (rawPalette: RawPalette): Theme => {
   return {
-    ...rawTheme,
+    ...rawPalette,
     text: shades.reduce((acc, value) => {
-      acc[`shade${value}`] = Color(rawTheme.secondary.main)
+      acc[`shade${value}`] = Color(rawPalette.secondary.main)
         .alpha(value / 100)
         .toString()
       return acc
@@ -56,12 +56,12 @@ const enrichTheme = (rawTheme: RawTheme): Theme => {
   }
 }
 
-const themes = context.keys().reduce((acc, filename) => {
+const palettes = context.keys().reduce((acc, filename) => {
   const name = filename.match(regexp)[1]
-  const rawTheme: RawTheme = context(filename)
-  acc[name] = enrichTheme(rawTheme)
+  const rawPalette: RawPalette = context(filename)
+  acc[name] = enrichPalette(rawPalette)
 
   return acc
 }, {})
 
-export default themes
+export default palettes

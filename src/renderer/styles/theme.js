@@ -86,7 +86,25 @@ const exportedColors = WARN_LEGACY_COLORS
 
 export { exportedColors as colors }
 
-export default {
+type Font = {
+  weight: Number,
+  style: String,
+}
+
+export type Theme = {
+  sizes: {
+    topBarHeight: Number,
+    sideBarWidth: Number,
+  },
+  radii: Number[],
+  fontFamilies: { [String]: { [String]: Font } },
+  fontSizes: Number[],
+  space: Number[],
+  shadows: String[],
+  colors: { [String]: String },
+}
+
+const theme: Theme = {
   sizes: {
     topBarHeight: 58,
     sideBarWidth: 230,
@@ -98,3 +116,5 @@ export default {
   shadows,
   colors,
 }
+
+export default theme

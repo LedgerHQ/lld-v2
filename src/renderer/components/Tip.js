@@ -5,8 +5,9 @@ import styled from 'styled-components'
 import useTheme from '~/hooks/useTheme'
 import Box from './Box'
 import InfoCircle from '../../icons/InfoCircle'
+import type { ThemedComponent } from '~/renderer/styles/StyleProvider'
 
-const TokenTipsContainer = styled(Box)`
+const TokenTipsContainer: ThemedComponent<{}> = styled(Box)`
   background: ${p => p.theme.colors.pillActiveBackground};
   border-radius: 4px;
   color: ${p => p.theme.colors.wallet};

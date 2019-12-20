@@ -5,6 +5,7 @@ import styled, { keyframes, css } from 'styled-components'
 
 import Box from '~/renderer/components/Box'
 import IconLoader from '~/renderer/icons/Loader'
+import type { ThemedComponent } from '~/renderer/styles/StyleProvider'
 
 const rotate = keyframes`
   0% {
@@ -15,7 +16,7 @@ const rotate = keyframes`
   }
 `
 
-export const Rotating = styled(Box)`
+export const Rotating: ThemedComponent<{ size: number, isRotating: boolean }> = styled(Box)`
   width: ${p => p.size}px;
   height: ${p => p.size}px;
   animation: ${p =>

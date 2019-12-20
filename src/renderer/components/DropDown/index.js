@@ -6,13 +6,14 @@ import noop from 'lodash/noop'
 import Downshift from 'downshift'
 
 import Box from '~/renderer/components/Box'
+import type { ThemedComponent } from '~/renderer/styles/StyleProvider'
 
-const Trigger = styled(Box)`
+const Trigger: ThemedComponent<{}> = styled(Box)`
   outline: none;
   cursor: pointer;
 `
 
-const Drop = styled(Box).attrs(() => ({
+const Drop: ThemedComponent<{}> = styled(Box).attrs(() => ({
   bg: 'palette.background.paper',
   boxShadow: 0,
   borderRadius: 1,
@@ -28,7 +29,9 @@ const Drop = styled(Box).attrs(() => ({
   overflow: scroll;
 `
 
-export const DropDownItem = styled(Box).attrs(p => ({
+export const DropDownItem: ThemedComponent<{ isHighlighted: boolean, isActive: boolean }> = styled(
+  Box,
+).attrs(p => ({
   borderRadius: 1,
   justifyContent: 'center',
   ff: p.isActive ? 'Inter|SemiBold' : 'Inter',
@@ -41,7 +44,7 @@ export const DropDownItem = styled(Box).attrs(p => ({
   white-space: nowrap;
 `
 
-export const Wrapper = styled(Box)`
+export const Wrapper: ThemedComponent<{ shrink: boolean }> = styled(Box)`
   flex-shrink: 1;
   ${p => p.shrink && `flex-shrink:${p.shrink};`}
 `

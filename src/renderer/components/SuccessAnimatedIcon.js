@@ -53,7 +53,7 @@ const fadeIn = keyframes`
   }
 `
 
-const SuccessLogoContainer = styled(Box).attrs(() => ({
+const SuccessLogoContainer: ThemedComponent<{ width: Number }> = styled(Box).attrs(() => ({
   borderRadius: '50%',
   alignItems: 'center',
   justifyContent: 'center',

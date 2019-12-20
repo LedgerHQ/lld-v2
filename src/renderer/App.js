@@ -27,7 +27,7 @@ const Span = styled.span`
 
 const App = () => (
   <Provider store={store}>
-    <StyleProvider selectedTheme="light">
+    <StyleProvider selectedPalette="light">
       <Router>
         <Nav style={{ marginTop: 40 }}>
           <Link to="/">

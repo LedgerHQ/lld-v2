@@ -2,7 +2,7 @@
 import React from 'react'
 import { ThemeProvider } from 'styled-components'
 import theme, { colors } from '~/renderer/styles/theme'
-import palette from '~/renderer/styles/themes'
+import palette from '~/renderer/styles/palettes'
 import '~/renderer/i18n/init'
 
 // TODO: WHEN BASE IS IMPORTED

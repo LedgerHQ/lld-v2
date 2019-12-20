@@ -23,7 +23,9 @@ import IconBottom from '~/renderer/icons/ArrowDownRight'
 import IconTop from '~/renderer/icons/ArrowUpRight'
 import Ellipsis from '../Ellipsis'
 
-const T = styled(Box).attrs(p => ({
+import type { ThemedComponent } from '~/renderer/styles/StyleProvider'
+
+const T: ThemedComponent<{ color: String, inline: Boolean }> = styled(Box).attrs(p => ({
   ff: 'Inter|Medium',
   horizontal: true,
   color: p.color,

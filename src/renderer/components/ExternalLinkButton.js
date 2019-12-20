@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react'
-import { openURL } from '~/helpers/linking'
+import { openURL } from '~/renderer/helpers/linking'
 
 import Button from '~/renderer/components/Button'
 
