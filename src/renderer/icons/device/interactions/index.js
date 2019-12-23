@@ -6,10 +6,6 @@ import NanoS from './NanoS'
 import NanoX from './NanoX'
 import Blue from './Blue'
 
-type TypeProps = {
-  type: 'nanoS' | 'nanoX' | 'blue',
-}
-
 export type ScreenTypes =
   | 'validation'
   | 'home'
@@ -21,6 +17,7 @@ export type ScreenTypes =
   | 'update'
 
 export type Props = {
+  type: 'nanoS' | 'nanoX' | 'blue',
   wire?: 'wired' | 'disconnecting' | 'connecting',
   action?: 'left' | 'accept',
   screen?: ScreenTypes,
@@ -44,14 +41,7 @@ const devices = {
   nanoS: NanoS,
 }
 
-const Interactions = ({
-  type = 'nanoS',
-  wire,
-  screen,
-  error,
-  action,
-  ...rest
-}: TypeProps & Props) => {
+const Interactions = ({ type = 'nanoS', wire, screen, error, action, width }: Props) => {
   const Device = devices[type]
   const props = {
     error: !!error,
@@ -59,9 +49,10 @@ const Interactions = ({
     usb: wire && usbMap[wire],
     leftHint: action === 'left' || (type === 'nanoX' && action === 'accept'),
     rightHint: action === 'accept',
+    width,
   }
 
-  return <Device open {...rest} {...props} />
+  return <Device open {...props} />
 }
 
 export default Interactions

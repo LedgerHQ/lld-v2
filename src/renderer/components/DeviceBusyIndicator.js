@@ -1,3 +1,4 @@
+// @flow
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 
@@ -16,7 +17,7 @@ const Indicator = styled.div`
 // NB this is done like this to be extremely performant. we don't want redux for this..
 let globalBusy = false
 const instances = []
-export const onSetDeviceBusy = busy => {
+export const onSetDeviceBusy = (busy: boolean) => {
   globalBusy = busy
   instances.forEach(i => i.forceUpdate())
 }

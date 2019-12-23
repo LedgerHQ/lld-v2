@@ -9,8 +9,8 @@ const path = (
   />
 )
 
-const NanoX = ({ size, ...p }: { size: number }) => (
-  <svg viewBox="0 0 8 30" height={size} width={size} {...p}>
+const NanoX = ({ size }: { size: number }) => (
+  <svg viewBox="0 0 8 30" height={size} width={size}>
     {path}
   </svg>
 )

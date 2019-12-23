@@ -76,8 +76,8 @@ const ModalHeader = ({
   onClose,
 }: {
   children: any,
-  onBack: void => void,
-  onClose: void => void,
+  onBack?: void => void,
+  onClose?: void => void,
 }) => {
   const { t } = useTranslation()
   return (
