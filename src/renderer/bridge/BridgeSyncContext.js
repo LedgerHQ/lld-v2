@@ -17,19 +17,27 @@ import type { Account } from '@ledgerhq/live-common/lib/types'
 import { getEnv } from '@ledgerhq/live-common/lib/env'
 import { getAccountCurrency } from '@ledgerhq/live-common/lib/account'
 import { getAccountBridge } from '@ledgerhq/live-common/lib/bridge'
+
 import logger from '~/logger'
-import { updateAccountWithUpdater } from '../actions/accounts'
-import type { State } from '../reducers'
-import { setAccountSyncState } from '../actions/bridgeSync'
-import { recentlyChangedExperimental } from '../experimental'
-import { recentlyKilledInternalProcess, onUnusualInternalProcessError } from '../reset'
-import { bridgeSyncSelector, syncStateLocalSelector } from '../reducers/bridgeSync'
-import type { BridgeSyncState } from '../reducers/bridgeSync'
-import { accountsSelector, isUpToDateSelector } from '../reducers/accounts'
-import { currenciesStatusSelector, currencyDownStatusLocal } from '../reducers/currenciesStatus'
-import type { CurrencyStatus } from '../reducers/currenciesStatus'
+
+import { updateAccountWithUpdater } from '~/renderer/actions/accounts'
+import { setAccountSyncState } from '~/renderer/actions/bridgeSync'
+
+import { bridgeSyncSelector, syncStateLocalSelector } from '~/renderer/reducers/bridgeSync'
+import type { BridgeSyncState } from '~/renderer/reducers/bridgeSync'
+import { accountsSelector, isUpToDateSelector } from '~/renderer/reducers/accounts'
+import {
+  currenciesStatusSelector,
+  currencyDownStatusLocal,
+} from '~/renderer/reducers/currenciesStatus'
+import type { CurrencyStatus } from '~/renderer/reducers/currenciesStatus'
+import type { State } from '~/renderer/reducers'
+
+import { recentlyChangedExperimental } from '~/renderer/experimental'
+import { recentlyKilledInternalProcess, onUnusualInternalProcessError } from '~/renderer/reset'
+import { track } from '~/renderer/analytics/segment'
+
 import { prepareCurrency, hydrateCurrency } from './cache'
-import { track } from '../analytics/segment'
 
 type BridgeSyncProviderProps = {
   children: *,

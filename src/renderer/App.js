@@ -2,13 +2,18 @@
 import React from 'react'
 import { hot } from 'react-hot-loader/root'
 import { Provider } from 'react-redux'
+import type { Store } from 'redux'
 import { HashRouter as Router, Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import '~/renderer/global.css'
+import './global.css'
+import { BridgeSyncProvider } from '~/renderer/bridge/BridgeSyncContext'
+import StyleProvider from '~/renderer/styles/StyleProvider'
+
+import type { State } from '~/renderer/reducers'
+
 import CounterValues from './countervalues'
-import { BridgeSyncProvider } from './bridge/BridgeSyncContext'
-import StyleProvider from './styles/StyleProvider'
+
 import Default from './Default'
 
 const Nav = styled.nav`
@@ -21,7 +26,11 @@ const Span = styled.span`
   margin-right: 8px;
 `
 
-const App = ({ store }: { store: * }) => (
+type Props = {
+  store: Store<State>,
+}
+
+const App = ({ store }: Props) => (
   <Provider store={store}>
     <BridgeSyncProvider>
       <CounterValues.PollingProvider>

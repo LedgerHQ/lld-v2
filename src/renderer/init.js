@@ -27,7 +27,7 @@ import db from '~/helpers/db'
 import Countervalues from '~/renderer/countervalues'
 import { setEnvOnAllThreads } from '~/helpers/env'
 
-// import sentry from '~/sentry/browser'
+import sentry from '~/sentry/browser'
 
 import dbMiddleware from '~/renderer/middlewares/db'
 
@@ -40,12 +40,12 @@ import { lock } from '~/renderer/actions/application'
 
 import {
   languageSelector,
-  // sentryLogsSelector,
+  sentryLogsSelector,
   hideEmptyTokenAccountsSelector,
 } from '~/renderer/reducers/settings'
 import { decodeAccountsModel, encodeAccountsModel } from '~/renderer/reducers/accounts'
 
-import App from '~/renderer/App'
+import ReactRoot from '~/renderer/ReactRoot'
 import AppError from '~/renderer/AppError'
 
 logger.add(new LoggerTransport())
@@ -88,7 +88,7 @@ async function init() {
   setEnvOnAllThreads('HIDE_EMPTY_TOKEN_ACCOUNTS', hideEmptyTokenAccounts)
 
   // TODO: DON'T FORGET SENTRY
-  // sentry(() => sentryLogsSelector(store.getState()))
+  sentry(() => sentryLogsSelector(store.getState()))
 
   const isMainWindow = remote.getCurrentWindow().name === 'MainWindow'
 
@@ -103,7 +103,7 @@ async function init() {
     setInterval(() => store.dispatch({ type: 'DEBUG_TICK' }), DEBUG_TICK_REDUX)
   }
 
-  r(<App store={store} history={history} language={language} />)
+  r(<ReactRoot store={store} language={language} />)
 
   if (isMainWindow) {
     webFrame.setVisualZoomLevelLimits(1, 1)

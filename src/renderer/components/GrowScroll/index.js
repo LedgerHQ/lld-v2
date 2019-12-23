@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent } from 'react'
+import React, { useMemo } from 'react'
 
 // DIRTY HACK, THERE IS PROBABLY A BETTER WAY TO DO THIS
 import measureScrollbar from '~/renderer/measureScrollbar'
@@ -18,42 +18,15 @@ export const GrowScrollContext = React.createContext()
 
 const scrollbarWidth = measureScrollbar()
 
-// TODO: REWORK THIS ?
-class GrowScroll extends PureComponent<Props> {
-  static defaultProps = {
-    full: false,
-  }
+const GrowScroll = (
+  { children, full = false, maxHeight, ...props }: Props,
+  ref: React$Ref<React$ElementRef<any>>,
+) => {
+  // TODO: FIX FLOW FOR ref.current
+  const valueProvider = useMemo(() => ({ scrollContainer: ref.current }), [ref])
 
-  scrollContainer: ?HTMLDivElement
-
-  onScrollContainerRef = (scrollContainer: ?HTMLDivElement) => {
-    this.scrollContainer = scrollContainer
-  }
-
-  valueProvider = () => ({
-    scrollContainer: this.scrollContainer,
-  })
-
-  render() {
-    const { children, maxHeight, full, ...props } = this.props
-
-    const rootStyles = {
-      overflow: 'hidden',
-      ...(full
-        ? {
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-          }
-        : {
-            display: 'flex',
-            flex: 1,
-            position: 'relative',
-          }),
-    }
-
-    const scrollContainerStyles = {
+  const scrollContainerStyles = useMemo(
+    () => ({
       overflowY: 'scroll',
       marginRight: `-${80 + scrollbarWidth}px`,
       paddingRight: `80px`,
@@ -70,20 +43,38 @@ class GrowScroll extends PureComponent<Props> {
             right: 0,
             top: 0,
           }),
-    }
+    }),
+    [maxHeight],
+  )
 
-    return (
-      <div style={rootStyles}>
-        <div style={scrollContainerStyles} ref={this.onScrollContainerRef}>
-          <Box grow {...props}>
-            <GrowScrollContext.Provider value={this.valueProvider}>
-              {children}
-            </GrowScrollContext.Provider>
-          </Box>
-        </div>
+  const rootStyles = useMemo(
+    () => ({
+      overflow: 'hidden',
+      ...(full
+        ? {
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+          }
+        : {
+            display: 'flex',
+            flex: 1,
+            position: 'relative',
+          }),
+    }),
+    [full],
+  )
+
+  return (
+    <div style={rootStyles}>
+      <div style={scrollContainerStyles} ref={ref}>
+        <Box grow {...props}>
+          <GrowScrollContext.Provider value={valueProvider}>{children}</GrowScrollContext.Provider>
+        </Box>
       </div>
-    )
-  }
+    </div>
+  )
 }
 
-export default GrowScroll
+export default React.forwardRef<Props, *>(GrowScroll)

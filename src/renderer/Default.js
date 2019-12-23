@@ -7,11 +7,7 @@ import styled from 'styled-components'
 
 // import { SYNC_PENDING_INTERVAL } from '~/config/constants'
 
-import Box from '~/renderer/components/Box/Box'
-import GrowScroll from '~/renderer/components/GrowScroll'
-import ListenDevices from '~/renderer/components/ListenDevices'
-import ExportLogsBtn from '~/renderer/components/ExportLogsButton'
-import Idler from '~/renderer/components/Idler'
+import type { ThemedComponent } from '~/renderer/styles/StyleProvider'
 
 import Dashboard from '~/renderer/screens/dashboard'
 import Settings from '~/renderer/screens/settings'
@@ -20,6 +16,12 @@ import Manager from '~/renderer/screens/manager'
 import Partners from '~/renderer/screens/partners'
 import Account from '~/renderer/screens/account'
 import Asset from '~/renderer/screens/asset'
+
+import Box from '~/renderer/components/Box/Box'
+import GrowScroll from '~/renderer/components/GrowScroll'
+import ListenDevices from '~/renderer/components/ListenDevices'
+import ExportLogsBtn from '~/renderer/components/ExportLogsButton'
+import Idler from '~/renderer/components/Idler'
 import IsUnlocked from '~/renderer/components/IsUnlocked'
 import OnboardingOrElse from '~/renderer/components/OnboardingOrElse'
 import AppRegionDrag from '~/renderer/components/AppRegionDrag'
@@ -27,8 +29,16 @@ import CheckTermsAccepted from '~/renderer/components/CheckTermsAccepted'
 import IsNewVersion from '~/renderer/components/IsNewVersion'
 import HSMStatusBanner from '~/renderer/components/HSMStatusBanner'
 import TopBar from '~/renderer/components/TopBar'
+import LibcoreBusyIndicator from '~/renderer/components/LibcoreBusyIndicator'
+import DeviceBusyIndicator from '~/renderer/components/DeviceBusyIndicator'
+import KeyboardContent from '~/renderer/components/KeyboardContent'
+import PerfIndicator from '~/renderer/components/PerfIndicator'
 
-const Main = styled(GrowScroll).attrs(() => ({
+const Main: ThemedComponent<{
+  tabIndex?: number,
+  full?: boolean,
+  ref?: React$Ref<React$ElementRef<any>>,
+}> = styled(GrowScroll).attrs(() => ({
   px: 6,
 }))`
   outline: none;
@@ -37,7 +47,7 @@ const Main = styled(GrowScroll).attrs(() => ({
 
 const Default = () => {
   const location = useLocation()
-  const ref = createRef()
+  const ref = createRef<React$ElementRef<any>>()
 
   const kbShortcut = useCallback(event => {
     if ((event.ctrlKey || event.metaKey) && event.key === 'r') {
@@ -53,11 +63,10 @@ const Default = () => {
     return () => window.removeEventListener('keydown', kbShortcut)
   }, [])
 
-  // TODO: REWORK SCROLLTOP (GROWSCROLL Component)
   useEffect(() => {
-    // if (ref.current) {
-    //   ref.current.scrollContainer.scrollTo(0, 0)
-    // }
+    if (ref && ref.current) {
+      ref.current.scrollTo(0, 0)
+    }
   }, [location, ref.current])
 
   return (
@@ -119,6 +128,13 @@ const Default = () => {
               </Main>
             </Box>
           </Box>
+
+          <LibcoreBusyIndicator />
+          <DeviceBusyIndicator />
+
+          <KeyboardContent sequence="BJBJBJ">
+            <PerfIndicator />
+          </KeyboardContent>
         </OnboardingOrElse>
       </IsUnlocked>
     </>
