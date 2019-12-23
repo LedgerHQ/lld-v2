@@ -1,15 +1,15 @@
 // @flow
-import React, { PureComponent } from 'react'
-import styled from 'styled-components'
-import ReactMarkdown from 'react-markdown'
-import { shell } from 'electron'
+import React, { PureComponent } from "react";
+import styled from "styled-components";
+import ReactMarkdown from "react-markdown";
+import { shell } from "electron";
 
-import Box from '~/renderer/components/Box'
+import Box from "~/renderer/components/Box";
 
 export const Notes = styled(Box).attrs(() => ({
-  ff: 'Inter',
+  ff: "Inter",
   fontSize: 4,
-  color: 'palette.text.shade80',
+  color: "palette.text.shade80",
   flow: 4,
 }))`
   ul,
@@ -24,7 +24,7 @@ export const Notes = styled(Box).attrs(() => ({
 
   code,
   pre {
-    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
   }
 
   code {
@@ -124,40 +124,40 @@ export const Notes = styled(Box).attrs(() => ({
     }
   }
 
-  input[type='Switch'] {
+  input[type="Switch"] {
     margin-right: 0.5em;
   }
-`
+`;
 
-export const Terms = Notes
+export const Terms = Notes;
 
 type Props = {
   children: *,
-}
+};
 
 export default class Markdown extends PureComponent<Props> {
   componentDidMount() {
     if (this.parent) {
-      const links: NodeList<HTMLElement> = this.parent.querySelectorAll('a')
+      const links: NodeList<HTMLElement> = this.parent.querySelectorAll("a");
       links.forEach(link => {
-        link.addEventListener('click', (e: MouseEvent) => {
-          e.preventDefault()
+        link.addEventListener("click", (e: MouseEvent) => {
+          e.preventDefault();
           // $FlowFixMe
-          const href = e.target && e.target.href
-          shell.openExternal(href)
-        })
-      })
+          const href = e.target && e.target.href;
+          shell.openExternal(href);
+        });
+      });
     }
   }
 
-  parent: ?HTMLDivElement
+  parent: ?HTMLDivElement;
 
   render() {
-    const { children } = this.props
+    const { children } = this.props;
     return (
       <div ref={c => (this.parent = c)}>
         <ReactMarkdown>{children}</ReactMarkdown>
       </div>
-    )
+    );
   }
 }

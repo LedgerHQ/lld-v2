@@ -1,8 +1,8 @@
 // @flow
-import React, { PureComponent } from 'react'
-import styled from 'styled-components'
+import React, { PureComponent } from "react";
+import styled from "styled-components";
 
-import type { ThemedComponent } from '~/renderer/styles/StyleProvider'
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
 const Indicator: ThemedComponent<*> = styled.div`
   opacity: ${p => (p.busy ? 0.1 : 0)};
@@ -14,29 +14,29 @@ const Indicator: ThemedComponent<*> = styled.div`
   bottom: 4px;
   right: 4px;
   z-index: 999;
-`
+`;
 
 // NB this is done like this to be extremely performant. we don't want redux for this..
-let busy = false
-const instances = []
+let busy = false;
+const instances = [];
 export const onSetLibcoreBusy = b => {
-  busy = b
-  instances.forEach(i => i.forceUpdate())
-}
+  busy = b;
+  instances.forEach(i => i.forceUpdate());
+};
 
 class LibcoreBusyIndicator extends PureComponent<{}> {
   componentDidMount() {
-    instances.push(this)
+    instances.push(this);
   }
 
   componentWillUnmount() {
-    const i = instances.indexOf(this)
-    instances.splice(i, 1)
+    const i = instances.indexOf(this);
+    instances.splice(i, 1);
   }
 
   render() {
-    return <Indicator busy={busy} />
+    return <Indicator busy={busy} />;
   }
 }
 
-export default LibcoreBusyIndicator
+export default LibcoreBusyIndicator;

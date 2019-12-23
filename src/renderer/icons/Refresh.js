@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react'
+import React from "react";
 
 const path = (
   <g transform="translate(374.01 -80.021)">
@@ -10,12 +10,12 @@ const path = (
       strokeWidth=".89773"
     />
   </g>
-)
+);
 
 const Refresh = ({ size, ...p }: { size: number }) => (
   <svg viewBox="0 0 16 13.344" height={size} width={size} {...p}>
     {path}
   </svg>
-)
+);
 
-export default Refresh
+export default Refresh;

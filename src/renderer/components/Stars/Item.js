@@ -1,32 +1,32 @@
 // @flow
-import React, { useCallback } from 'react'
-import { useHistory } from 'react-router-dom'
-import { Draggable } from 'react-beautiful-dnd'
-import styled from 'styled-components'
+import React, { useCallback } from "react";
+import { useHistory } from "react-router-dom";
+import { Draggable } from "react-beautiful-dnd";
+import styled from "styled-components";
 
 import {
   getAccountCurrency,
   getAccountUnit,
   getAccountName,
-} from '@ledgerhq/live-common/lib/account/helpers'
-import type { AccountLike } from '@ledgerhq/live-common/lib/types'
+} from "@ledgerhq/live-common/lib/account/helpers";
+import type { AccountLike } from "@ledgerhq/live-common/lib/types";
 
-import Hide from '~/renderer/components/MainSideBar/Hide'
-import FormattedVal from '~/renderer/components/FormattedVal'
-import Box from '~/renderer/components/Box'
-import Text from '~/renderer/components/Text'
-import Ellipsis from '~/renderer/components/Ellipsis'
-import ParentCryptoCurrencyIcon from '~/renderer/components/ParentCryptoCurrencyIcon'
+import Hide from "~/renderer/components/MainSideBar/Hide";
+import FormattedVal from "~/renderer/components/FormattedVal";
+import Box from "~/renderer/components/Box";
+import Text from "~/renderer/components/Text";
+import Ellipsis from "~/renderer/components/Ellipsis";
+import ParentCryptoCurrencyIcon from "~/renderer/components/ParentCryptoCurrencyIcon";
 
 const AccountName = styled(Text)`
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-`
+`;
 
 const ParentCryptoCurrencyIconWrapper = styled.div`
   width: 20px;
-`
+`;
 
 const ItemWrapper = styled.div.attrs(p => ({
   style: {
@@ -52,30 +52,30 @@ const ItemWrapper = styled.div.attrs(p => ({
     z-index: 1;
     border-color: ${p.active ? p.theme.colors.palette.divider : p.theme.colors.sliderGrey};
     box-shadow: 0 12px 17px 0 rgba(0, 0, 0, 0.1);
-    width: ${p.collapsed ? '200px' : ''} !important;
+    width: ${p.collapsed ? "200px" : ""} !important;
         `
-      : ''}
-`
+      : ""}
+`;
 
 type Props = {
   account: AccountLike,
   index: number,
   pathname: string,
   collapsed?: boolean,
-}
+};
 
 const Item = ({ account, index, pathname, collapsed }: Props) => {
-  const history = useHistory()
-  const active = pathname.endsWith(account.id)
+  const history = useHistory();
+  const active = pathname.endsWith(account.id);
 
   const onAccountClick = useCallback(() => {
-    const parentAccountId = account.type !== 'Account' ? account.parentId : undefined
+    const parentAccountId = account.type !== "Account" ? account.parentId : undefined;
     parentAccountId
       ? history.push(`/account/${parentAccountId}/${account.id}`)
-      : history.push(`/account/${account.id}`)
-  }, [account, history.push])
+      : history.push(`/account/${account.id}`);
+  }, [account, history.push]);
 
-  const unit = getAccountUnit(account)
+  const unit = getAccountUnit(account);
 
   return (
     <Draggable index={index} draggableId={account.id}>
@@ -92,7 +92,7 @@ const Item = ({ account, index, pathname, collapsed }: Props) => {
           <Box horizontal ff="Inter|SemiBold" flex={1} flow={3} alignItems="center">
             <ParentCryptoCurrencyIconWrapper
               collapsed={collapsed}
-              isToken={account.type === 'TokenAccount'}
+              isToken={account.type === "TokenAccount"}
             >
               <ParentCryptoCurrencyIcon inactive={!active} currency={getAccountCurrency(account)} />
             </ParentCryptoCurrencyIconWrapper>
@@ -114,7 +114,7 @@ const Item = ({ account, index, pathname, collapsed }: Props) => {
         </ItemWrapper>
       )}
     </Draggable>
-  )
-}
+  );
+};
 
-export default Item
+export default Item;

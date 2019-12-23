@@ -1,22 +1,22 @@
 // @flow
 
-import { fromPromise } from 'rxjs/observable/fromPromise'
+import { fromPromise } from "rxjs/observable/fromPromise";
 
-import { createCommand, Command } from './ipc'
-import { withLibcore } from '@ledgerhq/live-common/lib/libcore/access'
+import { createCommand, Command } from "./ipc";
+import { withLibcore } from "@ledgerhq/live-common/lib/libcore/access";
 
-type Input = void
+type Input = void;
 
-type Result = { stringVersion: string, intVersion: number }
+type Result = { stringVersion: string, intVersion: number };
 
-const cmd: Command<Input, Result> = createCommand('libcoreGetVersion', () =>
+const cmd: Command<Input, Result> = createCommand("libcoreGetVersion", () =>
   fromPromise(
     withLibcore(async ledgerCore => {
-      const stringVersion = await ledgerCore.LedgerCore.getStringVersion()
-      const intVersion = await ledgerCore.LedgerCore.getIntVersion()
-      return { stringVersion, intVersion }
+      const stringVersion = await ledgerCore.LedgerCore.getStringVersion();
+      const intVersion = await ledgerCore.LedgerCore.getIntVersion();
+      return { stringVersion, intVersion };
     }),
   ),
-)
+);
 
-export default cmd
+export default cmd;

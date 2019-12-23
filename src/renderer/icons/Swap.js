@@ -1,10 +1,10 @@
 // @flow
 
-import React from 'react'
+import React from "react";
 
 const Swap = ({
   size = 15,
-  color = 'currentColor',
+  color = "currentColor",
   ...props
 }: {
   size?: number,
@@ -21,6 +21,6 @@ const Swap = ({
       d="M5.5 1.5v14.4V1.5zm0 0L1.61 5.39 5.5 1.5zm4 14.4V1.5v14.4zm0 0l4-4-4 4z"
     />
   </svg>
-)
+);
 
-export default Swap
+export default Swap;

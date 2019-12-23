@@ -1,11 +1,11 @@
-import { ff } from './../helpers'
+import { ff } from "./../helpers";
 
 export default props => {
-  const prop = props.ff
+  const prop = props.ff;
 
   if (!prop) {
-    return null
+    return null;
   }
 
-  return ff(prop)
-}
+  return ff(prop);
+};

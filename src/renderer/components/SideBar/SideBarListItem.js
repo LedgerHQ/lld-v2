@@ -1,11 +1,11 @@
 // @flow
 
-import React, { PureComponent } from 'react'
-import styled from 'styled-components'
+import React, { PureComponent } from "react";
+import styled from "styled-components";
 
-import Hide from '~/renderer/components/MainSideBar/Hide'
-import Box, { Tabbable } from '~/renderer/components/Box'
-import Tooltip from '~/renderer/components/Tooltip'
+import Hide from "~/renderer/components/MainSideBar/Hide";
+import Box, { Tabbable } from "~/renderer/components/Box";
+import Tooltip from "~/renderer/components/Tooltip";
 
 export type Props = {
   label: string | (Props => React$Node),
@@ -18,7 +18,7 @@ export type Props = {
   onClick?: void => void,
   isActive?: boolean,
   collapsed?: boolean,
-}
+};
 
 class SideBarListItem extends PureComponent<Props> {
   render() {
@@ -32,16 +32,16 @@ class SideBarListItem extends PureComponent<Props> {
       isActive,
       disabled,
       collapsed,
-    } = this.props
+    } = this.props;
 
     const renderedLabel =
-      typeof label === 'function' ? (
+      typeof label === "function" ? (
         label(this.props)
       ) : (
-        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
           {label}
         </span>
-      )
+      );
 
     return (
       <Tooltip content={renderedLabel} enabled={!!collapsed} boundary="window" placement="right">
@@ -61,24 +61,24 @@ class SideBarListItem extends PureComponent<Props> {
           {NotifComponent && <NotifComponent />}
         </Container>
       </Tooltip>
-    )
+    );
   }
 }
 
 const Container = styled(Tabbable).attrs(() => ({
-  align: 'center',
+  align: "center",
   borderRadius: 1,
-  ff: 'Inter|SemiBold',
+  ff: "Inter|SemiBold",
   flow: 3,
   horizontal: true,
   px: 3,
   py: 2,
 }))`
   width: 100%;
-  cursor: ${p => (p.disabled ? 'not-allowed' : 'pointer')};
+  cursor: ${p => (p.disabled ? "not-allowed" : "pointer")};
   color: ${p =>
     p.isActive ? p.theme.colors.palette.text.shade100 : p.theme.colors.palette.text.shade80};
-  background: ${p => (p.isActive ? p.theme.colors.palette.action.hover : '')};
+  background: ${p => (p.isActive ? p.theme.colors.palette.action.hover : "")};
   opacity: ${p => (p.disabled ? 0.5 : 1)};
 
   &:active {
@@ -90,13 +90,13 @@ const Container = styled(Tabbable).attrs(() => ({
   }
 
   ${p => {
-    const iconActiveColor = p.theme.colors[p.iconActiveColor] || p.iconActiveColor
-    const color = p.isActive ? iconActiveColor : p.theme.colors.palette.text.shade60
+    const iconActiveColor = p.theme.colors[p.iconActiveColor] || p.iconActiveColor;
+    const color = p.isActive ? iconActiveColor : p.theme.colors.palette.text.shade60;
     return `
       svg { color: ${color}; }
       &:hover svg { color: ${p.disabled ? color : iconActiveColor}; }
-    `
+    `;
   }};
-`
+`;
 
-export default SideBarListItem
+export default SideBarListItem;

@@ -1,20 +1,20 @@
 // @flow
-import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
-import { openModal } from '~/renderer/actions/modals'
-import { isAcceptedTerms } from '~/renderer/terms'
+import { openModal } from "~/renderer/actions/modals";
+import { isAcceptedTerms } from "~/renderer/terms";
 
 const CheckTermsAccepted = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!isAcceptedTerms()) {
-      dispatch(openModal('MODAL_TERMS'))
+      dispatch(openModal("MODAL_TERMS"));
     }
-  }, [])
+  }, []);
 
-  return null
-}
+  return null;
+};
 
-export default CheckTermsAccepted
+export default CheckTermsAccepted;

@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react'
+import React from "react";
 
 const NanoXBanner = ({ size = 30, ...p }: { size: number }) => (
   <svg viewBox="0 0 6 16" height={size} width={size}>
@@ -27,6 +27,6 @@ const NanoXBanner = ({ size = 30, ...p }: { size: number }) => (
       </g>
     </g>
   </svg>
-)
+);
 
-export default NanoXBanner
+export default NanoXBanner;

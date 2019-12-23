@@ -1,18 +1,18 @@
 // @flow
 // Sync continuously the accounts that have pending operations
 
-import React, { Component } from 'react'
-import logger from '~/logger'
-import { createStructuredSelector, createSelector } from 'reselect'
-import { connect } from 'react-redux'
-import type { Account } from '@ledgerhq/live-common/lib/types'
-import { BridgeSyncConsumer } from '~/renderer/bridge/BridgeSyncContext'
-import type { Sync } from '~/renderer/bridge/BridgeSyncContext'
-import { accountsSelector } from '~/renderer/reducers/accounts'
+import React, { Component } from "react";
+import logger from "~/logger";
+import { createStructuredSelector, createSelector } from "reselect";
+import { connect } from "react-redux";
+import type { Account } from "@ledgerhq/live-common/lib/types";
+import { BridgeSyncConsumer } from "~/renderer/bridge/BridgeSyncContext";
+import type { Sync } from "~/renderer/bridge/BridgeSyncContext";
+import { accountsSelector } from "~/renderer/reducers/accounts";
 
 const accountsWithPendingOperationsSelector = createSelector(accountsSelector, accounts =>
   accounts.filter(a => a.pendingOperations.length > 0),
-)
+);
 
 class SyncContPendingOpsConnected extends Component<{
   sync: Sync,
@@ -21,30 +21,30 @@ class SyncContPendingOpsConnected extends Component<{
   interval: number,
 }> {
   componentDidMount() {
-    this.timeout = setTimeout(this.check, this.props.interval)
+    this.timeout = setTimeout(this.check, this.props.interval);
   }
 
   componentWillUnmount() {
-    clearTimeout(this.timeout)
+    clearTimeout(this.timeout);
   }
 
   check = () => {
-    const { sync, accounts, priority, interval } = this.props
-    setTimeout(this.check, interval)
+    const { sync, accounts, priority, interval } = this.props;
+    setTimeout(this.check, interval);
     if (accounts.length > 0) {
-      logger.log(`SyncContinouslyPendingOperations: found ${accounts.length} accounts`)
+      logger.log(`SyncContinouslyPendingOperations: found ${accounts.length} accounts`);
       sync({
-        type: 'SYNC_SOME_ACCOUNTS',
+        type: "SYNC_SOME_ACCOUNTS",
         accountIds: accounts.map(a => a.id),
         priority,
-      })
+      });
     }
-  }
+  };
 
-  timeout: *
+  timeout: *;
 
   render() {
-    return null
+    return null;
   }
 }
 
@@ -52,7 +52,7 @@ const Effect = connect(
   createStructuredSelector({
     accounts: accountsWithPendingOperationsSelector,
   }),
-)(SyncContPendingOpsConnected)
+)(SyncContPendingOpsConnected);
 
 const SyncContinuouslyPendingOperations = ({
   priority,
@@ -64,6 +64,6 @@ const SyncContinuouslyPendingOperations = ({
   <BridgeSyncConsumer>
     {sync => <Effect sync={sync} interval={interval} priority={priority} />}
   </BridgeSyncConsumer>
-)
+);
 
-export default SyncContinuouslyPendingOperations
+export default SyncContinuouslyPendingOperations;

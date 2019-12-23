@@ -1,10 +1,10 @@
 // @flow
 
-import React from 'react'
+import React from "react";
 
 const OpposingChevrons = ({
   size = 14,
-  color = 'currentColor',
+  color = "currentColor",
   ...p
 }: {
   size: number,
@@ -20,6 +20,6 @@ const OpposingChevrons = ({
       />
     </g>
   </svg>
-)
+);
 
-export default OpposingChevrons
+export default OpposingChevrons;

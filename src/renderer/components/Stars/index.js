@@ -1,27 +1,27 @@
 // @flow
-import React, { useCallback } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { Trans } from 'react-i18next'
-import { DragDropContext, Droppable } from 'react-beautiful-dnd'
-import styled from 'styled-components'
+import React, { useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Trans } from "react-i18next";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import styled from "styled-components";
 
-import { getAccountCurrency } from '@ledgerhq/live-common/lib/account'
+import { getAccountCurrency } from "@ledgerhq/live-common/lib/account";
 
-import { starredAccountsEnforceHideEmptyTokenSelector } from '~/renderer/reducers/accounts'
-import { dragDropStarAction } from '~/renderer/actions/settings'
+import { starredAccountsEnforceHideEmptyTokenSelector } from "~/renderer/reducers/accounts";
+import { dragDropStarAction } from "~/renderer/actions/settings";
 
-import Hide from '~/renderer/components/MainSideBar/Hide'
-import Text from '~/renderer/components/Text'
+import Hide from "~/renderer/components/MainSideBar/Hide";
+import Text from "~/renderer/components/Text";
 // TODO: rework Image component
 // import Image from '~/renderer/components/Image'
-import Tooltip from '~/renderer/components/Tooltip'
+import Tooltip from "~/renderer/components/Tooltip";
 
-import Item from './Item'
+import Item from "./Item";
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-`
+`;
 const Placeholder = styled.div`
   display: flex;
   flex-direction: column;
@@ -32,28 +32,30 @@ const Placeholder = styled.div`
   & > :first-child {
     margin-bottom: 14px;
   }
-`
+`;
 
 type Props = {
   pathname: string,
   collapsed: boolean,
-}
+};
 
 const Stars = ({ pathname, collapsed }: Props) => {
-  const starredAccounts = useSelector(starredAccountsEnforceHideEmptyTokenSelector)
-  const dispatch = useDispatch()
+  const starredAccounts = useSelector(starredAccountsEnforceHideEmptyTokenSelector);
+  const dispatch = useDispatch();
 
   const onDragEnd = useCallback(
     ({ source, destination }) => {
       if (destination) {
-        const from = source.index
-        const to = destination.index
+        const from = source.index;
+        const to = destination.index;
 
-        dispatch(dragDropStarAction({ from: starredAccounts[from].id, to: starredAccounts[to].id }))
+        dispatch(
+          dragDropStarAction({ from: starredAccounts[from].id, to: starredAccounts[to].id }),
+        );
       }
     },
     [dispatch, starredAccounts],
-  )
+  );
 
   return starredAccounts && starredAccounts.length ? (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -63,12 +65,12 @@ const Stars = ({ pathname, collapsed }: Props) => {
             {starredAccounts.map((account, i) => (
               <Tooltip
                 content={
-                  account.type === 'Account' ? account.name : getAccountCurrency(account).name
+                  account.type === "Account" ? account.name : getAccountCurrency(account).name
                 }
                 delay={collapsed ? 0 : 1200}
                 key={account.id}
-                placement={collapsed ? 'right' : 'top'}
-                boundary={collapsed ? 'window' : undefined}
+                placement={collapsed ? "right" : "top"}
+                boundary={collapsed ? "window" : undefined}
                 enabled={!snapshot.isDraggingOver}
               >
                 <Item
@@ -101,17 +103,17 @@ const Stars = ({ pathname, collapsed }: Props) => {
           fontSize={3}
           style={{ minWidth: 180 }}
         >
-          <Trans i18nKey={'stars.placeholder'}>
-            {'Accounts that you star on the'}
+          <Trans i18nKey={"stars.placeholder"}>
+            {"Accounts that you star on the"}
             <Text ff="Inter|SemiBold" color="palette.text.shade100">
-              {'Accounts'}
+              {"Accounts"}
             </Text>
-            {' page will now appear here!.'}
+            {" page will now appear here!."}
           </Trans>
         </Text>
       </Placeholder>
     </Hide>
-  )
-}
+  );
+};
 
-export default Stars
+export default Stars;

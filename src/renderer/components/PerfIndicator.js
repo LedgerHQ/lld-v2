@@ -1,12 +1,12 @@
 // @flow
-import React, { PureComponent, useState, useEffect, useRef } from 'react'
-import styled from 'styled-components'
+import React, { PureComponent, useState, useEffect, useRef } from "react";
+import styled from "styled-components";
 
-import type { ThemedComponent } from '~/renderer/styles/StyleProvider'
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
-import ping from '~/commands/ping'
+import ping from "~/commands/ping";
 
-import useInterval from '~/renderer/hooks/useInterval'
+import useInterval from "~/renderer/hooks/useInterval";
 
 const Indicator: ThemedComponent<{}> = styled.div`
   opacity: 0.8;
@@ -19,43 +19,43 @@ const Indicator: ThemedComponent<{}> = styled.div`
   left: 0;
   z-index: 999;
   pointer-events: none;
-`
+`;
 
 const PerfIndicator = () => {
-  const [opsPerSecond, setOpsPerSecond] = useState(0)
-  const count = useRef(0)
-  const finished = useRef(false)
+  const [opsPerSecond, setOpsPerSecond] = useState(0);
+  const count = useRef(0);
+  const finished = useRef(false);
 
   useEffect(() => {
-    let sub
+    let sub;
     const loop = () => {
-      ++count.current
-      if (finished.current) return
+      ++count.current;
+      if (finished.current) return;
 
       sub = ping.send().subscribe({
         complete: loop,
-      })
-    }
+      });
+    };
 
-    loop()
+    loop();
 
     return () => {
-      if (sub) sub.unsubscribe()
-      finished.current = true
-    }
-  }, [])
+      if (sub) sub.unsubscribe();
+      finished.current = true;
+    };
+  }, []);
 
   useInterval(() => {
-    setOpsPerSecond(count.current)
-    count.current = 0
-  }, 1000)
+    setOpsPerSecond(count.current);
+    count.current = 0;
+  }, 1000);
 
   return (
     <Indicator>
       {opsPerSecond}
-      {' ops/s'}
+      {" ops/s"}
     </Indicator>
-  )
-}
+  );
+};
 
-export default PerfIndicator
+export default PerfIndicator;

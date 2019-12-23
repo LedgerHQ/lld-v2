@@ -2,12 +2,12 @@
 
 // This is a test example for dev testing purpose.
 
-import { interval } from 'rxjs/observable/interval'
-import { createCommand, Command } from './ipc'
+import { interval } from "rxjs/observable/interval";
+import { createCommand, Command } from "./ipc";
 
-type Input = number
-type Result = number
+type Input = number;
+type Result = number;
 
-const cmd: Command<Input, Result> = createCommand('testInterval', interval)
+const cmd: Command<Input, Result> = createCommand("testInterval", interval);
 
-export default cmd
+export default cmd;

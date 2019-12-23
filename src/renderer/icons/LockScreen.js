@@ -2,7 +2,7 @@
 
 /* this icon is a placeholder for now */
 
-import React from 'react'
+import React from "react";
 
 const defs = (
   <defs>
@@ -27,7 +27,7 @@ const defs = (
       </feMerge>
     </filter>
   </defs>
-)
+);
 
 const group = (
   <g fill="none" fillRule="evenodd" filter="url(#LockScreen-a)" transform="translate(23 21)">
@@ -40,13 +40,13 @@ const group = (
       d="M22.845 67.59c5.708 5.598 13.528 9.05 22.155 9.05V45"
     />
   </g>
-)
+);
 
 const LockScreen = ({ size, ...p }: { size: number }) => (
   <svg width={size} height={size} {...p}>
     {defs}
     {group}
   </svg>
-)
+);
 
-export default LockScreen
+export default LockScreen;

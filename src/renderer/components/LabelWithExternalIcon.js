@@ -1,20 +1,20 @@
 // @flow
 
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
-import Label from '~/renderer/components/Label'
-import Box from '~/renderer/components/Box'
-import IconExternalLink from '~/renderer/icons/ExternalLink'
+import Label from "~/renderer/components/Label";
+import Box from "~/renderer/components/Box";
+import IconExternalLink from "~/renderer/icons/ExternalLink";
 
-const LabelWrapper = styled(Label).attrs(p => ({ ff: p.ff ? p.ff : 'Inter|Medium' }))`
+const LabelWrapper = styled(Label).attrs(p => ({ ff: p.ff ? p.ff : "Inter|Medium" }))`
   display: inline-flex;
-  color: ${p => p.theme.colors[p.color] || 'palette.text.shade60'};
+  color: ${p => p.theme.colors[p.color] || "palette.text.shade60"};
   &:hover {
     color: ${p => p.theme.colors.wallet};
     cursor: pointer;
   }
-`
+`;
 
 type Props = {
   onClick: ?() => void,
@@ -22,7 +22,7 @@ type Props = {
   color?: string,
   ff?: string,
   iconFirst?: boolean,
-}
+};
 
 // can add more dynamic options if needed
 export function LabelWithExternalIcon({ onClick, label, color, ff, iconFirst = false }: Props) {
@@ -44,7 +44,7 @@ export function LabelWithExternalIcon({ onClick, label, color, ff, iconFirst = f
         </>
       )}
     </LabelWrapper>
-  )
+  );
 }
 
-export default LabelWithExternalIcon
+export default LabelWithExternalIcon;

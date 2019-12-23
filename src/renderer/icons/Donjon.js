@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment } from 'react'
+import React, { Fragment } from "react";
 
 const path = (
   <Fragment>
@@ -30,12 +30,12 @@ const path = (
       d="m294.46 814.91q1.86 205.53 76.34 387.56 67.47 166.41 186.66 290.1 107.94 114.69 236.09 166.43a98.88 98.88 0 0 0 40.48 9v-1152.4z"
     />
   </Fragment>
-)
+);
 
 const Donjon = ({ size, ...p }: { size: number }) => (
   <svg viewBox="0 0 1668 1668" width={size} {...p}>
     {path}
   </svg>
-)
+);
 
-export default Donjon
+export default Donjon;

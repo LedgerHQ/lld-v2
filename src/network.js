@@ -1,68 +1,68 @@
 // @flow
-import axios from 'axios'
-import { retry } from '@ledgerhq/live-common/lib/promise'
-import logger from './logger'
-import anonymizer from './logger/anonymizer'
-import { NetworkDown, LedgerAPI5xx, LedgerAPI4xx } from '@ledgerhq/errors'
+import axios from "axios";
+import { retry } from "@ledgerhq/live-common/lib/promise";
+import logger from "./logger";
+import anonymizer from "./logger/anonymizer";
+import { NetworkDown, LedgerAPI5xx, LedgerAPI4xx } from "@ledgerhq/errors";
 
 // TODO env in live-common
-const GET_CALLS_RETRY = 2
-const GET_CALLS_TIMEOUT = 30 * 1000
+const GET_CALLS_RETRY = 2;
+const GET_CALLS_TIMEOUT = 30 * 1000;
 
 const makeError = (msg, status, url, method) => {
   const obj = {
     status,
     url,
     method,
-  }
-  return (status || '').toString().startsWith('4')
+  };
+  return (status || "").toString().startsWith("4")
     ? new LedgerAPI4xx(msg, obj)
-    : new LedgerAPI5xx(msg, obj)
-}
+    : new LedgerAPI5xx(msg, obj);
+};
 
 const extractErrorMessage = (raw: string): ?string => {
   try {
-    let data = JSON.parse(raw)
-    if (data && Array.isArray(data)) data = data[0]
-    let msg = data.error || data.message || data.error_message || data.msg
-    if (typeof msg === 'string') {
-      const m = msg.match(/^JsDefined\((.*)\)$/)
-      const innerPart = m ? m[1] : msg
+    let data = JSON.parse(raw);
+    if (data && Array.isArray(data)) data = data[0];
+    let msg = data.error || data.message || data.error_message || data.msg;
+    if (typeof msg === "string") {
+      const m = msg.match(/^JsDefined\((.*)\)$/);
+      const innerPart = m ? m[1] : msg;
       try {
-        const r = JSON.parse(innerPart)
-        let message = r.message
-        if (typeof message === 'object') {
-          message = message.message
+        const r = JSON.parse(innerPart);
+        let message = r.message;
+        if (typeof message === "object") {
+          message = message.message;
         }
-        if (typeof message === 'string') {
-          msg = message
+        if (typeof message === "string") {
+          msg = message;
         }
       } catch (e) {
-        logger.warn("can't parse server result", e)
+        logger.warn("can't parse server result", e);
       }
-      return msg ? String(msg) : null
+      return msg ? String(msg) : null;
     }
   } catch (e) {
-    logger.warn("can't parse server result", e)
+    logger.warn("can't parse server result", e);
   }
-  return null
-}
+  return null;
+};
 
 const userFriendlyError = <A>(p: Promise<A>, { url, method, startTime, ...rest }): Promise<A> =>
   p.catch(error => {
-    let errorToThrow
+    let errorToThrow;
     if (error.response) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
-      const { data, status } = error.response
-      let msg
-      if (data && typeof data === 'string') {
-        msg = extractErrorMessage(data)
+      const { data, status } = error.response;
+      let msg;
+      if (data && typeof data === "string") {
+        msg = extractErrorMessage(data);
       }
       if (msg) {
-        errorToThrow = makeError(msg, status, anonymizer.url(url), method)
+        errorToThrow = makeError(msg, status, anonymizer.url(url), method);
       } else {
-        errorToThrow = makeError(`API HTTP ${status}`, status, anonymizer.url(url), method)
+        errorToThrow = makeError(`API HTTP ${status}`, status, anonymizer.url(url), method);
       }
       logger.networkError({
         ...rest,
@@ -71,52 +71,52 @@ const userFriendlyError = <A>(p: Promise<A>, { url, method, startTime, ...rest }
         method,
         error: errorToThrow.message,
         responseTime: Date.now() - startTime,
-      })
-      throw errorToThrow
+      });
+      throw errorToThrow;
     } else if (error.request) {
       logger.networkDown({
         url,
         method,
         responseTime: Date.now() - startTime,
-      })
-      throw new NetworkDown()
+      });
+      throw new NetworkDown();
     }
-    throw error
-  })
+    throw error;
+  });
 
 let implementation = (arg: Object) => {
-  let promise
-  if (arg.method === 'GET') {
-    if (!('timeout' in arg)) {
-      arg.timeout = GET_CALLS_TIMEOUT
+  let promise;
+  if (arg.method === "GET") {
+    if (!("timeout" in arg)) {
+      arg.timeout = GET_CALLS_TIMEOUT;
     }
     // $FlowFixMe
     promise = retry(() => axios(arg), {
       maxRetry: GET_CALLS_RETRY,
-    })
+    });
   } else {
     // $FlowFixMe
-    promise = axios(arg)
+    promise = axios(arg);
   }
   const meta = {
     url: arg.url,
     method: arg.method,
     data: arg.data,
     startTime: Date.now(),
-  }
-  logger.network(meta)
+  };
+  logger.network(meta);
   promise.then(response => {
     logger.networkSucceed({
       ...meta,
       status: response.status,
       responseTime: Date.now() - meta.startTime,
-    })
-  })
-  return userFriendlyError(promise, meta)
-}
+    });
+  });
+  return userFriendlyError(promise, meta);
+};
 
 export const setImplementation = (impl: *) => {
-  implementation = impl
-}
+  implementation = impl;
+};
 
-export default (arg: Object) => implementation(arg)
+export default (arg: Object) => implementation(arg);

@@ -1,13 +1,13 @@
 // @flow
 
-import React from 'react'
-import styled from 'styled-components'
-import { Route } from 'react-router-dom'
+import React from "react";
+import styled from "styled-components";
+import { Route } from "react-router-dom";
 
-import type { ThemedComponent } from '~/renderer/styles/StyleProvider'
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
-import AccountCrumb from './AccountCrumb'
-import AssetCrumb from './AssetCrumb'
+import AccountCrumb from "./AccountCrumb";
+import AssetCrumb from "./AssetCrumb";
 
 const Wrapper: ThemedComponent<{}> = styled.div`
   display: flex;
@@ -20,7 +20,7 @@ const Wrapper: ThemedComponent<{}> = styled.div`
   break-word: break-all;
   white-space: nowrap;
   > * {
-    font-family: 'Inter';
+    font-family: "Inter";
     font-weight: 600;
     font-size: 12px;
     color: ${p => p.theme.colors.palette.text.shade60};
@@ -33,7 +33,7 @@ const Wrapper: ThemedComponent<{}> = styled.div`
       text-decoration: underline;
     }
   }
-`
+`;
 
 const Breadcrumb = () => (
   <Wrapper>
@@ -43,6 +43,6 @@ const Breadcrumb = () => (
 
     <Route path="/asset/:assetId+" component={AssetCrumb} />
   </Wrapper>
-)
+);
 
-export default Breadcrumb
+export default Breadcrumb;

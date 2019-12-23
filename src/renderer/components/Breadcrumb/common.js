@@ -1,19 +1,19 @@
 // @flow
-import styled from 'styled-components'
+import styled from "styled-components";
 
-import Text from '~/renderer/components/Text'
-import { Base } from '~/renderer/components/Button'
+import Text from "~/renderer/components/Text";
+import { Base } from "~/renderer/components/Button";
 
-import type { ThemedComponent } from '~/renderer/styles/StyleProvider'
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
 export const Separator: ThemedComponent<{}> = styled.div`
   &::after {
-    content: '/';
+    content: "/";
     font-size: 13px;
     color: ${p => p.theme.colors.palette.divider};
     padding: 0 15px;
   }
-`
+`;
 
 export const Item: ThemedComponent<{ isActive?: boolean }> = styled.div`
   align-items: center;
@@ -35,7 +35,7 @@ export const Item: ThemedComponent<{ isActive?: boolean }> = styled.div`
     background: ${p => p.theme.colors.palette.background.default};
     border-radius: 4px;
   }
-`
+`;
 
 export const TextLink: ThemedComponent<{ shrink?: boolean }> = styled.div`
   font-family: 'Inter';
@@ -47,7 +47,7 @@ export const TextLink: ThemedComponent<{ shrink?: boolean }> = styled.div`
   > :first-child {
     margin-right: 8px;
   }
-  ${p => (p.shrink ? 'flex: 1;' : '')}
+  ${p => (p.shrink ? "flex: 1;" : "")}
 
   > ${Base} {
     text-overflow: ellipsis;
@@ -61,7 +61,7 @@ export const TextLink: ThemedComponent<{ shrink?: boolean }> = styled.div`
     }
     margin-right: 7px;
   }
-`
+`;
 export const AngleDown: ThemedComponent<{}> = styled.div`
   width: 16px;
   height: 16px;
@@ -72,7 +72,7 @@ export const AngleDown: ThemedComponent<{}> = styled.div`
   &:hover {
     background: ${p => p.theme.colors.palette.divider};
   }
-`
+`;
 
 export const Check: ThemedComponent<{}> = styled.div`
   color: ${p => p.theme.colors.wallet};
@@ -80,4 +80,4 @@ export const Check: ThemedComponent<{}> = styled.div`
   display: flex;
   text-align: right;
   margin-left: 20px;
-`
+`;

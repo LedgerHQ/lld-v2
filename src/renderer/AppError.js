@@ -1,9 +1,9 @@
 // @flow
-import React from 'react'
-import { ThemeProvider } from 'styled-components'
-import theme, { colors } from '~/renderer/styles/theme'
-import palette from '~/renderer/styles/palettes'
-import '~/renderer/i18n/init'
+import React from "react";
+import { ThemeProvider } from "styled-components";
+import theme, { colors } from "~/renderer/styles/theme";
+import palette from "~/renderer/styles/palettes";
+import "~/renderer/i18n/init";
 
 // TODO: WHEN BASE IS IMPORTED
 // import TriggerAppReady from './TriggerAppReady'
@@ -11,14 +11,14 @@ import '~/renderer/i18n/init'
 
 // Like App except it just render an error
 
-const themePalette = palette.light
+const themePalette = palette.light;
 const lightLiveTheme = {
   ...theme,
   colors: {
     ...colors,
     palette: themePalette,
   },
-}
+};
 
 const App = ({ language, error }: { error: Error, language: string }) => (
   <ThemeProvider theme={lightLiveTheme}>
@@ -27,6 +27,6 @@ const App = ({ language, error }: { error: Error, language: string }) => (
     </RenderError> */}
     {error.toString()}
   </ThemeProvider>
-)
+);
 
-export default App
+export default App;

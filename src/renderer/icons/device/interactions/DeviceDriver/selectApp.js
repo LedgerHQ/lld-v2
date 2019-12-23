@@ -6,8 +6,8 @@ const defaultProps = {
   xOffset: -60,
   rightHint: false,
   leftHint: false,
-  usb: 'plugged',
-}
+  usb: "plugged",
+};
 
 export default {
   loop: true,
@@ -16,7 +16,7 @@ export default {
     {
       timeout: 1200,
       props: {
-        screen: 'home',
+        screen: "home",
       },
     },
     {
@@ -28,7 +28,7 @@ export default {
     {
       timeout: 300,
       props: {
-        screen: 'logo',
+        screen: "logo",
         rightHint: false,
       },
     },
@@ -44,7 +44,7 @@ export default {
       props: {
         rightHint: false,
         leftHint: false,
-        screen: 'confirmation',
+        screen: "confirmation",
       },
     },
     {
@@ -52,4 +52,4 @@ export default {
       props: defaultProps,
     },
   ],
-}
+};

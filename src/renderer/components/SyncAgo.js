@@ -1,15 +1,15 @@
 // @flow
 
-import React, { PureComponent } from 'react'
-import moment from 'moment'
-import { translate } from 'react-i18next'
-import Box from './Box'
+import React, { PureComponent } from "react";
+import moment from "moment";
+import { translate } from "react-i18next";
+import Box from "./Box";
 
 class SyncAgo extends PureComponent<{ t: *, date: Date }> {
   render() {
-    const { t, date } = this.props
-    return <Box p={4}>{t('common.sync.ago', { time: moment(date).fromNow() })}</Box>
+    const { t, date } = this.props;
+    return <Box p={4}>{t("common.sync.ago", { time: moment(date).fromNow() })}</Box>;
   }
 }
 
-export default translate()(SyncAgo)
+export default translate()(SyncAgo);

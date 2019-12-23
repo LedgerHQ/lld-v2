@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react'
+import React from "react";
 
 const SensitiveOperationShield = () => (
   <svg width="27" height="31">
@@ -55,6 +55,6 @@ const SensitiveOperationShield = () => (
       </g>
     </g>
   </svg>
-)
+);
 
-export default SensitiveOperationShield
+export default SensitiveOperationShield;

@@ -1,25 +1,25 @@
 // @flow
 
-import React, { PureComponent } from 'react'
-import styled from 'styled-components'
-import { space, fontSize, fontWeight, color } from 'styled-system'
-import noop from 'lodash/noop'
+import React, { PureComponent } from "react";
+import styled from "styled-components";
+import { space, fontSize, fontWeight, color } from "styled-system";
+import noop from "lodash/noop";
 // import { track } from '~/analytics/segment'
-import get from 'lodash/get'
+import get from "lodash/get";
 
-import { isGlobalTabEnabled } from '~/config/global-tab'
-import { darken, lighten, rgba } from '~/renderer/styles/helpers'
-import fontFamily from '~/renderer/styles/styled/fontFamily'
-import { focusedShadowStyle } from '~/renderer/components/Box/Tabbable'
+import { isGlobalTabEnabled } from "~/config/global-tab";
+import { darken, lighten, rgba } from "~/renderer/styles/helpers";
+import fontFamily from "~/renderer/styles/styled/fontFamily";
+import { focusedShadowStyle } from "~/renderer/components/Box/Tabbable";
 
-import Spinner from '~/renderer/components/Spinner'
+import Spinner from "~/renderer/components/Spinner";
 
-type Style = any // FIXME
+type Style = any; // FIXME
 
 const buttonStyles: { [_: string]: Style } = {
   default: {
     default: p => `
-      box-shadow: ${p.isFocused ? focusedShadowStyle : ''}
+      box-shadow: ${p.isFocused ? focusedShadowStyle : ""}
     `,
     active: p => `
       background: ${rgba(p.theme.colors.palette.divider, 0.2)};
@@ -50,7 +50,7 @@ const buttonStyles: { [_: string]: Style } = {
           0 0 0 1px ${darken(p.theme.colors.palette.primary.main, 0.3)} inset,
           0 0 0 1px ${rgba(p.theme.colors.palette.primary.main, 0.5)},
           0 0 0 3px ${rgba(p.theme.colors.palette.primary.main, 0.3)};`
-          : ''
+          : ""
       }
     `,
     hover: p => `
@@ -87,7 +87,7 @@ const buttonStyles: { [_: string]: Style } = {
           0 0 0 1px ${rgba(p.theme.colors.alertRed, 0.5)},
           0 0 0 3px ${rgba(p.theme.colors.alertRed, 0.3)};
         `
-          : ''
+          : ""
       }
     `,
     hover: p => `
@@ -115,7 +115,7 @@ const buttonStyles: { [_: string]: Style } = {
           0 0 0 1px ${darken(p.theme.colors.palette.primary.main, 0.3)} inset,
           0 0 0 1px ${rgba(p.theme.colors.palette.primary.main, 0.5)},
           0 0 0 3px ${rgba(p.theme.colors.palette.primary.main, 0.3)};`
-          : ''
+          : ""
       }
     `,
     hover: p => `
@@ -144,7 +144,7 @@ const buttonStyles: { [_: string]: Style } = {
           0 0 0 1px ${rgba(p.theme.colors.alertRed, 0.5)},
           0 0 0 3px ${rgba(p.theme.colors.alertRed, 0.3)};
         `
-          : ''
+          : ""
       }
     `,
     hover: p => `
@@ -158,7 +158,7 @@ const buttonStyles: { [_: string]: Style } = {
     default: p => {
       const c = p.outlineColor
         ? get(p.theme.colors, p.outlineColor) || p.outlineColor
-        : p.theme.colors.palette.primary.main
+        : p.theme.colors.palette.primary.main;
 
       return `
         background: transparent;
@@ -168,22 +168,22 @@ const buttonStyles: { [_: string]: Style } = {
           p.isFocused
             ? `
             0 0 0 3px ${rgba(c, 0.3)};`
-            : ''
+            : ""
         }
-      `
+      `;
     },
     hover: p => {
       const c = p.outlineColor
         ? get(p.theme.colors, p.outlineColor) || p.outlineColor
-        : p.theme.colors.palette.primary.main
+        : p.theme.colors.palette.primary.main;
       return `
         background: ${rgba(c, 0.1)};
-      `
+      `;
     },
     active: p => {
       const c = p.outlineColor
         ? get(p.theme.colors, p.outlineColor) || p.outlineColor
-        : p.theme.colors.palette.primary.main
+        : p.theme.colors.palette.primary.main;
       return `
         background: ${rgba(c, 0.15)};
         color: ${darken(
@@ -198,7 +198,7 @@ const buttonStyles: { [_: string]: Style } = {
             : p.theme.colors.palette.primary.main,
           0.1,
         )};
-      `
+      `;
     },
   },
   outlineGrey: {
@@ -206,7 +206,7 @@ const buttonStyles: { [_: string]: Style } = {
       background: transparent;
       border: 1px solid ${p.theme.colors.palette.text.shade60};
       color: ${p.theme.colors.palette.text.shade60};
-      box-shadow: ${p.isFocused ? focusedShadowStyle : ''}
+      box-shadow: ${p.isFocused ? focusedShadowStyle : ""}
     `,
     active: p => `
       color: ${darken(p.theme.colors.palette.text.shade60, 0.1)};
@@ -228,28 +228,28 @@ const buttonStyles: { [_: string]: Style } = {
       opacity: 0.7;
     `,
   },
-}
+};
 
 function getStyles(props, state) {
-  let output = ''
-  let hasModifier = false
+  let output = "";
+  let hasModifier = false;
   for (const s in buttonStyles) {
     if (buttonStyles.hasOwnProperty(s) && props[s] === true) {
-      const style = buttonStyles[s][state]
+      const style = buttonStyles[s][state];
       if (style) {
-        hasModifier = true
-        output += style(props)
+        hasModifier = true;
+        output += style(props);
       }
     }
   }
   if (!hasModifier) {
-    const defaultStyle = buttonStyles.default[state]
+    const defaultStyle = buttonStyles.default[state];
     if (defaultStyle) {
-      output += defaultStyle(props) || ''
+      output += defaultStyle(props) || "";
     }
   }
 
-  return output
+  return output;
 }
 const LoadingWrapper = styled.div`
   position: absolute;
@@ -260,14 +260,14 @@ const LoadingWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`
+`;
 export const Base = styled.button.attrs(p => ({
-  ff: 'Inter|SemiBold',
+  ff: "Inter|SemiBold",
   fontSize: p.fontSize || (!p.small ? 4 : 3),
   px: !p.small ? 4 : 3,
   py: !p.small ? 2 : 0,
   color: p.color || p.theme.colors.palette.text.shade60,
-  bg: 'transparent',
+  bg: "transparent",
 }))`
   ${space};
   ${color};
@@ -281,23 +281,23 @@ export const Base = styled.button.attrs(p => ({
   flex-direction: row;
   align-items: center;
   border-radius: ${p => p.theme.radii[1]}px;
-  cursor: ${p => (p.disabled ? 'not-allowed' : 'pointer')};
+  cursor: ${p => (p.disabled ? "not-allowed" : "pointer")};
   height: ${p => (p.small ? 34 : 40)}px;
-  pointer-events: ${p => (p.disabled ? 'none' : '')};
+  pointer-events: ${p => (p.disabled ? "none" : "")};
   outline: none;
 
-  ${p => getStyles(p, 'default')};
+  ${p => getStyles(p, "default")};
 
   &:hover {
-    ${p => getStyles(p, 'hover')};
+    ${p => getStyles(p, "hover")};
   }
   &:active {
-    ${p => getStyles(p, 'active')};
+    ${p => getStyles(p, "active")};
   }
   &:focus {
-    ${p => getStyles(p, 'focus')};
+    ${p => getStyles(p, "focus")};
   }
-`
+`;
 
 type Props = {
   children?: any,
@@ -313,7 +313,7 @@ type Props = {
   isLoading?: boolean,
   event?: string,
   eventProperties?: Object,
-}
+};
 
 class Button extends PureComponent<
   Props,
@@ -327,35 +327,35 @@ class Button extends PureComponent<
     small: false,
     danger: false,
     inverted: false,
-  }
+  };
 
   state = {
     isFocused: false,
-  }
+  };
 
   handleFocus = () => {
     if (isGlobalTabEnabled()) {
-      this.setState({ isFocused: true })
+      this.setState({ isFocused: true });
     }
-  }
+  };
 
   handleBlur = () => {
-    this.setState({ isFocused: false })
-  }
+    this.setState({ isFocused: false });
+  };
 
   render() {
-    const { isFocused } = this.state
-    const { disabled } = this.props
-    const { onClick, children, isLoading, event, eventProperties, ...rest } = this.props
-    const isClickDisabled = disabled || isLoading
+    const { isFocused } = this.state;
+    const { disabled } = this.props;
+    const { onClick, children, isLoading, event, eventProperties, ...rest } = this.props;
+    const isClickDisabled = disabled || isLoading;
     const onClickHandler = e => {
       if (onClick) {
         // if (event) {
         //   track(event, eventProperties)
         // }
-        onClick(e)
+        onClick(e);
       }
-    }
+    };
     return (
       <Base
         {...rest}
@@ -371,8 +371,8 @@ class Button extends PureComponent<
         ) : null}
         {children}
       </Base>
-    )
+    );
   }
 }
 
-export default Button
+export default Button;

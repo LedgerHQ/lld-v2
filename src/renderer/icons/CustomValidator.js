@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react'
+import React from "react";
 
 const path = (
   <>
@@ -12,12 +12,12 @@ const path = (
       opacity=".4"
     />
   </>
-)
+);
 
 const CustomValidator = ({ size, ...p }: { size: number }) => (
   <svg viewBox="0 0 24 24" height={size} width={size} {...p}>
     {path}
   </svg>
-)
+);
 
-export default CustomValidator
+export default CustomValidator;

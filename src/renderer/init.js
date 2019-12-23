@@ -1,61 +1,61 @@
 // @flow
 
-import React from 'react'
-import Transport from '@ledgerhq/hw-transport'
-import { NotEnoughBalance } from '@ledgerhq/errors'
-import { log } from '@ledgerhq/logs'
-import { checkLibs } from '@ledgerhq/live-common/lib/sanityChecks'
-import { remote, webFrame } from 'electron'
-import { render } from 'react-dom'
-import moment from 'moment'
+import React from "react";
+import Transport from "@ledgerhq/hw-transport";
+import { NotEnoughBalance } from "@ledgerhq/errors";
+import { log } from "@ledgerhq/logs";
+import { checkLibs } from "@ledgerhq/live-common/lib/sanityChecks";
+import { remote, webFrame } from "electron";
+import { render } from "react-dom";
+import moment from "moment";
 
-import '~/renderer/styles/global'
-import '~/renderer/live-common-setup'
-import '~/renderer/experimental'
-import '~/renderer/i18n/init'
+import "~/renderer/styles/global";
+import "~/renderer/live-common-setup";
+import "~/renderer/experimental";
+import "~/renderer/i18n/init";
 
-import logger from '~/logger'
-import LoggerTransport from '~/logger/logger-transport-renderer'
+import logger from "~/logger";
+import LoggerTransport from "~/logger/logger-transport-renderer";
 
-import { DEBUG_TICK_REDUX } from '~/config/constants'
-import { enableGlobalTab, disableGlobalTab, isGlobalTabEnabled } from '~/config/global-tab'
+import { DEBUG_TICK_REDUX } from "~/config/constants";
+import { enableGlobalTab, disableGlobalTab, isGlobalTabEnabled } from "~/config/global-tab";
 
-import libcoreGetVersion from '~/commands/libcoreGetVersion'
+import libcoreGetVersion from "~/commands/libcoreGetVersion";
 
-import resolveUserDataDirectory from '~/helpers/resolveUserDataDirectory'
-import db from '~/helpers/db'
-import Countervalues from '~/renderer/countervalues'
-import { setEnvOnAllThreads } from '~/helpers/env'
+import resolveUserDataDirectory from "~/helpers/resolveUserDataDirectory";
+import db from "~/helpers/db";
+import Countervalues from "~/renderer/countervalues";
+import { setEnvOnAllThreads } from "~/helpers/env";
 
-import sentry from '~/sentry/browser'
+import sentry from "~/sentry/browser";
 
-import dbMiddleware from '~/renderer/middlewares/db'
+import dbMiddleware from "~/renderer/middlewares/db";
 
-import createStore from '~/renderer/createStore'
-import events from '~/renderer/events'
+import createStore from "~/renderer/createStore";
+import events from "~/renderer/events";
 
-import { fetchAccounts } from '~/renderer/actions/accounts'
-import { fetchSettings } from '~/renderer/actions/settings'
-import { lock } from '~/renderer/actions/application'
+import { fetchAccounts } from "~/renderer/actions/accounts";
+import { fetchSettings } from "~/renderer/actions/settings";
+import { lock } from "~/renderer/actions/application";
 
 import {
   languageSelector,
   sentryLogsSelector,
   hideEmptyTokenAccountsSelector,
-} from '~/renderer/reducers/settings'
-import { decodeAccountsModel, encodeAccountsModel } from '~/renderer/reducers/accounts'
+} from "~/renderer/reducers/settings";
+import { decodeAccountsModel, encodeAccountsModel } from "~/renderer/reducers/accounts";
 
-import ReactRoot from '~/renderer/ReactRoot'
-import AppError from '~/renderer/AppError'
+import ReactRoot from "~/renderer/ReactRoot";
+import AppError from "~/renderer/AppError";
 
-logger.add(new LoggerTransport())
+logger.add(new LoggerTransport());
 
-const rootNode = document.getElementById('react-root')
-const userDataDirectory = resolveUserDataDirectory()
+const rootNode = document.getElementById("react-root");
+const userDataDirectory = resolveUserDataDirectory();
 
-const TAB_KEY = 9
+const TAB_KEY = 9;
 
-db.init(userDataDirectory)
+db.init(userDataDirectory);
 
 async function init() {
   checkLibs({
@@ -63,128 +63,128 @@ async function init() {
     React,
     log,
     Transport,
-  })
+  });
 
-  db.init(userDataDirectory)
-  db.registerTransform('app', 'accounts', {
+  db.init(userDataDirectory);
+  db.registerTransform("app", "accounts", {
     get: decodeAccountsModel,
     set: encodeAccountsModel,
-  })
-  const store = createStore({ dbMiddleware })
+  });
+  const store = createStore({ dbMiddleware });
 
-  const settings = await db.getKey('app', 'settings')
-  store.dispatch(fetchSettings(settings))
+  const settings = await db.getKey("app", "settings");
+  store.dispatch(fetchSettings(settings));
 
-  const countervaluesData = await db.getKey('app', 'countervalues')
+  const countervaluesData = await db.getKey("app", "countervalues");
   if (countervaluesData) {
-    store.dispatch(Countervalues.importAction(countervaluesData))
+    store.dispatch(Countervalues.importAction(countervaluesData));
   }
 
-  const state = store.getState()
-  const language = languageSelector(state)
-  moment.locale(language)
+  const state = store.getState();
+  const language = languageSelector(state);
+  moment.locale(language);
 
-  const hideEmptyTokenAccounts = hideEmptyTokenAccountsSelector(state)
-  setEnvOnAllThreads('HIDE_EMPTY_TOKEN_ACCOUNTS', hideEmptyTokenAccounts)
+  const hideEmptyTokenAccounts = hideEmptyTokenAccountsSelector(state);
+  setEnvOnAllThreads("HIDE_EMPTY_TOKEN_ACCOUNTS", hideEmptyTokenAccounts);
 
   // TODO: DON'T FORGET SENTRY
-  sentry(() => sentryLogsSelector(store.getState()))
+  sentry(() => sentryLogsSelector(store.getState()));
 
-  const isMainWindow = remote.getCurrentWindow().name === 'MainWindow'
+  const isMainWindow = remote.getCurrentWindow().name === "MainWindow";
 
-  const isAccountsDecrypted = await db.hasBeenDecrypted('app', 'accounts')
+  const isAccountsDecrypted = await db.hasBeenDecrypted("app", "accounts");
   if (!isAccountsDecrypted) {
-    store.dispatch(lock())
+    store.dispatch(lock());
   } else {
-    await store.dispatch(fetchAccounts())
+    await store.dispatch(fetchAccounts());
   }
 
   if (DEBUG_TICK_REDUX) {
-    setInterval(() => store.dispatch({ type: 'DEBUG_TICK' }), DEBUG_TICK_REDUX)
+    setInterval(() => store.dispatch({ type: "DEBUG_TICK" }), DEBUG_TICK_REDUX);
   }
 
-  r(<ReactRoot store={store} language={language} />)
+  r(<ReactRoot store={store} language={language} />);
 
   if (isMainWindow) {
-    webFrame.setVisualZoomLevelLimits(1, 1)
+    webFrame.setVisualZoomLevelLimits(1, 1);
 
-    events({ store })
+    events({ store });
 
-    const libcoreVersion = await libcoreGetVersion.send().toPromise()
-    logger.log('libcore', libcoreVersion)
+    const libcoreVersion = await libcoreGetVersion.send().toPromise();
+    logger.log("libcore", libcoreVersion);
 
-    window.addEventListener('keydown', (e: SyntheticKeyboardEvent<any>) => {
+    window.addEventListener("keydown", (e: SyntheticKeyboardEvent<any>) => {
       if (e.which === TAB_KEY) {
-        if (!isGlobalTabEnabled()) enableGlobalTab()
-        logger.onTabKey(document.activeElement)
+        if (!isGlobalTabEnabled()) enableGlobalTab();
+        logger.onTabKey(document.activeElement);
       }
-    })
+    });
 
-    window.addEventListener('click', () => {
-      if (isGlobalTabEnabled()) disableGlobalTab()
-    })
+    window.addEventListener("click", () => {
+      if (isGlobalTabEnabled()) disableGlobalTab();
+    });
   }
 
   document.addEventListener(
-    'dragover',
+    "dragover",
     (event: Event) => {
-      event.preventDefault()
-      return false
+      event.preventDefault();
+      return false;
     },
     false,
-  )
+  );
 
   document.addEventListener(
-    'drop',
+    "drop",
     (event: Event) => {
-      event.preventDefault()
-      return false
+      event.preventDefault();
+      return false;
     },
     false,
-  )
+  );
 
   if (document.body) {
-    const classes = document.body.classList
-    let timer = 0
-    window.addEventListener('resize', () => {
+    const classes = document.body.classList;
+    let timer = 0;
+    window.addEventListener("resize", () => {
       if (timer) {
-        clearTimeout(timer)
-        timer = null
-      } else classes.add('stop-all-transition')
+        clearTimeout(timer);
+        timer = null;
+      } else classes.add("stop-all-transition");
 
       timer = setTimeout(() => {
-        classes.remove('stop-all-transition')
-        timer = null
-      }, 500)
-    })
+        classes.remove("stop-all-transition");
+        timer = null;
+      }, 500);
+    });
   }
 
   // expose stuff in Windows for DEBUG purpose
   window.ledger = {
     store,
     db,
-  }
+  };
 }
 
 function r(Comp) {
   if (rootNode) {
-    render(Comp, rootNode)
+    render(Comp, rootNode);
   }
 }
 
 init()
   .catch(e => {
-    logger.critical(e)
-    r(<AppError error={e} language="en" />)
+    logger.critical(e);
+    r(<AppError error={e} language="en" />);
   })
   .catch(error => {
-    const pre = document.createElement('pre')
+    const pre = document.createElement("pre");
     pre.innerHTML = `Ledger Live crashed. Please contact Ledger support.
   ${String(error)}
-  ${String((error && error.stack) || 'no stacktrace')}`
+  ${String((error && error.stack) || "no stacktrace")}`;
     if (document.body) {
-      document.body.style.padding = '50px'
-      document.body.innerHTML = ''
-      document.body.appendChild(pre)
+      document.body.style.padding = "50px";
+      document.body.innerHTML = "";
+      document.body.appendChild(pre);
     }
-  })
+  });

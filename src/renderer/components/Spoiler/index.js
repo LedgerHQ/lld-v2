@@ -1,48 +1,48 @@
 // @flow
 
-import React, { PureComponent, Fragment } from 'react'
-import uncontrollable from 'uncontrollable'
-import styled from 'styled-components'
+import React, { PureComponent, Fragment } from "react";
+import uncontrollable from "uncontrollable";
+import styled from "styled-components";
 
-import Box from '~/renderer/components/Box'
-import Text from '~/renderer/components/Text'
-import IconChevronRight from '~/renderer/icons/ChevronRight'
+import Box from "~/renderer/components/Box";
+import Text from "~/renderer/components/Text";
+import IconChevronRight from "~/renderer/icons/ChevronRight";
 
 type Props = {
   children: any,
   title: string,
   opened: boolean,
   onOpen: boolean => void,
-}
+};
 
 type State = {
   isOpened: boolean,
-}
+};
 
 const Title = styled(Text).attrs(p => ({
-  ff: p.ff ? p.ff : 'Inter|Bold',
+  ff: p.ff ? p.ff : "Inter|Bold",
   fontSize: p.fontSize ? p.fontSize : 2,
-  color: p.color ? p.color : 'palette.text.shade100',
+  color: p.color ? p.color : "palette.text.shade100",
   tabIndex: 0,
 }))`
-  text-transform: ${p => (!p.textTransform ? 'auto' : 'uppercase')};
+  text-transform: ${p => (!p.textTransform ? "auto" : "uppercase")};
   letter-spacing: 1px;
   outline: none;
-`
+`;
 
 const IconContainer = styled(Box)`
-  transform: rotate(${p => (p.isOpened ? '90' : '0')}deg);
+  transform: rotate(${p => (p.isOpened ? "90" : "0")}deg);
   transition: 150ms linear transform;
-`
+`;
 
 export class SpoilerIcon extends PureComponent<{ isOpened: boolean }> {
   render() {
-    const { isOpened, ...rest } = this.props
+    const { isOpened, ...rest } = this.props;
     return (
       <IconContainer isOpened={isOpened} {...rest}>
         <IconChevronRight size={12} />
       </IconContainer>
-    )
+    );
   }
 }
 
@@ -50,12 +50,12 @@ export class SpoilerIcon extends PureComponent<{ isOpened: boolean }> {
 
 class Spoiler extends PureComponent<Props, State> {
   toggle = () => {
-    const { opened, onOpen } = this.props
-    onOpen(!opened)
-  }
+    const { opened, onOpen } = this.props;
+    onOpen(!opened);
+  };
 
   render() {
-    const { title, opened, onOpen, children, ...p } = this.props
+    const { title, opened, onOpen, children, ...p } = this.props;
     return (
       <Fragment>
         <Box
@@ -72,10 +72,10 @@ class Spoiler extends PureComponent<Props, State> {
         </Box>
         {opened && children}
       </Fragment>
-    )
+    );
   }
 }
 
 export default uncontrollable(Spoiler, {
-  opened: 'onOpen',
-})
+  opened: "onOpen",
+});

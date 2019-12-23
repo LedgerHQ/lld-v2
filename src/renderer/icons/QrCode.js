@@ -1,8 +1,8 @@
 // @flow
 
-import React from 'react'
+import React from "react";
 
-const QrCode = ({ size = 18, color = 'currentColor' }: { size?: number, color?: string }) => (
+const QrCode = ({ size = 18, color = "currentColor" }: { size?: number, color?: string }) => (
   <svg viewBox="0 0 18 18" width={size} height={size}>
     <defs>
       <path
@@ -12,6 +12,6 @@ const QrCode = ({ size = 18, color = 'currentColor' }: { size?: number, color?: 
     </defs>
     <use fill={color} fillRule="nonzero" xlinkHref="#prefix__a" />
   </svg>
-)
+);
 
-export default QrCode
+export default QrCode;

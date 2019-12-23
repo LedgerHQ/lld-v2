@@ -1,6 +1,6 @@
 // @flow
 
-import styled from 'styled-components'
+import styled from "styled-components";
 
 const ModalFooter = styled.div`
   display: flex;
@@ -11,6 +11,6 @@ const ModalFooter = styled.div`
   &:empty {
     display: none;
   }
-`
+`;
 
-export default ModalFooter
+export default ModalFooter;

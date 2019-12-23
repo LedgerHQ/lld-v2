@@ -1,18 +1,18 @@
 // @flow
 
-import React, { PureComponent, Fragment } from 'react'
-import invariant from 'invariant'
-import { translate } from 'react-i18next'
+import React, { PureComponent, Fragment } from "react";
+import invariant from "invariant";
+import { translate } from "react-i18next";
 
-import type { T } from 'types/common'
+import type { T } from "types/common";
 
-import { ModalBody } from '~/renderer/components/Modal'
-import Breadcrumb from '~/renderer/components/Breadcrumb'
+import { ModalBody } from "~/renderer/components/Modal";
+import Breadcrumb from "~/renderer/components/Breadcrumb";
 
 export type StepProps = {
   t: T,
   transitionTo: string => void,
-}
+};
 
 export type Step = {
   id: string,
@@ -24,11 +24,11 @@ export type Step = {
   shouldPreventClose?: boolean | (StepProps => boolean),
   onBack?: StepProps => void,
   noScroll?: boolean,
-}
+};
 
 type State = {
   stepId: string,
-}
+};
 
 type Props = {
   t: T,
@@ -43,24 +43,24 @@ type Props = {
   children: any,
   error?: Error,
   signed?: boolean,
-}
+};
 
 class Stepper extends PureComponent<Props, State> {
   state = {
     stepId: this.props.initialStepId,
-  }
+  };
 
   transitionTo = stepId => {
-    const { onStepChange, steps } = this.props
-    this.setState({ stepId })
+    const { onStepChange, steps } = this.props;
+    this.setState({ stepId });
     if (onStepChange) {
-      const stepIndex = steps.findIndex(s => s.id === stepId)
-      const step = steps[stepIndex]
+      const stepIndex = steps.findIndex(s => s.id === stepId);
+      const step = steps[stepIndex];
       if (step) {
-        onStepChange(step)
+        onStepChange(step);
       }
     }
-  }
+  };
 
   render() {
     const {
@@ -73,19 +73,19 @@ class Stepper extends PureComponent<Props, State> {
       errorSteps,
       children,
       ...props
-    } = this.props
-    const { stepId } = this.state
+    } = this.props;
+    const { stepId } = this.state;
 
-    const stepIndex = steps.findIndex(s => s.id === stepId)
-    const step = steps[stepIndex]
+    const stepIndex = steps.findIndex(s => s.id === stepId);
+    const step = steps[stepIndex];
 
-    const visibleSteps = steps.filter(s => !s.excludeFromBreadcrumb)
+    const visibleSteps = steps.filter(s => !s.excludeFromBreadcrumb);
     const indexVisible = Math.min(
       steps.slice(0, stepIndex).filter(s => !s.excludeFromBreadcrumb).length,
       visibleSteps.length - 1,
-    )
+    );
 
-    invariant(step, `Stepper: step ${stepId} doesn't exists`)
+    invariant(step, `Stepper: step ${stepId} doesn't exists`);
 
     const {
       component: StepComponent,
@@ -94,21 +94,21 @@ class Stepper extends PureComponent<Props, State> {
       shouldPreventClose,
       shouldRenderFooter,
       noScroll,
-    } = step
+    } = step;
 
     const stepProps: StepProps = {
       t,
       transitionTo: this.transitionTo,
       ...props,
-    }
+    };
 
     const renderFooter =
-      !!StepFooter && (shouldRenderFooter === undefined || shouldRenderFooter(stepProps))
+      !!StepFooter && (shouldRenderFooter === undefined || shouldRenderFooter(stepProps));
 
     const preventClose =
-      typeof shouldPreventClose === 'function'
+      typeof shouldPreventClose === "function"
         ? shouldPreventClose(stepProps)
-        : !!shouldPreventClose
+        : !!shouldPreventClose;
 
     return (
       <ModalBody
@@ -134,8 +134,8 @@ class Stepper extends PureComponent<Props, State> {
         )}
         renderFooter={renderFooter ? () => <StepFooter {...stepProps} /> : undefined}
       />
-    )
+    );
   }
 }
 
-export default translate()(Stepper)
+export default translate()(Stepper);

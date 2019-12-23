@@ -1,51 +1,51 @@
 // @flow
-import React, { useCallback } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link, useHistory, useLocation } from 'react-router-dom'
-import { Transition } from 'react-transition-group'
-import styled from 'styled-components'
+import React, { useCallback } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useHistory, useLocation } from "react-router-dom";
+import { Transition } from "react-transition-group";
+import styled from "styled-components";
 
-import { MODAL_RECEIVE, MODAL_SEND, MAIN_SIDEBAR_WIDTH } from '~/config/constants'
+import { MODAL_RECEIVE, MODAL_SEND, MAIN_SIDEBAR_WIDTH } from "~/config/constants";
 
-import { accountsSelector, starredAccountsSelector } from '~/renderer/reducers/accounts'
-import { sidebarCollapsedSelector } from '~/renderer/reducers/settings'
+import { accountsSelector, starredAccountsSelector } from "~/renderer/reducers/accounts";
+import { sidebarCollapsedSelector } from "~/renderer/reducers/settings";
 
-import { openModal } from '~/renderer/actions/modals'
-import { setSidebarCollapsed } from '~/renderer/actions/settings'
+import { openModal } from "~/renderer/actions/modals";
+import { setSidebarCollapsed } from "~/renderer/actions/settings";
 
-import useExperimental from '~/renderer/hooks/useExperimental'
+import useExperimental from "~/renderer/hooks/useExperimental";
 
-import { darken, rgba } from '~/renderer/styles/helpers'
+import { darken, rgba } from "~/renderer/styles/helpers";
 
-import IconManager from '~/renderer/icons/Manager'
-import IconWallet from '~/renderer/icons/Wallet'
-import IconPortfolio from '~/renderer/icons/Portfolio'
-import IconReceive from '~/renderer/icons/Receive'
-import IconSend from '~/renderer/icons/Send'
-import IconExchange from '~/renderer/icons/Exchange'
-import IconChevron from '~/renderer/icons/ChevronRight'
-import IconExperimental from '~/renderer/icons/Experimental'
+import IconManager from "~/renderer/icons/Manager";
+import IconWallet from "~/renderer/icons/Wallet";
+import IconPortfolio from "~/renderer/icons/Portfolio";
+import IconReceive from "~/renderer/icons/Receive";
+import IconSend from "~/renderer/icons/Send";
+import IconExchange from "~/renderer/icons/Exchange";
+import IconChevron from "~/renderer/icons/ChevronRight";
+import IconExperimental from "~/renderer/icons/Experimental";
 
-import { SideBarList, SideBarListItem } from '~/renderer/components/SideBar'
-import Box from '~/renderer/components/Box'
-import Space from '~/renderer/components/Space'
-import UpdateDot from '~/renderer/components/Updater/UpdateDot'
-import Stars from '~/renderer/components/Stars'
+import { SideBarList, SideBarListItem } from "~/renderer/components/SideBar";
+import Box from "~/renderer/components/Box";
+import Space from "~/renderer/components/Space";
+import UpdateDot from "~/renderer/components/Updater/UpdateDot";
+import Stars from "~/renderer/components/Stars";
 
-import TopGradient from './TopGradient'
-import Hide from './Hide'
+import TopGradient from "./TopGradient";
+import Hide from "./Hide";
 
 const TagText = styled.div`
   margin-left: 8px;
-`
+`;
 
 const Tag = styled(Link)`
   display: flex;
   justify-self: flex-end;
   justify-content: center;
   align-items: center;
-  font-family: 'Inter';
+  font-family: "Inter";
   font-weight: bold;
   font-size: 10px;
   padding: 2px 8px;
@@ -59,14 +59,14 @@ const Tag = styled(Link)`
     background-color: ${p => darken(p.theme.colors.palette.action.hover, 0.05)};
     border: solid 1px ${p => p.theme.colors.wallet};
   }
-`
+`;
 
-const collapserSize = 24
-const collapsedWidth = 15 * 4 + 16 // 15 * 4 margins + 16 icon size
+const collapserSize = 24;
+const collapsedWidth = 15 * 4 + 16; // 15 * 4 margins + 16 icon size
 
 const Collapser = styled(Box).attrs(() => ({
-  alignItems: 'center',
-  justifyContent: 'center',
+  alignItems: "center",
+  justifyContent: "center",
 }))`
   position: absolute;
   top: ${58 - collapserSize / 2}px;
@@ -92,37 +92,37 @@ const Collapser = styled(Box).attrs(() => ({
   }
 
   & > * {
-    transform: ${p => (p.collapsed ? '' : 'rotate(180deg)')};
-    margin-left: ${p => (p.collapsed ? '' : '-2px')};
+    transform: ${p => (p.collapsed ? "" : "rotate(180deg)")};
+    margin-left: ${p => (p.collapsed ? "" : "-2px")};
 
     transition: transform 0.5s;
   }
-`
+`;
 
 const Separator = styled(Box).attrs(() => ({
   mx: 4,
 }))`
   height: 1px;
   background: ${p => p.theme.colors.palette.divider};
-`
+`;
 
 const sideBarTransitionStyles = {
   entering: { width: MAIN_SIDEBAR_WIDTH },
   entered: { width: MAIN_SIDEBAR_WIDTH },
   exiting: { width: collapsedWidth },
   exited: { width: collapsedWidth },
-}
+};
 
 const enableTransitions = () =>
   document.body &&
   setTimeout(
-    () => document.body && document.body.classList.remove('stop-container-transition'),
+    () => document.body && document.body.classList.remove("stop-container-transition"),
     500,
-  )
+  );
 const disableTransitions = () =>
-  document.body && document.body.classList.add('stop-container-transition')
+  document.body && document.body.classList.add("stop-container-transition");
 
-const sideBarTransitionSpeed = 500
+const sideBarTransitionSpeed = 500;
 
 const SideBar = styled(Box).attrs(() => ({
   relative: true,
@@ -141,86 +141,86 @@ const SideBar = styled(Box).attrs(() => ({
       opacity: 1;
     }
   }
-`
+`;
 
 const TagContainer = ({ collapsed }: { collapsed: boolean }) => {
-  const isExperimental = useExperimental()
-  const { t } = useTranslation()
+  const isExperimental = useExperimental();
+  const { t } = useTranslation();
 
   return isExperimental ? (
     <Box
       justifyContent="center"
       m={2}
       style={{
-        alignItems: 'center',
-        alignSelf: 'center',
-        justifyContent: 'flex-end',
-        textAlign: 'center',
-        cursor: 'pointer',
+        alignItems: "center",
+        alignSelf: "center",
+        justifyContent: "flex-end",
+        textAlign: "center",
+        cursor: "pointer",
       }}
     >
       <Tag to="/settings/experimental">
         <IconExperimental width={16} height={16} />
         <Hide visible={collapsed}>
-          <TagText>{t('common.experimentalFeature')}</TagText>
+          <TagText>{t("common.experimentalFeature")}</TagText>
         </Hide>
       </Tag>
     </Box>
-  ) : null
-}
+  ) : null;
+};
 
 const MainSideBar = () => {
-  const history = useHistory()
-  const location = useLocation()
-  const dispatch = useDispatch()
-  const { t } = useTranslation()
+  const history = useHistory();
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
 
-  const collapsed = useSelector(sidebarCollapsedSelector)
-  const noAccounts = useSelector(accountsSelector).length === 0
-  const hasStarredAccounts = useSelector(starredAccountsSelector)
+  const collapsed = useSelector(sidebarCollapsedSelector);
+  const noAccounts = useSelector(accountsSelector).length === 0;
+  const hasStarredAccounts = useSelector(starredAccountsSelector);
 
   const handleCollapse = useCallback(() => {
-    dispatch(setSidebarCollapsed(!collapsed))
-  }, [dispatch, collapsed])
+    dispatch(setSidebarCollapsed(!collapsed));
+  }, [dispatch, collapsed]);
 
   const push = useCallback(
     (to: string) => {
-      if (location.pathname === to) return
+      if (location.pathname === to) return;
 
-      history.push(to)
+      history.push(to);
     },
     [history.push, location.pathname],
-  )
+  );
 
   const handleClickDashboard = useCallback(() => {
-    push('/')
-  }, [push])
+    push("/");
+  }, [push]);
 
   const handleClickManager = useCallback(() => {
-    push('/manager')
-  }, [push])
+    push("/manager");
+  }, [push]);
 
   const handleClickAccounts = useCallback(() => {
-    push('/accounts')
-  }, [push])
+    push("/accounts");
+  }, [push]);
 
   const handleClickExchange = useCallback(() => {
-    push('/partners')
-  }, [push])
+    push("/partners");
+  }, [push]);
 
   const maybeRedirectToAccounts = useCallback(() => {
-    return location.pathname === '/manager' && push('/accounts')
-  }, [location.pathname, push])
+    return location.pathname === "/manager" && push("/accounts");
+  }, [location.pathname, push]);
 
   const handleOpenSendModal = useCallback(() => {
-    maybeRedirectToAccounts()
-    dispatch(openModal(MODAL_SEND))
-  }, [dispatch, maybeRedirectToAccounts])
+    maybeRedirectToAccounts();
+    dispatch(openModal(MODAL_SEND));
+  }, [dispatch, maybeRedirectToAccounts]);
 
   const handleOpenReceiveModal = useCallback(() => {
-    maybeRedirectToAccounts()
-    dispatch(openModal(MODAL_RECEIVE))
-  }, [dispatch, maybeRedirectToAccounts])
+    maybeRedirectToAccounts();
+    dispatch(openModal(MODAL_RECEIVE));
+  }, [dispatch, maybeRedirectToAccounts]);
 
   return (
     <Transition
@@ -232,7 +232,7 @@ const MainSideBar = () => {
       onExited={enableTransitions}
     >
       {state => {
-        const secondAnim = !(state === 'entered' && !collapsed)
+        const secondAnim = !(state === "entered" && !collapsed);
         return (
           <SideBar className="unstoppableAnimation" style={sideBarTransitionStyles[state]}>
             <Collapser collapsed={collapsed} onClick={handleCollapse}>
@@ -240,28 +240,28 @@ const MainSideBar = () => {
             </Collapser>
             <TopGradient />
             <Space of={70} />
-            <SideBarList title={t('sidebar.menu')} collapsed={secondAnim}>
+            <SideBarList title={t("sidebar.menu")} collapsed={secondAnim}>
               <SideBarListItem
-                label={t('dashboard.title')}
+                label={t("dashboard.title")}
                 icon={IconPortfolio}
                 iconActiveColor="wallet"
                 onClick={handleClickDashboard}
-                isActive={location.pathname === '/'}
+                isActive={location.pathname === "/"}
                 NotifComponent={noAccounts ? undefined : UpdateDot}
                 disabled={noAccounts}
                 collapsed={secondAnim}
               />
               <SideBarListItem
-                label={t('sidebar.accounts')}
+                label={t("sidebar.accounts")}
                 icon={IconWallet}
                 iconActiveColor="wallet"
-                isActive={location.pathname === '/accounts'}
+                isActive={location.pathname === "/accounts"}
                 onClick={handleClickAccounts}
                 NotifComponent={noAccounts ? UpdateDot : undefined}
                 collapsed={secondAnim}
               />
               <SideBarListItem
-                label={t('send.title')}
+                label={t("send.title")}
                 icon={IconSend}
                 iconActiveColor="wallet"
                 onClick={handleOpenSendModal}
@@ -269,7 +269,7 @@ const MainSideBar = () => {
                 collapsed={secondAnim}
               />
               <SideBarListItem
-                label={t('receive.title')}
+                label={t("receive.title")}
                 icon={IconReceive}
                 iconActiveColor="wallet"
                 onClick={handleOpenReceiveModal}
@@ -277,19 +277,19 @@ const MainSideBar = () => {
                 collapsed={secondAnim}
               />
               <SideBarListItem
-                label={t('sidebar.manager')}
+                label={t("sidebar.manager")}
                 icon={IconManager}
                 iconActiveColor="wallet"
                 onClick={handleClickManager}
-                isActive={location.pathname === '/manager'}
+                isActive={location.pathname === "/manager"}
                 collapsed={secondAnim}
               />
               <SideBarListItem
-                label={t('sidebar.exchange')}
+                label={t("sidebar.exchange")}
                 icon={IconExchange}
                 iconActiveColor="wallet"
                 onClick={handleClickExchange}
-                isActive={location.pathname === '/partners'}
+                isActive={location.pathname === "/partners"}
                 collapsed={secondAnim}
               />
               <Space of={30} />
@@ -299,15 +299,15 @@ const MainSideBar = () => {
               <Separator />
             </Hide>
 
-            <SideBarList scroll title={t('sidebar.stars')} collapsed={secondAnim}>
+            <SideBarList scroll title={t("sidebar.stars")} collapsed={secondAnim}>
               <Stars pathname={location.pathname} collapsed={secondAnim} />
             </SideBarList>
             <TagContainer collapsed={!secondAnim} />
           </SideBar>
-        )
+        );
       }}
     </Transition>
-  )
-}
+  );
+};
 
-export default MainSideBar
+export default MainSideBar;

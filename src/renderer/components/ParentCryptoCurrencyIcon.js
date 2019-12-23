@@ -1,16 +1,16 @@
 // @flow
-import React from 'react'
-import { useTranslation } from 'react-i18next'
-import styled, { withTheme } from 'styled-components'
+import React from "react";
+import { useTranslation } from "react-i18next";
+import styled, { withTheme } from "styled-components";
 
-import type { Currency } from '@ledgerhq/live-common/lib/types'
+import type { Currency } from "@ledgerhq/live-common/lib/types";
 
-import { rgba } from '~/renderer/styles/helpers'
-import type { ThemedComponent } from '~/renderer/styles/StyleProvider'
+import { rgba } from "~/renderer/styles/helpers";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
-import Tooltip from '~/renderer/components/Tooltip'
-import Text from '~/renderer/components/Text'
-import CryptoCurrencyIcon from '~/renderer/components/CryptoCurrencyIcon'
+import Tooltip from "~/renderer/components/Tooltip";
+import Text from "~/renderer/components/Text";
+import CryptoCurrencyIcon from "~/renderer/components/CryptoCurrencyIcon";
 
 const ParentCryptoCurrencyIconWrapper: ThemedComponent<{
   doubleIcon?: boolean,
@@ -26,44 +26,44 @@ const ParentCryptoCurrencyIconWrapper: ThemedComponent<{
   display: flex;
   align-items: center;`}
 
-  line-height: ${p => (p.bigger ? '18px' : '18px')};
-  font-size: ${p => (p.bigger ? '12px' : '12px')};
+  line-height: ${p => (p.bigger ? "18px" : "18px")};
+  font-size: ${p => (p.bigger ? "12px" : "12px")};
   > :nth-child(2) {
-    margin-top: ${p => (p.bigger ? '-15px' : '-13px')};
-    margin-left: ${p => (p.bigger ? '10px' : '8px')};
+    margin-top: ${p => (p.bigger ? "-15px" : "-13px")};
+    margin-left: ${p => (p.bigger ? "10px" : "8px")};
     border: 2px solid transparent;
   }
-`
+`;
 const TooltipWrapper = styled.div`
   display: flex;
   max-width: 150px;
   flex-direction: column;
-`
+`;
 
 const CryptoCurrencyIconTooltip = withTheme(({ name, theme }: { theme: any, name: string }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   return (
     <TooltipWrapper>
       <Text color={rgba(theme.colors.palette.background.paper, 0.5)}>
-        {t('tokensList.tooltip')}
+        {t("tokensList.tooltip")}
       </Text>
       <Text>{name}</Text>
     </TooltipWrapper>
-  )
-})
+  );
+});
 
 type Props = {
   currency: Currency,
   withTooltip?: boolean,
   bigger?: boolean,
   inactive?: boolean,
-}
+};
 
 const ParentCryptoCurrencyIcon = ({ currency, withTooltip, bigger, inactive }: Props) => {
-  const parent = currency.type === 'TokenCurrency' ? currency.parentCurrency : null
+  const parent = currency.type === "TokenCurrency" ? currency.parentCurrency : null;
 
   if (withTooltip && parent) {
-    return <Tooltip content={<CryptoCurrencyIconTooltip name={parent.name} />}>{content}</Tooltip>
+    return <Tooltip content={<CryptoCurrencyIconTooltip name={parent.name} />}>{content}</Tooltip>;
   }
 
   return (
@@ -73,7 +73,7 @@ const ParentCryptoCurrencyIcon = ({ currency, withTooltip, bigger, inactive }: P
       )}
       <CryptoCurrencyIcon inactive={inactive} currency={currency} size={bigger ? 20 : 16} />
     </ParentCryptoCurrencyIconWrapper>
-  )
-}
+  );
+};
 
-export default ParentCryptoCurrencyIcon
+export default ParentCryptoCurrencyIcon;

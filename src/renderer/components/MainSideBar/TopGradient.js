@@ -1,9 +1,9 @@
 // @flow
 
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
-import type { ThemedComponent } from '~/renderer/styles/StyleProvider'
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
 const TopGradientBox: ThemedComponent<{}> = styled.div`
   width: 100%;
@@ -17,8 +17,8 @@ const TopGradientBox: ThemedComponent<{}> = styled.div`
   );
   z-index: 2;
   pointer-events: none;
-`
+`;
 
-const TopGradient = () => <TopGradientBox />
+const TopGradient = () => <TopGradientBox />;
 
-export default TopGradient
+export default TopGradient;

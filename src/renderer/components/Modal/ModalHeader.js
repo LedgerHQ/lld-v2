@@ -1,29 +1,29 @@
 // @flow
 
-import React from 'react'
-import styled from 'styled-components'
-import { useTranslation } from 'react-i18next'
+import React from "react";
+import styled from "styled-components";
+import { useTranslation } from "react-i18next";
 
-import Box from '~/renderer/components/Box'
-import Text from '~/renderer/components/Text'
-import Tabbable from '~/renderer/components/Box/Tabbable'
+import Box from "~/renderer/components/Box";
+import Text from "~/renderer/components/Text";
+import Tabbable from "~/renderer/components/Box/Tabbable";
 
-import IconCross from '~/renderer/icons/Cross'
-import IconAngleLeft from '~/renderer/icons/AngleLeft'
+import IconCross from "~/renderer/icons/Cross";
+import IconAngleLeft from "~/renderer/icons/AngleLeft";
 
 const MODAL_HEADER_STYLE = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
   padding: 10,
-  position: 'relative',
-  flexDirection: 'row',
+  position: "relative",
+  flexDirection: "row",
   minHeight: 66,
-}
+};
 
 const ModalTitle = styled(Box).attrs(() => ({
-  color: 'palette.text.shade100',
-  ff: 'Inter|Medium',
+  color: "palette.text.shade100",
+  ff: "Inter|Medium",
   fontSize: 6,
 }))`
   position: absolute;
@@ -32,18 +32,18 @@ const ModalTitle = styled(Box).attrs(() => ({
   text-align: center;
   line-height: 1;
   pointer-events: none;
-`
+`;
 
 const ModalHeaderAction = styled(Tabbable).attrs(() => ({
   horizontal: true,
-  align: 'center',
+  align: "center",
   fontSize: 3,
   p: 3,
 }))`
   border-radius: 8px;
   color: ${p => p.color || p.theme.colors.palette.text.shade60};
   top: 0;
-  align-self: ${p => (p.right ? 'flex-end' : 'flex-start')};
+  align-self: ${p => (p.right ? "flex-end" : "flex-start")};
   line-height: 0;
   ${p =>
     p.onClick
@@ -67,8 +67,8 @@ const ModalHeaderAction = styled(Tabbable).attrs(() => ({
       border-bottom-color: none;
     }
   `
-      : ''}
-`
+      : ""}
+`;
 
 const ModalHeader = ({
   children,
@@ -79,14 +79,14 @@ const ModalHeader = ({
   onBack?: void => void,
   onClose?: void => void,
 }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   return (
     <div style={MODAL_HEADER_STYLE}>
       {onBack ? (
         <ModalHeaderAction onClick={onBack}>
           <IconAngleLeft size={12} />
           <Text ff="Inter|Medium" fontSize={4} color="palette.text.shade40">
-            {t('common.back')}
+            {t("common.back")}
           </Text>
         </ModalHeaderAction>
       ) : (
@@ -101,7 +101,7 @@ const ModalHeader = ({
         <ModalHeaderAction />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default ModalHeader
+export default ModalHeader;

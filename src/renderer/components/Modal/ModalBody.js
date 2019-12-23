@@ -1,12 +1,12 @@
 // @flow
 
-import React, { PureComponent, Fragment } from 'react'
+import React, { PureComponent, Fragment } from "react";
 
-import ModalContent from './ModalContent'
-import ModalHeader from './ModalHeader'
-import ModalFooter from './ModalFooter'
+import ModalContent from "./ModalContent";
+import ModalHeader from "./ModalHeader";
+import ModalFooter from "./ModalFooter";
 
-import type { RenderProps } from './index'
+import type { RenderProps } from "./index";
 
 type Props = {
   title: React$Node,
@@ -18,17 +18,17 @@ type Props = {
   renderProps?: RenderProps,
   noScroll?: boolean,
   refocusWhenChange?: any,
-}
+};
 
 class ModalBody extends PureComponent<Props> {
   componentDidUpdate(prevProps: Props) {
-    const shouldFocus = prevProps.refocusWhenChange !== this.props.refocusWhenChange
+    const shouldFocus = prevProps.refocusWhenChange !== this.props.refocusWhenChange;
     if (shouldFocus && this._content.current) {
-      this._content.current.focus()
+      this._content.current.focus();
     }
   }
 
-  _content = React.createRef()
+  _content = React.createRef();
 
   render() {
     const {
@@ -40,10 +40,10 @@ class ModalBody extends PureComponent<Props> {
       renderProps,
       noScroll,
       modalFooterStyle,
-    } = this.props
+    } = this.props;
 
     // For `renderFooter` returning falsy values, we need to resolve first.
-    const renderedFooter = renderFooter && renderFooter(renderProps)
+    const renderedFooter = renderFooter && renderFooter(renderProps);
 
     return (
       <Fragment>
@@ -55,8 +55,8 @@ class ModalBody extends PureComponent<Props> {
         </ModalContent>
         {renderedFooter && <ModalFooter style={modalFooterStyle}>{renderedFooter}</ModalFooter>}
       </Fragment>
-    )
+    );
   }
 }
 
-export default ModalBody
+export default ModalBody;

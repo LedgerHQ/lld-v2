@@ -1,40 +1,40 @@
 #!/usr/bin/env node
 
-const execa = require('execa')
-const Listr = require('listr')
+const execa = require("execa");
+const Listr = require("listr");
 
 const tasks = new Listr(
   [
     {
-      title: 'Check prettier',
+      title: "Check prettier",
       task: async () => {
         try {
-          const { stdout } = await execa('yarn', ['prettier', '--check'])
-          return stdout
+          const { stdout } = await execa("yarn", ["prettier", "--check"]);
+          return stdout;
         } catch (error) {
-          throw new Error('prettier test failed')
+          throw new Error("prettier test failed");
         }
       },
     },
     {
-      title: 'Run eslint',
+      title: "Run eslint",
       task: async () => {
         try {
-          const { stdout } = await execa('yarn', ['lint'])
-          return stdout
+          const { stdout } = await execa("yarn", ["lint"]);
+          return stdout;
         } catch (error) {
-          throw new Error('eslint test failed')
+          throw new Error("eslint test failed");
         }
       },
     },
     {
-      title: 'Run prettier check',
+      title: "Run prettier check",
       task: async () => {
         try {
-          const { stdout } = await execa('yarn', ['prettier:check'])
-          return stdout
+          const { stdout } = await execa("yarn", ["prettier:check"]);
+          return stdout;
         } catch (error) {
-          throw new Error('eslint test failed')
+          throw new Error("eslint test failed");
         }
       },
     },
@@ -52,8 +52,8 @@ const tasks = new Listr(
     // },
   ],
   { concurrent: true, exitOnError: false },
-)
+);
 
 tasks.run().catch(() => {
-  process.exit(-1)
-})
+  process.exit(-1);
+});

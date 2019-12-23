@@ -1,78 +1,78 @@
 // @flow
-import './setup'
-import { app, Menu, ipcMain } from 'electron'
-import menu from './menu'
-import { createMainWindow, getMainWindow } from './window-lifecycle'
-import './internal-lifecycle'
+import "./setup";
+import { app, Menu, ipcMain } from "electron";
+import menu from "./menu";
+import { createMainWindow, getMainWindow } from "./window-lifecycle";
+import "./internal-lifecycle";
 
-const gotLock = app.requestSingleInstanceLock()
+const gotLock = app.requestSingleInstanceLock();
 
 if (!gotLock) {
-  app.quit()
+  app.quit();
 } else {
-  app.on('second-instance', (event, commandLine, workingDirectory) => {
-    const w = getMainWindow()
+  app.on("second-instance", (event, commandLine, workingDirectory) => {
+    const w = getMainWindow();
     if (w) {
       if (w.isMinimized()) {
-        w.restore()
+        w.restore();
       }
-      w.focus()
+      w.focus();
     }
-  })
+  });
 }
 
 const showTimeout = setTimeout(() => {
-  const w = getMainWindow()
-  if (w) show(w)
-}, 5000)
+  const w = getMainWindow();
+  if (w) show(w);
+}, 5000);
 
-app.on('window-all-closed', () => {
-  app.quit()
-})
+app.on("window-all-closed", () => {
+  app.quit();
+});
 
-app.on('activate', () => {
-  const w = getMainWindow()
+app.on("activate", () => {
+  const w = getMainWindow();
   if (w) {
-    w.focus()
+    w.focus();
   }
-})
+});
 
-app.on('ready', async () => {
+app.on("ready", async () => {
   if (__DEV__) {
-    await installExtensions()
+    await installExtensions();
   }
 
-  Menu.setApplicationMenu(menu)
+  Menu.setApplicationMenu(menu);
 
-  const w = await createMainWindow()
+  const w = await createMainWindow();
 
-  await clearSessionCache(w.webContents.session)
-})
+  await clearSessionCache(w.webContents.session);
+});
 
-ipcMain.on('ready-to-show', () => {
-  const w = getMainWindow()
+ipcMain.on("ready-to-show", () => {
+  const w = getMainWindow();
   if (w) {
-    clearTimeout(showTimeout)
-    show(w)
+    clearTimeout(showTimeout);
+    show(w);
   }
-})
+});
 
 async function installExtensions() {
-  const installer = require('electron-devtools-installer')
-  const forceDownload = true // process.env.UPGRADE_EXTENSIONS
-  const extensions = ['REACT_DEVELOPER_TOOLS', 'REDUX_DEVTOOLS']
+  const installer = require("electron-devtools-installer");
+  const forceDownload = true; // process.env.UPGRADE_EXTENSIONS
+  const extensions = ["REACT_DEVELOPER_TOOLS", "REDUX_DEVTOOLS"];
   return Promise.all(
     extensions.map(name => installer.default(installer[name], forceDownload)),
-  ).catch(console.log)
+  ).catch(console.log);
 }
 
 function clearSessionCache(session) {
   return new Promise(resolve => {
-    session.clearCache(resolve)
-  })
+    session.clearCache(resolve);
+  });
 }
 
 function show(win) {
-  win.show()
-  setImmediate(() => win.focus())
+  win.show();
+  setImmediate(() => win.focus());
 }

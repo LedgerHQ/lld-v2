@@ -1,8 +1,8 @@
 // @flow
 
-import React, { Component } from 'react'
-import { BridgeSyncConsumer } from '~/renderer/bridge/BridgeSyncContext'
-import type { Sync } from '~/renderer/bridge/BridgeSyncContext'
+import React, { Component } from "react";
+import { BridgeSyncConsumer } from "~/renderer/bridge/BridgeSyncContext";
+import type { Sync } from "~/renderer/bridge/BridgeSyncContext";
 
 export class Effect extends Component<{
   sync: Sync,
@@ -10,19 +10,19 @@ export class Effect extends Component<{
   priority: number,
 }> {
   componentDidMount() {
-    const { sync, accountId, priority } = this.props
-    sync({ type: 'SYNC_ONE_ACCOUNT', accountId, priority })
+    const { sync, accountId, priority } = this.props;
+    sync({ type: "SYNC_ONE_ACCOUNT", accountId, priority });
   }
 
   componentDidUpdate(prevProps: *) {
-    const { sync, accountId, priority } = this.props
+    const { sync, accountId, priority } = this.props;
     if (accountId !== prevProps.accountId) {
-      sync({ type: 'SYNC_ONE_ACCOUNT', accountId, priority })
+      sync({ type: "SYNC_ONE_ACCOUNT", accountId, priority });
     }
   }
 
   render() {
-    return null
+    return null;
   }
 }
 
@@ -36,6 +36,6 @@ const SyncOneAccountOnMount = ({
   <BridgeSyncConsumer>
     {sync => <Effect sync={sync} accountId={accountId} priority={priority} />}
   </BridgeSyncConsumer>
-)
+);
 
-export default SyncOneAccountOnMount
+export default SyncOneAccountOnMount;

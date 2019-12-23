@@ -1,21 +1,21 @@
-import { BrowserWindow, app, Menu } from 'electron'
+import { BrowserWindow, app, Menu } from "electron";
 
-const { DEV_TOOLS, DEV_TOOLS_MODE } = process.env
+const { DEV_TOOLS, DEV_TOOLS_MODE } = process.env;
 
-const props = (predicate, values, defaultValue = {}) => (predicate ? values : defaultValue)
+const props = (predicate, values, defaultValue = {}) => (predicate ? values : defaultValue);
 
 const template = [
   ...props(
-    process.platform === 'darwin',
+    process.platform === "darwin",
     [
       {
         label: app.getName(),
         submenu: [
-          { role: 'hide' },
-          { role: 'hideothers' },
-          { role: 'unhide' },
-          { type: 'separator' },
-          { role: 'quit' },
+          { role: "hide" },
+          { role: "hideothers" },
+          { role: "unhide" },
+          { type: "separator" },
+          { role: "quit" },
         ],
       },
     ],
@@ -23,53 +23,53 @@ const template = [
   ),
   ...[
     {
-      label: 'Edit',
+      label: "Edit",
       submenu: [
-        { label: 'Undo', accelerator: 'CmdOrCtrl+Z', selector: 'undo:' },
-        { label: 'Redo', accelerator: 'Shift+CmdOrCtrl+Z', selector: 'redo:' },
-        { type: 'separator' },
-        { label: 'Cut', accelerator: 'CmdOrCtrl+X', selector: 'cut:' },
-        { label: 'Copy', accelerator: 'CmdOrCtrl+C', selector: 'copy:' },
-        { label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:' },
-        { label: 'Select All', accelerator: 'CmdOrCtrl+A', selector: 'selectAll:' },
+        { label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:" },
+        { label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:" },
+        { type: "separator" },
+        { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
+        { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
+        { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
+        { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" },
       ],
     },
   ],
   ...props(
-    process.platform === 'darwin' || __DEV__ || DEV_TOOLS,
+    process.platform === "darwin" || __DEV__ || DEV_TOOLS,
     [
       {
-        role: 'window',
+        role: "window",
         submenu: [
           ...props(
             __DEV__ || DEV_TOOLS,
             [
               {
-                label: 'Main Window Dev Tools',
+                label: "Main Window Dev Tools",
                 click() {
                   const mainWindow = BrowserWindow.getAllWindows().find(
-                    w => w.name === 'MainWindow',
-                  )
+                    w => w.name === "MainWindow",
+                  );
                   if (mainWindow) {
                     mainWindow.openDevTools({
                       // mode = "right" | "bottom" | "undocked" | "detach"
                       mode: DEV_TOOLS_MODE,
-                    })
+                    });
                   }
                 },
               },
-              ...props(process.platform === 'darwin', [{ type: 'separator' }], []),
+              ...props(process.platform === "darwin", [{ type: "separator" }], []),
             ],
             [],
           ),
           ...props(
-            process.platform === 'darwin',
+            process.platform === "darwin",
             [
-              { role: 'close' },
-              { role: 'minimize' },
-              { role: 'zoom' },
-              { type: 'separator' },
-              { role: 'front' },
+              { role: "close" },
+              { role: "minimize" },
+              { role: "zoom" },
+              { type: "separator" },
+              { role: "front" },
             ],
             [],
           ),
@@ -78,6 +78,6 @@ const template = [
     ],
     [],
   ),
-]
+];
 
-export default Menu.buildFromTemplate(template)
+export default Menu.buildFromTemplate(template);

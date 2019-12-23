@@ -1,9 +1,9 @@
 // @flow
-import React from 'react'
-import { Transition } from 'react-transition-group'
-import styled from 'styled-components'
+import React from "react";
+import { Transition } from "react-transition-group";
+import styled from "styled-components";
 
-const hideTransitionDuration = 200
+const hideTransitionDuration = 200;
 
 const hideTransitionStyles = {
   entering: {
@@ -21,16 +21,16 @@ const hideTransitionStyles = {
     opacity: 0,
     width: 0,
   },
-}
+};
 
 const HideContainer = styled.div`
   overflow: hidden;
-`
+`;
 
 const Hide = ({ visible, children }: { visible: boolean, children: any }) => (
   <Transition in={visible} timeout={hideTransitionDuration}>
     {state => <HideContainer style={hideTransitionStyles[state]}>{children}</HideContainer>}
   </Transition>
-)
+);
 
-export default Hide
+export default Hide;

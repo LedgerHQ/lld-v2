@@ -1,17 +1,17 @@
 // @flow
-import React from 'react'
-import { Trans } from 'react-i18next'
-import { createSelector } from 'reselect'
-import type { OutputSelector } from 'reselect'
-import { handleActions, createAction } from 'redux-actions'
-import type { CryptoCurrency } from '@ledgerhq/live-common/lib/types'
-import { listSupportedCurrencies } from '@ledgerhq/live-common/lib/currencies'
+import React from "react";
+import { Trans } from "react-i18next";
+import { createSelector } from "reselect";
+import type { OutputSelector } from "reselect";
+import { handleActions, createAction } from "redux-actions";
+import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
+import { listSupportedCurrencies } from "@ledgerhq/live-common/lib/currencies";
 
-import { urls } from './../../config/urls'
-import network from './../../network'
-import logger from './../../logger/logger'
+import { urls } from "./../../config/urls";
+import network from "./../../network";
+import logger from "./../../logger/logger";
 
-import type { State } from '.'
+import type { State } from ".";
 
 export type CurrencyStatus = {
   id: string, // the currency id
@@ -20,28 +20,28 @@ export type CurrencyStatus = {
   nonce: number,
   warning?: boolean, // display as a warning
   keepSync?: boolean, // even if something is happening, make live still stay in sync
-}
+};
 
-export type CurrenciesStatusState = CurrencyStatus[]
+export type CurrenciesStatusState = CurrencyStatus[];
 
-const state: CurrenciesStatusState = []
+const state: CurrenciesStatusState = [];
 
 const handlers = {
   CURRENCIES_STATUS_SET: (
     state: CurrenciesStatusState,
     { payload }: { payload: CurrenciesStatusState },
   ) => payload,
-}
+};
 
 // Actions
 
-const setCurrenciesStatus = createAction('CURRENCIES_STATUS_SET')
+const setCurrenciesStatus = createAction("CURRENCIES_STATUS_SET");
 export const fetchCurrenciesStatus = () => async (dispatch: *) => {
   try {
     const { data } = await network({
-      method: 'GET',
+      method: "GET",
       url: process.env.LL_STATUS_ENDPOINT || urls.currenciesStatus,
-    })
+    });
 
     const terminatedCurrencies = listSupportedCurrencies()
       .filter(coin => coin.terminated && !data.find(c => c.id === coin.id))
@@ -55,28 +55,28 @@ export const fetchCurrenciesStatus = () => async (dispatch: *) => {
             parent="div"
           />
         ),
-        link: (coin.terminated && coin.terminated.link) || '#',
-      }))
+        link: (coin.terminated && coin.terminated.link) || "#",
+      }));
 
     if (Array.isArray(data)) {
-      dispatch(setCurrenciesStatus(data.concat(terminatedCurrencies)))
+      dispatch(setCurrenciesStatus(data.concat(terminatedCurrencies)));
     } else {
-      setCurrenciesStatus(terminatedCurrencies)
+      setCurrenciesStatus(terminatedCurrencies);
     }
   } catch (err) {
-    logger.error(err)
+    logger.error(err);
   }
-}
+};
 
 // Selectors
 
-export const currenciesStatusSelector = (state: State) => state.currenciesStatus
+export const currenciesStatusSelector = (state: State) => state.currenciesStatus;
 
 // if there is a status, it means that currency is disrupted, the status is returned.
 export const currencyDownStatusLocal = (
   currenciesStatus: CurrenciesStatusState,
   currency: CryptoCurrency,
-): ?CurrencyStatus => currenciesStatus.find(c => c.id === currency.id)
+): ?CurrencyStatus => currenciesStatus.find(c => c.id === currency.id);
 
 export const currencyDownStatus: OutputSelector<
   State,
@@ -86,10 +86,10 @@ export const currencyDownStatus: OutputSelector<
   currenciesStatusSelector,
   (_, { currency }): CryptoCurrency => currency,
   currencyDownStatusLocal,
-)
+);
 
 // Exporting reducer
 
-const reducer = handleActions(handlers, state)
+const reducer = handleActions(handlers, state);
 
-export default reducer
+export default reducer;

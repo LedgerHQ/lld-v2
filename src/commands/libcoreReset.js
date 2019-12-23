@@ -1,12 +1,12 @@
 // @flow
 
-import { createCommand, Command } from './ipc'
-import { from } from 'rxjs'
-import { reset } from '@ledgerhq/live-common/lib/libcore/access'
+import { createCommand, Command } from "./ipc";
+import { from } from "rxjs";
+import { reset } from "@ledgerhq/live-common/lib/libcore/access";
 
-type Input = void
-type Result = void
+type Input = void;
+type Result = void;
 
-const cmd: Command<Input, Result> = createCommand('libcoreReset', () => from(reset()))
+const cmd: Command<Input, Result> = createCommand("libcoreReset", () => from(reset()));
 
-export default cmd
+export default cmd;

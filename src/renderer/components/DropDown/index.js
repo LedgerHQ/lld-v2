@@ -1,25 +1,25 @@
 // @flow
 
-import React, { PureComponent } from 'react'
-import styled from 'styled-components'
-import noop from 'lodash/noop'
-import Downshift from 'downshift'
+import React, { PureComponent } from "react";
+import styled from "styled-components";
+import noop from "lodash/noop";
+import Downshift from "downshift";
 
-import Box from '~/renderer/components/Box'
-import type { ThemedComponent } from '~/renderer/styles/StyleProvider'
+import Box from "~/renderer/components/Box";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
 const Trigger: ThemedComponent<{}> = styled(Box)`
   outline: none;
   cursor: pointer;
-`
+`;
 
 const Drop: ThemedComponent<{}> = styled(Box).attrs(() => ({
-  bg: 'palette.background.paper',
+  bg: "palette.background.paper",
   boxShadow: 0,
   borderRadius: 1,
   p: 2,
 }))`
-  border: ${p => (p.border ? `1px solid ${p.theme.colors.palette.divider}` : 'none')};
+  border: ${p => (p.border ? `1px solid ${p.theme.colors.palette.divider}` : "none")};
   max-height: 400px;
   max-width: 250px;
   position: absolute;
@@ -27,35 +27,35 @@ const Drop: ThemedComponent<{}> = styled(Box).attrs(() => ({
   top: 100%;
   z-index: 1;
   overflow: scroll;
-`
+`;
 
 export const DropDownItem: ThemedComponent<{ isHighlighted: boolean, isActive: boolean }> = styled(
   Box,
 ).attrs(p => ({
   borderRadius: 1,
-  justifyContent: 'center',
-  ff: p.isActive ? 'Inter|SemiBold' : 'Inter',
+  justifyContent: "center",
+  ff: p.isActive ? "Inter|SemiBold" : "Inter",
   fontSize: 4,
   px: 3,
-  color: p.isHighlighted || p.isActive ? 'palette.text.shade100' : 'palette.text.shade80',
-  bg: p.isActive ? 'palette.background.default' : '',
+  color: p.isHighlighted || p.isActive ? "palette.text.shade100" : "palette.text.shade80",
+  bg: p.isActive ? "palette.background.default" : "",
 }))`
   height: 48px;
   white-space: nowrap;
-`
+`;
 
 export const Wrapper: ThemedComponent<{ shrink: boolean }> = styled(Box)`
   flex-shrink: 1;
   ${p => p.shrink && `flex-shrink:${p.shrink};`}
-`
+`;
 function itemToString(item) {
-  return item ? item.label : ''
+  return item ? item.label : "";
 }
 
 export type DropDownItemType = {
   key: string,
   label: any,
-}
+};
 
 type Props = {
   children: any,
@@ -69,7 +69,7 @@ type Props = {
   renderItem: Object => any,
   value?: DropDownItemType | null,
   shrink?: string,
-}
+};
 
 class DropDown extends PureComponent<Props> {
   static defaultProps = {
@@ -92,26 +92,26 @@ class DropDown extends PureComponent<Props> {
         {item.label}
       </DropDownItem>
     ),
-  }
+  };
 
   handleStateChange = (state: Object, changes: Object) => {
-    const { keepOpenOnChange, onStateChange } = this.props
+    const { keepOpenOnChange, onStateChange } = this.props;
 
     if (onStateChange) {
-      onStateChange(changes)
+      onStateChange(changes);
     }
 
     switch (changes.type) {
       case Downshift.stateChangeTypes.keyDownEscape:
       case Downshift.stateChangeTypes.mouseUp:
       case Downshift.stateChangeTypes.clickButton:
-        return changes
+        return changes;
 
       case Downshift.stateChangeTypes.keyDownEnter:
         return {
           ...changes,
           highlightedIndex: state.highlightedIndex,
-        }
+        };
 
       default:
         return {
@@ -121,22 +121,22 @@ class DropDown extends PureComponent<Props> {
                 isOpen: true,
               }
             : {}),
-        }
+        };
     }
-  }
+  };
 
   renderItems = (
     items: Array<DropDownItemType>,
     selectedItem: DropDownItemType,
     downshiftProps: Object,
   ) => {
-    const { offsetTop, offsetRight, renderItem, border } = this.props
-    const { getItemProps, highlightedIndex } = downshiftProps
+    const { offsetTop, offsetRight, renderItem, border } = this.props;
+    const { getItemProps, highlightedIndex } = downshiftProps;
 
     return (
       <Drop mt={offsetTop} mr={offsetRight} border={border}>
         {items.map((item, i) => {
-          const { key, ...props } = item
+          const { key, ...props } = item;
           return (
             <Box key={key} {...getItemProps({ item })} {...props}>
               {renderItem({
@@ -145,14 +145,14 @@ class DropDown extends PureComponent<Props> {
                 isActive: item === selectedItem,
               })}
             </Box>
-          )
+          );
         })}
       </Drop>
-    )
-  }
+    );
+  };
 
   render() {
-    const { children, items, value, onChange, shrink, ...props } = this.props
+    const { children, items, value, onChange, shrink, ...props } = this.props;
     return (
       <Downshift
         onChange={onChange}
@@ -170,7 +170,7 @@ class DropDown extends PureComponent<Props> {
         }) => (
           <Wrapper
             shrink={shrink}
-            {...getRootProps({ refKey: 'ref' }, { suppressRefError: true })}
+            {...getRootProps({ refKey: "ref" }, { suppressRefError: true })}
             horizontal
             relative
           >
@@ -181,8 +181,8 @@ class DropDown extends PureComponent<Props> {
           </Wrapper>
         )}
       </Downshift>
-    )
+    );
   }
 }
 
-export default DropDown
+export default DropDown;

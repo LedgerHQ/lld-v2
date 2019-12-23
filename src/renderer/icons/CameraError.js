@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react'
+import React from "react";
 
 const path = (
   <path
@@ -8,12 +8,12 @@ const path = (
     fill="currentColor"
     fillRule="nonzero"
   />
-)
+);
 
 const CameraError = ({ size, ...p }: { size: number }) => (
   <svg viewBox="0 0 70 56" width={size} height={(size * 70) / 56} {...p}>
     {path}
   </svg>
-)
+);
 
-export default CameraError
+export default CameraError;

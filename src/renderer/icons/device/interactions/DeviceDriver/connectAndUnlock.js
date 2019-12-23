@@ -9,14 +9,14 @@ export default {
     {
       timeout: 1000,
       props: {
-        usb: 'plugHint',
+        usb: "plugHint",
       },
     },
     {
       timeout: 1000,
       props: {
-        screen: 'pin',
+        screen: "pin",
       },
     },
   ],
-}
+};

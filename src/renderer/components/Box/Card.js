@@ -1,17 +1,17 @@
 // @flow
 
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
-import Text from '~/renderer/components/Text'
-import Box from './Box'
+import Text from "~/renderer/components/Text";
+import Box from "./Box";
 
 const RawCard = styled(Box).attrs(p => ({
-  bg: p.bg || 'palette.background.paper',
+  bg: p.bg || "palette.background.paper",
   boxShadow: 0,
   borderRadius: 1,
-  color: p.color || 'inherit',
-}))``
+  color: p.color || "inherit",
+}))``;
 
 const Card = ({ title, ...props }: { title?: any }) => {
   if (title) {
@@ -22,9 +22,9 @@ const Card = ({ title, ...props }: { title?: any }) => {
         </Text>
         <RawCard grow {...props} />
       </Box>
-    )
+    );
   }
-  return <RawCard {...props} />
-}
+  return <RawCard {...props} />;
+};
 
-export default Card
+export default Card;

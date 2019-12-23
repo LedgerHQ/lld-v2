@@ -1,100 +1,100 @@
 // @flow
 
-import React, { Fragment, PureComponent } from 'react'
-import styled from 'styled-components'
-import { withTranslation } from 'react-i18next'
-import zxcvbn from 'zxcvbn'
+import React, { Fragment, PureComponent } from "react";
+import styled from "styled-components";
+import { withTranslation } from "react-i18next";
+import zxcvbn from "zxcvbn";
 
-import debounce from 'lodash/debounce'
-import noop from 'lodash/noop'
+import debounce from "lodash/debounce";
+import noop from "lodash/noop";
 
-import type { T } from '~/types/common'
+import type { T } from "~/types/common";
 
-import Box from '~/renderer/components/Box'
-import Input from '~/renderer/components/Input'
+import Box from "~/renderer/components/Box";
+import Input from "~/renderer/components/Input";
 
-import IconEye from '~/renderer/icons/Eye'
-import IconEyeOff from '~/renderer/icons/EyeOff'
+import IconEye from "~/renderer/icons/Eye";
+import IconEyeOff from "~/renderer/icons/EyeOff";
 
 const InputRight = styled(Box).attrs(() => ({
-  color: 'palette.text.shade60',
-  justifyContent: 'center',
+  color: "palette.text.shade60",
+  justifyContent: "center",
   pr: 3,
 }))`
   &:hover {
     color: ${p => p.theme.colors.palette.text.shade80};
   }
-`
+`;
 
 const Strength = styled(Box).attrs(() => ({
-  bg: p => (p.activated ? (p.warning ? 'alertRed' : 'positiveGreen') : 'palette.divider'),
+  bg: p => (p.activated ? (p.warning ? "alertRed" : "positiveGreen") : "palette.divider"),
   grow: true,
 }))`
   border-radius: 13px;
   height: 4px;
-`
+`;
 
 const Warning = styled(Box).attrs(() => ({
-  alignItems: 'flex-end',
-  color: p => (p.passwordStrength <= 1 ? 'alertRed' : 'positiveGreen'),
-  ff: 'Inter|SemiBold',
+  alignItems: "flex-end",
+  color: p => (p.passwordStrength <= 1 ? "alertRed" : "positiveGreen"),
+  ff: "Inter|SemiBold",
   fontSize: 3,
-}))``
+}))``;
 
-const getPasswordStrength = (v: string) => zxcvbn(v).score
+const getPasswordStrength = (v: string) => zxcvbn(v).score;
 
 type State = {
-  inputType: 'text' | 'password',
+  inputType: "text" | "password",
   passwordStrength: number,
-}
+};
 
 type Props = {
   onChange: Function,
   t: T,
   value: string,
   withStrength?: boolean,
-}
+};
 
 class InputPassword extends PureComponent<Props, State> {
   static defaultProps = {
     onChange: noop,
-    value: '',
-  }
+    value: "",
+  };
 
   state = {
     passwordStrength: getPasswordStrength(this.props.value),
-    inputType: 'password',
-  }
+    inputType: "password",
+  };
 
   componentWillUnmount() {
-    this._isUnmounted = true
+    this._isUnmounted = true;
   }
 
-  _isUnmounted = false
+  _isUnmounted = false;
 
   toggleInputType = () =>
     this.setState(prev => ({
-      inputType: prev.inputType === 'text' ? 'password' : 'text',
-    }))
+      inputType: prev.inputType === "text" ? "password" : "text",
+    }));
 
   debouncePasswordStrength = debounce(v => {
-    if (this._isUnmounted) return
+    if (this._isUnmounted) return;
     this.setState({
       passwordStrength: getPasswordStrength(v),
-    })
-  }, 150)
+    });
+  }, 150);
 
   handleChange = (v: string) => {
-    const { onChange } = this.props
-    onChange(v)
-    this.debouncePasswordStrength(v)
-  }
+    const { onChange } = this.props;
+    onChange(v);
+    this.debouncePasswordStrength(v);
+  };
 
   render() {
-    const { t, value, withStrength } = this.props
-    const { passwordStrength, inputType } = this.state
+    const { t, value, withStrength } = this.props;
+    const { passwordStrength, inputType } = this.state;
 
-    const hasValue = value.trim() !== ''
+    const hasValue = value.trim() !== "";
 
     return (
       <Box flow={1}>
@@ -103,8 +103,8 @@ class InputPassword extends PureComponent<Props, State> {
           type={inputType}
           onChange={this.handleChange}
           renderRight={
-            <InputRight onClick={this.toggleInputType} style={{ cursor: 'default' }}>
-              {inputType === 'password' ? <IconEye size={16} /> : <IconEyeOff size={16} />}
+            <InputRight onClick={this.toggleInputType} style={{ cursor: "default" }}>
+              {inputType === "password" ? <IconEye size={16} /> : <IconEyeOff size={16} />}
             </InputRight>
           }
         />
@@ -127,8 +127,8 @@ class InputPassword extends PureComponent<Props, State> {
           </Fragment>
         )}
       </Box>
-    )
+    );
   }
 }
 
-export default withTranslation()(InputPassword)
+export default withTranslation()(InputPassword);

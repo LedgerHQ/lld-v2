@@ -1,5 +1,5 @@
 // @flow
-import React from 'react'
+import React from "react";
 
 const Undelegation = ({ size, ...p }: { size: number }) => (
   <svg viewBox="0 0 76 32" {...p} width={size} height={(size * 32) / 76}>
@@ -23,6 +23,6 @@ const Undelegation = ({ size, ...p }: { size: number }) => (
       </g>
     </g>
   </svg>
-)
+);
 
-export default Undelegation
+export default Undelegation;

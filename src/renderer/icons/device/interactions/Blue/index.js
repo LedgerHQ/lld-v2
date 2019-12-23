@@ -1,12 +1,12 @@
 // @flow
 
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
-import Frame from './Frame'
-import Screen from './Screen'
-import Hint from '../Hint'
-import USBCable from '../USBCable'
+import Frame from "./Frame";
+import Screen from "./Screen";
+import Hint from "../Hint";
+import USBCable from "../USBCable";
 
 const DeviceContainer = styled.div.attrs(p => ({
   style: {
@@ -19,7 +19,7 @@ const DeviceContainer = styled.div.attrs(p => ({
   align-items: center;
   display: flex;
   flex-direction: column;
-`
+`;
 
 const DeviceSVG = styled.svg`
   overflow: visible;
@@ -27,7 +27,7 @@ const DeviceSVG = styled.svg`
   .device {
     transition: transform ease-in-out 700ms;
   }
-`
+`;
 
 type Props = {
   open?: boolean,
@@ -35,7 +35,7 @@ type Props = {
   screen?: string,
   xOffset?: number,
   error?: boolean,
-}
+};
 
 const Blue = ({ xOffset = 0, open, usb, screen, error }: Props) => (
   <DeviceContainer>
@@ -55,6 +55,6 @@ const Blue = ({ xOffset = 0, open, usb, screen, error }: Props) => (
       </g>
     </DeviceSVG>
   </DeviceContainer>
-)
+);
 
-export default Blue
+export default Blue;

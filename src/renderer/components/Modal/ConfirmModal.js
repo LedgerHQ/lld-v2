@@ -1,14 +1,14 @@
 // @flow
 
-import React from 'react'
-import { useTranslation } from 'react-i18next'
+import React from "react";
+import { useTranslation } from "react-i18next";
 
 // import TrackPage from '~/analytics/TrackPage'
-import Button from '~/renderer/components/Button'
-import Box from '~/renderer/components/Box'
+import Button from "~/renderer/components/Button";
+import Box from "~/renderer/components/Box";
 
-import Modal from './index'
-import ModalBody from './ModalBody'
+import Modal from "./index";
+import ModalBody from "./ModalBody";
 
 type Props = {
   isOpened: boolean,
@@ -28,7 +28,7 @@ type Props = {
   centered?: boolean,
   children?: *,
   narrow?: boolean,
-}
+};
 
 const ConfirmModal = ({
   cancellable,
@@ -50,9 +50,9 @@ const ConfirmModal = ({
   narrow,
   ...props
 }: Props) => {
-  const { t } = useTranslation()
-  const realConfirmText = confirmText || t('common.confirm')
-  const realCancelText = cancelText || t('common.cancel')
+  const { t } = useTranslation();
+  const realConfirmText = confirmText || t("common.confirm");
+  const realCancelText = cancelText || t("common.cancel");
   return (
     <Modal isOpened={isOpened} centered={centered} width={narrow && 380}>
       <ModalBody
@@ -103,7 +103,7 @@ const ConfirmModal = ({
       />
       {/* <TrackPage category="Modal" name={analyticsName} /> */}
     </Modal>
-  )
-}
+  );
+};
 
-export default ConfirmModal
+export default ConfirmModal;

@@ -1,26 +1,26 @@
 // @flow
 
-import React, { useContext, useCallback } from 'react'
-import { Trans } from 'react-i18next'
+import React, { useContext, useCallback } from "react";
+import { Trans } from "react-i18next";
 
-import { urls } from '~/config/urls'
-import { openURL } from '~/renderer/linking'
+import { urls } from "~/config/urls";
+import { openURL } from "~/renderer/linking";
 
-import IconUpdate from '~/renderer/icons/Update'
-import IconDonjon from '~/renderer/icons/Donjon'
-import IconWarning from '~/renderer/icons/TriangleWarning'
-import IconInfoCircle from '~/renderer/icons/InfoCircle'
+import IconUpdate from "~/renderer/icons/Update";
+import IconDonjon from "~/renderer/icons/Donjon";
+import IconWarning from "~/renderer/icons/TriangleWarning";
+import IconInfoCircle from "~/renderer/icons/InfoCircle";
 
-import Spinner from '~/renderer/components/Spinner'
-import TopBanner, { FakeLink } from '~/renderer/components/TopBanner'
-import type { Content } from '~/renderer/components/TopBanner'
+import Spinner from "~/renderer/components/Spinner";
+import TopBanner, { FakeLink } from "~/renderer/components/TopBanner";
+import type { Content } from "~/renderer/components/TopBanner";
 
-import { UpdaterContext } from './UpdaterContext'
+import { UpdaterContext } from "./UpdaterContext";
 
-export const VISIBLE_STATUS = ['download-progress', 'checking', 'check-success', 'error']
+export const VISIBLE_STATUS = ["download-progress", "checking", "check-success", "error"];
 
 const CONTENT_BY_STATUS = (quitAndInstall, reDownload, progress): { [string]: Content } => ({
-  'download-progress': {
+  "download-progress": {
     Icon: Spinner,
     message: <Trans i18nKey="update.downloadInProgress" />,
     right: <Trans i18nKey="update.downloadProgress" values={{ progress }} />,
@@ -29,7 +29,7 @@ const CONTENT_BY_STATUS = (quitAndInstall, reDownload, progress): { [string]: Co
     Icon: IconDonjon,
     message: <Trans i18nKey="update.checking" />,
   },
-  'check-success': {
+  "check-success": {
     Icon: IconUpdate,
     message: <Trans i18nKey="update.checkSuccess" />,
     right: (
@@ -47,25 +47,25 @@ const CONTENT_BY_STATUS = (quitAndInstall, reDownload, progress): { [string]: Co
       </FakeLink>
     ),
   },
-})
+});
 
 const UpdaterTopBanner = () => {
-  const context = useContext(UpdaterContext)
+  const context = useContext(UpdaterContext);
 
   const reDownload = useCallback(() => {
-    openURL(urls.liveHome)
-  }, [])
+    openURL(urls.liveHome);
+  }, []);
 
   if (context) {
-    const { status, quitAndInstall, downloadProgress } = context
+    const { status, quitAndInstall, downloadProgress } = context;
 
-    if (!VISIBLE_STATUS.includes(status)) return null
+    if (!VISIBLE_STATUS.includes(status)) return null;
 
-    let content: ?Content = CONTENT_BY_STATUS(quitAndInstall, reDownload, downloadProgress)[status]
+    let content: ?Content = CONTENT_BY_STATUS(quitAndInstall, reDownload, downloadProgress)[status];
 
-    if (!content) return null
+    if (!content) return null;
 
-    if (__APP_VERSION__.includes('nightly')) {
+    if (__APP_VERSION__.includes("nightly")) {
       content = {
         Icon: IconInfoCircle,
         message: <Trans i18nKey="update.nightlyWarning" />,
@@ -74,13 +74,13 @@ const UpdaterTopBanner = () => {
             <Trans i18nKey="update.downloadNow" />
           </FakeLink>
         ),
-      }
+      };
     }
 
-    return <TopBanner content={content} status={status} />
+    return <TopBanner content={content} status={status} />;
   }
 
-  return null
-}
+  return null;
+};
 
-export default UpdaterTopBanner
+export default UpdaterTopBanner;

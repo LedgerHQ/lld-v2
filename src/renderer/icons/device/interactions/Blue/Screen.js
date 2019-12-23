@@ -1,9 +1,9 @@
 // @flow
 
-import React from 'react'
-import styled from 'styled-components'
-import useTheme from '~/renderer/hooks/useTheme'
-import colors from '../colors'
+import React from "react";
+import styled from "styled-components";
+import useTheme from "~/renderer/hooks/useTheme";
+import colors from "../colors";
 
 const ScreenSVG = styled.svg`
   overflow: visible;
@@ -15,7 +15,7 @@ const ScreenSVG = styled.svg`
   #Blue-screen-content {
     transition: opacity 200ms;
   }
-`
+`;
 
 const getScreens = color => ({
   home: (
@@ -66,17 +66,17 @@ const getScreens = color => ({
       />
     </g>
   ),
-})
+});
 
 type Props = {
   display?: string,
   active?: boolean,
   error?: boolean,
-}
+};
 
 const BlueScreen = ({ active, display, error, ...props }: Props) => {
-  const type = useTheme('colors.palette.type')
-  const screens = getScreens(error ? '#EA2E49' : colors[type].screenColor)
+  const type = useTheme("colors.palette.type");
+  const screens = getScreens(error ? "#EA2E49" : colors[type].screenColor);
   return (
     <ScreenSVG {...props} width="83" height="111">
       <defs />
@@ -89,7 +89,7 @@ const BlueScreen = ({ active, display, error, ...props }: Props) => {
           y="16.5"
           fill={colors[type].screen}
           fillRule="evenodd"
-          stroke={error ? '#EA2E49' : colors[type].screenStroke}
+          stroke={error ? "#EA2E49" : colors[type].screenStroke}
           rx="2"
         />
         <g id="Blue-screen-content" opacity={active ? 1 : 0}>
@@ -97,7 +97,7 @@ const BlueScreen = ({ active, display, error, ...props }: Props) => {
         </g>
       </g>
     </ScreenSVG>
-  )
-}
+  );
+};
 
-export default BlueScreen
+export default BlueScreen;

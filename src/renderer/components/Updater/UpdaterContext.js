@@ -1,23 +1,23 @@
 // @flow
 
-import React, { Component } from 'react'
+import React, { Component } from "react";
 
 // TODO: AutoUpdate logic
 // import autoUpdate from '~/commands/autoUpdate'
-import quitAndInstallElectronUpdate from '~/commands/quitAndInstallElectronUpdate'
+import quitAndInstallElectronUpdate from "~/commands/quitAndInstallElectronUpdate";
 
-const autoUpdate = () => ({ send: () => ({ subscribe: () => {} }) })
+const autoUpdate = () => ({ send: () => ({ subscribe: () => {} }) });
 
 export type UpdateStatus =
-  | 'idle'
-  | 'checking-for-update'
-  | 'update-available'
-  | 'update-not-available'
-  | 'download-progress'
-  | 'update-downloaded'
-  | 'checking'
-  | 'check-success'
-  | 'error'
+  | "idle"
+  | "checking-for-update"
+  | "update-available"
+  | "update-not-available"
+  | "download-progress"
+  | "update-downloaded"
+  | "checking"
+  | "check-success"
+  | "error";
 
 export type UpdaterContextType = {
   status: UpdateStatus,
@@ -25,70 +25,70 @@ export type UpdaterContextType = {
   quitAndInstall: () => Promise<void>,
   setStatus: UpdateStatus => void,
   error: ?Error,
-}
+};
 
-type MaybeUpdateContextType = ?UpdaterContextType
+type MaybeUpdateContextType = ?UpdaterContextType;
 
 type UpdaterProviderProps = {
   children: *,
-}
+};
 
 type UpdaterProviderState = {
   status: UpdateStatus,
   downloadProgress: number,
   error: ?Error,
-}
+};
 
-export const UpdaterContext = React.createContext<MaybeUpdateContextType>(null)
+export const UpdaterContext = React.createContext<MaybeUpdateContextType>(null);
 
 class Provider extends Component<UpdaterProviderProps, UpdaterProviderState> {
   constructor() {
-    super()
+    super();
 
     if (!__DEV__) {
       this.sub = autoUpdate.send({}).subscribe({
         next: e => {
-          if (e.status === 'download-progress') {
+          if (e.status === "download-progress") {
             const downloadProgress =
-              e.payload && e.payload.percent ? e.payload.percent.toFixed(0) : 0
-            this.setState({ status: e.status, downloadProgress })
+              e.payload && e.payload.percent ? e.payload.percent.toFixed(0) : 0;
+            this.setState({ status: e.status, downloadProgress });
           } else {
-            this.setStatus(e.status)
+            this.setStatus(e.status);
           }
         },
-        error: error => this.setState({ status: 'error', error }),
-      })
+        error: error => this.setState({ status: "error", error }),
+      });
     }
 
     this.state = {
-      status: 'idle',
+      status: "idle",
       downloadProgress: 0,
       error: null,
-    }
+    };
   }
 
   componentWillUnmount() {
     if (this.sub) {
-      this.sub.unsubscribe()
+      this.sub.unsubscribe();
     }
   }
 
-  sub = null
+  sub = null;
 
-  setStatus = (status: UpdateStatus) => this.setState({ status })
-  setDownloadProgress = (downloadProgress: number) => this.setState({ downloadProgress })
-  quitAndInstall = () => quitAndInstallElectronUpdate.send().toPromise()
+  setStatus = (status: UpdateStatus) => this.setState({ status });
+  setDownloadProgress = (downloadProgress: number) => this.setState({ downloadProgress });
+  quitAndInstall = () => quitAndInstallElectronUpdate.send().toPromise();
 
   render() {
-    const { status, downloadProgress, error } = this.state
+    const { status, downloadProgress, error } = this.state;
     const value = {
       status,
       downloadProgress,
       error,
       setStatus: this.setStatus,
       quitAndInstall: this.quitAndInstall,
-    }
-    return <UpdaterContext.Provider value={value}>{this.props.children}</UpdaterContext.Provider>
+    };
+    return <UpdaterContext.Provider value={value}>{this.props.children}</UpdaterContext.Provider>;
   }
 }
 
@@ -96,6 +96,6 @@ export const withUpdaterContext = (ComponentToDecorate: React$ComponentType<*>) 
   <UpdaterContext.Consumer>
     {context => <ComponentToDecorate {...props} context={context} />}
   </UpdaterContext.Consumer>
-)
+);
 
-export const UpdaterProvider = Provider
+export const UpdaterProvider = Provider;

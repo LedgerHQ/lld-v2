@@ -1,22 +1,22 @@
 // @flow
 
-import React from 'react'
-import styled from 'styled-components'
-import useTheme from '~/renderer/hooks/useTheme'
-import colors from '../colors'
+import React from "react";
+import styled from "styled-components";
+import useTheme from "~/renderer/hooks/useTheme";
+import colors from "../colors";
 
 const FrameSVG = styled.svg`
   overflow: visible;
-`
+`;
 
 type Props = {
   children: any,
   overlay: any,
   error?: boolean,
-}
+};
 
 const NanoSFrame = ({ children, overlay, error }: Props) => {
-  const type = useTheme('colors.palette.type')
+  const type = useTheme("colors.palette.type");
 
   return (
     <FrameSVG width="131" height="44">
@@ -42,7 +42,7 @@ const NanoSFrame = ({ children, overlay, error }: Props) => {
       {children}
       {overlay}
     </FrameSVG>
-  )
-}
+  );
+};
 
-export default NanoSFrame
+export default NanoSFrame;

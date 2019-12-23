@@ -1,8 +1,8 @@
 // @flow
 
-import React, { PureComponent } from 'react'
-import styled, { keyframes } from 'styled-components'
-import Box from '~/renderer/components/Box'
+import React, { PureComponent } from "react";
+import styled, { keyframes } from "styled-components";
+import Box from "~/renderer/components/Box";
 
 const scaleAnimation = keyframes`
   0% {
@@ -13,7 +13,7 @@ const scaleAnimation = keyframes`
     opacity: 1;
     transform: scale(1);
   }
-`
+`;
 
 const drawCircle = keyframes`
   0% {
@@ -23,7 +23,7 @@ const drawCircle = keyframes`
     stroke-dashoffset: 0;
    
   }
-`
+`;
 
 const drawCheck = keyframes`
   0% {
@@ -32,7 +32,7 @@ const drawCheck = keyframes`
   100% {
     stroke-dashoffset: 0;
   }
-`
+`;
 
 const fadeOut = keyframes`
   0% {
@@ -42,7 +42,7 @@ const fadeOut = keyframes`
     opacity: 0;
         stroke: #66BE54;
   }
-`
+`;
 
 const fadeIn = keyframes`
   0% {
@@ -51,12 +51,12 @@ const fadeIn = keyframes`
   100% {
     opacity: 1;
   }
-`
+`;
 
 const SuccessLogoContainer: ThemedComponent<{ width: Number }> = styled(Box).attrs(() => ({
-  borderRadius: '50%',
-  alignItems: 'center',
-  justifyContent: 'center',
+  borderRadius: "50%",
+  alignItems: "center",
+  justifyContent: "center",
 }))`
   width: ${p => `${p.width}px`};
   height: ${p => `${p.width}px`};
@@ -87,15 +87,15 @@ const SuccessLogoContainer: ThemedComponent<{ width: Number }> = styled(Box).att
         0.3s linear 0.9s 1 both ${fadeOut};
     }
   }
-`
+`;
 
 type Props = {
   width: number,
   height: number,
-}
+};
 class SuccessAnimatedIcon extends PureComponent<Props> {
   render() {
-    const { width = 80, height = 80, ...p } = this.props
+    const { width = 80, height = 80, ...p } = this.props;
     return (
       <SuccessLogoContainer width={width} height={height} {...p}>
         <svg
@@ -126,8 +126,8 @@ class SuccessAnimatedIcon extends PureComponent<Props> {
           />
         </svg>
       </SuccessLogoContainer>
-    )
+    );
   }
 }
 
-export default SuccessAnimatedIcon
+export default SuccessAnimatedIcon;

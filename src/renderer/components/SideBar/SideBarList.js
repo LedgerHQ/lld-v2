@@ -1,11 +1,11 @@
 // @flow
 
-import React, { Component, Fragment } from 'react'
-import styled from 'styled-components'
+import React, { Component, Fragment } from "react";
+import styled from "styled-components";
 
-import GrowScroll from '~/renderer/components/GrowScroll'
-import Box from '~/renderer/components/Box'
-import Space from '~/renderer/components/Space'
+import GrowScroll from "~/renderer/components/GrowScroll";
+import Box from "~/renderer/components/Box";
+import Space from "~/renderer/components/Space";
 
 type Props = {
   children: any,
@@ -14,12 +14,12 @@ type Props = {
   titleRight?: any,
   emptyState?: any,
   collapsed?: boolean,
-}
+};
 
 class SideBarList extends Component<Props> {
   render() {
-    const { children, title, scroll, titleRight, emptyState, collapsed, ...props } = this.props
-    const ListWrapper = scroll ? GrowScroll : Box
+    const { children, title, scroll, titleRight, emptyState, collapsed, ...props } = this.props;
+    const ListWrapper = scroll ? GrowScroll : Box;
 
     return (
       <Fragment>
@@ -42,15 +42,15 @@ class SideBarList extends Component<Props> {
           </Box>
         ) : null}
       </Fragment>
-    )
+    );
   }
 }
 
 const SideBarListTitle = styled(Box).attrs(() => ({
   horizontal: true,
-  align: 'center',
-  color: 'palette.text.shade100',
-  ff: 'Inter|ExtraBold',
+  align: "center",
+  color: "palette.text.shade100",
+  ff: "Inter|ExtraBold",
   fontSize: 1,
   px: 4,
 }))`
@@ -63,6 +63,6 @@ const SideBarListTitle = styled(Box).attrs(() => ({
   transition: opacity 0.15s;
   overflow: hidden;
   white-space: nowrap;
-`
+`;
 
-export default SideBarList
+export default SideBarList;

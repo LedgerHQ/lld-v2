@@ -1,19 +1,19 @@
 // @flow
 
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
-import Box from '~/renderer/components/Box'
-import IconHelp from '~/renderer/icons/Help'
+import Box from "~/renderer/components/Box";
+import IconHelp from "~/renderer/icons/Help";
 
-import Label from './Label'
-import { rgba } from '../../styles/helpers'
+import Label from "./Label";
+import { rgba } from "../../styles/helpers";
 
 const Wrapper = styled(Label).attrs(() => ({
-  ff: 'Inter|SemiBold',
-  color: 'wallet',
+  ff: "Inter|SemiBold",
+  color: "wallet",
   fontSize: 4,
-  align: 'center',
+  align: "center",
 }))`
   display: flex;
   cursor: pointer;
@@ -21,9 +21,9 @@ const Wrapper = styled(Label).attrs(() => ({
   &:hover {
     color: ${p => rgba(p.theme.colors.wallet, 0.9)};
   }
-`
+`;
 
-type Props = { onClick: ?() => void, label?: React$Node, children?: React$Node, style?: * }
+type Props = { onClick: ?() => void, label?: React$Node, children?: React$Node, style?: * };
 
 // can add more dynamic options if needed
 export function LinkHelp({ onClick, label, children, style }: Props) {
@@ -34,7 +34,7 @@ export function LinkHelp({ onClick, label, children, style }: Props) {
       </Box>
       <span>{label || children}</span>
     </Wrapper>
-  )
+  );
 }
 
-export default LinkHelp
+export default LinkHelp;

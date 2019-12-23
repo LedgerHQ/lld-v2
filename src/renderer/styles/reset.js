@@ -66,4 +66,4 @@ em {
 .currentTicker {
   background: palette.background.paper;
   z-index: 11 !important;
-}`
+}`;

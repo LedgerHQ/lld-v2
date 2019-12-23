@@ -1,32 +1,32 @@
 // @flow
 
-import React from 'react'
-import styled from 'styled-components'
-import { getCryptoCurrencyIcon } from '@ledgerhq/live-common/lib/react'
-import type { CryptoCurrency, TokenCurrency } from '@ledgerhq/live-common/lib/types'
-import { rgba } from '~/renderer/styles/helpers'
-import IconCheck from '~/renderer/icons/Check'
-import Box from '~/renderer/components/Box'
-import ParentCryptoCurrencyIcon from '~/renderer/components/ParentCryptoCurrencyIcon'
-import useTheme from '~/hooks/useTheme'
-import ensureContrast from '~/renderer/helpers/ensureContrast'
+import React from "react";
+import styled from "styled-components";
+import { getCryptoCurrencyIcon } from "@ledgerhq/live-common/lib/react";
+import type { CryptoCurrency, TokenCurrency } from "@ledgerhq/live-common/lib/types";
+import { rgba } from "~/renderer/styles/helpers";
+import IconCheck from "~/renderer/icons/Check";
+import Box from "~/renderer/components/Box";
+import ParentCryptoCurrencyIcon from "~/renderer/components/ParentCryptoCurrencyIcon";
+import useTheme from "~/hooks/useTheme";
+import ensureContrast from "~/renderer/helpers/ensureContrast";
 
-import Spinner from './Spinner'
+import Spinner from "./Spinner";
 
 const CryptoIconWrapper = styled(Box).attrs(p => ({
-  align: 'center',
-  justify: 'center',
+  align: "center",
+  justify: "center",
   bg: rgba(p.cryptoColor, 0.1),
   color: p.cryptoColor,
 }))`
-  border-radius: ${p => p.borderRadius || '50%'};
+  border-radius: ${p => p.borderRadius || "50%"};
   width: ${p => p.size || 40}px;
   height: ${p => p.size || 40}px;
   position: relative;
 
   & > :nth-child(2) {
     background: ${p =>
-      p.showCheckmark ? p.theme.colors.positiveGreen : 'palette.background.paper'};
+      p.showCheckmark ? p.theme.colors.positiveGreen : "palette.background.paper"};
     border-radius: 100%;
     padding: 2px;
     position: absolute;
@@ -41,7 +41,7 @@ const CryptoIconWrapper = styled(Box).attrs(p => ({
       width: 14px;
     }
   }
-`
+`;
 
 export function CurrencyCircleIcon({
   currency,
@@ -55,11 +55,11 @@ export function CurrencyCircleIcon({
   showSpinner?: boolean,
   showCheckmark?: boolean,
 }) {
-  const bgColor = useTheme('colors.palette.background.paper')
-  if (currency.type === 'TokenCurrency') {
-    return <ParentCryptoCurrencyIcon currency={currency} bigger />
+  const bgColor = useTheme("colors.palette.background.paper");
+  if (currency.type === "TokenCurrency") {
+    return <ParentCryptoCurrencyIcon currency={currency} bigger />;
   }
-  const Icon = getCryptoCurrencyIcon(currency)
+  const Icon = getCryptoCurrencyIcon(currency);
   return (
     <CryptoIconWrapper
       size={size}
@@ -75,7 +75,7 @@ export function CurrencyCircleIcon({
       )}
       {showSpinner && <Spinner color="palette.text.shade60" size={14} />}
     </CryptoIconWrapper>
-  )
+  );
 }
 
 function CurrencyBadge({ currency, ...props }: { currency: CryptoCurrency | TokenCurrency }) {
@@ -96,7 +96,7 @@ function CurrencyBadge({ currency, ...props }: { currency: CryptoCurrency | Toke
         </Box>
       </Box>
     </Box>
-  )
+  );
 }
 
-export default CurrencyBadge
+export default CurrencyBadge;

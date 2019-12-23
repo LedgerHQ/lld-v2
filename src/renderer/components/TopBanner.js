@@ -1,51 +1,51 @@
 // @flow
-import React, { useCallback } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import styled from 'styled-components'
+import React, { useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
 
-import { dismissedBannersSelector } from '~/renderer/reducers/settings'
-import { dismissBanner } from '~/renderer/actions/settings'
+import { dismissedBannersSelector } from "~/renderer/reducers/settings";
+import { dismissBanner } from "~/renderer/actions/settings";
 
-import type { ThemedComponent } from '~/renderer/styles/StyleProvider'
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
-import { radii } from '~/renderer/styles/theme'
+import { radii } from "~/renderer/styles/theme";
 
-import IconCross from '~/renderer/icons/Cross'
-import Box from '~/renderer/components/Box'
+import IconCross from "~/renderer/icons/Cross";
+import Box from "~/renderer/components/Box";
 
 const IconContainer = styled.div`
   margin-right: 15px;
   display: flex;
   align-items: center;
-`
+`;
 
 const Container: ThemedComponent<{}> = styled(Box).attrs(p => ({
   horizontal: true,
-  align: 'center',
-  py: '8px',
+  align: "center",
+  py: "8px",
   px: 3,
-  bg: p.theme.colors[p.status] || 'palette.primary.main',
-  color: 'palette.primary.contrastText',
+  bg: p.theme.colors[p.status] || "palette.primary.main",
+  color: "palette.primary.contrastText",
   mt: -32,
   mb: 20,
   fontSize: 4,
-  ff: 'Inter|SemiBold',
+  ff: "Inter|SemiBold",
 }))`
   border-radius: ${radii[1]}px;
-`
+`;
 
 const RightContainer = styled.div`
   margin-left: auto;
-`
+`;
 
 export const FakeLink: ThemedComponent<{}> = styled.span`
   color: ${p => p.theme.colors.palette.primary.contrastText};
   text-decoration: underline;
   cursor: pointer;
-`
+`;
 
 const CloseContainer = styled(Box).attrs(() => ({
-  color: 'palette.primary.contrastText',
+  color: "palette.primary.contrastText",
 }))`
   z-index: 1;
   margin-left: 10px;
@@ -57,34 +57,34 @@ const CloseContainer = styled(Box).attrs(() => ({
   &:active {
     color: #eee;
   }
-`
+`;
 
 export type Content = {
   Icon?: React$ComponentType<any>,
   message: React$Node,
   right?: React$Node,
-}
+};
 
 type Props = {
   content?: Content,
   status: string,
   dismissable?: boolean,
   bannerId?: string,
-}
+};
 
-const TopBanner = ({ content, status = '', dismissable = false, bannerId }: Props) => {
-  const dispatch = useDispatch()
-  const dismissedBanners = useSelector(dismissedBannersSelector)
+const TopBanner = ({ content, status = "", dismissable = false, bannerId }: Props) => {
+  const dispatch = useDispatch();
+  const dismissedBanners = useSelector(dismissedBannersSelector);
 
   const onDismiss = useCallback(() => {
     if (bannerId) {
-      dispatch(dismissBanner(bannerId))
+      dispatch(dismissBanner(bannerId));
     }
-  }, [bannerId, dispatch])
+  }, [bannerId, dispatch]);
 
-  if (!content || (bannerId && dismissedBanners.includes(bannerId))) return null
+  if (!content || (bannerId && dismissedBanners.includes(bannerId))) return null;
 
-  const { Icon, message, right } = content
+  const { Icon, message, right } = content;
 
   return (
     <Container status={status}>
@@ -101,7 +101,7 @@ const TopBanner = ({ content, status = '', dismissable = false, bannerId }: Prop
         </CloseContainer>
       )}
     </Container>
-  )
-}
+  );
+};
 
-export default TopBanner
+export default TopBanner;

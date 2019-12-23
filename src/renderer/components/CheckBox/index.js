@@ -1,15 +1,15 @@
 // @flow
 
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
-import Check from '~/renderer/icons/Check'
-import { Tabbable } from '~/renderer/components/Box'
+import Check from "~/renderer/icons/Check";
+import { Tabbable } from "~/renderer/components/Box";
 
 const Base = styled(Tabbable).attrs(() => ({
   relative: true,
-  align: 'center',
-  justifyContent: 'center',
+  align: "center",
+  justifyContent: "center",
 }))`
   outline: none;
   border-radius: 4px;
@@ -32,20 +32,20 @@ const Base = styled(Tabbable).attrs(() => ({
   &:hover {
     border-color: ${p => p.theme.colors.wallet};
   }
-`
+`;
 
 type Props = {
   isChecked: boolean,
   onChange?: Function,
-}
+};
 
 function CheckBox(props: Props) {
-  const { isChecked, onChange } = props
+  const { isChecked, onChange } = props;
   return (
     <Base {...props} isChecked={isChecked} onClick={() => onChange && onChange(!isChecked)}>
       <Check size={12} />
     </Base>
-  )
+  );
 }
 
-export default CheckBox
+export default CheckBox;

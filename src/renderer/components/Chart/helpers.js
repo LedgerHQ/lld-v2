@@ -1,5 +1,5 @@
-import throttle from 'lodash/throttle'
-import c from 'color'
+import throttle from "lodash/throttle";
+import c from "color";
 
 export function enrichData(data) {
   return data.map((d, i) => ({
@@ -10,18 +10,18 @@ export function enrichData(data) {
     // rounding up
     // see https://github.com/LedgerHQ/ledger-live-desktop/issues/2266
     parsedDate: new Date(d.date).setHours(0, 0, 0, 0),
-  }))
+  }));
 }
 
 export function generateColors(theme, color) {
-  const cColor = c(color)
+  const cColor = c(color);
   return {
     line: color,
     focus: color,
     gradientStart: cColor.fade(0.7),
     gradientStop: cColor.fade(1),
     focusBar: theme.colors.palette.divider,
-  }
+  };
 }
 
 export function generateMargins(hideAxis) {
@@ -30,21 +30,21 @@ export function generateMargins(hideAxis) {
     bottom: hideAxis ? 5 : 40,
     right: hideAxis ? 0 : 10,
     left: hideAxis ? 0 : 40,
-  }
+  };
 
-  return margins
+  return margins;
 }
 
 export function observeResize(node, cb) {
   const onResize = throttle(() => {
-    const { width } = node.getBoundingClientRect()
-    cb(width)
-  }, 30)
+    const { width } = node.getBoundingClientRect();
+    cb(width);
+  }, 30);
 
-  const ro = new ResizeObserver(onResize)
-  ro.observe(node)
+  const ro = new ResizeObserver(onResize);
+  ro.observe(node);
 
   return () => {
-    ro.unobserve(node)
-  }
+    ro.unobserve(node);
+  };
 }

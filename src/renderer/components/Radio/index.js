@@ -1,9 +1,9 @@
 // @flow
 
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
-import { Tabbable } from '~/renderer/components/Box'
+import { Tabbable } from "~/renderer/components/Box";
 
 const Base = styled(Tabbable).attrs(() => ({ relative: true }))`
   outline: none;
@@ -26,7 +26,7 @@ const Base = styled(Tabbable).attrs(() => ({ relative: true }))`
   &:after {
     border-radius: 50%;
     bottom: 100%;
-    content: ' ';
+    content: " ";
     left: 100%;
     position: absolute;
     right: 100%;
@@ -57,16 +57,16 @@ const Base = styled(Tabbable).attrs(() => ({ relative: true }))`
       top: 7px;
     `};
   }
-`
+`;
 
 type Props = {
   isChecked: boolean,
   onChange?: Function,
-}
+};
 
 function Radio(props: Props) {
-  const { isChecked, onChange } = props
-  return <Base {...props} isChecked={isChecked} onClick={() => onChange && onChange(!isChecked)} />
+  const { isChecked, onChange } = props;
+  return <Base {...props} isChecked={isChecked} onClick={() => onChange && onChange(!isChecked)} />;
 }
 
-export default Radio
+export default Radio;

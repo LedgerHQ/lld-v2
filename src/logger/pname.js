@@ -3,10 +3,10 @@
 // Infer a "pname" aka short id version of process name
 
 const pname =
-  typeof window === 'undefined'
+  typeof window === "undefined"
     ? process.env.IS_INTERNAL_PROCESS
-      ? 'internal'
-      : 'main'
-    : 'renderer'
+      ? "internal"
+      : "main"
+    : "renderer";
 
-export default pname
+export default pname;

@@ -16,14 +16,14 @@
  *
  */
 
-import React from 'react'
-import styled from 'styled-components'
-import path from 'path'
+import React from "react";
+import styled from "styled-components";
+import path from "path";
 
-import type { ThemedComponent } from '~/renderer/styles/StyleProvider'
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
-import useTheme from '~/renderer/hooks/useTheme'
-import { i } from '~/helpers/staticPath'
+import useTheme from "~/renderer/hooks/useTheme";
+import { i } from "~/helpers/staticPath";
 
 type Props = {
   resource: string,
@@ -31,19 +31,19 @@ type Props = {
   alt: string,
   themeTyped?: boolean,
   className?: string,
-}
+};
 
 const Img: ThemedComponent<{}> = styled.img`
   user-select: none;
   pointer-events: none;
-`
+`;
 
 const Image = ({ resource, alt, themeTyped = false, resourcePath, className, ...rest }: Props) => {
-  const type = useTheme('colors.palette.type')
-  const fileName = themeTyped ? `${type}-${resource}` : resource
-  const finalPath = resourcePath ? path.join(resourcePath, fileName) : fileName
+  const type = useTheme("colors.palette.type");
+  const fileName = themeTyped ? `${type}-${resource}` : resource;
+  const finalPath = resourcePath ? path.join(resourcePath, fileName) : fileName;
 
-  return <Img {...rest} alt={alt} className={className} src={i(finalPath)} />
-}
+  return <Img {...rest} alt={alt} className={className} src={i(finalPath)} />;
+};
 
-export default Image
+export default Image;

@@ -1,13 +1,13 @@
-import cluster from 'cluster'
+import cluster from "cluster";
 
 if (cluster.isMaster) {
   // Main electron thread
-  require('./main')
+  require("./main");
 } else {
   // Internal thread (libcore, hardware)
   try {
-    require('./internal')
+    require("./internal");
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 }

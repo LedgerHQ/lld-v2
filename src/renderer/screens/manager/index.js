@@ -1,10 +1,10 @@
 // @flow
-import React from 'react'
+import React from "react";
 
 const Manager = () => (
   <>
     <h1>Manager</h1>
   </>
-)
+);
 
-export default Manager
+export default Manager;

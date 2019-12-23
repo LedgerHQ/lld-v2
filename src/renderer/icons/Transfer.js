@@ -1,8 +1,8 @@
 // @flow
 
-import React from 'react'
+import React from "react";
 
-const Transfer = ({ size = 16, color = 'currentColor' }: { size?: number, color?: string }) => (
+const Transfer = ({ size = 16, color = "currentColor" }: { size?: number, color?: string }) => (
   <svg width={size} height={size}>
     <defs>
       <path
@@ -17,6 +17,6 @@ const Transfer = ({ size = 16, color = 'currentColor' }: { size?: number, color?
       xlinkHref="#Transfer-a"
     />
   </svg>
-)
+);
 
-export default Transfer
+export default Transfer;

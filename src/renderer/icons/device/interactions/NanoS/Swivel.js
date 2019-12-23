@@ -1,21 +1,21 @@
 // @flow
 
-import React from 'react'
-import styled from 'styled-components'
-import { Motion, spring, presets } from 'react-motion'
-import useTheme from '~/renderer/hooks/useTheme'
-import colors from '../colors'
+import React from "react";
+import styled from "styled-components";
+import { Motion, spring, presets } from "react-motion";
+import useTheme from "~/renderer/hooks/useTheme";
+import colors from "../colors";
 
 const SwivelSVG = styled.svg`
   overflow: visible;
-`
+`;
 
 type Props = {
   angle: number,
-}
+};
 
 const NanoSSwivel = ({ angle, ...props }: Props) => {
-  const type = useTheme('colors.palette.type')
+  const type = useTheme("colors.palette.type");
 
   return (
     <Motion
@@ -47,7 +47,7 @@ const NanoSSwivel = ({ angle, ...props }: Props) => {
         </SwivelSVG>
       )}
     </Motion>
-  )
-}
+  );
+};
 
-export default NanoSSwivel
+export default NanoSSwivel;

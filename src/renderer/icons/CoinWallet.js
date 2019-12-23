@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react'
+import React from "react";
 
 const CoinWallet = ({ size }: { size?: number }) => (
   <svg viewBox="0 0 106 144" width={size}>
@@ -634,6 +634,6 @@ const CoinWallet = ({ size }: { size?: number }) => (
       />
     </g>
   </svg>
-)
+);
 
-export default CoinWallet
+export default CoinWallet;

@@ -1,76 +1,76 @@
 // @flow
 
-import winston from 'winston'
-import Transport from 'winston-transport'
-import anonymizer from './anonymizer'
-import pname from './pname'
+import winston from "winston";
+import Transport from "winston-transport";
+import anonymizer from "./anonymizer";
+import pname from "./pname";
 
-const { format } = winston
-const { combine, json, timestamp } = format
+const { format } = winston;
+const { combine, json, timestamp } = format;
 
 const pinfo = format(info => {
   if (!info.pname) {
-    info.pname = pname
+    info.pname = pname;
   }
-  return info
-})
+  return info;
+});
 
-const transports = []
+const transports = [];
 
-if (process.env.NODE_ENV !== 'production' || process.env.DEV_TOOLS) {
-  let consoleT
-  if (typeof window === 'undefined') {
+if (process.env.NODE_ENV !== "production" || process.env.DEV_TOOLS) {
+  let consoleT;
+  if (typeof window === "undefined") {
     // on Node we want a concise logger
     consoleT = new winston.transports.Console({
       format: format.simple(),
-    })
+    });
   } else {
     // On Browser we want to preserve direct usage of console with the "expandable" objects
-    const SPLAT = Symbol.for('splat')
+    const SPLAT = Symbol.for("splat");
     class CustomConsole extends Transport {
       log(info, callback) {
         setImmediate(() => {
-          this.emit('logged', info)
-        })
-        const rest = info[SPLAT]
+          this.emit("logged", info);
+        });
+        const rest = info[SPLAT];
         /* eslint-disable no-console, no-lonely-if */
-        if (info.level === 'error') {
+        if (info.level === "error") {
           if (rest) {
-            console.error(info.message, ...rest)
+            console.error(info.message, ...rest);
           } else {
-            console.error(info.message)
+            console.error(info.message);
           }
-        } else if (info.level === 'warn') {
+        } else if (info.level === "warn") {
           if (rest) {
-            console.warn(info.message, ...rest)
+            console.warn(info.message, ...rest);
           } else {
-            console.warn(info.message)
+            console.warn(info.message);
           }
         } else {
           if (rest) {
-            console.log(info.message, ...rest)
+            console.log(info.message, ...rest);
           } else {
-            console.log(info.message)
+            console.log(info.message);
           }
         }
         /* eslint-enable */
-        callback()
+        callback();
       }
     }
-    consoleT = new CustomConsole()
+    consoleT = new CustomConsole();
   }
-  transports.push(consoleT)
+  transports.push(consoleT);
 }
 
 const logger = winston.createLogger({
-  level: 'debug',
+  level: "debug",
   format: combine(pinfo(), timestamp(), json()),
   transports,
-})
+});
 
 const add = (transport: *) => {
-  logger.add(transport)
-}
+  logger.add(transport);
+};
 
 const captureBreadcrumb = (breadcrumb: any) => {
   // FIXME
@@ -87,7 +87,7 @@ const captureBreadcrumb = (breadcrumb: any) => {
     }
   }
   */
-}
+};
 
 const captureException = (_error: Error) => {
   // FIXME
@@ -104,67 +104,67 @@ const captureException = (_error: Error) => {
     }
   }
   */
-}
+};
 
-const logCmds = !process.env.NO_DEBUG_COMMANDS
-const logDb = !process.env.NO_DEBUG_DB
-const logRedux = !process.env.NO_DEBUG_ACTION
-const logTabkey = !process.env.NO_DEBUG_TAB_KEY
-const logWS = !process.env.NO_DEBUG_WS
-const logNetwork = !process.env.NO_DEBUG_NETWORK
-const logAnalytics = !process.env.NO_DEBUG_ANALYTICS
-const logApdu = !process.env.NO_DEBUG_DEVICE
+const logCmds = !process.env.NO_DEBUG_COMMANDS;
+const logDb = !process.env.NO_DEBUG_DB;
+const logRedux = !process.env.NO_DEBUG_ACTION;
+const logTabkey = !process.env.NO_DEBUG_TAB_KEY;
+const logWS = !process.env.NO_DEBUG_WS;
+const logNetwork = !process.env.NO_DEBUG_NETWORK;
+const logAnalytics = !process.env.NO_DEBUG_ANALYTICS;
+const logApdu = !process.env.NO_DEBUG_DEVICE;
 
 const blacklistTooVerboseCommandInput = [
-  'CurrencyScanAccountsOnDevice',
-  'AccountStartSync',
-  'AccountPrepareTransaction',
-  'AccountGetTransactionStatus',
-  'AccountSignAndBroadcast',
-]
-const blacklistTooVerboseCommandResponse = ['AccountStartSync', 'CurrencyScanAccountsOnDevice']
+  "CurrencyScanAccountsOnDevice",
+  "AccountStartSync",
+  "AccountPrepareTransaction",
+  "AccountGetTransactionStatus",
+  "AccountSignAndBroadcast",
+];
+const blacklistTooVerboseCommandResponse = ["AccountStartSync", "CurrencyScanAccountsOnDevice"];
 
 export default {
   onCmd: (type: string, id: string, spentTime: number, data?: any) => {
     if (logCmds) {
       switch (type) {
-        case 'cmd.START':
+        case "cmd.START":
           logger.log(
-            'info',
+            "info",
             `CMD ${id}.send()`,
             blacklistTooVerboseCommandInput.includes(id) ? { type } : { type, data },
-          )
-          break
-        case 'cmd.NEXT':
+          );
+          break;
+        case "cmd.NEXT":
           logger.log(
-            'info',
+            "info",
             `● CMD ${id}`,
             blacklistTooVerboseCommandResponse.includes(id) ? { type } : { type, data },
-          )
-          break
-        case 'cmd.COMPLETE':
-          logger.log('info', `✔ CMD ${id} finished in ${spentTime.toFixed(0)}ms`, { type })
+          );
+          break;
+        case "cmd.COMPLETE":
+          logger.log("info", `✔ CMD ${id} finished in ${spentTime.toFixed(0)}ms`, { type });
           captureBreadcrumb({
-            category: 'command',
+            category: "command",
             message: `✔ ${id}`,
-          })
-          break
-        case 'cmd.ERROR':
-          logger.log('warn', `✖ CMD ${id} error`, { type, data })
+          });
+          break;
+        case "cmd.ERROR":
+          logger.log("warn", `✖ CMD ${id} error`, { type, data });
           captureBreadcrumb({
-            category: 'command',
+            category: "command",
             message: `✖ ${id}`,
-          })
-          break
+          });
+          break;
         default:
       }
     }
   },
 
-  onDB: (way: 'read' | 'write' | 'clear', name: string) => {
-    const msg = `📁  ${way} ${name}`
+  onDB: (way: "read" | "write" | "clear", name: string) => {
+    const msg = `📁  ${way} ${name}`;
     if (logDb) {
-      logger.log('debug', msg, { type: 'db' })
+      logger.log("debug", msg, { type: "db" });
     }
   },
 
@@ -172,37 +172,37 @@ export default {
 
   onReduxAction: (action: Object) => {
     if (logRedux) {
-      logger.log('debug', `⚛️  ${action.type}`, { type: 'action' })
+      logger.log("debug", `⚛️  ${action.type}`, { type: "action" });
     }
   },
 
   // tracks keyboard events
   onTabKey: (activeElement: ?HTMLElement) => {
-    if (!activeElement) return
-    const { classList, tagName } = activeElement
-    const displayEl = `${tagName.toLowerCase()}${classList.length ? ` ${classList.item(0)}` : ''}`
-    const msg = `⇓ <TAB> - active element ${displayEl}`
+    if (!activeElement) return;
+    const { classList, tagName } = activeElement;
+    const displayEl = `${tagName.toLowerCase()}${classList.length ? ` ${classList.item(0)}` : ""}`;
+    const msg = `⇓ <TAB> - active element ${displayEl}`;
     if (logTabkey) {
-      logger.log('debug', msg, { type: 'keydown' })
+      logger.log("debug", msg, { type: "keydown" });
     }
   },
 
   apdu: (log: string) => {
     if (logApdu) {
-      logger.log('debug', log, { type: 'apdu' })
+      logger.log("debug", log, { type: "apdu" });
     }
   },
 
   websocket: (type: string, obj?: Object) => {
     if (logWS) {
-      logger.log('debug', `~ ${type}`, { ...obj, type: 'ws' })
+      logger.log("debug", `~ ${type}`, { ...obj, type: "ws" });
     }
   },
 
   network: ({ method, url, data }: { method: string, url: string, data: * }) => {
-    const log = `➡📡  ${method} ${url}`
+    const log = `➡📡  ${method} ${url}`;
     if (logNetwork) {
-      logger.log('info', log, { type: 'network', data })
+      logger.log("info", log, { type: "network", data });
     }
   },
 
@@ -217,17 +217,17 @@ export default {
     status: number,
     responseTime: number,
   }) => {
-    const anonymURL = anonymizer.url(url)
+    const anonymURL = anonymizer.url(url);
 
-    const log = `✔📡  HTTP ${status} ${method} ${url} – finished in ${responseTime.toFixed(0)}ms`
+    const log = `✔📡  HTTP ${status} ${method} ${url} – finished in ${responseTime.toFixed(0)}ms`;
     if (logNetwork) {
-      logger.log('info', log, { type: 'network-response' })
+      logger.log("info", log, { type: "network-response" });
     }
     captureBreadcrumb({
-      category: 'network',
-      message: 'network success',
+      category: "network",
+      message: "network success",
       data: { url: anonymURL, status, method, responseTime },
-    })
+    });
   },
 
   networkError: ({
@@ -244,19 +244,19 @@ export default {
     error: string,
     responseTime: number,
   }) => {
-    const anonymURL = anonymizer.url(url)
+    const anonymURL = anonymizer.url(url);
     const log = `✖📡  HTTP ${status} ${method} ${url} – ${error} – failed after ${responseTime.toFixed(
       0,
-    )}ms`
+    )}ms`;
     if (logNetwork) {
       // $FlowFixMe
-      logger.log('info', log, { type: 'network-error', status, method, ...rest })
+      logger.log("info", log, { type: "network-error", status, method, ...rest });
     }
     captureBreadcrumb({
-      category: 'network',
-      message: 'network error',
+      category: "network",
+      message: "network error",
       data: { url: anonymURL, status, method, responseTime },
-    })
+    });
   },
 
   networkDown: ({
@@ -268,91 +268,91 @@ export default {
     url: string,
     responseTime: number,
   }) => {
-    const log = `✖📡  NETWORK DOWN – ${method} ${url} – after ${responseTime.toFixed(0)}ms`
+    const log = `✖📡  NETWORK DOWN – ${method} ${url} – after ${responseTime.toFixed(0)}ms`;
     if (logNetwork) {
-      logger.log('info', log, { type: 'network-down' })
+      logger.log("info", log, { type: "network-down" });
     }
     captureBreadcrumb({
-      category: 'network',
-      message: 'network down',
-    })
+      category: "network",
+      message: "network down",
+    });
   },
 
   analyticsStart: (id: string) => {
     if (logAnalytics) {
-      logger.log('info', `△ start() with user id ${id}`, { type: 'analytics-start', id })
+      logger.log("info", `△ start() with user id ${id}`, { type: "analytics-start", id });
     }
   },
 
   analyticsStop: () => {
     if (logAnalytics) {
-      logger.log('info', '△ stop()', { type: 'analytics-stop' })
+      logger.log("info", "△ stop()", { type: "analytics-stop" });
     }
   },
 
   analyticsTrack: (event: string, properties: ?Object) => {
     if (logAnalytics) {
-      logger.log('info', `△ track ${event}`, { type: 'analytics-track', properties })
+      logger.log("info", `△ track ${event}`, { type: "analytics-track", properties });
     }
     captureBreadcrumb({
-      category: 'track',
+      category: "track",
       message: event,
       data: properties,
-    })
+    });
   },
 
   analyticsPage: (category: string, name: ?string, properties: ?Object) => {
-    const message = name ? `${category} ${name}` : category
+    const message = name ? `${category} ${name}` : category;
     if (logAnalytics) {
-      logger.log('info', `△ page ${message}`, { type: 'analytics-page', properties })
+      logger.log("info", `△ page ${message}`, { type: "analytics-page", properties });
     }
     captureBreadcrumb({
-      category: 'page',
+      category: "page",
       message,
       data: properties,
-    })
+    });
   },
 
   // General functions in case the hooks don't apply
 
   debug: (...args: any) => {
-    logger.log('debug', ...args)
+    logger.log("debug", ...args);
   },
 
   info: (...args: any) => {
-    logger.log('info', ...args)
+    logger.log("info", ...args);
   },
 
   log: (...args: any) => {
-    logger.log('info', ...args)
+    logger.log("info", ...args);
   },
 
   warn: (...args: any) => {
-    logger.log('warn', ...args)
+    logger.log("warn", ...args);
   },
 
   error: (...args: any) => {
-    logger.log('error', ...args)
+    logger.log("error", ...args);
   },
 
   critical: (error: Error, context?: string) => {
     if (context) {
       captureBreadcrumb({
-        category: 'context',
+        category: "context",
         message: context,
-      })
+      });
     }
-    logger.log('error', error && error.message, {
+    logger.log("error", error && error.message, {
       stack: error && error.stack,
       // $FlowFixMe
       ...error,
-    })
-    captureException(error)
+    });
+    captureException(error);
   },
 
   add,
 
   onLog: (log: *) => {
-    logger.log(log)
+    logger.log(log);
   },
-}
+};

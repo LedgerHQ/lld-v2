@@ -1,9 +1,9 @@
 // @flow
 
-import React from 'react'
-import styled from 'styled-components'
-import useTheme from '~/renderer/hooks/useTheme'
-import colors from '../colors'
+import React from "react";
+import styled from "styled-components";
+import useTheme from "~/renderer/hooks/useTheme";
+import colors from "../colors";
 
 const ScreenSVG = styled.svg`
   overflow: visible;
@@ -15,7 +15,7 @@ const ScreenSVG = styled.svg`
   #NanoXScreen-screen-content {
     transition: opacity 200ms;
   }
-`
+`;
 
 const getScreens = color => ({
   home: (
@@ -71,17 +71,17 @@ const getScreens = color => ({
       />
     </g>
   ),
-})
+});
 
 type Props = {
   display?: string,
   active?: boolean,
   error?: boolean,
-}
+};
 
 const NanoXScreen = ({ active, display, error, ...props }: Props) => {
-  const type = useTheme('colors.palette.type')
-  const screens = getScreens(error ? '#EA2E49' : colors[type].screenColor)
+  const type = useTheme("colors.palette.type");
+  const screens = getScreens(error ? "#EA2E49" : colors[type].screenColor);
   return (
     <ScreenSVG {...props} width="66" height="30">
       <defs />
@@ -92,7 +92,7 @@ const NanoXScreen = ({ active, display, error, ...props }: Props) => {
           x="40.5"
           y="6.5"
           fill={colors[type].screen}
-          stroke={error ? '#EA2E49' : colors[type].screenStroke}
+          stroke={error ? "#EA2E49" : colors[type].screenStroke}
           rx="2"
           transform="translate(-40 -6)"
         />
@@ -101,7 +101,7 @@ const NanoXScreen = ({ active, display, error, ...props }: Props) => {
         </g>
       </g>
     </ScreenSVG>
-  )
-}
+  );
+};
 
-export default NanoXScreen
+export default NanoXScreen;

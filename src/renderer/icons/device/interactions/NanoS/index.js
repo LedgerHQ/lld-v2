@@ -1,13 +1,13 @@
 // @flow
 
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
-import Frame from './Frame'
-import Screen from './Screen'
-import Swivel from './Swivel'
-import Hint from '../Hint'
-import USBCable from '../USBCable'
+import Frame from "./Frame";
+import Screen from "./Screen";
+import Swivel from "./Swivel";
+import Hint from "../Hint";
+import USBCable from "../USBCable";
 
 const DeviceContainer = styled.div.attrs(p => ({
   style: {
@@ -20,7 +20,7 @@ const DeviceContainer = styled.div.attrs(p => ({
   align-items: center;
   display: flex;
   flex-direction: column;
-`
+`;
 
 const DeviceSVG = styled.svg`
   overflow: visible;
@@ -28,7 +28,7 @@ const DeviceSVG = styled.svg`
   .device {
     transition: transform ease-in-out 700ms;
   }
-`
+`;
 
 type Props = {
   open?: boolean,
@@ -39,7 +39,7 @@ type Props = {
   screen?: string,
   xOffset?: number,
   error?: boolean,
-}
+};
 
 const NanoS = ({ xOffset = 0, open, usb, leftHint, rightHint, screen, angle, error }: Props) => (
   <DeviceContainer>
@@ -61,6 +61,6 @@ const NanoS = ({ xOffset = 0, open, usb, leftHint, rightHint, screen, angle, err
       </g>
     </DeviceSVG>
   </DeviceContainer>
-)
+);
 
-export default NanoS
+export default NanoS;

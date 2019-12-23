@@ -1,8 +1,8 @@
 // @flow
-import React, { Component } from 'react'
-import styled, { keyframes } from 'styled-components'
+import React, { Component } from "react";
+import styled, { keyframes } from "styled-components";
 
-import Box from '~/renderer/components/Box'
+import Box from "~/renderer/components/Box";
 
 const inifiteAnimation = keyframes`
   0% {
@@ -18,7 +18,7 @@ const inifiteAnimation = keyframes`
     left: -18%;
     width: 20%;
   }
-`
+`;
 
 const fillInAnimation = keyframes`
   0% {
@@ -30,21 +30,21 @@ const fillInAnimation = keyframes`
   100% {
     transform: translate3d(0);
   }
-`
+`;
 
 const Bar = styled(Box).attrs(() => ({
-  color: 'palette.divider',
-  borderRadius: '2.5px',
+  color: "palette.divider",
+  borderRadius: "2.5px",
 }))`
   height: 5px;
   width: 100%;
   position: relative;
   background-color: currentColor;
   overflow: hidden;
-`
+`;
 
 const Progression = styled(Bar).attrs(() => ({
-  color: 'wallet',
+  color: "wallet",
 }))`
   position: absolute;
   top: 0;
@@ -58,32 +58,32 @@ const Progression = styled(Bar).attrs(() => ({
     animation: ${p.timing}ms ${fillInAnimation} ease-out;
     animation-fill-mode: forwards;
   `};
-`
+`;
 
 type Props = {
   infinite: boolean,
   timing?: number,
   color?: string,
-}
+};
 
-type State = {}
+type State = {};
 
 class Progress extends Component<Props, State> {
   static defaultProps = {
     infinite: false,
     timing: 2500,
-    color: 'wallet',
-  }
+    color: "wallet",
+  };
 
   render() {
-    const { infinite, color, timing } = this.props
-    const styles = infinite ? { width: '0%' } : { width: '100%' }
+    const { infinite, color, timing } = this.props;
+    const styles = infinite ? { width: "0%" } : { width: "100%" };
     return (
       <Bar>
         <Progression infinite={infinite} color={color} style={styles} timing={timing} />
       </Bar>
-    )
+    );
   }
 }
 
-export default Progress
+export default Progress;

@@ -1,10 +1,10 @@
 // @flow
-import React from 'react'
+import React from "react";
 
 const Settings = () => (
   <>
     <h1>Settings</h1>
   </>
-)
+);
 
-export default Settings
+export default Settings;

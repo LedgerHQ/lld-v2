@@ -1,34 +1,34 @@
 // @flow
 
-import React, { PureComponent } from 'react'
-import qrcode from 'qrcode'
+import React, { PureComponent } from "react";
+import qrcode from "qrcode";
 
 type Props = {
   data: string,
   errorCorrectionLevel: string,
   size: number,
-}
+};
 
 class QRCode extends PureComponent<Props> {
   static defaultProps = {
     size: 200,
-    errorCorrectionLevel: 'Q',
-  }
+    errorCorrectionLevel: "Q",
+  };
 
   componentDidMount() {
-    this.drawQRCode()
+    this.drawQRCode();
   }
 
   componentDidUpdate() {
-    this.drawQRCode()
+    this.drawQRCode();
   }
 
-  canvas: * = React.createRef()
+  canvas: * = React.createRef();
 
   drawQRCode() {
-    const { data, size, errorCorrectionLevel } = this.props
-    const { current } = this.canvas
-    if (!current) return
+    const { data, size, errorCorrectionLevel } = this.props;
+    const { current } = this.canvas;
+    if (!current) return;
     qrcode.toCanvas(
       current,
       data,
@@ -39,24 +39,24 @@ class QRCode extends PureComponent<Props> {
       },
       () => {
         // fix again the CSS because lib changes it –_–
-        current.style.width = `${size}px`
-        current.style.height = `${size}px`
+        current.style.width = `${size}px`;
+        current.style.height = `${size}px`;
       },
-    )
+    );
   }
 
   render() {
-    const { size } = this.props
-    const px = size * (window.devicePixelRatio || 1)
+    const { size } = this.props;
+    const px = size * (window.devicePixelRatio || 1);
     return (
       <canvas
-        style={{ cursor: 'none', width: `${size}px`, height: `${size}px` }}
+        style={{ cursor: "none", width: `${size}px`, height: `${size}px` }}
         width={px}
         height={px}
         ref={this.canvas}
       />
-    )
+    );
   }
 }
 
-export default QRCode
+export default QRCode;

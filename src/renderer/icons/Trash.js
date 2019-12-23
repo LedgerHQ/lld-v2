@@ -1,8 +1,8 @@
 // @flow
 
-import React from 'react'
+import React from "react";
 
-const Trash = ({ size, color = 'currentColor', ...p }: { size: number, color?: string }) => (
+const Trash = ({ size, color = "currentColor", ...p }: { size: number, color?: string }) => (
   <svg viewBox="0 0 16 17.6" height={size} width={size} {...p}>
     <g transform="translate(670.57 190.38)">
       <path
@@ -12,6 +12,6 @@ const Trash = ({ size, color = 'currentColor', ...p }: { size: number, color?: s
       />
     </g>
   </svg>
-)
+);
 
-export default Trash
+export default Trash;

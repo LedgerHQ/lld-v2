@@ -1,3 +1,3 @@
 // @flow
-import '~/env'
-import '~/renderer/init'
+import "~/env";
+import "~/renderer/init";

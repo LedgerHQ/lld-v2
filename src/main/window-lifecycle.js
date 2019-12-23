@@ -1,50 +1,50 @@
 // @flow
-import './setup'
-import { BrowserWindow, screen } from 'electron'
+import "./setup";
+import { BrowserWindow, screen } from "electron";
 import {
   MIN_HEIGHT,
   MIN_WIDTH,
   DEFAULT_WINDOW_WIDTH,
   DEFAULT_WINDOW_HEIGHT,
-} from './../config/constants'
+} from "./../config/constants";
 
-let mainWindow = null
+let mainWindow = null;
 
-export const getMainWindow = () => mainWindow
+export const getMainWindow = () => mainWindow;
 
 const getWindowPosition = (width, height, display = screen.getPrimaryDisplay()) => {
-  const { bounds } = display
+  const { bounds } = display;
 
   return {
     x: Math.ceil(bounds.x + (bounds.width - width) / 2),
     y: Math.ceil(bounds.y + (bounds.height - height) / 2),
-  }
-}
+  };
+};
 
 const defaultWindowOptions = {
   // icons: 'path/to/icon'
-  backgroundColor: '#fff',
+  backgroundColor: "#fff",
   webPreferences: {
-    blinkFeatures: 'OverlayScrollbars',
+    blinkFeatures: "OverlayScrollbars",
     devTools: __DEV__,
     experimentalFeatures: true,
     nodeIntegration: true,
   },
-}
+};
 
 export async function createMainWindow() {
   // TODO renderer should provide the saved window rectangle
-  const width = DEFAULT_WINDOW_WIDTH
-  const height = DEFAULT_WINDOW_HEIGHT
+  const width = DEFAULT_WINDOW_WIDTH;
+  const height = DEFAULT_WINDOW_HEIGHT;
 
   const windowOptions = {
     ...defaultWindowOptions,
     ...getWindowPosition(width, height),
     /* eslint-disable indent */
-    ...(process.platform === 'darwin'
+    ...(process.platform === "darwin"
       ? {
           frame: false,
-          titleBarStyle: 'hiddenInset',
+          titleBarStyle: "hiddenInset",
         }
       : {}),
     /* eslint-enable indent */
@@ -56,25 +56,25 @@ export async function createMainWindow() {
     webPreferences: {
       nodeIntegration: true,
     },
-  }
+  };
 
-  mainWindow = new BrowserWindow(windowOptions)
+  mainWindow = new BrowserWindow(windowOptions);
 
-  mainWindow.name = 'MainWindow'
+  mainWindow.name = "MainWindow";
 
   if (__DEV__) {
-    mainWindow.loadURL(INDEX_URL)
+    mainWindow.loadURL(INDEX_URL);
   } else {
-    mainWindow.loadURL(`file://${__dirname}/index.html`)
+    mainWindow.loadURL(`file://${__dirname}/index.html`);
   }
 
   if (__DEV__) {
-    mainWindow.webContents.openDevTools()
+    mainWindow.webContents.openDevTools();
   }
 
-  mainWindow.on('closed', () => {
-    mainWindow = null
-  })
+  mainWindow.on("closed", () => {
+    mainWindow = null;
+  });
 
-  return mainWindow
+  return mainWindow;
 }

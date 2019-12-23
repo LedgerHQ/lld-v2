@@ -1,5 +1,5 @@
 // @flow
-import React from 'react'
+import React from "react";
 
 const Delegation = ({ size, ...p }: { size: number }) => (
   <svg viewBox="0 0 76 32" {...p} width={size} height={(size * 32) / 76}>
@@ -26,6 +26,6 @@ const Delegation = ({ size, ...p }: { size: number }) => (
       </g>
     </g>
   </svg>
-)
+);
 
-export default Delegation
+export default Delegation;

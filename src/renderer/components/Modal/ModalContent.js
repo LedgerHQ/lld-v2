@@ -1,21 +1,21 @@
 // @flow
 
-import React, { useEffect, useState, useLayoutEffect, useCallback } from 'react'
-import styled from 'styled-components'
+import React, { useEffect, useState, useLayoutEffect, useCallback } from "react";
+import styled from "styled-components";
 
 const ContentWrapper = styled.div`
   position: relative;
   flex: 0;
   display: flex;
   flex-direction: column;
-`
+`;
 
 const ContentScrollableContainer = styled.div`
   padding: 20px 20px 40px;
-  overflow: ${p => (p.noScroll ? 'visible' : 'auto')};
+  overflow: ${p => (p.noScroll ? "visible" : "auto")};
   position: relative;
   flex: 0;
-`
+`;
 
 const ContentScrollableContainerGradient = styled.div.attrs(p => ({
   style: {
@@ -33,35 +33,35 @@ const ContentScrollableContainerGradient = styled.div.attrs(p => ({
   left: 0;
   right: 0;
   pointer-events: none;
-`
+`;
 
 type Props = {
   children: any,
   noScroll?: boolean,
-}
+};
 
 const ModalContent: React$ComponentType<Props> = React.forwardRef(function ModalContent(
   { children, noScroll }: Props,
   containerRef,
 ) {
-  const [isScrollable, setScrollable] = useState(false)
+  const [isScrollable, setScrollable] = useState(false);
 
   const onHeightUpdate = useCallback(() => {
-    const { current } = containerRef
-    if (!current) return
-    setScrollable(current.scrollHeight > current.clientHeight)
-  }, [containerRef])
+    const { current } = containerRef;
+    if (!current) return;
+    setScrollable(current.scrollHeight > current.clientHeight);
+  }, [containerRef]);
 
   useLayoutEffect(() => {
-    if (!containerRef.current) return null
-    const ro = new ResizeObserver(onHeightUpdate)
-    ro.observe(containerRef.current)
+    if (!containerRef.current) return null;
+    const ro = new ResizeObserver(onHeightUpdate);
+    ro.observe(containerRef.current);
     return () => {
-      ro.disconnect()
-    }
-  }, [containerRef, onHeightUpdate])
+      ro.disconnect();
+    };
+  }, [containerRef, onHeightUpdate]);
 
-  useEffect(() => {}, [isScrollable])
+  useEffect(() => {}, [isScrollable]);
 
   return (
     <ContentWrapper>
@@ -70,7 +70,7 @@ const ModalContent: React$ComponentType<Props> = React.forwardRef(function Modal
       </ContentScrollableContainer>
       <ContentScrollableContainerGradient opacity={isScrollable ? 1 : 0} />
     </ContentWrapper>
-  )
-})
+  );
+});
 
-export default ModalContent
+export default ModalContent;

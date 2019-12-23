@@ -4,13 +4,13 @@
 
 export type CurrencySettings = {
   confirmationsNb: number,
-}
+};
 
 export type CurrenciesSettings = {
   [id: string]: CurrencySettings,
-}
+};
 
-export type T = (?string, ?Object) => string
+export type T = (?string, ?Object) => string;
 
 // -------------------- Manager
 
@@ -20,4 +20,4 @@ export type MemoryInfos = {
   systemSize: number,
   totalAppSlots: number,
   usedAppSlots: number,
-}
+};

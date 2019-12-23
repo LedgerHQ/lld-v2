@@ -1,28 +1,28 @@
 // @flow
 
-import React, { PureComponent, Fragment } from 'react'
-import { connect } from 'react-redux'
-import { createStructuredSelector } from 'reselect'
-import { withTranslation } from 'react-i18next'
-import type { AsyncState } from '~/renderer/reducers/bridgeSync'
-import { track } from '~/renderer/analytics/segment'
-import { globalSyncStateSelector } from '~/renderer/reducers/bridgeSync'
-import { isUpToDateSelector } from '~/renderer/reducers/accounts'
-import { BridgeSyncConsumer } from '~/renderer/bridge/BridgeSyncContext'
-import CounterValues from '~/renderer/countervalues'
-import IconLoader from '~/renderer/icons/Loader'
-import IconExclamationCircle from '~/renderer/icons/ExclamationCircle'
-import IconCheckCircle from '~/renderer/icons/CheckCircle'
-import { Rotating } from '../Spinner'
-import Tooltip from '../Tooltip'
-import TranslatedError from '../TranslatedError'
-import Box from '../Box'
-import ItemContainer from './ItemContainer'
+import React, { PureComponent, Fragment } from "react";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
+import { withTranslation } from "react-i18next";
+import type { AsyncState } from "~/renderer/reducers/bridgeSync";
+import { track } from "~/renderer/analytics/segment";
+import { globalSyncStateSelector } from "~/renderer/reducers/bridgeSync";
+import { isUpToDateSelector } from "~/renderer/reducers/accounts";
+import { BridgeSyncConsumer } from "~/renderer/bridge/BridgeSyncContext";
+import CounterValues from "~/renderer/countervalues";
+import IconLoader from "~/renderer/icons/Loader";
+import IconExclamationCircle from "~/renderer/icons/ExclamationCircle";
+import IconCheckCircle from "~/renderer/icons/CheckCircle";
+import { Rotating } from "../Spinner";
+import Tooltip from "../Tooltip";
+import TranslatedError from "../TranslatedError";
+import Box from "../Box";
+import ItemContainer from "./ItemContainer";
 
 const mapStateToProps = createStructuredSelector({
   globalSyncState: globalSyncStateSelector,
   isUpToDate: isUpToDateSelector,
-})
+});
 
 type Props = {
   error: ?Error,
@@ -32,26 +32,26 @@ type Props = {
   t: *,
   cvPoll: *,
   setSyncBehavior: *,
-}
+};
 
 class ActivityIndicatorInner extends PureComponent<Props, { lastClickTime: number }> {
   state = {
     lastClickTime: 0,
-  }
+  };
 
   onClick = () => {
-    this.props.cvPoll()
-    this.props.setSyncBehavior({ type: 'SYNC_ALL_ACCOUNTS', priority: 5 })
-    this.setState({ lastClickTime: Date.now() })
-    track('SyncRefreshClick')
-  }
+    this.props.cvPoll();
+    this.props.setSyncBehavior({ type: "SYNC_ALL_ACCOUNTS", priority: 5 });
+    this.setState({ lastClickTime: Date.now() });
+    track("SyncRefreshClick");
+  };
 
   render() {
-    const { isUpToDate, isPending, isError, error, t } = this.props
-    const { lastClickTime } = this.state
-    const isUserClick = Date.now() - lastClickTime < 1000
-    const isRotating = isPending && (!isUpToDate || isUserClick)
-    const isDisabled = isError || isRotating
+    const { isUpToDate, isPending, isError, error, t } = this.props;
+    const { lastClickTime } = this.state;
+    const isUserClick = Date.now() - lastClickTime < 1000;
+    const isRotating = isPending && (!isUpToDate || isUserClick);
+    const isDisabled = isError || isRotating;
 
     const content = (
       <ItemContainer disabled={isDisabled} onClick={isDisabled ? undefined : this.onClick}>
@@ -60,12 +60,12 @@ class ActivityIndicatorInner extends PureComponent<Props, { lastClickTime: numbe
           isRotating={isRotating}
           color={
             isError
-              ? 'alertRed'
+              ? "alertRed"
               : isRotating
-              ? 'palette.text.shade60'
+              ? "palette.text.shade60"
               : isUpToDate
-              ? 'positiveGreen'
-              : 'palette.text.shade60'
+              ? "positiveGreen"
+              : "palette.text.shade60"
           }
         >
           {isError ? (
@@ -82,32 +82,32 @@ class ActivityIndicatorInner extends PureComponent<Props, { lastClickTime: numbe
           data-e2e="syncButton"
           ml={isRotating ? 2 : 1}
           ff="Inter|SemiBold"
-          color={isError ? 'alertRed' : undefined}
+          color={isError ? "alertRed" : undefined}
           fontSize={4}
           horizontal
           align="center"
         >
           {isRotating ? (
-            t('common.sync.syncing')
+            t("common.sync.syncing")
           ) : isError ? (
             <Fragment>
-              <Box>{t('common.sync.error')}</Box>
+              <Box>{t("common.sync.error")}</Box>
               <Box
                 ml={2}
-                style={{ textDecoration: 'underline', pointerEvents: 'all' }}
+                style={{ textDecoration: "underline", pointerEvents: "all" }}
                 onClick={this.onClick}
               >
-                {t('common.sync.refresh')}
+                {t("common.sync.refresh")}
               </Box>
             </Fragment>
           ) : isUpToDate ? (
-            t('common.sync.upToDate')
+            t("common.sync.upToDate")
           ) : (
-            t('common.sync.outdated')
+            t("common.sync.outdated")
           )}
         </Box>
       </ItemContainer>
-    )
+    );
 
     if (isError && error) {
       return (
@@ -121,10 +121,10 @@ class ActivityIndicatorInner extends PureComponent<Props, { lastClickTime: numbe
         >
           {content}
         </Tooltip>
-      )
+      );
     }
 
-    return content
+    return content;
   }
 }
 
@@ -141,8 +141,8 @@ const ActivityIndicator = ({
     {setSyncBehavior => (
       <CounterValues.PollingConsumer>
         {cvPolling => {
-          const isPending = cvPolling.pending || globalSyncState.pending
-          const isError = !isPending && (cvPolling.error || globalSyncState.error)
+          const isPending = cvPolling.pending || globalSyncState.pending;
+          const isError = !isPending && (cvPolling.error || globalSyncState.error);
           return (
             <ActivityIndicatorInner
               t={t}
@@ -153,11 +153,11 @@ const ActivityIndicator = ({
               cvPoll={cvPolling.poll}
               setSyncBehavior={setSyncBehavior}
             />
-          )
+          );
         }}
       </CounterValues.PollingConsumer>
     )}
   </BridgeSyncConsumer>
-)
+);
 
-export default withTranslation()(connect(mapStateToProps)(ActivityIndicator))
+export default withTranslation()(connect(mapStateToProps)(ActivityIndicator));

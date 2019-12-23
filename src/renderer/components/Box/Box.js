@@ -1,6 +1,6 @@
 // @flow
 
-import styled from 'styled-components'
+import styled from "styled-components";
 import {
   alignItems,
   alignSelf,
@@ -13,14 +13,14 @@ import {
   justifyContent,
   space,
   style,
-} from 'styled-system'
+} from "styled-system";
 
-import fontFamily from '~/renderer/styles/styled/fontFamily'
+import fontFamily from "~/renderer/styles/styled/fontFamily";
 
-export const styledTextAlign = style({ prop: 'textAlign', cssProperty: 'textAlign' })
-export const styledOverflow = style({ prop: 'overflow', cssProperty: 'overflow' })
-export const styledCursor = style({ prop: 'cursor', cssProperty: 'cursor' })
-export const styledTextTransform = style({ prop: 'textTransform', cssProperty: 'textTransform' })
+export const styledTextAlign = style({ prop: "textAlign", cssProperty: "textAlign" });
+export const styledOverflow = style({ prop: "overflow", cssProperty: "overflow" });
+export const styledCursor = style({ prop: "cursor", cssProperty: "cursor" });
+export const styledTextTransform = style({ prop: "textTransform", cssProperty: "textTransform" });
 
 export default styled.div`
   ${alignItems};
@@ -40,13 +40,13 @@ export default styled.div`
   ${styledOverflow};
 
   display: flex;
-  flex-shrink: ${p => (p.noShrink === true ? '0' : p.shrink === true ? '1' : '')};
-  flex-grow: ${p => (p.grow === true ? '1' : p.grow || '')};
-  flex-direction: ${p => (p.horizontal ? 'row' : 'column')};
+  flex-shrink: ${p => (p.noShrink === true ? "0" : p.shrink === true ? "1" : "")};
+  flex-grow: ${p => (p.grow === true ? "1" : p.grow || "")};
+  flex-direction: ${p => (p.horizontal ? "row" : "column")};
 
   overflow: ${p => p.overflow};
-  overflow-y: ${p => (p.scroll === true ? 'auto' : '')};
-  position: ${p => (p.relative ? 'relative' : p.sticky ? 'absolute' : '')};
+  overflow-y: ${p => (p.scroll === true ? "auto" : "")};
+  position: ${p => (p.relative ? "relative" : p.sticky ? "absolute" : "")};
 
   ${p =>
     p.selectable &&
@@ -65,7 +65,7 @@ export default styled.div`
     `};
 
   > * + * {
-    margin-top: ${p => (!p.horizontal && p.flow ? `${p.theme.space[p.flow]}px` : '')};
-    margin-left: ${p => (p.horizontal && p.flow ? `${p.theme.space[p.flow]}px` : '')};
+    margin-top: ${p => (!p.horizontal && p.flow ? `${p.theme.space[p.flow]}px` : "")};
+    margin-left: ${p => (p.horizontal && p.flow ? `${p.theme.space[p.flow]}px` : "")};
   }
-`
+`;

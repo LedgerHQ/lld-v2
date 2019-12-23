@@ -1,21 +1,21 @@
 // @flow
 
-import React, { useCallback, useState } from 'react'
-import styled from 'styled-components'
-import { fontSize } from 'styled-system'
-import noop from 'lodash/noop'
-import fontFamily from '~/renderer/styles/styled/fontFamily'
-import Spinner from '~/renderer/components/Spinner'
-import Box from '~/renderer/components/Box'
+import React, { useCallback, useState } from "react";
+import styled from "styled-components";
+import { fontSize } from "styled-system";
+import noop from "lodash/noop";
+import fontFamily from "~/renderer/styles/styled/fontFamily";
+import Spinner from "~/renderer/components/Spinner";
+import Box from "~/renderer/components/Box";
 // TODO: TRANSLATED ERROR
 // import TranslatedError from '~/renderer/components/TranslatedError'
-import Text from '~/renderer/components/Text'
-import type { ThemedComponent } from '~/renderer/styles/StyleProvider'
+import Text from "~/renderer/components/Text";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
 const RenderLeftWrapper: ThemedComponent<{}> = styled(Box)`
   align-items: center;
   justify-content: center;
-`
+`;
 const RenderRightWrapper: ThemedComponent<{}> = styled(Box)`
   margin-left: -10px;
   display: flex;
@@ -24,7 +24,7 @@ const RenderRightWrapper: ThemedComponent<{}> = styled(Box)`
   & > * {
     flex: 1;
   }
-`
+`;
 
 const Container = styled(Box).attrs(() => ({
   horizontal: true,
@@ -44,13 +44,13 @@ const Container = styled(Box).attrs(() => ({
       : p.isFocus
       ? p.theme.colors.palette.primary.main
       : p.theme.colors.palette.divider};
-  box-shadow: ${p => (p.isFocus && !p.noBoxShadow ? `rgba(0, 0, 0, 0.05) 0 2px 2px` : 'none')};
-  height: ${p => (p.small ? '34' : '48')}px;
+  box-shadow: ${p => (p.isFocus && !p.noBoxShadow ? `rgba(0, 0, 0, 0.05) 0 2px 2px` : "none")};
+  height: ${p => (p.small ? "34" : "48")}px;
   position: relative;
 
   &:not(:hover) {
-    background: ${p => (!p.isFocus && p.editInPlace ? 'transparent' : undefined)};
-    border-color: ${p => (!p.isFocus && p.editInPlace ? 'transparent' : undefined)};
+    background: ${p => (!p.isFocus && p.editInPlace ? "transparent" : undefined)};
+    border-color: ${p => (!p.isFocus && p.editInPlace ? "transparent" : undefined)};
   }
 
   ${p =>
@@ -60,7 +60,7 @@ const Container = styled(Box).attrs(() => ({
       ? `--status-color: ${p.theme.colors.warning};`
       : p.isFocus
       ? `--status-color: ${p.theme.colors.palette.primary.main};`
-      : ''}
+      : ""}
 
   ${p =>
     (p.error || p.warning || p.isFocus) &&
@@ -69,7 +69,7 @@ const Container = styled(Box).attrs(() => ({
       color: var(--status-color);
       border-color: var(--status-color);
     }`}
-`
+`;
 
 const ErrorDisplay = styled(Box)`
   position: absolute;
@@ -78,7 +78,7 @@ const ErrorDisplay = styled(Box)`
   font-size: 12px;
   white-space: nowrap;
   color: ${p => p.theme.colors.pearl};
-`
+`;
 
 const LoadingDisplay = styled(Box)`
   position: absolute;
@@ -95,16 +95,16 @@ const LoadingDisplay = styled(Box)`
   > :first-child {
     margin-right: 10px;
   }
-`
+`;
 
 const WarningDisplay = styled(ErrorDisplay)`
   color: ${p => p.theme.colors.warning};
-`
+`;
 
 const Base = styled.input.attrs(() => ({
   fontSize: 4,
 }))`
-  font-family: 'Inter';
+  font-family: "Inter";
   font-weight: 600;
   ${fontFamily};
   ${fontSize};
@@ -115,12 +115,12 @@ const Base = styled.input.attrs(() => ({
   padding: 0;
   width: 100%;
   background: none;
-  cursor: ${p => (p.disabled ? 'not-allowed' : 'text')};
+  cursor: ${p => (p.disabled ? "not-allowed" : "text")};
 
   &::placeholder {
     color: ${p => p.theme.colors.palette.text.shade40};
   }
-`
+`;
 
 type Props = {
   keepEvent?: boolean,
@@ -138,7 +138,7 @@ type Props = {
   small?: boolean,
   editInPlace?: boolean,
   disabled?: boolean,
-}
+};
 
 // $FlowFixMe @IAmMorrow
 const Input = React.forwardRef(function Input(
@@ -162,55 +162,55 @@ const Input = React.forwardRef(function Input(
   }: Props,
   inputRef,
 ) {
-  const [isFocus, setFocus] = useState(false)
+  const [isFocus, setFocus] = useState(false);
 
   const handleChange = useCallback(
     (e: SyntheticInputEvent<HTMLInputElement>) => {
       if (onChange) {
-        onChange(keepEvent ? e : e.target.value)
+        onChange(keepEvent ? e : e.target.value);
       }
     },
     [onChange, keepEvent],
-  )
+  );
 
   const handleKeyDown = useCallback(
     (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
       // handle enter key
       if (e.which === 13 && onEnter) {
-        onEnter(e)
+        onEnter(e);
       } else if (e.which === 27 && onEsc) {
-        onEsc(e)
+        onEsc(e);
       }
     },
     [onEnter, onEsc],
-  )
+  );
 
   const handleClick = useCallback(() => {
     if (inputRef && inputRef.current) {
       // $FlowFixMe @IAmMorrow
-      inputRef.current.focus()
+      inputRef.current.focus();
     }
-  }, [inputRef])
+  }, [inputRef]);
 
   const handleFocus = useCallback(
     (e: SyntheticInputEvent<HTMLInputElement>) => {
-      setFocus(true)
+      setFocus(true);
       if (onFocus) {
-        onFocus(e)
+        onFocus(e);
       }
     },
     [onFocus],
-  )
+  );
 
   const handleBlur = useCallback(
     (e: SyntheticInputEvent<HTMLInputElement>) => {
-      setFocus(false)
+      setFocus(false);
       if (onBlur) {
-        onBlur(e)
+        onBlur(e);
       }
     },
     [onBlur],
-  )
+  );
 
   return (
     <Container
@@ -245,14 +245,14 @@ const Input = React.forwardRef(function Input(
           <LoadingDisplay>
             <Spinner size={16} color="palette.text.shade50" />
             <Text ff="Inter" color="palette.text.shade50" fontSize={4}>
-              {'Loading'}
+              {"Loading"}
             </Text>
           </LoadingDisplay>
         ) : null}
       </Box>
       {renderRight ? <RenderRightWrapper>{renderRight}</RenderRightWrapper> : null}
     </Container>
-  )
-})
+  );
+});
 
-export default Input
+export default Input;

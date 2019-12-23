@@ -1,36 +1,36 @@
 // @flow
 
-import React, { PureComponent } from 'react'
-import { translate } from 'react-i18next'
-import styled from 'styled-components'
-import { repairChoices } from '@ledgerhq/live-common/lib/hw/firmwareUpdate-repair'
-import { MCUNotGenuineToDashboard } from '@ledgerhq/errors'
-import type { T } from 'types/common'
-import TrackPage from '~/analytics/TrackPage'
-import IconCheck from '~/renderer/icons/Check'
-import Button from '~/renderer/components/Button'
-import Box from '~/renderer/components/Box'
-import Text from '~/renderer/components/Text'
-import ProgressCircle from '~/renderer/components/ProgressCircle'
-import TranslatedError from '~/renderer/components/TranslatedError'
-import ConnectTroubleshootingHelpButton from '~/renderer/components/ConnectTroubleshootingHelpButton'
-import FlashMCU from '~/renderer/components/FlashMCU'
-import ExclamationCircleThin from '~/renderer/icons/ExclamationCircleThin'
-import Modal from './index'
-import ModalBody from './ModalBody'
-import { track } from '../../../analytics/segment'
+import React, { PureComponent } from "react";
+import { translate } from "react-i18next";
+import styled from "styled-components";
+import { repairChoices } from "@ledgerhq/live-common/lib/hw/firmwareUpdate-repair";
+import { MCUNotGenuineToDashboard } from "@ledgerhq/errors";
+import type { T } from "types/common";
+import TrackPage from "~/analytics/TrackPage";
+import IconCheck from "~/renderer/icons/Check";
+import Button from "~/renderer/components/Button";
+import Box from "~/renderer/components/Box";
+import Text from "~/renderer/components/Text";
+import ProgressCircle from "~/renderer/components/ProgressCircle";
+import TranslatedError from "~/renderer/components/TranslatedError";
+import ConnectTroubleshootingHelpButton from "~/renderer/components/ConnectTroubleshootingHelpButton";
+import FlashMCU from "~/renderer/components/FlashMCU";
+import ExclamationCircleThin from "~/renderer/icons/ExclamationCircleThin";
+import Modal from "./index";
+import ModalBody from "./ModalBody";
+import { track } from "../../../analytics/segment";
 
 const Container = styled(Box).attrs(() => ({
-  alignItems: 'center',
+  alignItems: "center",
   fontSize: 4,
-  color: 'palette.text.shade100',
-}))``
+  color: "palette.text.shade100",
+}))``;
 
 const ChoiceBox = styled.div`
   display: flex;
   flex-direction: row;
   border-radius: 4px;
-  box-shadow: ${props => (props.selected ? '0 2px 4px 0 rgba(0, 0, 0, 0.08)' : null)};
+  box-shadow: ${props => (props.selected ? "0 2px 4px 0 rgba(0, 0, 0, 0.08)" : null)};
   border: solid 1px
     ${props => (props.selected ? props.theme.colors.wallet : props.theme.colors.palette.divider)};
   height: 48px;
@@ -38,13 +38,13 @@ const ChoiceBox = styled.div`
   margin-bottom: 8px;
   align-items: center;
   justify-content: space-between;
-`
+`;
 
 type ChoiceProps = {
   selected: any,
   choice: any,
   onSelect: any,
-}
+};
 
 const Choice = React.memo(function Choice({ selected, choice, onSelect }: ChoiceProps) {
   return (
@@ -58,8 +58,8 @@ const Choice = React.memo(function Choice({ selected, choice, onSelect }: Choice
         </Box>
       ) : null}
     </ChoiceBox>
-  )
-})
+  );
+});
 
 const DisclaimerStep = ({ desc }: { desc?: string }) => (
   <Box>
@@ -69,7 +69,7 @@ const DisclaimerStep = ({ desc }: { desc?: string }) => (
       </Box>
     ) : null}
   </Box>
-)
+);
 
 const FlashStep = ({
   progress,
@@ -94,11 +94,11 @@ const FlashStep = ({
       </Box>
       <Box mx={7} mt={2} mb={2}>
         <Text ff="Inter|Regular" align="center" color="palette.text.shade80" fontSize={4}>
-          {t('manager.modal.mcuPin')}
+          {t("manager.modal.mcuPin")}
         </Text>
       </Box>
     </Box>
-  )
+  );
 
 const ErrorStep = ({ error }: { error: Error }) => (
   <Box>
@@ -125,13 +125,13 @@ const ErrorStep = ({ error }: { error: Error }) => (
         style={{ maxWidth: 380 }}
       >
         <TranslatedError error={error} field="description" />
-        <ol style={{ textAlign: 'justify' }}>
+        <ol style={{ textAlign: "justify" }}>
           <TranslatedError error={error} field="list" />
         </ol>
       </Box>
     </Container>
   </Box>
-)
+);
 
 type Props = {
   isOpened: boolean,
@@ -151,17 +151,17 @@ type Props = {
   progress: number,
   error?: Error,
   isAlreadyBootloader?: boolean,
-}
+};
 
 class RepairModal extends PureComponent<Props, *> {
   state = {
     selectedOption: null,
-  }
+  };
 
   onSelectOption = selectedOption => {
-    this.setState({ selectedOption })
-    track(`${this.props.analyticsName}SelectOption`, { selectedOption })
-  }
+    this.setState({ selectedOption });
+    track(`${this.props.analyticsName}SelectOption`, { selectedOption });
+  };
 
   render() {
     const {
@@ -181,11 +181,11 @@ class RepairModal extends PureComponent<Props, *> {
       error,
       isAlreadyBootloader,
       ...props
-    } = this.props
-    const { selectedOption } = this.state
-    const onClose = !cancellable && isLoading ? undefined : onReject
+    } = this.props;
+    const { selectedOption } = this.state;
+    const onClose = !cancellable && isLoading ? undefined : onReject;
     const disableRepair =
-      isLoading || !selectedOption || (error && error instanceof MCUNotGenuineToDashboard)
+      isLoading || !selectedOption || (error && error instanceof MCUNotGenuineToDashboard);
 
     return (
       <Modal
@@ -229,7 +229,7 @@ class RepairModal extends PureComponent<Props, *> {
               <Box horizontal align="center" flow={2} flex={1}>
                 <ConnectTroubleshootingHelpButton />
                 <div style={{ flex: 1 }} />
-                <Button onClick={onReject}>{t(`common.${error ? 'close' : 'cancel'}`)}</Button>
+                <Button onClick={onReject}>{t(`common.${error ? "close" : "cancel"}`)}</Button>
                 <Button
                   onClick={selectedOption ? () => repair(selectedOption.forceMCU) : null}
                   primary={!isDanger}
@@ -237,15 +237,15 @@ class RepairModal extends PureComponent<Props, *> {
                   isLoading={isLoading}
                   disabled={disableRepair}
                 >
-                  {t('settings.repairDevice.button')}
+                  {t("settings.repairDevice.button")}
                 </Button>
               </Box>
             ) : null
           }
         />
       </Modal>
-    )
+    );
   }
 }
 
-export default translate()(RepairModal)
+export default translate()(RepairModal);

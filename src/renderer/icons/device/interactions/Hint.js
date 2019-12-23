@@ -1,7 +1,7 @@
 // @flow
 
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
 const HintSVG = styled.svg`
   overflow: visible;
@@ -9,12 +9,12 @@ const HintSVG = styled.svg`
     transform: translate(0%, -100%);
     transition: opacity 100ms ease-in;
   }
-`
+`;
 
 type Props = {
   active?: boolean,
   horizontal?: boolean,
-}
+};
 
 const Hint = ({ active, horizontal, ...props }: Props) => (
   <HintSVG {...props} width="12" height="72">
@@ -42,6 +42,6 @@ const Hint = ({ active, horizontal, ...props }: Props) => (
       </g>
     </g>
   </HintSVG>
-)
+);
 
-export default Hint
+export default Hint;

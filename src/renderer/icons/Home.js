@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment } from 'react'
+import React, { Fragment } from "react";
 
 const path = (
   <Fragment>
@@ -13,12 +13,12 @@ const path = (
       d="m7 10a1.0001 1.0001 0 0 0-1 1v10a1.0001 1.0001 0 1 0 2 0v-9h4v9a1.0001 1.0001 0 1 0 2 0v-10a1.0001 1.0001 0 0 0-1-1z"
     />
   </Fragment>
-)
+);
 
 const Home = ({ size, ...p }: { size: number }) => (
   <svg viewBox="0 0 20 22.014" height={size} width={size} {...p}>
     {path}
   </svg>
-)
+);
 
-export default Home
+export default Home;

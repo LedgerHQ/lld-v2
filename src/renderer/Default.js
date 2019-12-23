@@ -1,39 +1,39 @@
 // @flow
 
-import { remote } from 'electron'
-import React, { useEffect, useCallback, createRef } from 'react'
-import { Route, Switch, useLocation } from 'react-router-dom'
-import styled from 'styled-components'
+import { remote } from "electron";
+import React, { useEffect, useCallback, createRef } from "react";
+import { Route, Switch, useLocation } from "react-router-dom";
+import styled from "styled-components";
 
 // import { SYNC_PENDING_INTERVAL } from '~/config/constants'
 
-import type { ThemedComponent } from '~/renderer/styles/StyleProvider'
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
-import Dashboard from '~/renderer/screens/dashboard'
-import Settings from '~/renderer/screens/settings'
-import Accounts from '~/renderer/screens/accounts'
-import Manager from '~/renderer/screens/manager'
-import Partners from '~/renderer/screens/partners'
-import Account from '~/renderer/screens/account'
-import Asset from '~/renderer/screens/asset'
+import Dashboard from "~/renderer/screens/dashboard";
+import Settings from "~/renderer/screens/settings";
+import Accounts from "~/renderer/screens/accounts";
+import Manager from "~/renderer/screens/manager";
+import Partners from "~/renderer/screens/partners";
+import Account from "~/renderer/screens/account";
+import Asset from "~/renderer/screens/asset";
 
-import Box from '~/renderer/components/Box/Box'
-import GrowScroll from '~/renderer/components/GrowScroll'
-import ListenDevices from '~/renderer/components/ListenDevices'
-import ExportLogsBtn from '~/renderer/components/ExportLogsButton'
-import Idler from '~/renderer/components/Idler'
-import IsUnlocked from '~/renderer/components/IsUnlocked'
-import OnboardingOrElse from '~/renderer/components/OnboardingOrElse'
-import AppRegionDrag from '~/renderer/components/AppRegionDrag'
-import CheckTermsAccepted from '~/renderer/components/CheckTermsAccepted'
-import IsNewVersion from '~/renderer/components/IsNewVersion'
-import HSMStatusBanner from '~/renderer/components/HSMStatusBanner'
-import TopBar from '~/renderer/components/TopBar'
-import LibcoreBusyIndicator from '~/renderer/components/LibcoreBusyIndicator'
-import DeviceBusyIndicator from '~/renderer/components/DeviceBusyIndicator'
-import KeyboardContent from '~/renderer/components/KeyboardContent'
-import PerfIndicator from '~/renderer/components/PerfIndicator'
-import MainSideBar from '~/renderer/components/MainSideBar'
+import Box from "~/renderer/components/Box/Box";
+import GrowScroll from "~/renderer/components/GrowScroll";
+import ListenDevices from "~/renderer/components/ListenDevices";
+import ExportLogsBtn from "~/renderer/components/ExportLogsButton";
+import Idler from "~/renderer/components/Idler";
+import IsUnlocked from "~/renderer/components/IsUnlocked";
+import OnboardingOrElse from "~/renderer/components/OnboardingOrElse";
+import AppRegionDrag from "~/renderer/components/AppRegionDrag";
+import CheckTermsAccepted from "~/renderer/components/CheckTermsAccepted";
+import IsNewVersion from "~/renderer/components/IsNewVersion";
+import HSMStatusBanner from "~/renderer/components/HSMStatusBanner";
+import TopBar from "~/renderer/components/TopBar";
+import LibcoreBusyIndicator from "~/renderer/components/LibcoreBusyIndicator";
+import DeviceBusyIndicator from "~/renderer/components/DeviceBusyIndicator";
+import KeyboardContent from "~/renderer/components/KeyboardContent";
+import PerfIndicator from "~/renderer/components/PerfIndicator";
+import MainSideBar from "~/renderer/components/MainSideBar";
 
 const Main: ThemedComponent<{
   tabIndex?: number,
@@ -44,38 +44,38 @@ const Main: ThemedComponent<{
 }))`
   outline: none;
   padding-top: ${p => p.theme.sizes.topBarHeight + p.theme.space[6]}px;
-`
+`;
 
 const Default = () => {
-  const location = useLocation()
-  const ref = createRef<React$ElementRef<any>>()
+  const location = useLocation();
+  const ref = createRef<React$ElementRef<any>>();
 
   const kbShortcut = useCallback(event => {
-    if ((event.ctrlKey || event.metaKey) && event.key === 'r') {
-      remote.getCurrentWindow().webContents.reload()
+    if ((event.ctrlKey || event.metaKey) && event.key === "r") {
+      remote.getCurrentWindow().webContents.reload();
     }
-  }, [])
+  }, []);
 
   // onMount onWillUnmount
   useEffect(() => {
-    window.addEventListener('keydown', kbShortcut)
+    window.addEventListener("keydown", kbShortcut);
 
     // Prevents adding multiple listeners when hot reloading
-    return () => window.removeEventListener('keydown', kbShortcut)
-  }, [])
+    return () => window.removeEventListener("keydown", kbShortcut);
+  }, []);
 
   useEffect(() => {
     if (ref && ref.current) {
-      ref.current.scrollTo(0, 0)
+      ref.current.scrollTo(0, 0);
     }
-  }, [location, ref.current])
+  }, [location, ref.current]);
 
   return (
     <>
       <ListenDevices />
       <ExportLogsBtn hookToShortcut />
 
-      {process.platform === 'darwin' ? <AppRegionDrag /> : null}
+      {process.platform === "darwin" ? <AppRegionDrag /> : null}
 
       {/* TODO: ANALYTICS: v1 = analytics/track */}
       {/* <Track mandatory onMount event="App Starts" /> */}
@@ -139,7 +139,7 @@ const Default = () => {
         </OnboardingOrElse>
       </IsUnlocked>
     </>
-  )
-}
+  );
+};
 
-export default Default
+export default Default;

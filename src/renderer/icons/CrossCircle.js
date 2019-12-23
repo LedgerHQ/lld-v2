@@ -1,7 +1,7 @@
 // @flow
-import React from 'react'
+import React from "react";
 
-const CrossCircle = ({ size = 16, color = 'currentColor' }: { size: number, color?: string }) => (
+const CrossCircle = ({ size = 16, color = "currentColor" }: { size: number, color?: string }) => (
   <svg
     width={size}
     height={size}
@@ -16,6 +16,6 @@ const CrossCircle = ({ size = 16, color = 'currentColor' }: { size: number, colo
       fill={color}
     />
   </svg>
-)
+);
 
-export default CrossCircle
+export default CrossCircle;

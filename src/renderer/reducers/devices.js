@@ -1,27 +1,27 @@
 // @flow
 
-import { handleActions } from 'redux-actions'
-import { getEnv } from '@ledgerhq/live-common/lib/env'
-import type { DeviceModelId } from '@ledgerhq/devices'
+import { handleActions } from "redux-actions";
+import { getEnv } from "@ledgerhq/live-common/lib/env";
+import type { DeviceModelId } from "@ledgerhq/devices";
 
 export type Device = {
   path: string,
   modelId: DeviceModelId,
-}
+};
 
 export type DevicesState = {
   currentDevice: ?Device,
   devices: Device[],
-}
+};
 
 const initialState: DevicesState = {
   currentDevice: null,
   devices: [],
-}
+};
 
 function setCurrentDevice(state) {
-  const currentDevice = state.devices.length ? state.devices[state.devices.length - 1] : null
-  return { ...state, currentDevice }
+  const currentDevice = state.devices.length ? state.devices[state.devices.length - 1] : null;
+  return { ...state, currentDevice };
 }
 
 const handlers: Object = {
@@ -43,22 +43,22 @@ const handlers: Object = {
     ...state,
     currentDevice,
   }),
-}
+};
 
 export function getCurrentDevice(state: { devices: DevicesState }) {
-  if (getEnv('DEVICE_PROXY_URL')) {
+  if (getEnv("DEVICE_PROXY_URL")) {
     // bypass the listen devices (we should remove modelId here by instead get it at open time if needed)
-    return { path: '', modelId: 'nanoS' }
+    return { path: "", modelId: "nanoS" };
   }
-  return state.devices.currentDevice
+  return state.devices.currentDevice;
 }
 
 export function getDevices(state: { devices: DevicesState }) {
-  if (getEnv('DEVICE_PROXY_URL')) {
+  if (getEnv("DEVICE_PROXY_URL")) {
     // bypass the listen devices
-    return [{ path: '', modelId: 'nanoS' }]
+    return [{ path: "", modelId: "nanoS" }];
   }
-  return state.devices.devices
+  return state.devices.devices;
 }
 
-export default handleActions(handlers, initialState)
+export default handleActions(handlers, initialState);

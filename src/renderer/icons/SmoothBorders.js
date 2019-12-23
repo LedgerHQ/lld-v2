@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react'
+import React from "react";
 
 const inner = (
   <path
@@ -9,12 +9,12 @@ const inner = (
     stroke="currentColor"
     strokeWidth="1.5"
   />
-)
+);
 
 const SmoothBorders = ({ size, ...p }: { size: number }) => (
   <svg viewBox="0 0 29.5 29.5" height={size} width={size} {...p}>
     {inner}
   </svg>
-)
+);
 
-export default SmoothBorders
+export default SmoothBorders;

@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react'
+import React from "react";
 
 const path = (
   <path
@@ -11,12 +11,12 @@ const path = (
     strokeWidth="2"
     d="M7 17L17 7M7 7h10v10"
   />
-)
+);
 
 const ArrowUpRight = ({ size, ...p }: { size: number }) => (
   <svg viewBox="0 0 24 24" height={size} width={size} {...p}>
     {path}
   </svg>
-)
+);
 
-export default ArrowUpRight
+export default ArrowUpRight;

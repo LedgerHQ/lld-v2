@@ -1,9 +1,9 @@
 // @flow
 
-import React from 'react'
-import styled, { keyframes } from 'styled-components'
-import useTheme from '~/renderer/hooks/useTheme'
-import colors from './colors'
+import React from "react";
+import styled, { keyframes } from "styled-components";
+import useTheme from "~/renderer/hooks/useTheme";
+import colors from "./colors";
 
 const plugAnim = keyframes`
   0% {
@@ -25,7 +25,7 @@ const plugAnim = keyframes`
       transform: translate(-50px, 0px);
       opacity: 0;
   }
-`
+`;
 
 const USBCableSvg = styled.svg`
   overflow: visible;
@@ -47,23 +47,23 @@ const USBCableSvg = styled.svg`
     transform: translate(-50px, 0px);
     transition: cubic-bezier(0.82, 0.38, 0, 1) 2200ms;
   }
-`
+`;
 
 const classByState = {
-  plugHint: 'cable-plug-hint',
-  plugged: 'cable-plugged',
-  unplugHint: 'cable-unplug-hint',
-  unplugged: 'cable-unplugged',
-}
+  plugHint: "cable-plug-hint",
+  plugged: "cable-plugged",
+  unplugHint: "cable-unplug-hint",
+  unplugged: "cable-unplugged",
+};
 
 type Props = {
   active?: boolean,
   state?: string,
   vertical?: boolean,
-}
+};
 
 const UsbCable = ({ active, state, vertical, ...props }: Props) => {
-  const type = useTheme('colors.palette.type')
+  const type = useTheme("colors.palette.type");
 
   return (
     <USBCableSvg {...props} width="126" height="23">
@@ -108,7 +108,7 @@ const UsbCable = ({ active, state, vertical, ...props }: Props) => {
         </g>
       </g>
     </USBCableSvg>
-  )
-}
+  );
+};
 
-export default UsbCable
+export default UsbCable;

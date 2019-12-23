@@ -1,51 +1,51 @@
 // @flow
 
-import type { BigNumber } from 'bignumber.js'
-import invariant from 'invariant'
-import React from 'react'
-import styled from 'styled-components'
-import { connect } from 'react-redux'
+import type { BigNumber } from "bignumber.js";
+import invariant from "invariant";
+import React from "react";
+import styled from "styled-components";
+import { connect } from "react-redux";
 
-import type { Unit } from '@ledgerhq/live-common/lib/types'
-import type { State } from '~/renderer/reducers'
+import type { Unit } from "@ledgerhq/live-common/lib/types";
+import type { State } from "~/renderer/reducers";
 
-import { formatCurrencyUnit } from '@ledgerhq/live-common/lib/currencies'
+import { formatCurrencyUnit } from "@ledgerhq/live-common/lib/currencies";
 
-import { DISABLE_TICKER_ANIMATION } from '~/config/constants'
-import { marketIndicatorSelector, localeSelector } from '~/renderer/reducers/settings'
+import { DISABLE_TICKER_ANIMATION } from "~/config/constants";
+import { marketIndicatorSelector, localeSelector } from "~/renderer/reducers/settings";
 
-import { getMarketColor } from '~/renderer/styles/helpers'
+import { getMarketColor } from "~/renderer/styles/helpers";
 
-import Box from '~/renderer/components/Box'
-import FlipTicker from '~/renderer/components/FlipTicker'
+import Box from "~/renderer/components/Box";
+import FlipTicker from "~/renderer/components/FlipTicker";
 
-import IconBottom from '~/renderer/icons/ArrowDownRight'
-import IconTop from '~/renderer/icons/ArrowUpRight'
-import Ellipsis from '../Ellipsis'
+import IconBottom from "~/renderer/icons/ArrowDownRight";
+import IconTop from "~/renderer/icons/ArrowUpRight";
+import Ellipsis from "../Ellipsis";
 
-import type { ThemedComponent } from '~/renderer/styles/StyleProvider'
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
 const T: ThemedComponent<{ color: String, inline: Boolean }> = styled(Box).attrs(p => ({
-  ff: 'Inter|Medium',
+  ff: "Inter|Medium",
   horizontal: true,
   color: p.color,
 }))`
   line-height: 1.2;
   white-space: pre;
   text-overflow: ellipsis;
-  display: ${p => (p.inline ? 'inline-block' : 'block')};
+  display: ${p => (p.inline ? "inline-block" : "block")};
   flex-shrink: 1;
-  width: ${p => (p.inline ? '' : '100%')};
+  width: ${p => (p.inline ? "" : "100%")};
   overflow: hidden;
-`
+`;
 
 const I = ({ color, children }: { color?: string, children: any }) => (
   <Box color={color}>{children}</Box>
-)
+);
 
 I.defaultProps = {
   color: undefined,
-}
+};
 
 type OwnProps = {
   unit?: Unit,
@@ -60,18 +60,18 @@ type OwnProps = {
   subMagnitude?: number,
   prefix?: string,
   suffix?: string,
-}
+};
 
 const mapStateToProps = (state: State, _props: OwnProps) => ({
   marketIndicator: marketIndicatorSelector(state),
   locale: localeSelector(state),
-})
+});
 
 type Props = OwnProps & {
   marketIndicator: string,
   locale: string,
   ellipsis?: boolean,
-}
+};
 
 function FormattedVal(props: Props) {
   const {
@@ -90,26 +90,26 @@ function FormattedVal(props: Props) {
     prefix,
     suffix,
     ...p
-  } = props
-  let { val } = props
+  } = props;
+  let { val } = props;
 
-  invariant(val, 'FormattedVal require a `val` prop. Received `undefined`')
+  invariant(val, "FormattedVal require a `val` prop. Received `undefined`");
 
-  const isNegative = val.isNegative() && !val.isZero()
+  const isNegative = val.isNegative() && !val.isZero();
 
-  let text = ''
+  let text = "";
 
   if (isPercent) {
     // FIXME move out the % feature of this component... totally unrelated to currency & annoying for flow type.
-    text = `${alwaysShowSign ? (isNegative ? '- ' : '+ ') : ''}${(isNegative
+    text = `${alwaysShowSign ? (isNegative ? "- " : "+ ") : ""}${(isNegative
       ? val.negated()
       : val
-    ).toString()} %`
+    ).toString()} %`;
   } else {
-    invariant(unit, 'FormattedVal require a `unit` prop. Received `undefined`')
+    invariant(unit, "FormattedVal require a `unit` prop. Received `undefined`");
 
     if (withIcon && isNegative) {
-      val = val.negated()
+      val = val.negated();
     }
 
     text = formatCurrencyUnit(unit, val, {
@@ -118,22 +118,22 @@ function FormattedVal(props: Props) {
       showCode,
       locale,
       subMagnitude,
-    })
+    });
   }
 
-  if (prefix) text = prefix + text
-  if (suffix) text += suffix
+  if (prefix) text = prefix + text;
+  if (suffix) text += suffix;
 
   if (animateTicker && !DISABLE_TICKER_ANIMATION) {
-    text = <FlipTicker value={text} />
+    text = <FlipTicker value={text} />;
   } else if (ellipsis) {
-    text = <Ellipsis>{text}</Ellipsis>
+    text = <Ellipsis>{text}</Ellipsis>;
   }
 
   const marketColor = getMarketColor({
     marketIndicator,
     isNegative,
-  })
+  });
 
   return (
     <T color={color || marketColor} withIcon={withIcon} {...p}>
@@ -152,11 +152,11 @@ function FormattedVal(props: Props) {
         text
       )}
     </T>
-  )
+  );
 }
 
 FormattedVal.defaultProps = {
   subMagnitude: 0,
-}
+};
 
-export default connect(mapStateToProps)(FormattedVal)
+export default connect(mapStateToProps)(FormattedVal);
