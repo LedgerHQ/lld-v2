@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent, useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";

@@ -62,11 +62,7 @@ type Props = {
 const ParentCryptoCurrencyIcon = ({ currency, withTooltip, bigger, inactive }: Props) => {
   const parent = currency.type === "TokenCurrency" ? currency.parentCurrency : null;
 
-  if (withTooltip && parent) {
-    return <Tooltip content={<CryptoCurrencyIconTooltip name={parent.name} />}>{content}</Tooltip>;
-  }
-
-  return (
+  const content = (
     <ParentCryptoCurrencyIconWrapper doubleIcon={!!parent} bigger={bigger}>
       {parent && (
         <CryptoCurrencyIcon inactive={inactive} currency={parent} size={bigger ? 20 : 16} />
@@ -74,6 +70,12 @@ const ParentCryptoCurrencyIcon = ({ currency, withTooltip, bigger, inactive }: P
       <CryptoCurrencyIcon inactive={inactive} currency={currency} size={bigger ? 20 : 16} />
     </ParentCryptoCurrencyIconWrapper>
   );
+
+  if (withTooltip && parent) {
+    return <Tooltip content={<CryptoCurrencyIconTooltip name={parent.name} />}>{content}</Tooltip>;
+  }
+
+  return content;
 };
 
 export default ParentCryptoCurrencyIcon;

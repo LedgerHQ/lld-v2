@@ -1,14 +1,11 @@
 // @flow
 import React from "react";
 import styled, { withTheme } from "styled-components";
-
 import { getCryptoCurrencyIcon } from "@ledgerhq/live-common/lib/react";
 import type { Currency } from "@ledgerhq/live-common/lib/types";
-
-import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
-
 import { getCurrencyColor } from "~/renderer/getCurrencyColor";
 import { rgba } from "~/renderer/styles/helpers";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
 type Props = {
   currency: Currency,
@@ -23,7 +20,7 @@ export const TokenIconWrapper: ThemedComponent<{}> = styled.div`
 `;
 export const TokenIcon: ThemedComponent<{
   fontSize?: number,
-  size?: number,
+  size: number,
   color?: string,
 }> = styled.div`
   font-size: ${p => (p.fontSize ? p.fontSize : p.size / 2)}px;

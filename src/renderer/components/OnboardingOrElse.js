@@ -1,9 +1,9 @@
 // @flow
 
-import React from "react";
-import { useSelector } from "react-redux";
-import { hasCompletedOnboardingSelector } from "~/renderer/reducers/settings";
-import { onboardingRelaunchedSelector } from "~/renderer/reducers/onboarding";
+// import React from "react";
+// import { useSelector } from "react-redux";
+// import { hasCompletedOnboardingSelector } from "~/renderer/reducers/settings";
+// import { onboardingRelaunchedSelector } from "~/renderer/reducers/onboarding";
 
 // TODO: ONBOARDING
 // import Onboarding from '~/renderer/components/Onboarding'
@@ -13,8 +13,8 @@ type Props = {
 };
 
 const OnboardingOrElse = ({ children }: Props) => {
-  const hasCompletedOnboarding = useSelector(hasCompletedOnboardingSelector);
-  const onboardingRelaunched = useSelector(onboardingRelaunchedSelector);
+  // const hasCompletedOnboarding = useSelector(hasCompletedOnboardingSelector);
+  // const onboardingRelaunched = useSelector(onboardingRelaunchedSelector);
 
   // TODO: UNCOMMENT WHEN ONBOARDING IS DONE
   // if (!hasCompletedOnboarding || onboardingRelaunched) {

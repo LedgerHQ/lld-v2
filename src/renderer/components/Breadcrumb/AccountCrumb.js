@@ -1,10 +1,8 @@
 // @flow
-
 import React, { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-
 import {
   listSubAccounts,
   getAccountCurrency,
@@ -12,17 +10,13 @@ import {
   getAccountName,
 } from "@ledgerhq/live-common/lib/account";
 import type { Account, AccountLike } from "@ledgerhq/live-common/lib/types";
-
 import { accountsSelector } from "~/renderer/reducers/accounts";
-
+import IconCheck from "~/renderer/icons/Check";
+import IconAngleDown from "~/renderer/icons/AngleDown";
 import DropDown from "~/renderer/components/DropDown";
 import Button from "~/renderer/components/Button";
 import Ellipsis from "~/renderer/components/Ellipsis";
-
-import IconCheck from "~/renderer/icons/Check";
-import IconAngleDown from "~/renderer/icons/AngleDown";
-// import CryptoCurrencyIcon from '~/renderer/icons/CryptoCurrencyIcon'
-
+import CryptoCurrencyIcon from "~/renderer/components/CryptoCurrencyIcon";
 import { Separator, Item, TextLink, AngleDown, Check } from "./common";
 
 const AccountCrumb = () => {
@@ -63,11 +57,11 @@ const AccountCrumb = () => {
   ]);
 
   const renderItem = useCallback(({ item, isActive }) => {
-    // const currency = getAccountCurrency(item.account)
+    const currency = getAccountCurrency(item.account);
 
     return (
       <Item key={item.account.id} isActive={isActive}>
-        {/* <CryptoCurrencyIcon size={16} currency={currency} /> */}
+        <CryptoCurrencyIcon size={16} currency={currency} />
         <Ellipsis ff={`Inter|${isActive ? "SemiBold" : "Regular"}`} fontSize={4}>
           {getAccountName(item.account)}
         </Ellipsis>
@@ -148,7 +142,7 @@ const AccountCrumb = () => {
         value={processedItems.find(a => a.key === id)}
       >
         <TextLink {...{ shrink: !parentId }}>
-          {/* {currency && <CryptoCurrencyIcon size={14} currency={currency} />} */}
+          {currency && <CryptoCurrencyIcon size={14} currency={currency} />}
           <Button onClick={openActiveAccount}>{name}</Button>
           <AngleDown>
             <IconAngleDown size={16} />
