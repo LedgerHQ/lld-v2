@@ -151,14 +151,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
       "pre-push": "yarn ci"
     }
-  },
-  "lint-staged": {
-    "*.js": [
-      "yarn prettier",
-      "git add"
-    ]
   }
 }

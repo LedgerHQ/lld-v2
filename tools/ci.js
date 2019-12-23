@@ -6,6 +6,17 @@ const Listr = require('listr')
 const tasks = new Listr(
   [
     {
+      title: 'Check prettier',
+      task: async () => {
+        try {
+          const { stdout } = await execa('yarn', ['prettier', '--check'])
+          return stdout
+        } catch (error) {
+          throw new Error('prettier test failed')
+        }
+      },
+    },
+    {
       title: 'Run eslint',
       task: async () => {
         try {
