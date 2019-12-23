@@ -1,14 +1,13 @@
 // @flow
 
 import { remote } from "electron";
-import React, { useEffect, useCallback, createRef } from "react";
+import React, { useEffect, createRef } from "react";
 import { Route, Switch, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
-// import { SYNC_PENDING_INTERVAL } from '~/config/constants'
-
+import { SYNC_PENDING_INTERVAL } from "~/config/constants";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
-
+import Track from "~/renderer/analytics/Track";
 import Dashboard from "~/renderer/screens/dashboard";
 import Settings from "~/renderer/screens/settings";
 import Accounts from "~/renderer/screens/accounts";
@@ -16,11 +15,12 @@ import Manager from "~/renderer/screens/manager";
 import Partners from "~/renderer/screens/partners";
 import Account from "~/renderer/screens/account";
 import Asset from "~/renderer/screens/asset";
-
+import SyncBackground from "~/renderer/components/SyncBackground";
+import SyncContinuouslyPendingOperations from "~/renderer/components/SyncContinouslyPendingOperations";
 import Box from "~/renderer/components/Box/Box";
 import GrowScroll from "~/renderer/components/GrowScroll";
 import ListenDevices from "~/renderer/components/ListenDevices";
-import ExportLogsBtn from "~/renderer/components/ExportLogsButton";
+import ExportLogsButton from "~/renderer/components/ExportLogsButton";
 import Idler from "~/renderer/components/Idler";
 import IsUnlocked from "~/renderer/components/IsUnlocked";
 import OnboardingOrElse from "~/renderer/components/OnboardingOrElse";
@@ -34,6 +34,7 @@ import DeviceBusyIndicator from "~/renderer/components/DeviceBusyIndicator";
 import KeyboardContent from "~/renderer/components/KeyboardContent";
 import PerfIndicator from "~/renderer/components/PerfIndicator";
 import MainSideBar from "~/renderer/components/MainSideBar";
+import TriggerAppReady from "~/renderer/components/TriggerAppReady";
 
 const Main: ThemedComponent<{
   tabIndex?: number,
@@ -46,40 +47,36 @@ const Main: ThemedComponent<{
   padding-top: ${p => p.theme.sizes.topBarHeight + p.theme.space[6]}px;
 `;
 
+const reloadApp = event => {
+  if ((event.ctrlKey || event.metaKey) && event.key === "r") {
+    remote.getCurrentWindow().webContents.reload();
+  }
+};
+
 const Default = () => {
   const location = useLocation();
-  const ref = createRef<React$ElementRef<any>>();
+  const ref: React$ElementRef<any> = createRef();
 
-  const kbShortcut = useCallback(event => {
-    if ((event.ctrlKey || event.metaKey) && event.key === "r") {
-      remote.getCurrentWindow().webContents.reload();
-    }
-  }, []);
-
-  // onMount onWillUnmount
   useEffect(() => {
-    window.addEventListener("keydown", kbShortcut);
-
-    // Prevents adding multiple listeners when hot reloading
-    return () => window.removeEventListener("keydown", kbShortcut);
+    window.addEventListener("keydown", reloadApp);
+    return () => window.removeEventListener("keydown", reloadApp);
   }, []);
 
+  // every time location changes, scroll back up
   useEffect(() => {
     if (ref && ref.current) {
       ref.current.scrollTo(0, 0);
     }
-  }, [location, ref.current]);
+  }, [location]);
 
   return (
     <>
+      <TriggerAppReady />
       <ListenDevices />
-      <ExportLogsBtn hookToShortcut />
-
-      {process.platform === "darwin" ? <AppRegionDrag /> : null}
-
-      {/* TODO: ANALYTICS: v1 = analytics/track */}
-      {/* <Track mandatory onMount event="App Starts" /> */}
+      <ExportLogsButton hookToShortcut />
+      <Track mandatory onMount event="App Starts" />
       <Idler />
+      {process.platform === "darwin" ? <AppRegionDrag /> : null}
 
       <IsUnlocked>
         <OnboardingOrElse>
@@ -95,9 +92,8 @@ const Default = () => {
           {/* TODO: UpdaterContext and autoUpdate command */}
           {/* {process.env.DEBUG_UPDATE && <DebugUpdater />} */}
 
-          {/* TODO: Bridge / BridgeSyncContext */}
-          {/* <SyncContinuouslyPendingOperations priority={20} interval={SYNC_PENDING_INTERVAL} />
-          <SyncBackground /> */}
+          <SyncContinuouslyPendingOperations priority={20} interval={SYNC_PENDING_INTERVAL} />
+          <SyncBackground />
 
           <div id="sticky-back-to-top-root" />
 

@@ -1,7 +1,7 @@
 // @flow
 
 import React, { PureComponent } from "react";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import styled from "styled-components";
 import { repairChoices } from "@ledgerhq/live-common/lib/hw/firmwareUpdate-repair";
 import { MCUNotGenuineToDashboard } from "@ledgerhq/errors";
@@ -248,4 +248,4 @@ class RepairModal extends PureComponent<Props, *> {
   }
 }
 
-export default translate()(RepairModal);
+export default withTranslation()(RepairModal);

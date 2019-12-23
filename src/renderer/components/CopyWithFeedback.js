@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from "react";
 import styled from "styled-components";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 
 import type { T } from "types/common";
 
@@ -76,4 +76,4 @@ const ClickableWrapper = styled(Box).attrs(() => ({
   }
 `;
 
-export default translate()(CopyWithFeedback);
+export default withTranslation()(CopyWithFeedback);

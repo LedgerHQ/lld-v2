@@ -3,7 +3,7 @@
 import React, { PureComponent } from "react";
 
 import Button from "~/renderer/components/Button";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 
 import type { T } from "types/common";
 
@@ -18,4 +18,4 @@ class RetryButton extends PureComponent<Props> {
   }
 }
 
-export default translate()(RetryButton);
+export default withTranslation()(RetryButton);

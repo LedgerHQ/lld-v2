@@ -15,7 +15,7 @@ type Props = {
   isDanger: boolean,
   title: string,
   subTitle?: string,
-  desc?: string,
+  desc?: React$Node,
   renderIcon?: Function,
   confirmText?: string,
   cancelText?: string,

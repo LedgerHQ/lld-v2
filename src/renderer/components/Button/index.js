@@ -299,7 +299,7 @@ export const Base = styled.button.attrs(p => ({
   }
 `;
 
-type Props = {
+export type Props = {
   children?: any,
   icon?: string,
   primary?: boolean,

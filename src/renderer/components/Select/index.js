@@ -3,7 +3,7 @@
 import React, { PureComponent } from "react";
 import ReactSelect, { components } from "react-select";
 import AsyncReactSelect from "react-select/lib/Async";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { FixedSizeList as List } from "react-window";
 import styled, { withTheme } from "styled-components";
 import debounce from "lodash/debounce";
@@ -217,4 +217,4 @@ class Select extends PureComponent<Props> {
   }
 }
 
-export default translate()(withTheme(Select));
+export default withTranslation()(withTheme(Select));

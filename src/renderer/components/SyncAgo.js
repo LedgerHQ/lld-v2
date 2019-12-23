@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from "react";
 import moment from "moment";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import Box from "./Box";
 
 class SyncAgo extends PureComponent<{ t: *, date: Date }> {
@@ -12,4 +12,4 @@ class SyncAgo extends PureComponent<{ t: *, date: Date }> {
   }
 }
 
-export default translate()(SyncAgo);
+export default withTranslation()(SyncAgo);

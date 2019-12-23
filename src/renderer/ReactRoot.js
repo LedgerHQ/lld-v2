@@ -1,21 +1,16 @@
 // @flow
 import React, { Component } from "react";
-import { ipcRenderer } from "electron";
 import type { Store } from "redux";
+import type { State as StoreState } from "~/renderer/reducers";
+import App from "./App";
 import "./global.css";
 
-import libcoreGetVersion from "~/commands/libcoreGetVersion";
-
-import type { State as StoreState } from "~/renderer/reducers";
-
-import App from "./App";
-
 type State = {
-  error: ?Error,
+  error: mixed,
 };
 
 type Props = {
-  store: Store<StoreState>,
+  store: Store<StoreState, *>,
   language: string,
 };
 
@@ -24,43 +19,14 @@ class ReactRoot extends Component<Props, State> {
     error: null,
   };
 
-  _timeout: *;
-
-  componentDidMount() {
-    ipcRenderer.send("ready-to-show", {});
-    // TODO: onAppReady was defined in the old .ejs
-    // We need to check out what it was used for
-    // window.requestAnimationFrame(() => (this._timeout = setTimeout(() => window.onAppReady(), 300)))
-    libcoreGetVersion
-      .send()
-      .toPromise()
-      .then(
-        version => {
-          console.log("libcoreGetVersion", version);
-        },
-        e => {
-          console.error("libcoreGetVersion", e);
-        },
-      );
-  }
-
-  componentWillUnmount() {
-    clearTimeout(this._timeout);
-  }
-
-  componentDidCatch(error: any, errorInfo: any) {
-    this.setState({
-      error,
-    });
+  componentDidCatch(error: mixed) {
+    this.setState({ error });
   }
 
   render() {
     const { store, language } = this.props;
-    if (this.state.error) {
-      return this.state.error.toString();
-    }
-
-    return <App store={store} language={language} />;
+    const { error } = this.state;
+    return error ? String(error) : <App store={store} language={language} />;
   }
 }
 

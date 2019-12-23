@@ -2,7 +2,7 @@
 
 import React, { PureComponent, Fragment } from "react";
 import invariant from "invariant";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 
 import type { T } from "types/common";
 
@@ -138,4 +138,4 @@ class Stepper extends PureComponent<Props, State> {
   }
 }
 
-export default translate()(Stepper);
+export default withTranslation()(Stepper);

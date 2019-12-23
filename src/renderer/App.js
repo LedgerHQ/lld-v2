@@ -7,16 +7,15 @@ import { HashRouter as Router } from "react-router-dom";
 
 import "./global.css";
 import { BridgeSyncProvider } from "~/renderer/bridge/BridgeSyncContext";
+import type { State } from "~/renderer/reducers";
 import CounterValues from "~/renderer/countervalues";
 import StyleProvider from "~/renderer/styles/StyleProvider";
-
 import { UpdaterProvider } from "~/renderer/components/Updater/UpdaterContext";
-import type { State } from "~/renderer/reducers";
-
+import ThrowBlock from "~/renderer/components/ThrowBlock";
 import Default from "./Default";
 
 type Props = {
-  store: Store<State>,
+  store: Store<State, *>,
 };
 
 const App = ({ store }: Props) => (
@@ -24,11 +23,13 @@ const App = ({ store }: Props) => (
     <BridgeSyncProvider>
       <CounterValues.PollingProvider>
         <StyleProvider selectedPalette="light">
-          <UpdaterProvider>
-            <Router>
-              <Default />
-            </Router>
-          </UpdaterProvider>
+          <ThrowBlock>
+            <UpdaterProvider>
+              <Router>
+                <Default />
+              </Router>
+            </UpdaterProvider>
+          </ThrowBlock>
         </StyleProvider>
       </CounterValues.PollingProvider>
     </BridgeSyncProvider>

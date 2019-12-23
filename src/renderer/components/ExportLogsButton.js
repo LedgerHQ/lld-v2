@@ -3,14 +3,11 @@ import fs from "fs";
 import moment from "moment";
 import { ipcRenderer, webFrame, remote } from "electron";
 import React, { useState, useCallback } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans } from "react-i18next";
 import { getAllEnvs } from "@ledgerhq/live-common/lib/env";
 import KeyHandler from "react-key-handler";
-
 import logger from "~/logger";
-
 import getUser from "~/helpers/user";
-
 import Button from "~/renderer/components/Button";
 
 const queryLogs = () =>
@@ -34,7 +31,6 @@ type Props = {
 
 const ExportLogsBtn = ({ hookToShortcut }: Props) => {
   const [exporting, setExporting] = useState(false);
-  const { t } = useTranslation();
 
   const exportLogs = useCallback(async () => {
     const resourceUsage = webFrame.getResourceUsage();
@@ -96,7 +92,7 @@ const ExportLogsBtn = ({ hookToShortcut }: Props) => {
     <KeyHandler keyValue="e" onKeyHandle={onKeyHandle} />
   ) : (
     <Button small primary event="ExportLogs" onClick={handleExportLogs}>
-      {t("settings.exportLogs.btn")}
+      <Trans i18nKey="settings.exportLogs.btn" />
     </Button>
   );
 };

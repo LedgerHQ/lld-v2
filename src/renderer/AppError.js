@@ -4,10 +4,8 @@ import { ThemeProvider } from "styled-components";
 import theme, { colors } from "~/renderer/styles/theme";
 import palette from "~/renderer/styles/palettes";
 import "~/renderer/i18n/init";
-
-// TODO: WHEN BASE IS IMPORTED
-// import TriggerAppReady from './TriggerAppReady'
-// import RenderError from './RenderError'
+import TriggerAppReady from "~/renderer/components/TriggerAppReady";
+import RenderError from "~/renderer/components/RenderError";
 
 // Like App except it just render an error
 
@@ -22,10 +20,9 @@ const lightLiveTheme = {
 
 const App = ({ language, error }: { error: Error, language: string }) => (
   <ThemeProvider theme={lightLiveTheme}>
-    {/* <RenderError withoutAppData error={error}>
+    <RenderError withoutAppData error={error}>
       <TriggerAppReady />
-    </RenderError> */}
-    {error.toString()}
+    </RenderError>
   </ThemeProvider>
 );
 
