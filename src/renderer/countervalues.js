@@ -7,13 +7,13 @@ import { implementCountervalues, getCountervalues } from '@ledgerhq/live-common/
 import uniq from 'lodash/uniq'
 import logger from '~/logger'
 import network from '~/network'
-import { setExchangePairsAction } from './actions/settings'
-import { currenciesSelector } from './reducers/accounts'
+import { setExchangePairsAction } from '~/renderer/actions/settings'
+import { currenciesSelector } from '~/renderer/reducers/accounts'
 import {
   counterValueCurrencySelector,
   exchangeSettingsForPairSelector,
   intermediaryCurrency,
-} from './reducers/settings'
+} from '~/renderer/reducers/settings'
 
 export const pairsSelector: OutputSelector<*, *, *> = createSelector(
   currenciesSelector,

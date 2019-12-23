@@ -1,5 +1,8 @@
 // @flow
 
+// TODO: REWORK THIS NONSENSE
+// We need to get away from that static path handler shit
+// and import images directly in our files using webpack
 /**
  *                                   Image
  *                                   -----
@@ -14,10 +17,13 @@
  */
 
 import React from 'react'
-import useTheme from '~/hooks/useTheme'
-import { i } from '~/renderer/helpers/staticPath'
 import styled from 'styled-components'
 import path from 'path'
+
+import type { ThemedComponent } from '~/renderer/styles/StyleProvider'
+
+import useTheme from '~/renderer/hooks/useTheme'
+import { i } from '~/helpers/staticPath'
 
 type Props = {
   resource: string,
@@ -27,7 +33,7 @@ type Props = {
   className?: string,
 }
 
-const Img = styled.img`
+const Img: ThemedComponent<{}> = styled.img`
   user-select: none;
   pointer-events: none;
 `

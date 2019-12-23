@@ -3,7 +3,7 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 
-import { Hide } from '~/renderer/components/MainSideBar'
+import Hide from '~/renderer/components/MainSideBar/Hide'
 import Box, { Tabbable } from '~/renderer/components/Box'
 import Tooltip from '~/renderer/components/Tooltip'
 

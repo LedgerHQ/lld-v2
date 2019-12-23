@@ -23,7 +23,7 @@ const GrowScroll = (
   ref: React$Ref<React$ElementRef<any>>,
 ) => {
   // TODO: FIX FLOW FOR ref.current
-  const valueProvider = useMemo(() => ({ scrollContainer: ref.current }), [ref])
+  const valueProvider = useMemo(() => ({ scrollContainer: ref ? ref.current : null }), [ref])
 
   const scrollContainerStyles = useMemo(
     () => ({

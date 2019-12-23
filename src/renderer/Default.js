@@ -33,6 +33,7 @@ import LibcoreBusyIndicator from '~/renderer/components/LibcoreBusyIndicator'
 import DeviceBusyIndicator from '~/renderer/components/DeviceBusyIndicator'
 import KeyboardContent from '~/renderer/components/KeyboardContent'
 import PerfIndicator from '~/renderer/components/PerfIndicator'
+import MainSideBar from '~/renderer/components/MainSideBar'
 
 const Main: ThemedComponent<{
   tabIndex?: number,
@@ -101,7 +102,7 @@ const Default = () => {
           <div id="sticky-back-to-top-root" />
 
           <Box grow horizontal bg="palette.background.paper">
-            {/* TODO: SIDEBAR HERE */}
+            <MainSideBar />
             <Box
               className="main-container"
               shrink
