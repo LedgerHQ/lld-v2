@@ -9,8 +9,8 @@ const path = (
   />
 );
 
-const Receive = ({ size, ...p }: { size: number }) => (
-  <svg viewBox="0 0 16 16" height={size} width={size} {...p}>
+const Receive = ({ size }: { size: number }) => (
+  <svg viewBox="0 0 16 16" height={size} width={size}>
     {path}
   </svg>
 );

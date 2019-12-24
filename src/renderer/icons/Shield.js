@@ -50,7 +50,7 @@ const group = (
 );
 
 const Shield = (p: Object) => (
-  <svg viewBox="0 0 28 32" height={32} width={28} {...p}>
+  <svg viewBox="0 0 28 32" height={32} width={28}>
     {defs}
     {group}
   </svg>

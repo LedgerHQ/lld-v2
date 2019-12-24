@@ -1,8 +1,8 @@
 // @flow
 import React from "react";
 
-const Undelegation = ({ size, ...p }: { size: number }) => (
-  <svg viewBox="0 0 76 32" {...p} width={size} height={(size * 32) / 76}>
+const Undelegation = ({ size }: { size: number }) => (
+  <svg viewBox="0 0 76 32" width={size} height={(size * 32) / 76}>
     <g fill="#EA2E49" fillRule="evenodd">
       <g transform="translate(0 14)">
         <circle opacity=".2" cx="2" cy="2" r="2" />

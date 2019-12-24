@@ -9,8 +9,8 @@ const path = (
   />
 );
 
-const ChartLine = ({ size, ...p }: { size: number }) => (
-  <svg viewBox="0 0 512 512" height={size} width={size} {...p}>
+const ChartLine = ({ size }: { size: number }) => (
+  <svg viewBox="0 0 512 512" height={size} width={size}>
     {path}
   </svg>
 );

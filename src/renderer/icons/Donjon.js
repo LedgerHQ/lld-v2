@@ -32,8 +32,8 @@ const path = (
   </Fragment>
 );
 
-const Donjon = ({ size, ...p }: { size: number }) => (
-  <svg viewBox="0 0 1668 1668" width={size} {...p}>
+const Donjon = ({ size }: { size: number }) => (
+  <svg viewBox="0 0 1668 1668" width={size}>
     {path}
   </svg>
 );

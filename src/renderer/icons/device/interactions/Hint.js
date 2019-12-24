@@ -2,8 +2,9 @@
 
 import React from "react";
 import styled from "styled-components";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
-const HintSVG = styled.svg`
+const HintSVG: ThemedComponent<{}> = styled.svg`
   overflow: visible;
   #hint {
     transform: translate(0%, -100%);

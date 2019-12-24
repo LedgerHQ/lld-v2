@@ -1,6 +1,7 @@
 // @flow
 import React from "react";
 import styled from "styled-components";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
 import NanoS from "./NanoS";
 import NanoX from "./NanoX";
@@ -25,7 +26,7 @@ export type Props = {
   error?: ?Error,
 };
 
-export const Wrapper = styled.div`
+export const Wrapper: ThemedComponent<{}> = styled.div`
   position: relative;
 `;
 

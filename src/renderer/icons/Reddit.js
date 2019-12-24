@@ -9,8 +9,8 @@ const path = (
   />
 );
 
-const Reddit = ({ size, ...p }: { size: number }) => (
-  <svg viewBox="0 0 16 16" height={size} width={size} {...p}>
+const Reddit = ({ size }: { size: number }) => (
+  <svg viewBox="0 0 16 16" height={size} width={size}>
     {path}
   </svg>
 );

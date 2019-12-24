@@ -2,8 +2,8 @@
 
 import React from "react";
 
-const Trash = ({ size, color = "currentColor", ...p }: { size: number, color?: string }) => (
-  <svg viewBox="0 0 16 17.6" height={size} width={size} {...p}>
+const Trash = ({ size, color = "currentColor" }: { size: number, color?: string }) => (
+  <svg viewBox="0 0 16 17.6" height={size} width={size}>
     <g transform="translate(670.57 190.38)">
       <path
         fill={color}

@@ -12,8 +12,8 @@ const path = (
   </g>
 );
 
-const Refresh = ({ size, ...p }: { size: number }) => (
-  <svg viewBox="0 0 16 13.344" height={size} width={size} {...p}>
+const Refresh = ({ size }: { size: number }) => (
+  <svg viewBox="0 0 16 13.344" height={size} width={size}>
     {path}
   </svg>
 );

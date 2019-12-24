@@ -9,8 +9,8 @@ const path = (
   />
 );
 
-const AngleUp = ({ size, ...p }: { size: number }) => (
-  <svg viewBox="0 0 20 20" height={size} width={size} {...p}>
+const AngleUp = ({ size }: { size: number }) => (
+  <svg viewBox="0 0 20 20" height={size} width={size}>
     {path}
   </svg>
 );

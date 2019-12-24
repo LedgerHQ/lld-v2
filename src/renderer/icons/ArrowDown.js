@@ -10,7 +10,7 @@ const ArrowDown = ({
   size: number,
   color?: string,
 }) => (
-  <svg viewBox="0 0 16 16" height={size} width={size} {...p}>
+  <svg viewBox="0 0 16 16" height={size} width={size}>
     <path
       fill={color}
       transform="matrix(1, 0, 0, -1, 0, 16)"

@@ -9,8 +9,8 @@ const path = (
   />
 );
 
-const AngleDown = ({ size, ...p }: { size: number }) => (
-  <svg viewBox="0 0 16 14" height={size} width={size * 0.875} {...p}>
+const AngleDown = ({ size }: { size: number }) => (
+  <svg viewBox="0 0 16 14" height={size} width={size * 0.875}>
     {path}
   </svg>
 );

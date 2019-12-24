@@ -9,8 +9,8 @@ const path = (
   />
 );
 
-const Copy = ({ size, ...p }: { size: number }) => (
-  <svg viewBox="0 0 16 16" height={size} width={size} {...p}>
+const Copy = ({ size }: { size: number }) => (
+  <svg viewBox="0 0 16 16" height={size} width={size}>
     {path}
   </svg>
 );

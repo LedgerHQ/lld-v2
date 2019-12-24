@@ -2,10 +2,11 @@
 
 import React from "react";
 import styled from "styled-components";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import useTheme from "~/renderer/hooks/useTheme";
 import colors from "../colors";
 
-const FrameSVG = styled.svg`
+const FrameSVG: ThemedComponent<{}> = styled.svg`
   overflow: visible;
 `;
 

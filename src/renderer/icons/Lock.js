@@ -9,8 +9,8 @@ const path = (
   />
 );
 
-const Lock = ({ size, ...p }: { size: number }) => (
-  <svg width={size} height={size} {...p}>
+const Lock = ({ size }: { size: number }) => (
+  <svg width={size} height={size}>
     {path}
   </svg>
 );

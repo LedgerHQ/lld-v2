@@ -2,8 +2,8 @@
 
 import React from "react";
 
-const Star = ({ size = 16, filled = false, ...props }: { size?: number, filled: boolean }) => (
-  <svg viewBox="0 0 13 13" width={size} height={size} {...props}>
+const Star = ({ size = 16, filled = false }: { size?: number, filled: boolean }) => (
+  <svg viewBox="0 0 13 13" width={size} height={size}>
     <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
       <path
         stroke={filled ? "#ffd24a" : "#999999"}

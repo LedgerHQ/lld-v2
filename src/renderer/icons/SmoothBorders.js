@@ -11,8 +11,8 @@ const inner = (
   />
 );
 
-const SmoothBorders = ({ size, ...p }: { size: number }) => (
-  <svg viewBox="0 0 29.5 29.5" height={size} width={size} {...p}>
+const SmoothBorders = ({ size }: { size: number }) => (
+  <svg viewBox="0 0 29.5 29.5" height={size} width={size}>
     {inner}
   </svg>
 );

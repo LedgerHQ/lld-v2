@@ -9,8 +9,8 @@ const path = (
   />
 );
 
-const ExclamationCircleThin = ({ size, ...p }: { size: number }) => (
-  <svg viewBox="0 0 24 24" height={size} width={size} {...p}>
+const ExclamationCircleThin = ({ size }: { size: number }) => (
+  <svg viewBox="0 0 24 24" height={size} width={size}>
     {path}
   </svg>
 );

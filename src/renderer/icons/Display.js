@@ -9,8 +9,8 @@ const path = (
   />
 );
 
-const Display = ({ size, ...p }: { size: number }) => (
-  <svg viewBox="0 0 16 16" width={size} height={size} {...p}>
+const Display = ({ size }: { size: number }) => (
+  <svg viewBox="0 0 16 16" width={size} height={size}>
     {path}
   </svg>
 );

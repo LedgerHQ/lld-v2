@@ -10,8 +10,8 @@ const inner = (
   />
 );
 
-const Usb = ({ size, ...p }: { size: number }) => (
-  <svg viewBox="0 0 14 14" height={size} width={size} {...p}>
+const Usb = ({ size }: { size: number }) => (
+  <svg viewBox="0 0 14 14" height={size} width={size}>
     {inner}
   </svg>
 );

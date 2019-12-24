@@ -42,8 +42,8 @@ const group = (
   </g>
 );
 
-const LockScreen = ({ size, ...p }: { size: number }) => (
-  <svg width={size} height={size} {...p}>
+const LockScreen = ({ size }: { size: number }) => (
+  <svg width={size} height={size}>
     {defs}
     {group}
   </svg>

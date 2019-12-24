@@ -10,8 +10,8 @@ const path = (
   />
 );
 
-const CameraError = ({ size, ...p }: { size: number }) => (
-  <svg viewBox="0 0 70 56" width={size} height={(size * 70) / 56} {...p}>
+const CameraError = ({ size }: { size: number }) => (
+  <svg viewBox="0 0 70 56" width={size} height={(size * 70) / 56}>
     {path}
   </svg>
 );

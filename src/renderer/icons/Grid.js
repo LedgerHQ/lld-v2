@@ -10,8 +10,8 @@ const path = (
   />
 );
 
-const Grid = ({ size = 16, ...p }: { size?: number }) => (
-  <svg viewBox="0 0 16 16" height={size} width={size} {...p}>
+const Grid = ({ size = 16 }: { size?: number }) => (
+  <svg viewBox="0 0 16 16" height={size} width={size}>
     {path}
   </svg>
 );

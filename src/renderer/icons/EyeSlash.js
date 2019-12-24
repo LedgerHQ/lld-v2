@@ -10,8 +10,8 @@ const path = (
   />
 );
 
-const EyeSlash = ({ width = 16, height = 13, ...p }: { width?: number, height?: number }) => (
-  <svg viewBox="0 0 16 13" height={height} width={width} {...p}>
+const EyeSlash = ({ width = 16, height = 13 }: { width?: number, height?: number }) => (
+  <svg viewBox="0 0 16 13" height={height} width={width}>
     {path}
   </svg>
 );

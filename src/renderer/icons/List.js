@@ -10,8 +10,8 @@ const path = (
   />
 );
 
-const List = ({ size = 16, ...p }: { size?: number }) => (
-  <svg viewBox="0 0 16 16" height={size} width={size} {...p}>
+const List = ({ size = 16 }: { size?: number }) => (
+  <svg viewBox="0 0 16 16" height={size} width={size}>
     {path}
   </svg>
 );

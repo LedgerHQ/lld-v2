@@ -2,6 +2,7 @@
 
 import React from "react";
 import styled, { keyframes } from "styled-components";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import useTheme from "~/renderer/hooks/useTheme";
 import colors from "./colors";
 
@@ -27,7 +28,7 @@ const plugAnim = keyframes`
   }
 `;
 
-const USBCableSvg = styled.svg`
+const USBCableSvg: ThemedComponent<{}> = styled.svg`
   overflow: visible;
 
   .cable-plug-hint {

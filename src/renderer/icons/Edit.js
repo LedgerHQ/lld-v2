@@ -9,8 +9,8 @@ const path = (
   />
 );
 
-const Edit = ({ size, ...p }: { size: number }) => (
-  <svg viewBox="0 0 576 512" height={size} width={size} {...p}>
+const Edit = ({ size }: { size: number }) => (
+  <svg viewBox="0 0 576 512" height={size} width={size}>
     {path}
   </svg>
 );

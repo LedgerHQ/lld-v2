@@ -2,6 +2,7 @@
 
 import React from "react";
 import styled from "styled-components";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
 import Frame from "./Frame";
 import Screen from "./Screen";
@@ -9,7 +10,7 @@ import Swivel from "./Swivel";
 import Hint from "../Hint";
 import USBCable from "../USBCable";
 
-const DeviceContainer = styled.div.attrs(p => ({
+const DeviceContainer: ThemedComponent<{ width?: number }> = styled.div.attrs(p => ({
   style: {
     width: p.width || 300,
     height: p.height || 60,

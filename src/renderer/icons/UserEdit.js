@@ -9,8 +9,8 @@ const path = (
   />
 );
 
-const UserEdit = ({ size, ...p }: { size: number }) => (
-  <svg viewBox="0 0 640 512" width={size} {...p}>
+const UserEdit = ({ size }: { size: number }) => (
+  <svg viewBox="0 0 640 512" width={size}>
     {path}
   </svg>
 );

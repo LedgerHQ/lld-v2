@@ -10,8 +10,8 @@ const path = (
   />
 );
 
-const Portfolio = ({ size, ...p }: { size: number }) => (
-  <svg viewBox="0 0 15 15" height={size} width={size} {...p}>
+const Portfolio = ({ size }: { size: number }) => (
+  <svg viewBox="0 0 15 15" height={size} width={size}>
     {path}
   </svg>
 );

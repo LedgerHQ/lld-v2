@@ -2,7 +2,7 @@
 
 import React from "react";
 
-const NanoXBanner = ({ size = 30, ...p }: { size: number }) => (
+const NanoXBanner = ({ size = 30 }: { size: number }) => (
   <svg viewBox="0 0 6 16" height={size} width={size}>
     <defs>
       <path

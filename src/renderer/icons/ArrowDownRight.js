@@ -13,8 +13,8 @@ const path = (
   />
 );
 
-const ArrowDownRight = ({ size, ...p }: { size: number }) => (
-  <svg viewBox="0 0 24 24" height={size} width={size} {...p}>
+const ArrowDownRight = ({ size }: { size: number }) => (
+  <svg viewBox="0 0 24 24" height={size} width={size}>
     {path}
   </svg>
 );

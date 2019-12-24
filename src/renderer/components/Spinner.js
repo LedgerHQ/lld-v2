@@ -16,7 +16,7 @@ const rotate = keyframes`
   }
 `;
 
-export const Rotating: ThemedComponent<{ size: number, isRotating: boolean }> = styled(Box)`
+export const Rotating: ThemedComponent<{ size: number, isRotating?: boolean }> = styled(Box)`
   width: ${p => p.size}px;
   height: ${p => p.size}px;
   animation: ${p =>
@@ -28,7 +28,7 @@ export const Rotating: ThemedComponent<{ size: number, isRotating: boolean }> = 
   transition: 100ms linear transform;
 `;
 
-export default function Spinner({ size, ...props }: { size: number, isRotating: boolean }) {
+export default function Spinner({ size, ...props }: { size: number, isRotating?: boolean }) {
   return (
     <Rotating {...props} size={size}>
       <IconLoader size={size} />

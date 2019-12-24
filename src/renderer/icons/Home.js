@@ -15,8 +15,8 @@ const path = (
   </Fragment>
 );
 
-const Home = ({ size, ...p }: { size: number }) => (
-  <svg viewBox="0 0 20 22.014" height={size} width={size} {...p}>
+const Home = ({ size }: { size: number }) => (
+  <svg viewBox="0 0 20 22.014" height={size} width={size}>
     {path}
   </svg>
 );

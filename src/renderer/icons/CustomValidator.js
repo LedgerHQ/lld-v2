@@ -14,8 +14,8 @@ const path = (
   </>
 );
 
-const CustomValidator = ({ size, ...p }: { size: number }) => (
-  <svg viewBox="0 0 24 24" height={size} width={size} {...p}>
+const CustomValidator = ({ size }: { size: number }) => (
+  <svg viewBox="0 0 24 24" height={size} width={size}>
     {path}
   </svg>
 );

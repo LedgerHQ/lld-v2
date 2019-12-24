@@ -2,15 +2,8 @@
 
 import React from "react";
 
-const Swap = ({
-  size = 15,
-  color = "currentColor",
-  ...props
-}: {
-  size?: number,
-  color?: string,
-}) => (
-  <svg viewBox="0 0 15 17" width={(size / 15) * 15} height={(size / 15) * 17} {...props}>
+const Swap = ({ size = 15, color = "currentColor" }: { size?: number, color?: string }) => (
+  <svg viewBox="0 0 15 17" width={(size / 15) * 15} height={(size / 15) * 17}>
     <path
       fill="none"
       fillRule="evenodd"

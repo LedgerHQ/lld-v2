@@ -16,8 +16,8 @@ const path = (
   </g>
 );
 
-const DownloadCloud = ({ size, ...p }: { size?: number }) => (
-  <svg viewBox="0 0 18 15" height={size} width={size} {...p}>
+const DownloadCloud = ({ size }: { size?: number }) => (
+  <svg viewBox="0 0 18 15" height={size} width={size}>
     {path}
   </svg>
 );

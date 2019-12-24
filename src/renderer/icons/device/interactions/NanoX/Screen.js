@@ -4,8 +4,9 @@ import React from "react";
 import styled from "styled-components";
 import useTheme from "~/renderer/hooks/useTheme";
 import colors from "../colors";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
-const ScreenSVG = styled.svg`
+const ScreenSVG: ThemedComponent<{}> = styled.svg`
   overflow: visible;
 
   #NanoXScreen-screen {
