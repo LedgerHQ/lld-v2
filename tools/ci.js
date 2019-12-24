@@ -6,23 +6,13 @@ const Listr = require("listr");
 const tasks = new Listr(
   [
     {
-      title: "Check prettier",
-      task: async () => {
-        try {
-          const { stdout } = await execa("yarn", ["prettier", "--check"]);
-          return stdout;
-        } catch (error) {
-          throw new Error("prettier test failed");
-        }
-      },
-    },
-    {
       title: "Run eslint",
       task: async () => {
         try {
           const { stdout } = await execa("yarn", ["lint"]);
           return stdout;
         } catch (error) {
+          process.stderr.write(error.message);
           throw new Error("eslint test failed");
         }
       },
@@ -34,19 +24,21 @@ const tasks = new Listr(
           const { stdout } = await execa("yarn", ["prettier:check"]);
           return stdout;
         } catch (error) {
-          throw new Error("eslint test failed");
+          process.stderr.write(error.message);
+          throw new Error("prettier test failed");
         }
       },
     },
     // DON'T TRIGGER FLOW FOR NOW
     // {
-    //   title: 'Run flow',
+    //   title: "Run flow",
     //   task: async () => {
     //     try {
-    //       const { stdout } = await execa('yarn', ['flow'])
-    //       return stdout
+    //       const { stdout } = await execa("yarn", ["flow"]);
+    //       return stdout;
     //     } catch (error) {
-    //       throw new Error('flow test failed')
+    //       process.stderr.write(error.message);
+    //       throw new Error("flow test failed");
     //     }
     //   },
     // },

@@ -16,7 +16,6 @@
     "flow-typed": "yarn run install-flow-typed",
     "install-flow-typed": "flow-typed install -s",
     "install-deps": "rm -f node_modules/paralleljs/package.json; electron-builder install-app-deps",
-    "postinstall": "yarn install-deps",
     "dist:internal": "DEBUG=electron-builder NODE_ENV=production electron-builder",
     "dist": "node ./tools/dist.js",
     "pack": "node ./tools/dist.js -p",
@@ -44,6 +43,7 @@
     "bignumber.js": "^9.0.0",
     "color": "^3.1.2",
     "d3": "^5.14.2",
+    "dotenv": "^8.2.0",
     "downshift": "^4.0.0",
     "electron-context-menu": "^0.15.1",
     "ethereumjs-tx": "^2.1.1",
@@ -96,6 +96,8 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
+    "@actions/core": "^1.2.0",
+    "@actions/github": "^2.0.0",
     "@babel/core": "^7.7.4",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@babel/plugin-proposal-export-default-from": "^7.7.4",
@@ -106,7 +108,7 @@
     "@babel/preset-flow": "^7.7.4",
     "@babel/preset-react": "^7.7.4",
     "@octokit/rest": "^16.35.2",
-    "babel": "^6.23.0",
+    "babel-cli": "^6.26.0",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
     "cli-progress": "^3.4.0",

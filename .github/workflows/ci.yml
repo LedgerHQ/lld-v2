@@ -2,16 +2,50 @@ name: CI
 on: [push]
 
 jobs:
-  ci:
+  ci-linux:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@master
         with:
           node-version: 12.x
+      - name: install linux dependencies
+        run: sudo apt-get install libudev-dev
       - name: install dependencies
-        run: yarn
-      - name: rebuild app deps
-        run: yarn install-deps
+        run: |
+          yarn
+          yarn flow-typed
       - name: test
         run: yarn ci
+  ci-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@master
+        with:
+          node-version: 12.x
+      - name: install dependencies
+        run: |
+          yarn
+          yarn flow-typed
+      - name: rebuild app deps
+        run: yarn install-deps
+      - name: install flow-defs
+        run: yarn flow-typed
+      - name: test
+        run: yarn ci
+  # ci-windows:
+  #   runs-on: windows-latest
+  #   steps:
+  #     - uses: actions/checkout@v1
+  #     - uses: actions/setup-node@master
+  #       with:
+  #         node-version: 12.x
+  #     - name: install dependencies
+  #       run: yarn
+  #     - name: rebuild app deps
+  #       run: yarn install-deps
+  #     - name: install flow-defs
+  #       run: yarn flow-typed
+  #     - name: test
+  #       run: yarn ci
