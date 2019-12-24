@@ -29,19 +29,18 @@ const tasks = new Listr(
         }
       },
     },
-    // DON'T TRIGGER FLOW FOR NOW
-    // {
-    //   title: "Run flow",
-    //   task: async () => {
-    //     try {
-    //       const { stdout } = await execa("yarn", ["flow"]);
-    //       return stdout;
-    //     } catch (error) {
-    //       process.stderr.write(error.message);
-    //       throw new Error("flow test failed");
-    //     }
-    //   },
-    // },
+    {
+      title: "Run flow",
+      task: async () => {
+        try {
+          const { stdout } = await execa("yarn", ["flow"]);
+          return stdout;
+        } catch (error) {
+          process.stderr.write(error.message);
+          throw new Error("flow test failed");
+        }
+      },
+    },
   ],
   { concurrent: true, exitOnError: false },
 );
