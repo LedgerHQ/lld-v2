@@ -35,6 +35,7 @@ import KeyboardContent from "~/renderer/components/KeyboardContent";
 import PerfIndicator from "~/renderer/components/PerfIndicator";
 import MainSideBar from "~/renderer/components/MainSideBar";
 import TriggerAppReady from "~/renderer/components/TriggerAppReady";
+import ModalsLayer from "./ModalsLayer";
 
 const Main: ThemedComponent<{
   tabIndex?: number,
@@ -80,10 +81,7 @@ const Default = () => {
 
       <IsUnlocked>
         <OnboardingOrElse>
-          {/* TODO: MODALS */}
-          {/* {visibleModals.map(([name, ModalComponent]) => (
-            <ModalComponent key={name} />
-          ))} */}
+          <ModalsLayer />
 
           <CheckTermsAccepted />
 

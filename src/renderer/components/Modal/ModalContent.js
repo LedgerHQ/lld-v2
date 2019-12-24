@@ -53,7 +53,7 @@ const ModalContent: React$ComponentType<Props> = React.forwardRef(function Modal
   }, [containerRef]);
 
   useLayoutEffect(() => {
-    if (!containerRef.current) return null;
+    if (!containerRef.current) return;
     const ro = new ResizeObserver(onHeightUpdate);
     ro.observe(containerRef.current);
     return () => {

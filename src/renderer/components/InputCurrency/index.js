@@ -2,7 +2,7 @@
 
 import React, { PureComponent, type ElementRef } from "react";
 import { BigNumber } from "bignumber.js";
-import uncontrollable from "uncontrollable";
+import { uncontrollable } from "uncontrollable";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";

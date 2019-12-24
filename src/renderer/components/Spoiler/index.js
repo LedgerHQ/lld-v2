@@ -1,7 +1,7 @@
 // @flow
 
 import React, { PureComponent, Fragment } from "react";
-import uncontrollable from "uncontrollable";
+import { uncontrollable } from "uncontrollable";
 import styled from "styled-components";
 
 import Box from "~/renderer/components/Box";

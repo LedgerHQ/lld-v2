@@ -1,6 +1,7 @@
 // @flow
 
 import { handleActions } from "redux-actions";
+import type { State } from "~/renderer/reducers";
 
 export type ModalsState = {
   [key: string]: {
@@ -53,6 +54,8 @@ const handlers = {
 };
 
 // Selectors
+
+export const modalsStateSelector = (state: State): ModalsState => state.modals;
 
 export const isModalOpened = (state: Object, name: string) =>
   state.modals[name] && state.modals[name].isOpened;

@@ -20,7 +20,7 @@ const animShowHide = {
   easing: Easing.bezier(0.3, 1.0, 0.5, 0.8),
 };
 
-const domNode = process.env.STORYBOOK_ENV ? document.body : document.getElementById("modals");
+const domNode = document.getElementById("modals");
 
 const mapStateToProps = (state, { name, isOpened, onBeforeOpen }: Props): * => {
   const data = getModalData(state, name || "");

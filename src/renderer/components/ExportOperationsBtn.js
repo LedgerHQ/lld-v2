@@ -1,0 +1,64 @@
+// @flow
+import React, { Component } from "react";
+import { compose } from "redux";
+import { createStructuredSelector } from "reselect";
+import { withTranslation } from "react-i18next";
+import { connect } from "react-redux";
+import styled from "styled-components";
+import type { Account } from "@ledgerhq/live-common/lib/types/account";
+import { openModal } from "~/renderer/actions/modals";
+import Box from "~/renderer/components/Box";
+import DownloadCloud from "~/renderer/icons/DownloadCloud";
+import Label from "./Label";
+import Button from "./Button";
+import { activeAccountsSelector } from "../reducers/accounts";
+
+const mapDispatchToProps = {
+  openModal,
+};
+
+const mapStateToProps = createStructuredSelector({
+  accounts: activeAccountsSelector,
+});
+
+class ExportOperationsBtn extends Component<{
+  t: *,
+  openModal: (string, any) => void,
+  primary?: boolean,
+  accounts: Account[],
+}> {
+  openModal = () => this.props.openModal("MODAL_EXPORT_OPERATIONS");
+  render() {
+    const { t, primary, accounts } = this.props;
+    if (!accounts.length && !primary) return null;
+
+    return primary ? (
+      <Button small primary event="ExportLogs" disabled={!accounts.length} onClick={this.openModal}>
+        {t("exportOperationsModal.cta")}
+      </Button>
+    ) : (
+      <LabelWrapper onClick={this.openModal}>
+        <Box mr={1}>
+          <DownloadCloud />
+        </Box>
+        <span>{t("exportOperationsModal.title")}</span>
+      </LabelWrapper>
+    );
+  }
+}
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withTranslation(),
+)(ExportOperationsBtn);
+
+const LabelWrapper = styled(Label)`
+  &:hover {
+    color: ${p => p.theme.colors.wallet};
+    cursor: pointer;
+  }
+  color: ${p => p.theme.colors.wallet};
+  font-size: 13px;
+  font-family: "Inter", Arial;
+  font-weight: 600;
+`;
