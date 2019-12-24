@@ -1,15 +1,11 @@
 name: nightly build
 on:
   schedule:
-    - cron: '0 22 * * 1-5'
+    - cron: "0 22 * * 1-5"
 
 jobs:
-  bundle:
-    strategy:
-      matrix:
-        # os: [macos-latest, windows-latest, ubuntu-latest]
-        os: [macos-latest, ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+  nightly-macos:
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@master
@@ -19,21 +15,30 @@ jobs:
         run: yarn
       - name: build the app
         run: yarn nightly
+      - uses: "./.github/actions/get-package-version"
+        id: version
       - name: upload macOS app
-        if: runner.os == 'macOS'
         uses: actions/upload-artifact@v1
         with:
-          name: lld-macos.dmg
-          path: dist/ledger-live-desktop-v2-1.0.0-mac.zip
-      # - name: upload windows app
-      #   if: runner.os == 'Windows'
-      #   uses: actions/upload-artifact@v1
-      #   with:
-      #     name: lld-windows.dmg
-      #     path: dist/ledger-live-desktop-v2-1.0.0-win.exe
+          name: ${{ steps.version.outputs.pkgName }}-${{ steps.version.outputs.pkgVersion }}-macos.zip
+          path: dist/${{ steps.version.outputs.pkgName }}-${{ steps.version.outputs.pkgVersion }}-mac.zip
+  nightly-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@master
+        with:
+          node-version: 12.x
+      - name: install linux dependencies
+        run: sudo apt-get install libudev-dev
+      - name: install dependencies
+        run: yarn
+      - name: build the app
+        run: yarn nightly
+      - uses: "./.github/actions/get-package-version"
+        id: version
       - name: upload linux app
-        if: runner.os == 'Linux'
         uses: actions/upload-artifact@v1
         with:
-          name: lld-linux.dmg
-          path: dist/ledger-live-desktop-v2-1.0.0-linux-x86_64.AppImage
+          name: ${{ steps.version.outputs.pkgName }}-${{ steps.version.outputs.pkgVersion }}-linux.AppImage
+          path: dist/ledger-live-desktop-v2-${{ steps.version.outputs.pkgVersion }}-linux-x86_64.AppImage
