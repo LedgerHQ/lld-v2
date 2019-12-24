@@ -177,9 +177,10 @@ export const accountNeedsMigrationSelector: OutputSelector<
   State,
   { accountId: string },
   boolean,
-> = createSelector(accountSelector, account => canBeMigrated(account));
+> = createSelector(accountSelector, account => (account ? canBeMigrated(account) : false));
 
-const isUpToDateAccount = a => {
+const isUpToDateAccount = (a: ?Account) => {
+  if (!a) return true;
   const { lastSyncDate } = a;
   const { blockAvgTime } = a.currency;
   if (!blockAvgTime) return true;
@@ -196,6 +197,7 @@ export const isUpToDateAccountSelector: OutputSelector<
   { accountId: string },
   boolean,
 > = createSelector(accountSelector, isUpToDateAccount);
+
 export const decodeAccountsModel = (raws: *) => (raws || []).map(accountModel.decode);
 
 export const encodeAccountsModel = (accounts: *) => (accounts || []).map(accountModel.encode);
