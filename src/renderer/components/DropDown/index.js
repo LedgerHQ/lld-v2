@@ -44,10 +44,13 @@ export const DropDownItem: ThemedComponent<{ isHighlighted: boolean, isActive: b
   white-space: nowrap;
 `;
 
-export const Wrapper: ThemedComponent<{ shrink: boolean }> = styled(Box)`
+export const Wrapper: ThemedComponent<{
+  shrink?: string,
+}> = styled(Box)`
   flex-shrink: 1;
   ${p => p.shrink && `flex-shrink:${p.shrink};`}
 `;
+
 function itemToString(item) {
   return item ? item.label : "";
 }
@@ -64,7 +67,7 @@ type Props = {
   offsetTop: number | string,
   offsetRight: number | string,
   border?: boolean,
-  onChange?: DropDownItemType => void,
+  onChange?: (?DropDownItemType) => void,
   onStateChange?: Function,
   renderItem: Object => any,
   value?: DropDownItemType | null,
@@ -127,7 +130,7 @@ class DropDown extends PureComponent<Props> {
 
   renderItems = (
     items: Array<DropDownItemType>,
-    selectedItem: DropDownItemType,
+    selectedItem: ?DropDownItemType,
     downshiftProps: Object,
   ) => {
     const { offsetTop, offsetRight, renderItem, border } = this.props;
@@ -169,12 +172,13 @@ class DropDown extends PureComponent<Props> {
           ...downshiftProps
         }) => (
           <Wrapper
-            shrink={shrink}
             {...getRootProps({ refKey: "ref" }, { suppressRefError: true })}
+            shrink={shrink}
             horizontal
             relative
           >
-            <Trigger {...getToggleButtonProps()} tabIndex={0} {...props}>
+            {/* $FlowFixMe */}
+            <Trigger {...getToggleButtonProps()} {...props} tabIndex={0}>
               {children}
             </Trigger>
             {isOpen && this.renderItems(items, selectedItem, downshiftProps)}

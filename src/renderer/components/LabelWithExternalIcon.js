@@ -6,8 +6,11 @@ import styled from "styled-components";
 import Label from "~/renderer/components/Label";
 import Box from "~/renderer/components/Box";
 import IconExternalLink from "~/renderer/icons/ExternalLink";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
-const LabelWrapper = styled(Label).attrs(p => ({ ff: p.ff ? p.ff : "Inter|Medium" }))`
+const LabelWrapper: ThemedComponent<{ ff?: string }> = styled(Label).attrs(p => ({
+  ff: p.ff ? p.ff : "Inter|Medium",
+}))`
   display: inline-flex;
   color: ${p => p.theme.colors[p.color] || "palette.text.shade60"};
   &:hover {

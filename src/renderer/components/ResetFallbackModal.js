@@ -15,6 +15,7 @@ const ResetFallbackModal = ({ isOpened, onClose }: Props) => {
   const t = useTranslate();
   return (
     <ConfirmModal
+      analyticsName="ResetModalFallback"
       centered
       isOpened={isOpened}
       onConfirm={openUserDataFolderAndQuit}

@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from "react";
 import styled from "styled-components";
-
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import Box from "~/renderer/components/Box";
 
 type Props = {
@@ -15,7 +15,10 @@ class LedgerLiveLogo extends PureComponent<Props> {
   }
 }
 
-const LiveLogoContainer = styled(Box).attrs(() => ({
+const LiveLogoContainer: ThemedComponent<{
+  width?: number,
+  height?: number,
+}> = styled(Box).attrs(() => ({
   borderRadius: "50%",
   alignItems: "center",
   justifyContent: "center",

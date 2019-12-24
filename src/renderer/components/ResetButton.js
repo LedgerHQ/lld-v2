@@ -6,6 +6,7 @@ import { remote } from "electron";
 import { withTranslation } from "react-i18next";
 import logger from "~/logger";
 import { hardReset } from "~/renderer/reset";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import SyncSkipUnderPriority from "./SyncSkipUnderPriority";
 import Box from "./Box";
 import Button from "./Button";
@@ -14,7 +15,7 @@ import IconTriangleWarning from "../icons/TriangleWarning";
 import ResetFallbackModal from "./ResetFallbackModal";
 
 type Props = {
-  t: T,
+  t: *,
 };
 
 type State = {
@@ -83,7 +84,7 @@ class ResetButton extends PureComponent<Props, State> {
   }
 }
 
-export const IconWrapperCircle = styled(Box)`
+export const IconWrapperCircle: ThemedComponent<{}> = styled(Box)`
   width: 50px;
   height: 50px;
   border-radius: 50%;

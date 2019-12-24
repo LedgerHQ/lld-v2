@@ -7,8 +7,7 @@ import noop from "lodash/noop";
 import fontFamily from "~/renderer/styles/styled/fontFamily";
 import Spinner from "~/renderer/components/Spinner";
 import Box from "~/renderer/components/Box";
-// TODO: TRANSLATED ERROR
-// import TranslatedError from '~/renderer/components/TranslatedError'
+import TranslatedError from "~/renderer/components/TranslatedError";
 import Text from "~/renderer/components/Text";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
@@ -64,8 +63,14 @@ const Container = styled(Box).attrs(() => ({
 
   ${p =>
     (p.error || p.warning || p.isFocus) &&
-    `> ${RenderRightWrapper} *,
-    > ${RenderLeftWrapper} *{
+    `> ${
+      // $FlowFixMe
+      RenderRightWrapper
+    } *,
+    > ${
+      // $FlowFixMe
+      RenderLeftWrapper
+    } *{
       color: var(--status-color);
       border-color: var(--status-color);
     }`}
@@ -237,9 +242,13 @@ const Input = React.forwardRef(function Input(
           onKeyDown={handleKeyDown}
         />
         {error ? (
-          <ErrorDisplay>{/* <TranslatedError error={error} /> */}</ErrorDisplay>
+          <ErrorDisplay>
+            <TranslatedError error={error} />
+          </ErrorDisplay>
         ) : warning ? (
-          <WarningDisplay>{/* <TranslatedError error={warning} /> */}</WarningDisplay>
+          <WarningDisplay>
+            <TranslatedError error={warning} />
+          </WarningDisplay>
         ) : null}
         {loading && !isFocus ? (
           <LoadingDisplay>

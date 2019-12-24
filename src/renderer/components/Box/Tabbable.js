@@ -2,7 +2,7 @@
 
 import React, { Component } from "react";
 import styled from "styled-components";
-
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import { isGlobalTabEnabled } from "~/config/global-tab";
 import { rgba } from "~/renderer/styles/helpers";
 
@@ -17,7 +17,7 @@ export const focusedShadowStyle = `
   0 0 0 4px rgba(10, 132, 255, 0.1)
 `;
 
-const Raw = styled(Box)`
+const Raw: ThemedComponent<{ isFocused?: boolean, unstyled?: boolean }> = styled(Box)`
   &:focus {
     outline: none;
     box-shadow: ${p => (p.isFocused && !p.unstyled ? focusedShadowStyle : "none")};
@@ -52,16 +52,16 @@ export default class Tabbable extends Component<
   };
 
   render() {
-    const { disabled } = this.props;
+    const { disabled, ...rest } = this.props;
     const { isFocused } = this.state;
     return (
       <Raw
+        {...rest}
         tabIndex={disabled ? undefined : 0}
         isFocused={isFocused}
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
         onKeyPress={this.handleKeyPress}
-        {...this.props}
       />
     );
   }

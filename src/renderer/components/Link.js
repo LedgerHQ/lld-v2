@@ -1,15 +1,17 @@
 // @flow
-
 import styled from "styled-components";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
-export const FakeLink = styled.span.attrs(() => ({
+export const FakeLink: ThemedComponent<{}> = styled.span.attrs(() => ({
   color: "wallet",
 }))`
   text-decoration: underline;
   cursor: pointer;
 `;
 
-export default styled.a`
+const Link: ThemedComponent<{}> = styled.a`
   cursor: pointer;
   text-decoration-skip: ink;
 `;
+
+export default Link;

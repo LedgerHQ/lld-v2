@@ -48,6 +48,7 @@ class ExportOperationsBtn extends Component<{
 }
 
 export default compose(
+  // $FlowFixMe use OwnProps
   connect(mapStateToProps, mapDispatchToProps),
   withTranslation(),
 )(ExportOperationsBtn);

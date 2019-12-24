@@ -63,7 +63,6 @@ const ToolTip = ({ followCursor, tooltipBg, children, content, delay, ...props }
       delay={[delay, 0]}
       arrow={content ? arrow(bg) : null}
       followCursor={followCursor}
-      {...props}
     >
       <ChildrenContainer>{children}</ChildrenContainer>
     </Tippy>

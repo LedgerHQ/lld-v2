@@ -20,9 +20,8 @@ const scrollbarWidth = measureScrollbar();
 
 const GrowScroll = (
   { children, full = false, maxHeight, ...props }: Props,
-  ref: React$Ref<React$ElementRef<any>>,
+  ref: React$ElementRef<any>,
 ) => {
-  // TODO: FIX FLOW FOR ref.current
   const valueProvider = useMemo(() => ({ scrollContainer: ref ? ref.current : null }), [ref]);
 
   const scrollContainerStyles = useMemo(
@@ -69,7 +68,7 @@ const GrowScroll = (
   return (
     <div style={rootStyles}>
       <div style={scrollContainerStyles} ref={ref}>
-        <Box grow {...props}>
+        <Box {...props} grow>
           <GrowScrollContext.Provider value={valueProvider}>{children}</GrowScrollContext.Provider>
         </Box>
       </div>

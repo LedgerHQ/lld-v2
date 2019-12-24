@@ -2,7 +2,7 @@
 
 import React from "react";
 import styled from "styled-components";
-
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import { rgba } from "~/renderer/styles/helpers";
 import Box, { Tabbable } from "~/renderer/components/Box";
 
@@ -19,7 +19,10 @@ type Props = {
   bordered?: boolean,
 };
 
-const Container = styled(Box).attrs(() => ({
+const Container: ThemedComponent<{
+  bordered?: boolean,
+  isActive?: boolean,
+}> = styled(Box).attrs(() => ({
   horizontal: true,
 }))``;
 
@@ -53,7 +56,7 @@ const Pill = styled(Tabbable).attrs(p => ({
 function Pills(props: Props) {
   const { items, activeKey, onChange, bordered, ...p } = props;
   return (
-    <Container flow={1} {...p}>
+    <Container {...p} flow={1}>
       {items.map(item => {
         const isActive = item.key === activeKey;
         return (

@@ -3,7 +3,7 @@ import React, { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
-
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import {
   getAccountCurrency,
   getAccountUnit,
@@ -18,13 +18,13 @@ import Text from "~/renderer/components/Text";
 import Ellipsis from "~/renderer/components/Ellipsis";
 import ParentCryptoCurrencyIcon from "~/renderer/components/ParentCryptoCurrencyIcon";
 
-const AccountName = styled(Text)`
+const AccountName: ThemedComponent<{}> = styled(Text)`
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 `;
 
-const ParentCryptoCurrencyIconWrapper = styled.div`
+const ParentCryptoCurrencyIconWrapper: ThemedComponent<{}> = styled.div`
   width: 20px;
 `;
 

@@ -162,7 +162,7 @@ class Modal extends PureComponent<Props, State> {
     }
   };
 
-  swallowClick = e => {
+  swallowClick = (e: Event) => {
     e.preventDefault();
     e.stopPropagation();
   };
@@ -260,4 +260,5 @@ const BODY_WRAPPER_STYLE = {
   flexDirection: "column",
 };
 
+// $FlowFixMe: define a OwnProps
 export default withTheme(connect(mapStateToProps, mapDispatchToProps)(Modal));

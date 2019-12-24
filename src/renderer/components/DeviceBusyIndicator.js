@@ -1,8 +1,9 @@
 // @flow
 import React, { PureComponent } from "react";
 import styled from "styled-components";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
-const Indicator = styled.div`
+const Indicator: ThemedComponent<{ busy: boolean }> = styled.div`
   opacity: ${p => (p.busy ? 0.1 : 0)};
   width: 6px;
   height: 6px;

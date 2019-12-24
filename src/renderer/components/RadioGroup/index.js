@@ -2,10 +2,10 @@
 
 import React from "react";
 import styled from "styled-components";
-
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import Box from "~/renderer/components/Box";
 
-const Container = styled(Box).attrs(() => ({
+const Container: ThemedComponent<{}> = styled(Box).attrs(() => ({
   horizontal: true,
 }))`
   height: 34px;

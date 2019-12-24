@@ -70,7 +70,7 @@ const BannerItemLink = ({ onClick }: BannerItemLinkProps) => {
       ml={4}
       flow={1}
       horizontal
-      align="center"
+      alignItems="center"
       cursor="pointer"
       onClick={onClick}
       color="palette.background.paper"

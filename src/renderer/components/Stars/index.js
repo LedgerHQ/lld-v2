@@ -4,9 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { Trans } from "react-i18next";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
-
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import { getAccountCurrency } from "@ledgerhq/live-common/lib/account";
-
 import { starredAccountsEnforceHideEmptyTokenSelector } from "~/renderer/reducers/accounts";
 import { dragDropStarAction } from "~/renderer/actions/settings";
 
@@ -18,11 +17,11 @@ import Tooltip from "~/renderer/components/Tooltip";
 
 import Item from "./Item";
 
-const Container = styled.div`
+const Container: ThemedComponent<{}> = styled.div`
   display: flex;
   flex-direction: column;
 `;
-const Placeholder = styled.div`
+const Placeholder: ThemedComponent<{}> = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

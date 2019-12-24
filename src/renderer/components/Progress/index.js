@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from "react";
 import styled, { keyframes } from "styled-components";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
 import Box from "~/renderer/components/Box";
 
@@ -32,7 +33,7 @@ const fillInAnimation = keyframes`
   }
 `;
 
-const Bar = styled(Box).attrs(() => ({
+const Bar: ThemedComponent<{}> = styled(Box).attrs(() => ({
   color: "palette.divider",
   borderRadius: "2.5px",
 }))`
@@ -43,7 +44,7 @@ const Bar = styled(Box).attrs(() => ({
   overflow: hidden;
 `;
 
-const Progression = styled(Bar).attrs(() => ({
+const Progression: ThemedComponent<{ infinite?: boolean }> = styled(Bar).attrs(() => ({
   color: "wallet",
 }))`
   position: absolute;
@@ -52,10 +53,16 @@ const Progression = styled(Bar).attrs(() => ({
   ${p =>
     p.infinite
       ? `
-    animation: ${p.timing}ms ${inifiteAnimation} infinite;
+    animation: ${p.timing}ms ${
+          // $FlowFixMe
+          inifiteAnimation
+        } infinite;
     `
       : `
-    animation: ${p.timing}ms ${fillInAnimation} ease-out;
+    animation: ${p.timing}ms ${
+          // $FlowFixMe
+          fillInAnimation
+        } ease-out;
     animation-fill-mode: forwards;
   `};
 `;

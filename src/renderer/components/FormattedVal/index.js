@@ -5,27 +5,21 @@ import invariant from "invariant";
 import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-
+import { createStructuredSelector } from "reselect";
 import type { Unit } from "@ledgerhq/live-common/lib/types";
-import type { State } from "~/renderer/reducers";
-
 import { formatCurrencyUnit } from "@ledgerhq/live-common/lib/currencies";
-
 import { DISABLE_TICKER_ANIMATION } from "~/config/constants";
 import { marketIndicatorSelector, localeSelector } from "~/renderer/reducers/settings";
-
 import { getMarketColor } from "~/renderer/styles/helpers";
-
 import Box from "~/renderer/components/Box";
 import FlipTicker from "~/renderer/components/FlipTicker";
-
 import IconBottom from "~/renderer/icons/ArrowDownRight";
 import IconTop from "~/renderer/icons/ArrowUpRight";
 import Ellipsis from "../Ellipsis";
 
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
-const T: ThemedComponent<{ color: String, inline: Boolean }> = styled(Box).attrs(p => ({
+const T: ThemedComponent<{ color?: string, inline?: boolean }> = styled(Box).attrs(p => ({
   ff: "Inter|Medium",
   horizontal: true,
   color: p.color,
@@ -59,18 +53,18 @@ type OwnProps = {
   isPercent?: boolean,
   subMagnitude?: number,
   prefix?: string,
+  ellipsis?: boolean,
   suffix?: string,
 };
 
-const mapStateToProps = (state: State, _props: OwnProps) => ({
-  marketIndicator: marketIndicatorSelector(state),
-  locale: localeSelector(state),
+const mapStateToProps = createStructuredSelector({
+  marketIndicator: marketIndicatorSelector,
+  locale: localeSelector,
 });
 
 type Props = OwnProps & {
   marketIndicator: string,
   locale: string,
-  ellipsis?: boolean,
 };
 
 function FormattedVal(props: Props) {
@@ -136,7 +130,7 @@ function FormattedVal(props: Props) {
   });
 
   return (
-    <T color={color || marketColor} withIcon={withIcon} {...p}>
+    <T {...p} color={color || marketColor} withIcon={withIcon}>
       {withIcon ? (
         <Box horizontal alignItems="center">
           <Box mr={1}>
@@ -159,4 +153,6 @@ FormattedVal.defaultProps = {
   subMagnitude: 0,
 };
 
-export default connect(mapStateToProps)(FormattedVal);
+const m: React$ComponentType<OwnProps> = connect(mapStateToProps)(FormattedVal);
+
+export default m;

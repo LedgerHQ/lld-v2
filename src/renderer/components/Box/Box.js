@@ -1,5 +1,4 @@
 // @flow
-
 import styled from "styled-components";
 import {
   alignItems,
@@ -14,7 +13,7 @@ import {
   space,
   style,
 } from "styled-system";
-
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import fontFamily from "~/renderer/styles/styled/fontFamily";
 
 export const styledTextAlign = style({ prop: "textAlign", cssProperty: "textAlign" });
@@ -22,7 +21,20 @@ export const styledOverflow = style({ prop: "overflow", cssProperty: "overflow" 
 export const styledCursor = style({ prop: "cursor", cssProperty: "cursor" });
 export const styledTextTransform = style({ prop: "textTransform", cssProperty: "textTransform" });
 
-export default styled.div`
+const Box: ThemedComponent<{
+  noShrink?: boolean,
+  shrink?: boolean,
+  grow?: boolean | number,
+  flow?: number,
+  horizontal?: boolean,
+  overflow?: string,
+  scroll?: boolean,
+  relative?: boolean,
+  sticky?: boolean,
+  selectable?: boolean,
+  // DROP this when we fully migrated from V1
+  align?: "THIS PROPERTY IS NOT VALID – SWITCH TO alignItems",
+}> = styled.div`
   ${alignItems};
   ${alignSelf};
   ${borderRadius};
@@ -69,3 +81,5 @@ export default styled.div`
     margin-left: ${p => (p.horizontal && p.flow ? `${p.theme.space[p.flow]}px` : "")};
   }
 `;
+
+export default Box;

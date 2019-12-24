@@ -3,13 +3,13 @@
 import React from "react";
 import styled from "styled-components";
 
-import Box from "~/renderer/components/Box";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
+import { rgba } from "~/renderer/styles/helpers";
 import IconHelp from "~/renderer/icons/Help";
-
+import Box from "./Box";
 import Label from "./Label";
-import { rgba } from "../../styles/helpers";
 
-const Wrapper = styled(Label).attrs(() => ({
+const Wrapper: ThemedComponent<{}> = styled(Label).attrs(() => ({
   ff: "Inter|SemiBold",
   color: "wallet",
   fontSize: 4,

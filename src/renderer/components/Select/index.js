@@ -1,8 +1,7 @@
 // @flow
 
 import React, { PureComponent } from "react";
-import ReactSelect, { components } from "react-select";
-import AsyncReactSelect from "react-select/lib/Async";
+import ReactSelect, { components, AsyncReactSelect } from "react-select";
 import { withTranslation } from "react-i18next";
 import { FixedSizeList as List } from "react-window";
 import styled, { withTheme } from "styled-components";
@@ -189,6 +188,7 @@ class Select extends PureComponent<Props> {
 
     return (
       <Comp
+        {...props}
         ref={c => (this.ref = c)}
         value={value}
         maxMenuHeight={rowHeight * 4.5}
@@ -210,7 +210,6 @@ class Select extends PureComponent<Props> {
         menuShouldBlockScroll
         menuPortalTarget={document.body}
         small={small}
-        {...props}
         onChange={this.handleChange}
       />
     );

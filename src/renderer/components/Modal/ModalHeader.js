@@ -51,16 +51,25 @@ const ModalHeaderAction = styled(Tabbable).attrs(() => ({
     cursor: pointer;
 
     &:hover,
-    &:hover ${Text} {
+    &:hover ${
+      // $FlowFixMe
+      Text
+    } {
       color: ${p.theme.colors.palette.text.shade80};
     }
 
     &:active,
-    &:active ${Text} {
+    &:active ${
+      // $FlowFixMe
+      Text
+    } {
       color: ${p.theme.colors.palette.text.shade100};
     }
 
-    ${Text} {
+    ${
+      // $FlowFixMe
+      Text
+    } {
       border-bottom: 1px dashed transparent;
     }
     &:focus span {

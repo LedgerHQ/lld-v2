@@ -1,7 +1,6 @@
 // @flow
 import React, { PureComponent } from "react";
 import styled from "styled-components";
-
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
 const Indicator: ThemedComponent<*> = styled.div`
@@ -19,7 +18,7 @@ const Indicator: ThemedComponent<*> = styled.div`
 // NB this is done like this to be extremely performant. we don't want redux for this..
 let busy = false;
 const instances = [];
-export const onSetLibcoreBusy = b => {
+export const onSetLibcoreBusy = (b: boolean) => {
   busy = b;
   instances.forEach(i => i.forceUpdate());
 };

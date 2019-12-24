@@ -2,14 +2,14 @@
 
 import React from "react";
 import styled from "styled-components";
-
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import Box from "~/renderer/components/Box";
 import IconExternalLink from "~/renderer/icons/ExternalLink";
 
 import Label from "./Label";
-import { rgba } from "../../styles/helpers";
+import { rgba } from "~/renderer/styles/helpers";
 
-const Wrapper = styled(Label).attrs(() => ({
+const Wrapper: ThemedComponent<{}> = styled(Label).attrs(() => ({
   ff: "Inter|SemiBold",
   color: "wallet",
   fontSize: 4,

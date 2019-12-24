@@ -4,7 +4,6 @@ import React, { PureComponent } from "react";
 import styled from "styled-components";
 import { remote } from "electron";
 import { withTranslation } from "react-i18next";
-
 import { openURL } from "~/renderer/linking";
 import { urls } from "~/config/urls";
 import IconTriangleWarning from "~/renderer/icons/TriangleWarning";
@@ -111,7 +110,7 @@ class RenderError extends PureComponent<
     const { error, t, withoutAppData, children } = this.props;
     const { isHardResetting, isHardResetModalOpened } = this.state;
     return (
-      <Box align="center" grow bg="palette.background.default">
+      <Box alignItems="center" grow bg="palette.background.default">
         <TriggerAppReady />
         <Space of={100} />
         {/* FIXME HOW DO WE DO THIS? */}

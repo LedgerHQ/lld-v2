@@ -3,9 +3,6 @@
 import React, { PureComponent } from "react";
 import styled from "styled-components";
 import { withTranslation } from "react-i18next";
-
-import type { T } from "types/common";
-
 import { darken, lighten } from "~/renderer/styles/helpers";
 
 import IconCopy from "~/renderer/icons/Copy";
@@ -19,7 +16,7 @@ if (!process.env.STORYBOOK_ENV) {
 }
 
 type Props = {
-  t: T,
+  t: *,
   text: string,
 };
 

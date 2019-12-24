@@ -27,7 +27,7 @@ export const PartnerCard = ({ card }: { card: CardType }) => {
         <Box>
           <Trans i18nKey={`partners.${card.id}`} />
         </Box>
-        <Box horizontal align="center" color="wallet" flow={1}>
+        <Box horizontal alignItems="center" color="wallet" flow={1}>
           <FakeLink onClick={onClick}>
             <Trans i18nKey="partners.visitWebsite" />
           </FakeLink>

@@ -3,10 +3,13 @@
 import React from "react";
 import styled from "styled-components";
 
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import Check from "~/renderer/icons/Check";
 import { Tabbable } from "~/renderer/components/Box";
 
-const Base = styled(Tabbable).attrs(() => ({
+const Base: ThemedComponent<{
+  isChecked?: boolean,
+}> = styled(Tabbable).attrs(() => ({
   relative: true,
   align: "center",
   justifyContent: "center",

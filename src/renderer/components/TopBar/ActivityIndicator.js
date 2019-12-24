@@ -85,7 +85,7 @@ class ActivityIndicatorInner extends PureComponent<Props, { lastClickTime: numbe
           color={isError ? "alertRed" : undefined}
           fontSize={4}
           horizontal
-          align="center"
+          alignItems="center"
         >
           {isRotating ? (
             t("common.sync.syncing")

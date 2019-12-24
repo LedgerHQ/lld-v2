@@ -3,7 +3,7 @@
 import React, { PureComponent, Fragment } from "react";
 import { uncontrollable } from "uncontrollable";
 import styled from "styled-components";
-
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import Box from "~/renderer/components/Box";
 import Text from "~/renderer/components/Text";
 import IconChevronRight from "~/renderer/icons/ChevronRight";
@@ -30,16 +30,16 @@ const Title = styled(Text).attrs(p => ({
   outline: none;
 `;
 
-const IconContainer = styled(Box)`
+const IconContainer: ThemedComponent<{ isOpened?: boolean }> = styled(Box)`
   transform: rotate(${p => (p.isOpened ? "90" : "0")}deg);
   transition: 150ms linear transform;
 `;
 
-export class SpoilerIcon extends PureComponent<{ isOpened: boolean }> {
+export class SpoilerIcon extends PureComponent<{ isOpened: boolean, mr?: * }> {
   render() {
-    const { isOpened, ...rest } = this.props;
+    const { isOpened, mr } = this.props;
     return (
-      <IconContainer isOpened={isOpened} {...rest}>
+      <IconContainer isOpened={isOpened} mr={mr}>
         <IconChevronRight size={12} />
       </IconContainer>
     );
@@ -64,8 +64,7 @@ class Spoiler extends PureComponent<Props, State> {
           flow={1}
           color="palette.text.shade100"
           cursor="pointer"
-          align="center"
-          {...p}
+          alignItems="center"
         >
           <SpoilerIcon isOpened={opened} />
           <Title {...p}>{title}</Title>

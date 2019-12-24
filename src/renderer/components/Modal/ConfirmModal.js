@@ -12,7 +12,7 @@ import ModalBody from "./ModalBody";
 
 type Props = {
   isOpened: boolean,
-  isDanger: boolean,
+  isDanger?: boolean,
   title: string,
   subTitle?: string,
   desc?: React$Node,
@@ -56,12 +56,12 @@ const ConfirmModal = ({
   return (
     <Modal isOpened={isOpened} centered={centered} width={narrow && 380}>
       <ModalBody
-        preventBackdropClick={isLoading}
         {...props}
+        preventBackdropClick={isLoading}
         onClose={!cancellable && isLoading ? undefined : onClose}
         title={title}
         renderFooter={() => (
-          <Box horizontal align="center" justify="flex-end" flow={2}>
+          <Box horizontal alignItems="center" justify="flex-end" flow={2}>
             {!isLoading && <Button onClick={onReject}>{realCancelText}</Button>}
             <Button
               onClick={onConfirm}

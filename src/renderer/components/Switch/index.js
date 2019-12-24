@@ -3,10 +3,14 @@
 import React from "react";
 import noop from "lodash/noop";
 import styled from "styled-components";
-
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import { Tabbable } from "~/renderer/components/Box";
 
-const Base = styled(Tabbable).attrs(p => ({
+const Base: ThemedComponent<{
+  isChecked?: boolean,
+  small?: boolean,
+  disabled?: boolean,
+}> = styled(Tabbable).attrs(p => ({
   bg: p.isChecked ? "wallet" : "palette.text.shade10",
   horizontal: true,
   align: "center",
@@ -46,10 +50,10 @@ function Switch(props: Props) {
   const { isChecked, onChange, small, ...p } = props;
   return (
     <Base
+      {...p}
       small={small}
       isChecked={isChecked}
       onClick={() => onChange && onChange(!isChecked)}
-      {...p}
     >
       <Ball small={small} isChecked={isChecked} />
     </Base>

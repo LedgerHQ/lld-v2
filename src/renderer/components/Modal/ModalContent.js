@@ -42,11 +42,12 @@ type Props = {
 
 const ModalContent: React$ComponentType<Props> = React.forwardRef(function ModalContent(
   { children, noScroll }: Props,
-  containerRef,
+  containerRef: React$ElementRef<*>,
 ) {
   const [isScrollable, setScrollable] = useState(false);
 
   const onHeightUpdate = useCallback(() => {
+    // $FlowFixMe help me
     const { current } = containerRef;
     if (!current) return;
     setScrollable(current.scrollHeight > current.clientHeight);

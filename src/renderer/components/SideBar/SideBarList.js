@@ -18,8 +18,8 @@ type Props = {
 
 class SideBarList extends Component<Props> {
   render() {
-    const { children, title, scroll, titleRight, emptyState, collapsed, ...props } = this.props;
-    const ListWrapper = scroll ? GrowScroll : Box;
+    const { children, title, scroll, titleRight, emptyState, collapsed } = this.props;
+    const ListWrapper: React$ComponentType<any> = scroll ? GrowScroll : Box;
 
     return (
       <Fragment>
@@ -33,7 +33,7 @@ class SideBarList extends Component<Props> {
           </Fragment>
         )}
         {children ? (
-          <ListWrapper flow={2} px={3} fontSize={3} {...props}>
+          <ListWrapper flow={2} px={3} fontSize={3}>
             {children}
           </ListWrapper>
         ) : emptyState ? (

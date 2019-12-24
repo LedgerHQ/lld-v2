@@ -75,7 +75,7 @@ class AccountsList extends Component<
     return (
       <Box flow={3} mt={4}>
         {(title || withToggleAll) && (
-          <Box horizontal align="center">
+          <Box horizontal alignItems="center">
             {title && (
               <Box
                 horizontal

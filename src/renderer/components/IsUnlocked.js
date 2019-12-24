@@ -20,7 +20,7 @@ import InputPassword from "~/renderer/components/InputPassword";
 import LedgerLiveLogo from "~/renderer/components/LedgerLiveLogo";
 import Button from "~/renderer/components/Button";
 import ConfirmModal from "~/renderer/components/Modal/ConfirmModal";
-
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import IconArrowRight from "~/renderer/icons/ArrowRight";
 import LedgerLiveImg from "~/renderer/images/ledgerlive-logo.svg";
 
@@ -34,13 +34,13 @@ type Props = {
   children: any,
 };
 
-export const PageTitle = styled(Box).attrs(() => ({
+export const PageTitle: ThemedComponent<{}> = styled(Box).attrs(() => ({
   ff: "Inter|Regular",
   fontSize: 7,
   color: "palette.text.shade100",
 }))``;
 
-export const LockScreenDesc = styled(Box).attrs(() => ({
+export const LockScreenDesc: ThemedComponent<{}> = styled(Box).attrs(() => ({
   ff: "Inter|Regular",
   fontSize: 4,
   textAlign: "center",
@@ -124,7 +124,7 @@ const IsUnlocked = ({ children }: Props) => {
     return (
       <Box sticky alignItems="center" justifyContent="center">
         <form onSubmit={handleSubmit}>
-          <Box align="center">
+          <Box alignItems="center">
             <LedgerLiveLogo
               style={{ marginBottom: 40 }}
               icon={<img src={LedgerLiveImg} alt="" draggable="false" width={50} height={50} />}
@@ -135,7 +135,7 @@ const IsUnlocked = ({ children }: Props) => {
               <br />
               {t("common.lockScreen.description")}
             </LockScreenDesc>
-            <Box horizontal align="center">
+            <Box horizontal alignItems="center">
               <Box style={{ width: 280 }}>
                 <InputPassword
                   autoFocus

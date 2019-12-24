@@ -2,9 +2,9 @@
 
 import React from "react";
 import styled from "styled-components";
-import useTheme from "~/hooks/useTheme";
 import Box from "./Box";
-import InfoCircle from "../../icons/InfoCircle";
+import InfoCircle from "~/renderer/icons/InfoCircle";
+import useTheme from "~/renderer/hooks/useTheme";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
 const TokenTipsContainer: ThemedComponent<{}> = styled(Box)`

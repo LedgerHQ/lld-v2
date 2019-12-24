@@ -3,8 +3,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import gt from "semver/functions/gt";
 
-import { MODAL_RELEASES_NOTES } from "~/config/constants";
-
 import { lastUsedVersionSelector } from "~/renderer/reducers/settings";
 
 import { saveSettings } from "~/renderer/actions/settings";
@@ -17,7 +15,7 @@ const IsNewVersion = () => {
 
   useEffect(() => {
     if (gt(currentVersion, lastUsedVersion)) {
-      dispatch(openModal(MODAL_RELEASES_NOTES, currentVersion));
+      dispatch(openModal("MODAL_RELEASES_NOTES", currentVersion));
       dispatch(saveSettings({ lastUsedVersion: currentVersion }));
     }
   }, []);

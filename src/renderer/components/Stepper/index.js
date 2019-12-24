@@ -4,13 +4,11 @@ import React, { PureComponent, Fragment } from "react";
 import invariant from "invariant";
 import { withTranslation } from "react-i18next";
 
-import type { T } from "types/common";
-
 import { ModalBody } from "~/renderer/components/Modal";
 import Breadcrumb from "~/renderer/components/Breadcrumb";
 
 export type StepProps = {
-  t: T,
+  t: *,
   transitionTo: string => void,
 };
 
@@ -31,7 +29,7 @@ type State = {
 };
 
 type Props = {
-  t: T,
+  t: *,
   title: string,
   steps: Step[],
   initialStepId: string,
@@ -97,9 +95,9 @@ class Stepper extends PureComponent<Props, State> {
     } = step;
 
     const stepProps: StepProps = {
+      ...props,
       t,
       transitionTo: this.transitionTo,
-      ...props,
     };
 
     const renderFooter =

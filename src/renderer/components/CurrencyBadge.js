@@ -8,12 +8,14 @@ import { rgba } from "~/renderer/styles/helpers";
 import IconCheck from "~/renderer/icons/Check";
 import Box from "~/renderer/components/Box";
 import ParentCryptoCurrencyIcon from "~/renderer/components/ParentCryptoCurrencyIcon";
-import useTheme from "~/hooks/useTheme";
-import ensureContrast from "~/renderer/helpers/ensureContrast";
-
+import useTheme from "~/renderer/hooks/useTheme";
+import ensureContrast from "~/renderer/ensureContrast";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import Spinner from "./Spinner";
 
-const CryptoIconWrapper = styled(Box).attrs(p => ({
+const CryptoIconWrapper: ThemedComponent<{
+  cryptoColor: string,
+}> = styled(Box).attrs(p => ({
   align: "center",
   justify: "center",
   bg: rgba(p.cryptoColor, 0.1),
@@ -48,7 +50,6 @@ export function CurrencyCircleIcon({
   size,
   showSpinner,
   showCheckmark,
-  ...props
 }: {
   currency: CryptoCurrency | TokenCurrency,
   size: number,
@@ -65,7 +66,6 @@ export function CurrencyCircleIcon({
       size={size}
       showCheckmark={showCheckmark}
       cryptoColor={ensureContrast(currency.color, bgColor)}
-      {...props}
     >
       {Icon && <Icon size={size / 2} />}
       {showCheckmark && (
@@ -78,9 +78,9 @@ export function CurrencyCircleIcon({
   );
 }
 
-function CurrencyBadge({ currency, ...props }: { currency: CryptoCurrency | TokenCurrency }) {
+function CurrencyBadge({ currency }: { currency: CryptoCurrency | TokenCurrency }) {
   return (
-    <Box horizontal flow={3} {...props}>
+    <Box horizontal flow={3}>
       <CurrencyCircleIcon size={40} currency={currency} />
       <Box>
         <Box

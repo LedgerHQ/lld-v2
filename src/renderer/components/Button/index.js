@@ -4,9 +4,10 @@ import React, { PureComponent } from "react";
 import styled from "styled-components";
 import { space, fontSize, fontWeight, color } from "styled-system";
 import noop from "lodash/noop";
-// import { track } from '~/analytics/segment'
 import get from "lodash/get";
 
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
+import { track } from "~/renderer/analytics/segment";
 import { isGlobalTabEnabled } from "~/config/global-tab";
 import { darken, lighten, rgba } from "~/renderer/styles/helpers";
 import fontFamily from "~/renderer/styles/styled/fontFamily";
@@ -261,7 +262,7 @@ const LoadingWrapper = styled.div`
   align-items: center;
   justify-content: center;
 `;
-export const Base = styled.button.attrs(p => ({
+export const Base: ThemedComponent<*> = styled.button.attrs(p => ({
   ff: "Inter|SemiBold",
   fontSize: p.fontSize || (!p.small ? 4 : 3),
   px: !p.small ? 4 : 3,
@@ -350,9 +351,9 @@ class Button extends PureComponent<
     const isClickDisabled = disabled || isLoading;
     const onClickHandler = e => {
       if (onClick) {
-        // if (event) {
-        //   track(event, eventProperties)
-        // }
+        if (event) {
+          track(event, eventProperties);
+        }
         onClick(e);
       }
     };

@@ -40,7 +40,7 @@ import noop from "lodash/noop";
 import last from "lodash/last";
 import styled, { withTheme } from "styled-components";
 import debounce from "lodash/debounce";
-
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import refreshNodes from "./refreshNodes";
 import refreshDraw from "./refreshDraw";
 import handleMouseEvents from "./handleMouseEvents";
@@ -228,7 +228,7 @@ class Chart extends Component<Props> {
   }
 }
 
-const Ruler = styled.div.attrs(({ height }) => ({
+const Ruler: ThemedComponent<{ height?: number }> = styled.div.attrs(({ height }) => ({
   style: {
     height,
   },

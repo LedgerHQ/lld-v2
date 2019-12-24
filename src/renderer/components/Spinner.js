@@ -28,9 +28,9 @@ export const Rotating: ThemedComponent<{ size: number, isRotating: boolean }> = 
   transition: 100ms linear transform;
 `;
 
-export default function Spinner({ size, ...props }: { size: number }) {
+export default function Spinner({ size, ...props }: { size: number, isRotating: boolean }) {
   return (
-    <Rotating size={size} {...props}>
+    <Rotating {...props} size={size}>
       <IconLoader size={size} />
     </Rotating>
   );

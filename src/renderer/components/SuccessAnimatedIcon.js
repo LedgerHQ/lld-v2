@@ -3,6 +3,7 @@
 import React, { PureComponent } from "react";
 import styled, { keyframes } from "styled-components";
 import Box from "~/renderer/components/Box";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
 const scaleAnimation = keyframes`
   0% {
@@ -53,7 +54,7 @@ const fadeIn = keyframes`
   }
 `;
 
-const SuccessLogoContainer: ThemedComponent<{ width: Number }> = styled(Box).attrs(() => ({
+const SuccessLogoContainer: ThemedComponent<{ width: number }> = styled(Box).attrs(() => ({
   borderRadius: "50%",
   alignItems: "center",
   justifyContent: "center",
@@ -97,7 +98,7 @@ class SuccessAnimatedIcon extends PureComponent<Props> {
   render() {
     const { width = 80, height = 80, ...p } = this.props;
     return (
-      <SuccessLogoContainer width={width} height={height} {...p}>
+      <SuccessLogoContainer {...p} width={width} height={height}>
         <svg
           className="animated"
           xmlns="http://www.w3.org/2000/svg"

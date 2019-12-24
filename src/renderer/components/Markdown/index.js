@@ -3,10 +3,11 @@ import React, { PureComponent } from "react";
 import styled from "styled-components";
 import ReactMarkdown from "react-markdown";
 import { shell } from "electron";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
 import Box from "~/renderer/components/Box";
 
-export const Notes = styled(Box).attrs(() => ({
+export const Notes: ThemedComponent<{}> = styled(Box).attrs(() => ({
   ff: "Inter",
   fontSize: 4,
   color: "palette.text.shade80",

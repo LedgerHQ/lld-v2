@@ -6,7 +6,7 @@ import { Link, useHistory, useLocation } from "react-router-dom";
 import { Transition } from "react-transition-group";
 import styled from "styled-components";
 
-import { MODAL_RECEIVE, MODAL_SEND, MAIN_SIDEBAR_WIDTH } from "~/config/constants";
+import { MAIN_SIDEBAR_WIDTH } from "~/config/constants";
 
 import { accountsSelector, starredAccountsSelector } from "~/renderer/reducers/accounts";
 import { sidebarCollapsedSelector } from "~/renderer/reducers/settings";
@@ -214,12 +214,12 @@ const MainSideBar = () => {
 
   const handleOpenSendModal = useCallback(() => {
     maybeRedirectToAccounts();
-    dispatch(openModal(MODAL_SEND));
+    dispatch(openModal("MODAL_SEND"));
   }, [dispatch, maybeRedirectToAccounts]);
 
   const handleOpenReceiveModal = useCallback(() => {
     maybeRedirectToAccounts();
-    dispatch(openModal(MODAL_RECEIVE));
+    dispatch(openModal("MODAL_RECEIVE"));
   }, [dispatch, maybeRedirectToAccounts]);
 
   return (

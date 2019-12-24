@@ -36,7 +36,7 @@ function stopPropagation(e) {
   e.stopPropagation();
 }
 
-type Props = {
+type OwnProps = {
   onChangeFocus: boolean => void,
   onChange: (BigNumber, Unit) => void, // FIXME Unit shouldn't be provided (this is not "standard" onChange)
   onChangeUnit: Unit => void,
@@ -47,8 +47,11 @@ type Props = {
   showAllDigits?: boolean,
   subMagnitude: number,
   allowZero: boolean,
-  locale: string,
   disabled?: boolean,
+};
+
+type Props = OwnProps & {
+  locale: string,
   forwardedRef: ?ElementRef<any>,
 };
 
@@ -215,6 +218,8 @@ const Connected = uncontrollable(
   },
 );
 
-export default React.forwardRef(function InputCurrency(props, ref) {
+const module: React$ComponentType<OwnProps> = React.forwardRef(function InputCurrency(props, ref) {
   return <Connected {...props} forwardedRef={ref} />;
 });
+
+export default module;

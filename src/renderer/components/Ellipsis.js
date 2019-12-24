@@ -11,7 +11,7 @@ const innerStyle = {
 };
 
 const Ellipsis = ({ children, canSelect, ...p }: { children: any, canSelect?: boolean }) => (
-  <Text style={{ ...innerStyle, userSelect: canSelect ? "text" : "none" }} {...p}>
+  <Text {...p} style={{ ...innerStyle, userSelect: canSelect ? "text" : "none" }}>
     {children}
   </Text>
 );
