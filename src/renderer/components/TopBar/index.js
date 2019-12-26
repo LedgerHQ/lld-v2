@@ -41,7 +41,7 @@ const Inner = styled(Box).attrs(() => ({
   horizontal: true,
   grow: true,
   flow: 4,
-  align: "center",
+  alignItems: "center",
 }))``;
 
 const Bar = styled.div`

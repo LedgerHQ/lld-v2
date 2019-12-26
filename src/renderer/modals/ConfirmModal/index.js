@@ -6,9 +6,8 @@ import { useTranslation } from "react-i18next";
 // import TrackPage from '~/analytics/TrackPage'
 import Button from "~/renderer/components/Button";
 import Box from "~/renderer/components/Box";
-
-import Modal from "./index";
-import ModalBody from "./ModalBody";
+import Modal from "~/renderer/components/Modal";
+import ModalBody from "~/renderer/components/Modal/ModalBody";
 
 type Props = {
   isOpened: boolean,

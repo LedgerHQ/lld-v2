@@ -7,6 +7,7 @@
   "secondary": {
     "main": "#FFFFFF"
   },
+  "divider": "rgba(255, 255, 255, 0.1)",
   "background": {
     "paper": "#182532",
     "default": "#131E28"

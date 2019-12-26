@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import { createPortal } from "react-dom";
 import { connect } from "react-redux";
 import noop from "lodash/noop";
@@ -213,7 +213,7 @@ class Modal extends PureComponent<Props, State> {
     };
 
     const modal = (
-      <Fragment>
+      <>
         <Animated.div style={backdropStyle}>
           {/* {// Will only render at the end of december
           isSnowTime() ? <Snow numFlakes={200} /> : null} */}
@@ -224,7 +224,7 @@ class Modal extends PureComponent<Props, State> {
             {children}
           </Animated.div>
         </div>
-      </Fragment>
+      </>
     );
 
     return domNode ? createPortal(modal, domNode) : null;

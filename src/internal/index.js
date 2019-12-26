@@ -5,8 +5,8 @@ import { serializeError } from "@ledgerhq/errors";
 import { getCurrencyBridge } from "@ledgerhq/live-common/lib/bridge";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import { log } from "@ledgerhq/logs";
-import logger from "../logger";
-import LoggerTransport from "../logger/logger-transport-internal";
+import logger from "~/logger";
+import LoggerTransport from "~/logger/logger-transport-internal";
 
 import { executeCommand, unsubscribeCommand } from "./commandHandler";
 

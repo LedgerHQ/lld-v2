@@ -23,6 +23,12 @@ const babelConfig = {
     "@babel/plugin-syntax-import-meta",
     ["@babel/plugin-proposal-class-properties", { loose: true }],
     "react-hot-loader/babel",
+    [
+      "babel-plugin-styled-components",
+      {
+        ssr: false,
+      },
+    ],
   ],
 };
 

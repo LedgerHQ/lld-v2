@@ -111,6 +111,7 @@
     "babel-cli": "^6.26.0",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
+    "babel-plugin-styled-components": "^1.10.6",
     "cli-progress": "^3.4.0",
     "css-loader": "^3.4.0",
     "electron": "6.1.6",

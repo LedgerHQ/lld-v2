@@ -10,10 +10,10 @@ import IconTriangleWarning from "~/renderer/icons/TriangleWarning";
 import { hardReset } from "~/renderer/reset";
 import TriggerAppReady from "./TriggerAppReady";
 import ExportLogsButton from "./ExportLogsButton";
-import Box from "./Box";
-import Space from "./Space";
-import Button from "./Button";
-import ConfirmModal from "./Modal/ConfirmModal";
+import Box from "~/renderer/components/Box";
+import Space from "~/renderer/components/Space";
+import Button from "~/renderer/components/Button";
+import ConfirmModal from "~/renderer/modals/ConfirmModal";
 import ExternalLinkButton from "./ExternalLinkButton";
 import { IconWrapperCircle } from "./ResetButton";
 

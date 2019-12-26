@@ -9,9 +9,9 @@ import type { Account } from "@ledgerhq/live-common/lib/types/account";
 import { openModal } from "~/renderer/actions/modals";
 import Box from "~/renderer/components/Box";
 import DownloadCloud from "~/renderer/icons/DownloadCloud";
-import Label from "./Label";
-import Button from "./Button";
-import { activeAccountsSelector } from "../reducers/accounts";
+import Label from "~/renderer/components/Label";
+import Button from "~/renderer/components/Button";
+import { activeAccountsSelector } from "~/renderer/reducers/accounts";
 
 const mapDispatchToProps = {
   openModal,

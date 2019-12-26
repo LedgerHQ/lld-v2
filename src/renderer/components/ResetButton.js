@@ -8,11 +8,11 @@ import logger from "~/logger";
 import { hardReset } from "~/renderer/reset";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import SyncSkipUnderPriority from "./SyncSkipUnderPriority";
-import Box from "./Box";
-import Button from "./Button";
-import ConfirmModal from "./Modal/ConfirmModal";
-import IconTriangleWarning from "../icons/TriangleWarning";
-import ResetFallbackModal from "./ResetFallbackModal";
+import Box from "~/renderer/components/Box";
+import Button from "~/renderer/components/Button";
+import ResetFallbackModal from "~/renderer/components/ResetFallbackModal";
+import ConfirmModal from "~/renderer/modals/ConfirmModal";
+import IconTriangleWarning from "~/renderer/icons/TriangleWarning";
 
 type Props = {
   t: *,

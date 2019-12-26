@@ -19,7 +19,7 @@ import Box from "~/renderer/components/Box";
 import InputPassword from "~/renderer/components/InputPassword";
 import LedgerLiveLogo from "~/renderer/components/LedgerLiveLogo";
 import Button from "~/renderer/components/Button";
-import ConfirmModal from "~/renderer/components/Modal/ConfirmModal";
+import ConfirmModal from "~/renderer/modals/ConfirmModal";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import IconArrowRight from "~/renderer/icons/ArrowRight";
 import LedgerLiveImg from "~/renderer/images/ledgerlive-logo.svg";

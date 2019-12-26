@@ -1,12 +1,12 @@
 // @flow
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 
 import ModalContent from "./ModalContent";
 import ModalHeader from "./ModalHeader";
 import ModalFooter from "./ModalFooter";
 
-import type { RenderProps } from "./index";
+import type { RenderProps } from ".";
 
 type Props = {
   title: React$Node,
@@ -46,7 +46,7 @@ class ModalBody extends PureComponent<Props> {
     const renderedFooter = renderFooter && renderFooter(renderProps);
 
     return (
-      <Fragment>
+      <>
         <ModalHeader onBack={onBack} onClose={onClose}>
           {title}
         </ModalHeader>
@@ -54,7 +54,7 @@ class ModalBody extends PureComponent<Props> {
           {render && render(renderProps)}
         </ModalContent>
         {renderedFooter && <ModalFooter style={modalFooterStyle}>{renderedFooter}</ModalFooter>}
-      </Fragment>
+      </>
     );
   }
 }

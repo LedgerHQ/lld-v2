@@ -14,7 +14,7 @@ const ContentScrollableContainer = styled.div`
   padding: 20px 20px 40px;
   overflow: ${p => (p.noScroll ? "visible" : "auto")};
   position: relative;
-  flex: 0;
+  flex: 0 auto;
 `;
 
 const ContentScrollableContainerGradient = styled.div.attrs(p => ({
@@ -62,7 +62,7 @@ const ModalContent: React$ComponentType<Props> = React.forwardRef(function Modal
     };
   }, [containerRef, onHeightUpdate]);
 
-  useEffect(() => {}, [isScrollable]);
+  useEffect(() => {}, [isScrollable]); // WAT ?
 
   return (
     <ContentWrapper>

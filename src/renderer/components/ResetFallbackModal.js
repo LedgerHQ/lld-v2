@@ -3,7 +3,7 @@
 import React from "react";
 import { useTranslate } from "react-i18next";
 
-import ConfirmModal from "./Modal/ConfirmModal";
+import ConfirmModal from "~/renderer/modals/ConfirmModal";
 import { openUserDataFolderAndQuit } from "~/renderer/reset";
 
 type Props = {
