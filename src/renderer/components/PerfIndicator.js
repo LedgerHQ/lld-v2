@@ -1,11 +1,8 @@
 // @flow
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-
+import { command } from "~/renderer/commands";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
-
-import ping from "~/commands/ping";
-
 import useInterval from "~/renderer/hooks/useInterval";
 
 const Indicator: ThemedComponent<{}> = styled.div`
@@ -32,7 +29,7 @@ const PerfIndicator = () => {
       ++count.current;
       if (finished.current) return;
 
-      sub = ping.send().subscribe({
+      sub = command("ping")().subscribe({
         complete: loop,
       });
     };

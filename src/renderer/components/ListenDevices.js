@@ -1,8 +1,8 @@
 // @flow
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import listenDevices from "~/commands/listenDevices-renderer";
 import { addDevice, removeDevice, resetDevices } from "~/renderer/actions/devices";
+import { command } from "~/renderer/commands";
 
 const ListenDevices = () => {
   const dispatch = useDispatch();
@@ -11,7 +11,7 @@ const ListenDevices = () => {
     let timeout;
     function syncDevices() {
       const devices = {};
-      sub = listenDevices.send().subscribe(
+      sub = command("listenDevices")().subscribe(
         ({ device, deviceModel, type }) => {
           if (device) {
             clearTimeout(timeout);

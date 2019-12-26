@@ -1,5 +1,5 @@
 // @flow
-import { createCommand, Command } from "./ipc";
+import type { Observable } from "rxjs";
 import { withDevice } from "@ledgerhq/live-common/lib/hw/deviceAccess";
 import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
 import { listApps } from "@ledgerhq/live-common/lib/apps/hw";
@@ -10,8 +10,7 @@ type Input = {
   devicePath: string,
 };
 
-const cmd: Command<Input, ListAppsEvent> = createCommand("listApps", ({ devicePath, deviceInfo }) =>
-  withDevice(devicePath)(transport => listApps(transport, deviceInfo)),
-);
+const cmd = ({ devicePath, deviceInfo }: Input): Observable<ListAppsEvent> =>
+  withDevice(devicePath)(transport => listApps(transport, deviceInfo));
 
 export default cmd;

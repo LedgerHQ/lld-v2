@@ -16,24 +16,17 @@ import "~/renderer/i18n/init";
 
 import logger from "~/logger";
 import LoggerTransport from "~/logger/logger-transport-renderer";
-
 import { DEBUG_TICK_REDUX } from "~/config/constants";
 import { enableGlobalTab, disableGlobalTab, isGlobalTabEnabled } from "~/config/global-tab";
-
-import libcoreGetVersion from "~/commands/libcoreGetVersion";
-
+import sentry from "~/sentry/browser";
 import resolveUserDataDirectory from "~/helpers/resolveUserDataDirectory";
 import db from "~/helpers/db";
-import Countervalues from "~/renderer/countervalues";
 import { setEnvOnAllThreads } from "~/helpers/env";
-
-import sentry from "~/sentry/browser";
-
+import { command } from "~/renderer/commands";
+import Countervalues from "~/renderer/countervalues";
 import dbMiddleware from "~/renderer/middlewares/db";
-
 import createStore from "~/renderer/createStore";
 import events from "~/renderer/events";
-
 import { fetchAccounts } from "~/renderer/actions/accounts";
 import { fetchSettings } from "~/renderer/actions/settings";
 import { lock } from "~/renderer/actions/application";
@@ -110,7 +103,7 @@ async function init() {
 
     events({ store });
 
-    const libcoreVersion = await libcoreGetVersion.send().toPromise();
+    const libcoreVersion = await command("libcoreGetVersion")().toPromise();
     logger.log("libcore", libcoreVersion);
 
     window.addEventListener("keydown", (e: SyntheticKeyboardEvent<any>) => {
