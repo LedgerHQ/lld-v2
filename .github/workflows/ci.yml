@@ -13,7 +13,7 @@ jobs:
         run: sudo apt-get install libudev-dev
       - name: install dependencies
         run: |
-          yarn
+          yarn --ignore-scripts
           yarn flow-typed
       - name: test
         run: yarn ci
@@ -26,7 +26,7 @@ jobs:
           node-version: 12.x
       - name: install dependencies
         run: |
-          yarn
+          yarn --ignore-scripts
           yarn flow-typed
       - name: rebuild app deps
         run: yarn install-deps
