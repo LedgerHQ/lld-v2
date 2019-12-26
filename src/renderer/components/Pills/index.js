@@ -6,7 +6,7 @@ import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import { rgba } from "~/renderer/styles/helpers";
 import Box, { Tabbable } from "~/renderer/components/Box";
 
-type Item = {
+export type Item = {
   label: React$Node,
   key: string,
   value?: any,

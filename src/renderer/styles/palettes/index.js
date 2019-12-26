@@ -11,36 +11,37 @@ const shades = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 type RawPalette = {
   type: "light" | "dark",
   primary: {
-    main: String,
-    contrastText: String,
+    main: string,
+    contrastText: string,
   },
   secondary: {
-    main: String,
+    main: string,
   },
+  divider: string,
   background: {
-    paper: String,
-    default: String,
+    paper: string,
+    default: string,
   },
   action: {
-    active: "String",
-    hover: "String",
-    disabled: "String",
+    active: string,
+    hover: string,
+    disabled: string,
   },
 };
 
 export type Theme = {
   ...RawPalette,
   text: {
-    shade10: String,
-    shade20: String,
-    shade30: String,
-    shade40: String,
-    shade50: String,
-    shade60: String,
-    shade70: String,
-    shade80: String,
-    shade90: String,
-    shade100: String,
+    shade10: string,
+    shade20: string,
+    shade30: string,
+    shade40: string,
+    shade50: string,
+    shade60: string,
+    shade70: string,
+    shade80: string,
+    shade90: string,
+    shade100: string,
   },
 };
 
