@@ -15,7 +15,7 @@ jobs:
         run: yarn
       - name: build the app
         run: yarn nightly
-      - uses: "./.github/actions/get-package-version"
+      - uses: "./.github/actions/get-package-infos"
         id: version
       - name: upload macOS app
         uses: actions/upload-artifact@v1
@@ -35,7 +35,7 @@ jobs:
         run: yarn
       - name: build the app
         run: yarn nightly
-      - uses: "./.github/actions/get-package-version"
+      - uses: "./.github/actions/get-package-infos"
         id: version
       - name: upload linux app
         uses: actions/upload-artifact@v1

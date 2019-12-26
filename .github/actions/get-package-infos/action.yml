@@ -3,4 +3,4 @@ description: "get package.json version and name and exposes them"
 author: "Ledger"
 runs:
   using: "node12"
-  main: "./get-package-version.js"
+  main: "./get-package-infos.js"
