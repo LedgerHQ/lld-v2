@@ -1,6 +1,6 @@
 // @flow
 
-import { createCommand, Command } from "./ipc";
+import type { Observable } from "rxjs";
 import { from } from "rxjs";
 import { withDevice } from "@ledgerhq/live-common/lib/hw/deviceAccess";
 import getDeviceInfo from "@ledgerhq/live-common/lib/hw/getDeviceInfo";
@@ -12,8 +12,7 @@ type Input = {
 
 type Result = DeviceInfo;
 
-const cmd: Command<Input, Result> = createCommand("getDeviceInfo", ({ devicePath }) =>
-  withDevice(devicePath)(transport => from(getDeviceInfo(transport))),
-);
+const cmd = ({ devicePath }: Input): Observable<Result> =>
+  withDevice(devicePath)(transport => from(getDeviceInfo(transport)));
 
 export default cmd;

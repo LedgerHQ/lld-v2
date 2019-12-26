@@ -1,6 +1,6 @@
 // @flow
 
-import { createCommand, Command } from "./ipc";
+import type { Observable } from "rxjs";
 import { of } from "rxjs";
 import { delay } from "rxjs/operators";
 import checkDeviceForManager from "@ledgerhq/live-common/lib/hw/checkDeviceForManager";
@@ -16,12 +16,11 @@ type Input = {
 };
 type Result = GenuineCheckEvent;
 
-const cmd: Command<Input, Result> = createCommand("getIsGenuine", ({ devicePath, deviceInfo }) =>
+const cmd = ({ devicePath, deviceInfo }: Input): Observable<Result> =>
   withDevice(devicePath)(transport =>
     SKIP_GENUINE
       ? of({ type: "result", payload: "0000" }).pipe(delay(1000))
       : checkDeviceForManager(transport, deviceInfo),
-  ),
-);
+  );
 
 export default cmd;

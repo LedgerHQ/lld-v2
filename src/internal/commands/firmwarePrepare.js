@@ -1,8 +1,8 @@
 // @flow
 
+import type { Observable } from "rxjs";
 import prepare from "@ledgerhq/live-common/lib/hw/firmwareUpdate-prepare";
 import type { FirmwareUpdateContext } from "@ledgerhq/live-common/lib/types/manager";
-import { createCommand, Command } from "./ipc";
 
 type Input = {
   devicePath: string,
@@ -11,8 +11,6 @@ type Input = {
 
 type Result = { progress: number, displayedOnDevice: boolean };
 
-const cmd: Command<Input, Result> = createCommand("firmwarePrepare", ({ devicePath, firmware }) =>
-  prepare(devicePath, firmware),
-);
+const cmd = ({ devicePath, firmware }: Input): Observable<Result> => prepare(devicePath, firmware);
 
 export default cmd;

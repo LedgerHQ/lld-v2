@@ -1,22 +1,18 @@
 // @flow
 
+import type { Observable } from "rxjs";
 import { fromPromise } from "rxjs/observable/fromPromise";
-
-import { createCommand, Command } from "./ipc";
 import { withLibcore } from "@ledgerhq/live-common/lib/libcore/access";
-
-type Input = void;
 
 type Result = { stringVersion: string, intVersion: number };
 
-const cmd: Command<Input, Result> = createCommand("libcoreGetVersion", () =>
+const cmd = (): Observable<Result> =>
   fromPromise(
     withLibcore(async ledgerCore => {
       const stringVersion = await ledgerCore.LedgerCore.getStringVersion();
       const intVersion = await ledgerCore.LedgerCore.getIntVersion();
       return { stringVersion, intVersion };
     }),
-  ),
-);
+  );
 
 export default cmd;

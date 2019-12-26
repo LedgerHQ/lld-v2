@@ -8,7 +8,6 @@ import rimraf from "rimraf";
 import cluster from "cluster";
 import { setEnvUnsafe, getAllEnvs } from "@ledgerhq/live-common/lib/env";
 import { isRestartNeeded } from "~/helpers/env";
-import { ipcMainListenReceiveCommands } from "~/commands/ipc";
 import logger from "~/logger";
 import { setInternalProcessPID } from "./terminator";
 import { getMainWindow } from "./window-lifecycle";
@@ -83,8 +82,6 @@ process.on("exit", () => {
 ipcMain.on("clean-processes", () => {
   killInternalProcess();
 });
-
-// spawnCoreProcess() // FIXME only on demand
 
 ipcMainListenReceiveCommands({
   onUnsubscribe: requestId => {
@@ -186,3 +183,36 @@ ipcMain.on("hydrateCurrencyData", (event, { currencyId, serialized }) => {
     p.send({ type: "hydrateCurrencyData", serialized, currencyId });
   }
 });
+
+// Implements command message of (Main proc -> Renderer proc)
+// (dual of ipcRendererSendCommand)
+type Msg<A> = {
+  type: "cmd.NEXT" | "cmd.COMPLETE" | "cmd.ERROR",
+  requestId: string,
+  data?: A,
+};
+function ipcMainListenReceiveCommands(o: {
+  onUnsubscribe: (requestId: string) => void,
+  onCommand: (
+    command: { id: string, data: *, requestId: string },
+    notifyCommandEvent: (Msg<*>) => void,
+  ) => void,
+}) {
+  const onCommandUnsubscribe = (event, { requestId }) => {
+    o.onUnsubscribe(requestId);
+  };
+
+  const onCommand = (event, command) => {
+    o.onCommand(command, payload => {
+      event.sender.send("command-event", payload);
+    });
+  };
+
+  ipcMain.on("command-unsubscribe", onCommandUnsubscribe);
+  ipcMain.on("command", onCommand);
+
+  return () => {
+    ipcMain.removeListener("command-unsubscribe", onCommandUnsubscribe);
+    ipcMain.removeListener("command", onCommand);
+  };
+}

@@ -2,7 +2,7 @@
 import { Observable } from "rxjs";
 import uuidv4 from "uuid/v4";
 import { deserializeError } from "@ledgerhq/errors";
-import logger from "../logger";
+import logger from "~/logger";
 
 export class Command<In, A> {
   id: string;
@@ -76,38 +76,4 @@ function ipcRendererSendCommand<In, A>(id: string, data: In): Observable<A> {
 
     return unsubscribe;
   });
-}
-
-// Implements command message of (Main proc -> Renderer proc)
-// (dual of ipcRendererSendCommand)
-export function ipcMainListenReceiveCommands(o: {
-  onUnsubscribe: (requestId: string) => void,
-  onCommand: (
-    command: { id: string, data: *, requestId: string },
-    notifyCommandEvent: (Msg<*>) => void,
-  ) => void,
-}) {
-  const { ipcMain } = require("electron");
-
-  const onCommandUnsubscribe = (event, { requestId }) => {
-    o.onUnsubscribe(requestId);
-  };
-
-  const onCommand = (event, command) => {
-    o.onCommand(command, payload => {
-      event.sender.send("command-event", payload);
-    });
-  };
-
-  ipcMain.on("command-unsubscribe", onCommandUnsubscribe);
-  ipcMain.on("command", onCommand);
-
-  return () => {
-    ipcMain.removeListener("command-unsubscribe", onCommandUnsubscribe);
-    ipcMain.removeListener("command", onCommand);
-  };
-}
-
-export function createCommand<In, A>(id: string, impl: In => Observable<A>): Command<In, A> {
-  return new Command(id, impl);
 }

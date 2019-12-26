@@ -1,5 +1,5 @@
 // @flow
-import { createCommand, Command } from "./ipc";
+import type { Observable } from "rxjs";
 import { withDevice } from "@ledgerhq/live-common/lib/hw/deviceAccess";
 import type { App } from "@ledgerhq/live-common/lib/types/manager";
 import { execWithTransport } from "@ledgerhq/live-common/lib/apps/hw";
@@ -12,11 +12,11 @@ type Input = {
   app: App,
 };
 
-type Result = { progress: number };
-const cmd: Command<Input, Result> = createCommand(
-  "appOpExec",
-  ({ devicePath, appOp, targetId, app }) =>
-    withDevice(devicePath)(transport => execWithTransport(transport)(appOp, targetId, app)),
-);
+type Result = {
+  progress: number,
+};
+
+const cmd = ({ devicePath, appOp, targetId, app }: Input): Observable<Result> =>
+  withDevice(devicePath)(transport => execWithTransport(transport)(appOp, targetId, app));
 
 export default cmd;

@@ -4,7 +4,7 @@ import React, { Component } from "react";
 
 // TODO: AutoUpdate logic
 // import autoUpdate from '~/commands/autoUpdate'
-import quitAndInstallElectronUpdate from "~/commands/quitAndInstallElectronUpdate";
+// ^these must not be a command!!!
 
 const autoUpdate = () => ({ send: () => ({ subscribe: () => {} }) });
 
@@ -77,7 +77,7 @@ class Provider extends Component<UpdaterProviderProps, UpdaterProviderState> {
 
   setStatus = (status: UpdateStatus) => this.setState({ status });
   setDownloadProgress = (downloadProgress: number) => this.setState({ downloadProgress });
-  quitAndInstall = () => quitAndInstallElectronUpdate.send().toPromise();
+  quitAndInstall = () => Promise.resolve();
 
   render() {
     const { status, downloadProgress, error } = this.state;

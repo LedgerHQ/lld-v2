@@ -1,7 +1,7 @@
 // @flow
 
+import type { Observable } from "rxjs";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
-import { createCommand, Command } from "./ipc";
 import { from } from "rxjs";
 import type { DerivationMode } from "@ledgerhq/live-common/lib/types";
 import { withDevice } from "@ledgerhq/live-common/lib/hw/deviceAccess";
@@ -21,18 +21,15 @@ type Result = {
   publicKey: string,
 };
 
-const cmd: Command<Input, Result> = createCommand(
-  "getAddress",
-  ({ currencyId, devicePath, ...options }) =>
-    withDevice(devicePath)(transport =>
-      from(
-        getAddress(transport, {
-          currency: getCryptoCurrencyById(currencyId),
-          // $FlowFixMe
-          ...options,
-        }),
-      ),
+const cmd = ({ currencyId, devicePath, ...options }: Input): Observable<Result> =>
+  withDevice(devicePath)(transport =>
+    from(
+      getAddress(transport, {
+        currency: getCryptoCurrencyById(currencyId),
+        // $FlowFixMe
+        ...options,
+      }),
     ),
-);
+  );
 
 export default cmd;

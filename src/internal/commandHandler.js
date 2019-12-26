@@ -1,14 +1,14 @@
 // @flow
 import { serializeError } from "@ledgerhq/errors";
 
-import commands from "../commands";
+import { commandsById } from "./commands";
 import logger from "../logger";
 
 const subscriptions = {};
 
 export function executeCommand(command: *, send: *) {
   const { data, requestId, id } = command;
-  const cmd = commands.find(cmd => cmd.id === id);
+  const cmd = commandsById[id];
   if (!cmd) {
     logger.warn(`command ${id} not found`);
     return;
@@ -16,7 +16,7 @@ export function executeCommand(command: *, send: *) {
   const startTime = Date.now();
   logger.onCmd("cmd.START", id, 0, data);
   try {
-    subscriptions[requestId] = cmd.impl(data).subscribe({
+    subscriptions[requestId] = cmd(data).subscribe({
       next: data => {
         logger.onCmd("cmd.NEXT", id, Date.now() - startTime, data);
         send({ type: "cmd.NEXT", requestId, data });
