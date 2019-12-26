@@ -4,19 +4,20 @@
 
 ### VSCode
 
-If you use VSCode, you need to configure your editor with a `jsconfig.json` file at the root directory of the project. Please add this file to your **global** .gitignore 
+If you use VSCode, you might need to configure it correctly to have flow / eslint / prettier working nicely together  
+Go to your workspace settings and set it up like so:
 
-jsconfig.json
+
 ```json
 {
-  "compilerOptions": {
-    "target": "esnext",
-    "allowSyntheticDefaultImports": false,
-    "baseUrl": ".",
-    "paths": {
-      "~/*": ["./src/*"]
-    }
+  "flow.enabled": true,
+  "flow.useNPMPackagedFlow": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "javascript.format.enable": false,
+  "javascript.validate.enable": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
   },
-  "exclude": ["node_modules", "dist"]
 }
 ```
