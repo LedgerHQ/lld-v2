@@ -16,6 +16,7 @@
     "flow-typed": "yarn run install-flow-typed",
     "install-flow-typed": "flow-typed install -s",
     "install-deps": "rm -f node_modules/paralleljs/package.json; electron-builder install-app-deps",
+    "postinstall": "yarn install-deps",
     "dist:internal": "DEBUG=electron-builder NODE_ENV=production electron-builder",
     "dist": "node ./tools/dist.js",
     "pack": "node ./tools/dist.js -p",

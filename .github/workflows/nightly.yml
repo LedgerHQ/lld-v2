@@ -12,7 +12,7 @@ jobs:
         with:
           node-version: 12.x
       - name: install dependencies
-        run: yarn
+        run: yarn --ignore-scripts
       - name: build the app
         run: yarn nightly
       - uses: "./.github/actions/get-package-infos"
@@ -32,7 +32,7 @@ jobs:
       - name: install linux dependencies
         run: sudo apt-get install libudev-dev libusb-1.0-0-dev
       - name: install dependencies
-        run: yarn
+        run: yarn --ignore-scripts
       - name: build the app
         run: yarn nightly
       - uses: "./.github/actions/get-package-infos"
