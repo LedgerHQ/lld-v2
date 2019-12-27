@@ -54,7 +54,7 @@ const IconWrapperCircle = styled(Box)`
   height: 50px;
   border-radius: 50%;
   background: #ea2e4919;
-  text-align: -webkit-center;
+  text-align: center;
   justify-content: center;
 `;
 
@@ -164,6 +164,7 @@ const IsUnlocked = ({ children }: Props) => {
             </Button>
           </Box>
         </form>
+        {/* TODO: remove that ******* modal from there */}
         <ConfirmModal
           analyticsName="HardReset"
           isDanger

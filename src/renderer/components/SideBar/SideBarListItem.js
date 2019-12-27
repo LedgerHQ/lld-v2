@@ -66,7 +66,7 @@ class SideBarListItem extends PureComponent<Props> {
 }
 
 const Container = styled(Tabbable).attrs(() => ({
-  align: "center",
+  alignItems: "center",
   borderRadius: 1,
   ff: "Inter|SemiBold",
   flow: 3,

@@ -7,7 +7,7 @@ export default styled.label.attrs(p => ({
   fontSize: p.fontSize || 4,
   ff: p.ff || "Inter|Medium",
   color: p.color || "palette.text.shade60",
-  align: "center",
+  alignItems: "center",
   display: "block",
 }))`
   margin-top: ${p => (p.mt ? `${p.mt}px` : "auto")};

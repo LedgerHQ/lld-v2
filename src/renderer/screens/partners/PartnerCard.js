@@ -20,7 +20,7 @@ export const PartnerCard = ({ card }: { card: CardType }) => {
 
   return (
     <Card horizontal py={5} px={6}>
-      <Box justify="center" style={{ width: 180, marginRight: 32 }}>
+      <Box justifyContent="center" style={{ width: 180, marginRight: 32 }}>
         <card.Logo width={180} />
       </Box>
       <Box shrink ff="Inter|Regular" fontSize={4} flow={3}>

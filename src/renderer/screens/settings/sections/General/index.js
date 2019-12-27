@@ -4,11 +4,8 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { EXPERIMENTAL_MARKET_INDICATOR_SETTINGS } from "~/config/constants";
-import {
-  hasPasswordSelector,
-  langAndRegionSelector,
-  // counterValueCurrencySelector,
-} from "~/renderer/reducers/settings";
+import { hasPasswordSelector, langAndRegionSelector } from "~/renderer/reducers/settings";
+import TrackPage from "~/renderer/analytics/TrackPage";
 import IconDisplay from "~/renderer/icons/Display";
 import {
   SettingsSection as Section,
@@ -20,17 +17,20 @@ import CounterValueSelect from "./CounterValueSelect";
 import LanguageSelect from "./LanguageSelect";
 import RegionSelect from "./RegionSelect";
 import ThemeSelect from "./ThemeSelect";
+import MarketIndicatorRadio from "./MarketIndicatorRadio";
+import PasswordButton from "./PasswordButton";
+import PasswordAutoLockSelect from "./PasswordAutoLockSelect";
+import SentryLogsButton from "./SentryLogsButton";
+import ShareAnalyticsButton from "./ShareAnalyticsButton";
 
 const SectionGeneral = () => {
   const { useSystem } = useSelector(langAndRegionSelector);
-  // const counterValueCurrency = useSelector(counterValueCurrencySelector);
   const hasPassword = useSelector(hasPasswordSelector);
   const { t } = useTranslation();
 
   return (
     <Section>
-      {/* TODO: ADD TRACKING */}
-      {/* <TrackPage category="Settings" name="Display" /> */}
+      <TrackPage category="Settings" name="Display" />
       <Header
         icon={<IconDisplay size={16} />}
         title={t("settings.tabs.display")}
@@ -59,29 +59,29 @@ const SectionGeneral = () => {
 
         {EXPERIMENTAL_MARKET_INDICATOR_SETTINGS ? (
           <Row title={t("settings.display.stock")} desc={t("settings.display.stockDesc")}>
-            {/* <MarketIndicatorRadio /> */}
+            <MarketIndicatorRadio />
           </Row>
         ) : null}
 
         <Row title={t("settings.profile.password")} desc={t("settings.profile.passwordDesc")}>
-          {/* <PasswordButton /> */}
+          <PasswordButton />
         </Row>
         {hasPassword ? (
           <Row
             title={t("settings.profile.passwordAutoLock")}
             desc={t("settings.profile.passwordAutoLockDesc")}
           >
-            {/* <PasswordAutoLockSelect /> */}
+            <PasswordAutoLockSelect />
           </Row>
         ) : null}
         <Row
           title={t("settings.profile.reportErrors")}
           desc={t("settings.profile.reportErrorsDesc")}
         >
-          {/* <SentryLogsButton /> */}
+          <SentryLogsButton />
         </Row>
         <Row title={t("settings.profile.analytics")} desc={t("settings.profile.analyticsDesc")}>
-          {/* <ShareAnalyticsButton /> */}
+          <ShareAnalyticsButton />
         </Row>
       </Body>
     </Section>

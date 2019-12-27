@@ -60,7 +60,7 @@ const ConfirmModal = ({
         onClose={!cancellable && isLoading ? undefined : onClose}
         title={title}
         renderFooter={() => (
-          <Box horizontal alignItems="center" justify="flex-end" flow={2}>
+          <Box horizontal alignItems="center" justifyContent="flex-end" flow={2}>
             {!isLoading && <Button onClick={onReject}>{realCancelText}</Button>}
             <Button
               onClick={onConfirm}

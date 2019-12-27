@@ -81,7 +81,7 @@ export const SettingsSectionHeader = ({
 export const SettingsSectionRowContainer: ThemedComponent<{}> = styled(Box).attrs(() => ({
   p: 4,
   horizontal: true,
-  align: "center",
+  alignItems: "center",
   relative: true,
   justifyContent: "space-between",
 }))``;

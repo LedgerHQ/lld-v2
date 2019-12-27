@@ -34,6 +34,7 @@ const Box: ThemedComponent<{
   selectable?: boolean,
   // DROP this when we fully migrated from V1
   align?: "THIS PROPERTY IS NOT VALID – SWITCH TO alignItems",
+  justify?: "THIS PROPERTY IS NOT VALID – SWITCH TO justifyContent",
 }> = styled.div`
   ${alignItems};
   ${alignSelf};

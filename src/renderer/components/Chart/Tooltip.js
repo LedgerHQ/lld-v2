@@ -8,7 +8,7 @@ import type { Item } from "./types";
 const Container = styled(Box).attrs(() => ({
   px: 4,
   py: 3,
-  align: "center",
+  alignItems: "center",
 }))`
   background: ${p => p.theme.colors.palette.background.paper};
   border: 1px solid ${p => p.theme.colors.palette.divider};

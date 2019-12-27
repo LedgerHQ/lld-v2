@@ -21,7 +21,7 @@ const IconContainer = styled.div`
 
 const Container: ThemedComponent<{}> = styled(Box).attrs(p => ({
   horizontal: true,
-  align: "center",
+  alignItems: "center",
   py: "8px",
   px: 3,
   bg: p.theme.colors[p.status] || "palette.primary.main",

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setRegion } from "~/renderer/actions/settings";
 import { langAndRegionSelector } from "~/renderer/reducers/settings";
 import Select from "~/renderer/components/Select";
+import Track from "~/renderer/analytics/Track";
 import regionsByKey from "./regions.json";
 
 const regions = Object.keys(regionsByKey).map(key => {
@@ -28,8 +29,7 @@ const RegionSelect = () => {
 
   return (
     <>
-      {/* TODO: tracking */}
-      {/* <Track onUpdate event="RegionSelectChange" currentRegion={currentRegion.region} /> */}
+      <Track onUpdate event="RegionSelectChange" currentRegion={currentRegion.region} />
       <Select
         small
         minWidth={260}

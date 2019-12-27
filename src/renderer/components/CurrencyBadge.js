@@ -16,8 +16,8 @@ import Spinner from "./Spinner";
 const CryptoIconWrapper: ThemedComponent<{
   cryptoColor: string,
 }> = styled(Box).attrs(p => ({
-  align: "center",
-  justify: "center",
+  alignItems: "center",
+  justifyContent: "center",
   bg: rgba(p.cryptoColor, 0.1),
   color: p.cryptoColor,
 }))`

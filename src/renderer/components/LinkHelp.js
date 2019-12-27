@@ -13,7 +13,7 @@ const Wrapper: ThemedComponent<{}> = styled(Label).attrs(() => ({
   ff: "Inter|SemiBold",
   color: "wallet",
   fontSize: 4,
-  align: "center",
+  alignItems: "center",
 }))`
   display: flex;
   cursor: pointer;

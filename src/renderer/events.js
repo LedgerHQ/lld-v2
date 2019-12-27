@@ -7,9 +7,8 @@ import db from "~/helpers/db";
 import { CHECK_UPDATE_DELAY, DISABLE_ACTIVITY_INDICATORS } from "../config/constants";
 import { killInternalProcess } from "./reset";
 import { lock } from "./actions/application";
-// TODO: import these
-// import { onSetDeviceBusy } from 'components/DeviceBusyIndicator'
-// import { onSetLibcoreBusy } from 'components/LibcoreBusyIndicator'
+import { onSetDeviceBusy } from "~/renderer/components/DeviceBusyIndicator";
+import { onSetLibcoreBusy } from "~/renderer/components/LibcoreBusyIndicator";
 
 const d = {
   sync: debug("lwd:sync"),
@@ -46,13 +45,11 @@ export default ({ store }: { store: Object }) => {
 
   if (!DISABLE_ACTIVITY_INDICATORS) {
     ipcRenderer.on("setLibcoreBusy", (event: any, { busy }) => {
-      // TODO: port this
-      // onSetLibcoreBusy(busy)
+      onSetLibcoreBusy(busy);
     });
 
     ipcRenderer.on("setDeviceBusy", (event: any, { busy }) => {
-      // TODO: port this
-      // onSetDeviceBusy(busy)
+      onSetDeviceBusy(busy);
     });
   }
 };

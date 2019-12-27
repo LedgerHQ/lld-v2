@@ -9,6 +9,7 @@ import useEnv from "~/renderer/hooks/useEnv";
 import { setLanguage } from "~/renderer/actions/settings";
 import { langAndRegionSelector } from "~/renderer/reducers/settings";
 import Select from "~/renderer/components/Select";
+import Track from "~/renderer/analytics/Track";
 
 const languageLabels = {
   en: "English",
@@ -54,14 +55,12 @@ const LanguageSelect = () => {
 
   return (
     <>
-      {/* TODO: Tracking */}
-      {/*
       <Track
-          onUpdate
-          event="LanguageSelect"
-          currentRegion={currentLanguage && currentLanguage.value}
-        />
-      */}
+        onUpdate
+        event="LanguageSelect"
+        currentRegion={currentLanguage && currentLanguage.value}
+      />
+
       <Select
         small
         minWidth={260}

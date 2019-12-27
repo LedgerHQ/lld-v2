@@ -58,7 +58,7 @@ class CopyWithFeedback extends PureComponent<Props, State> {
 
 const ClickableWrapper = styled(Box).attrs(() => ({
   horizontal: true,
-  align: "center",
+  alignItems: "center",
   flow: 1,
   color: "wallet",
   fontSize: 4,

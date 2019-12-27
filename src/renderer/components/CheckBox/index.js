@@ -11,7 +11,7 @@ const Base: ThemedComponent<{
   isChecked?: boolean,
 }> = styled(Tabbable).attrs(() => ({
   relative: true,
-  align: "center",
+  alignItems: "center",
   justifyContent: "center",
 }))`
   outline: none;

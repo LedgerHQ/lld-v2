@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { setTheme } from "~/renderer/actions/settings";
 import { themeSelector } from "~/renderer/reducers/settings";
 import Select from "~/renderer/components/Select";
+import Track from "~/renderer/analytics/Track";
 
 const themeLabels = {
   light: "theme.light",
@@ -38,8 +39,7 @@ const ThemeSelect = () => {
 
   return (
     <>
-      {/* TODO: tracking */}
-      {/* <Track onUpdate event="ThemeSelect" currentTheme={theme} /> */}
+      <Track onUpdate event="ThemeSelect" currentTheme={theme} />
       <Select
         small
         minWidth={260}

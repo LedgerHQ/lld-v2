@@ -135,7 +135,7 @@ const AccountRowContainer: ThemedComponent<{
   isDisabled?: boolean,
 }> = styled(Tabbable).attrs(() => ({
   horizontal: true,
-  align: "center",
+  alignItems: "center",
   bg: "palette.background.default",
   px: 3,
   flow: 3,

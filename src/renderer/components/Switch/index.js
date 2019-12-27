@@ -13,7 +13,7 @@ const Base: ThemedComponent<{
 }> = styled(Tabbable).attrs(p => ({
   bg: p.isChecked ? "wallet" : "palette.text.shade10",
   horizontal: true,
-  align: "center",
+  alignItems: "center",
 }))`
   width: ${p => (p.small ? 25 : 40)}px;
   height: ${p => (p.small ? 13 : 24)}px;

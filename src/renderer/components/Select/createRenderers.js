@@ -62,8 +62,8 @@ const STYLES_OVERRIDE = {
 };
 
 const CheckContainer = styled(Box).attrs(() => ({
-  align: "center",
-  justify: "center",
+  alignItems: "center",
+  justifyContent: "center",
 }))`
   position: absolute;
   top: 0;
