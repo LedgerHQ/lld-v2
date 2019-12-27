@@ -9,6 +9,7 @@ import Pills from "~/renderer/components/Pills";
 import type { Item } from "~/renderer/components/Pills";
 import Box from "~/renderer/components/Box";
 import SectionDisplay from "./sections/General";
+import SectionExperimental from "./sections/Experimental";
 
 const getItems = (t: string => string): Item[] => [
   {
@@ -36,11 +37,11 @@ const getItems = (t: string => string): Item[] => [
   //   label: t("settings.tabs.help"),
   //   value: "SectionHelp",
   // },
-  // {
-  //   key: "experimental",
-  //   label: t("settings.tabs.experimental"),
-  //   value: "SectionExperimental",
-  // },
+  {
+    key: "experimental",
+    label: t("settings.tabs.experimental"),
+    value: SectionExperimental,
+  },
 ];
 
 type Props = {
