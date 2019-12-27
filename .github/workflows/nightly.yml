@@ -41,4 +41,4 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: ${{ steps.version.outputs.pkgName }}-${{ steps.version.outputs.pkgVersion }}-linux.AppImage
-          path: dist/ledger-live-desktop-v2-${{ steps.version.outputs.pkgVersion }}-linux-x86_64.AppImage
+          path: dist/${{ steps.version.outputs.pkgName }}-${{ steps.version.outputs.pkgVersion }}-linux-x86_64.AppImage
