@@ -16,6 +16,10 @@ import type { StepProps as DefaultStepProps, Step } from "~/renderer/components/
 import SyncSkipUnderPriority from "~/renderer/components/SyncSkipUnderPriority";
 import Modal from "~/renderer/components/Modal";
 import Stepper from "~/renderer/components/Stepper";
+import StepChooseCurrency, { StepChooseCurrencyFooter } from "./steps/StepChooseCurrency";
+import StepConnectDevice, { StepConnectDeviceFooter } from "./steps/StepConnectDevice";
+import StepImport, { StepImportFooter } from "./steps/StepImport";
+import StepFinish, { StepFinishFooter } from "./steps/StepFinish";
 
 type StepId = "chooseCurrency" | "connectDevice" | "import" | "finish";
 type ScanStatus = "idle" | "scanning" | "error" | "finished";
@@ -35,6 +39,7 @@ export type StepProps = DefaultStepProps & {
   onGoStep1: () => void,
   onCloseModal: () => void,
   resetScanState: () => void,
+  // FIXME: Conflicts with <Select /> expecting a ?Currency
   setCurrency: (?CryptoCurrency) => void,
   setAppOpened: boolean => void,
   setScanStatus: (ScanStatus, ?Error) => string,
@@ -68,8 +73,8 @@ const AddAccounts = () => {
       {
         id: "chooseCurrency",
         label: t("addAccounts.breadcrumb.informations"),
-        // component: StepChooseCurrency,
-        // footer: StepChooseCurrencyFooter,
+        component: StepChooseCurrency,
+        footer: StepChooseCurrencyFooter,
         onBack: null,
         hideFooter: false,
         noScroll: true,
@@ -77,24 +82,24 @@ const AddAccounts = () => {
       {
         id: "connectDevice",
         label: t("addAccounts.breadcrumb.connectDevice"),
-        // component: StepConnectDevice,
-        // footer: StepConnectDeviceFooter,
+        component: StepConnectDevice,
+        footer: StepConnectDeviceFooter,
         onBack,
         hideFooter: false,
       },
       {
         id: "import",
         label: t("addAccounts.breadcrumb.import"),
-        // component: StepImport,
-        // footer: StepImportFooter,
+        component: StepImport,
+        footer: StepImportFooter,
         onBack,
         hideFooter: false,
       },
       {
         id: "finish",
         label: t("addAccounts.breadcrumb.finish"),
-        // component: StepFinish,
-        // footer: StepFinishFooter,
+        component: StepFinish,
+        footer: StepFinishFooter,
         onBack: null,
         hideFooter: true,
       },

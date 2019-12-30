@@ -36,7 +36,7 @@ const ModalTitle = styled(Box).attrs(() => ({
 
 const ModalHeaderAction = styled(Tabbable).attrs(() => ({
   horizontal: true,
-  align: "center",
+  alignItems: "center",
   fontSize: 3,
   p: 3,
 }))`
