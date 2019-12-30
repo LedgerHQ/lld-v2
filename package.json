@@ -82,7 +82,7 @@
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
     "ripple-binary-codec": "^0.2.5",
-    "rxjs": "^6.5.3",
+    "rxjs": "^6.5.4",
     "semver": "^7.1.1",
     "smoothscroll-polyfill": "^0.4.4",
     "source-map-support": "^0.5.16",
