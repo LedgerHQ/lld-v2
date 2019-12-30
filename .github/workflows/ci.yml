@@ -30,8 +30,6 @@ jobs:
           yarn flow-typed
       - name: rebuild app deps
         run: yarn install-deps
-      - name: install flow-defs
-        run: yarn flow-typed
       - name: test
         run: yarn ci
   # ci-windows:
