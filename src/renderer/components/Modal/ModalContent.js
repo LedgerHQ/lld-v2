@@ -5,9 +5,10 @@ import styled from "styled-components";
 
 const ContentWrapper = styled.div`
   position: relative;
-  flex: 0;
+  flex: 1;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 `;
 
 const ContentScrollableContainer = styled.div`

@@ -258,6 +258,7 @@ const BODY_WRAPPER_STYLE = {
   flexShrink: 1,
   display: "flex",
   flexDirection: "column",
+  overflow: "auto",
 };
 
 // $FlowFixMe: define a OwnProps
