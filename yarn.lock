@@ -5488,7 +5488,7 @@ flow-bin@^0.114.0:
   resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.114.0.tgz#9079c5fcdf08fab4db91616f38994e9b7d035842"
   integrity sha512-hewufX0nbnhemQn5XtJ97nEFNqoBclPBAZ54aY3jKuZJnLpwqB7Doaplet3M26TOh2NchBsU0+lUkM8oVna2VA==
 
-flow-typed@^2.5.2, flow-typed@^2.6.2:
+flow-typed@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/flow-typed/-/flow-typed-2.6.2.tgz#6d324a96c4df300e0f823c13ca879c824bef40ce"
   integrity sha512-brTh8SukLidVpR1u8hSR3OcZSvLtptpwLEGgEhK/qBhWCB7zxPZmnmChYi40JQH6vB448ck380+qbkDo3fJ6qA==
@@ -9414,12 +9414,12 @@ qrcode@^1.4.4:
     pngjs "^3.3.0"
     yargs "^13.2.4"
 
-qrloop@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/qrloop/-/qrloop-0.9.0.tgz#752c374589695d6a2496369adcf087978a449597"
-  integrity sha512-SMYvelhS5F3EwFANeKlsP8SOJDvvraJtwLqghtt4sWJlWcAn9zEZeFDOLxKr1QbAYshUOmdH7yTE4LhRfviCtw==
+qrloop@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/qrloop/-/qrloop-1.0.1.tgz#17d31166c394ca435bd9497627f5563e4d9b8d40"
+  integrity sha512-/mTvk0m8QfPQoJjrUgzm3DRlIhu6+349B2Oq9X+pe6saXa3ITzfAS1h8A5hrKCQO4anoQtT263wkai9Nf4WXhw==
   dependencies:
-    flow-typed "^2.5.2"
+    buffer "^5.4.3"
     md5 "^2.2.1"
 
 qs@6.7.0:
