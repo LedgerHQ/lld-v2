@@ -234,6 +234,7 @@ class StepImport extends PureComponent<StepProps> {
     const mainCurrency = currency.type === "TokenCurrency" ? currency.parentCurrency : currency;
 
     if (err) {
+      console.log("mayday err", err);
       return <ImportError error={err} currency={mainCurrency} />;
     }
 

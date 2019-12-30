@@ -1,14 +1,15 @@
 // @flow
-import React, { useMemo, useCallback, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import React, { PureComponent } from "react";
+import { Trans, withTranslation } from "react-i18next";
+import { connect } from "react-redux";
+import { compose } from "redux";
+import { createStructuredSelector } from "reselect";
 import type { CryptoCurrency, TokenCurrency, Account } from "@ledgerhq/live-common/lib/types";
 import { addAccounts } from "@ledgerhq/live-common/lib/account";
 import logger from "~/logger";
 import type { Device } from "~/renderer/reducers/devices";
 import { getCurrentDevice } from "~/renderer/reducers/devices";
 import { accountsSelector } from "~/renderer/reducers/accounts";
-import type { State } from "~/renderer/reducers";
 import { replaceAccounts } from "~/renderer/actions/accounts";
 import { closeModal } from "~/renderer/actions/modals";
 import Track from "~/renderer/analytics/Track";
@@ -21,12 +22,75 @@ import StepConnectDevice, { StepConnectDeviceFooter } from "./steps/StepConnectD
 import StepImport, { StepImportFooter } from "./steps/StepImport";
 import StepFinish, { StepFinishFooter } from "./steps/StepFinish";
 
+const createSteps = () => {
+  const onBack = ({ transitionTo, resetScanState }: StepProps) => {
+    resetScanState();
+    transitionTo("chooseCurrency");
+  };
+  return [
+    {
+      id: "chooseCurrency",
+      label: <Trans i18nKey="addAccounts.breadcrumb.informations" />,
+      component: StepChooseCurrency,
+      footer: StepChooseCurrencyFooter,
+      onBack: null,
+      hideFooter: false,
+      noScroll: true,
+    },
+    {
+      id: "connectDevice",
+      label: <Trans i18nKey="addAccounts.breadcrumb.connectDevice" />,
+      component: StepConnectDevice,
+      footer: StepConnectDeviceFooter,
+      onBack,
+      hideFooter: false,
+    },
+    {
+      id: "import",
+      label: <Trans i18nKey="addAccounts.breadcrumb.import" />,
+      component: StepImport,
+      footer: StepImportFooter,
+      onBack,
+      hideFooter: false,
+    },
+    {
+      id: "finish",
+      label: <Trans i18nKey="addAccounts.breadcrumb.finish" />,
+      component: StepFinish,
+      footer: StepFinishFooter,
+      onBack: null,
+      hideFooter: true,
+    },
+  ];
+};
+
+type Props = {
+  device: ?Device,
+  existingAccounts: Account[],
+  closeModal: string => void,
+  replaceAccounts: (Account[]) => void,
+};
+
 type StepId = "chooseCurrency" | "connectDevice" | "import" | "finish";
 type ScanStatus = "idle" | "scanning" | "error" | "finished";
-type MaybeCryptoCurrency = ?CryptoCurrency;
-type MaybeError = ?Error;
+
+type State = {
+  // TODO: I'm sure there will be always StepId and ScanStatus given,
+  // but I struggle making flow understand it. So I put string as fallback
+  stepId: StepId | string,
+  scanStatus: ScanStatus | string,
+
+  isAppOpened: boolean,
+  currency: ?CryptoCurrency,
+  scannedAccounts: Account[],
+  checkedAccountsIds: string[],
+  editedNames: { [_: string]: string },
+  err: ?Error,
+  reset: number,
+};
 
 export type StepProps = DefaultStepProps & {
+  t: *,
   currency: ?CryptoCurrency | ?TokenCurrency,
   device: ?Device,
   isAppOpened: boolean,
@@ -39,7 +103,6 @@ export type StepProps = DefaultStepProps & {
   onGoStep1: () => void,
   onCloseModal: () => void,
   resetScanState: () => void,
-  // FIXME: Conflicts with <Select /> expecting a ?Currency
   setCurrency: (?CryptoCurrency) => void,
   setAppOpened: boolean => void,
   setScanStatus: (ScanStatus, ?Error) => string,
@@ -48,241 +111,174 @@ export type StepProps = DefaultStepProps & {
   setScannedAccounts: ({ scannedAccounts?: Account[], checkedAccountsIds?: string[] }) => void,
 };
 
-const AddAccounts = () => {
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const device = useSelector<State, ?Device>(getCurrentDevice);
-  const existingAccounts = useSelector(accountsSelector);
-  const [stepId, setStepId] = useState<StepId | string>("chooseCurrency");
-  const [isAppOpened, setIsAppOpened] = useState(false);
-  const [currency, setCurrency] = useState<MaybeCryptoCurrency>(null);
-  const [scannedAccounts, setScannedAccounts] = useState<Account[]>([]);
-  const [checkedAccountsIds, setCheckedAccountsIds] = useState<string[]>([]);
-  const [editedNames, setEditedNames] = useState<{ [_: string]: string }>({});
-  const [err, setErr] = useState<MaybeError>(null);
-  const [scanStatus, setScanStatus] = useState<ScanStatus | string>("idle");
-  const [reset, setReset] = useState(0);
+const mapStateToProps = createStructuredSelector({
+  device: getCurrentDevice,
+  existingAccounts: accountsSelector,
+});
 
-  const onBack = useCallback(({ transitionTo, resetScanState }: StepProps) => {
-    resetScanState();
-    transitionTo("chooseCurrency");
-  }, []);
-
-  const steps = useMemo(() => {
-    return [
-      {
-        id: "chooseCurrency",
-        label: t("addAccounts.breadcrumb.informations"),
-        component: StepChooseCurrency,
-        footer: StepChooseCurrencyFooter,
-        onBack: null,
-        hideFooter: false,
-        noScroll: true,
-      },
-      {
-        id: "connectDevice",
-        label: t("addAccounts.breadcrumb.connectDevice"),
-        component: StepConnectDevice,
-        footer: StepConnectDeviceFooter,
-        onBack,
-        hideFooter: false,
-      },
-      {
-        id: "import",
-        label: t("addAccounts.breadcrumb.import"),
-        component: StepImport,
-        footer: StepImportFooter,
-        onBack,
-        hideFooter: false,
-      },
-      {
-        id: "finish",
-        label: t("addAccounts.breadcrumb.finish"),
-        component: StepFinish,
-        footer: StepFinishFooter,
-        onBack: null,
-        hideFooter: true,
-      },
-    ];
-  }, [onBack, t]);
-
-  const handleClickAdd = useCallback(async () => {
-    dispatch(
-      replaceAccounts(
-        addAccounts({
-          scannedAccounts,
-          existingAccounts,
-          selectedIds: checkedAccountsIds,
-          renamings: editedNames,
-        }),
-      ),
-    );
-  }, [dispatch, existingAccounts, scannedAccounts, checkedAccountsIds, editedNames]);
-
-  const handleCloseModal = useCallback(() => dispatch(closeModal("MODAL_ADD_ACCOUNTS")), [
-    dispatch,
-  ]);
-
-  const handleStepChange = useCallback((step: Step) => setStepId(step.id), [setStepId]);
-
-  const handleSetCurrency = useCallback(
-    (currency: ?CryptoCurrency) => {
-      setCurrency(currency);
-    },
-    [setCurrency],
-  );
-
-  const handleSetScanStatus = useCallback(
-    (scanStatus: string, error: ?Error = null) => {
-      if (error) {
-        logger.critical(error);
-      }
-      setScanStatus(scanStatus);
-      setErr(error);
-    },
-    [setScanStatus, setErr],
-  );
-
-  const handleSetAccountName = useCallback(
-    (account: Account, name: string) => {
-      setEditedNames(currenEditedNames => ({
-        ...currenEditedNames,
-        [account.id]: name,
-      }));
-    },
-    [setEditedNames],
-  );
-
-  const handleSetScannedAccounts = useCallback(
-    ({
-      checkedAccountsIds,
-      scannedAccounts,
-    }: {
-      checkedAccountsIds: string[],
-      scannedAccounts: Account[],
-    }) => {
-      setCheckedAccountsIds(checkedAccountsIds || []);
-      setScannedAccounts(scannedAccounts || []);
-    },
-    [setCheckedAccountsIds, setScannedAccounts],
-  );
-
-  const handleResetScanState = useCallback(() => {
-    setIsAppOpened(false);
-    setScanStatus("idle");
-    setErr(null);
-    setScannedAccounts([]);
-    setCheckedAccountsIds([]);
-  }, [setIsAppOpened, setScanStatus, setErr, setScannedAccounts, setCheckedAccountsIds]);
-
-  const handleSetAppOpened = useCallback(
-    (isAppOpened: boolean) => {
-      setIsAppOpened(isAppOpened);
-    },
-    [setIsAppOpened],
-  );
-
-  const handleBeforeOpen = useCallback(
-    ({ data }) => {
-      if (!currency) {
-        if (data && data.currency) {
-          setCurrency(data.currency);
-        }
-      }
-    },
-    [currency, setCurrency],
-  );
-
-  const onGoStep1 = useCallback(() => {
-    setStepId("chooseCurrency");
-    setIsAppOpened(false);
-    setScannedAccounts([]);
-    setCheckedAccountsIds([]);
-    setEditedNames({});
-    setErr(null);
-    setScanStatus("idle");
-    setReset(currenReset => currenReset + 1);
-  }, [
-    setStepId,
-    setIsAppOpened,
-    setScannedAccounts,
-    setCheckedAccountsIds,
-    setEditedNames,
-    setErr,
-    setScanStatus,
-    setReset,
-  ]);
-
-  const onHide = useCallback(() => {
-    setStepId("chooseCurrency");
-    setIsAppOpened(false);
-    setScannedAccounts([]);
-    setCheckedAccountsIds([]);
-    setEditedNames({});
-    setErr(null);
-    setScanStatus("idle");
-    setReset(0);
-  }, [
-    setStepId,
-    setIsAppOpened,
-    setScannedAccounts,
-    setCheckedAccountsIds,
-    setEditedNames,
-    setErr,
-    setScanStatus,
-    setReset,
-  ]);
-
-  const stepperProps = {
-    currency,
-    device,
-    existingAccounts,
-    scannedAccounts,
-    checkedAccountsIds,
-    scanStatus,
-    err,
-    isAppOpened,
-    onClickAdd: handleClickAdd,
-    onCloseModal: handleCloseModal,
-    setScanStatus: handleSetScanStatus,
-    setCurrency: handleSetCurrency,
-    setScannedAccounts: handleSetScannedAccounts,
-    resetScanState: handleResetScanState,
-    setAppOpened: handleSetAppOpened,
-    setAccountName: handleSetAccountName,
-    onGoStep1: onGoStep1,
-    editedNames,
-  };
-
-  const title = t("addAccounts.title");
-
-  const errorSteps = err ? [2] : [];
-
-  return (
-    <Modal
-      centered
-      name="MODAL_ADD_ACCOUNTS"
-      refocusWhenChange={stepId}
-      onHide={onHide}
-      onBeforeOpen={handleBeforeOpen}
-      preventBackdropClick={stepId === "import"}
-      render={({ onClose }) => (
-        <Stepper
-          key={reset}
-          title={title}
-          initialStepId="chooseCurrency"
-          onStepChange={handleStepChange}
-          onClose={onClose}
-          steps={steps}
-          errorSteps={errorSteps}
-          {...stepperProps}
-        >
-          <Track onUnmount event="CloseModalAddAccounts" />
-          <SyncSkipUnderPriority priority={100} />
-        </Stepper>
-      )}
-    />
-  );
+const mapDispatchToProps = {
+  replaceAccounts,
+  closeModal,
 };
 
-export default AddAccounts;
+const INITIAL_STATE = {
+  stepId: "chooseCurrency",
+  isAppOpened: false,
+  currency: null,
+  scannedAccounts: [],
+  checkedAccountsIds: [],
+  editedNames: {},
+  err: null,
+  scanStatus: "idle",
+  reset: 0,
+};
+
+class AddAccounts extends PureComponent<Props, State> {
+  state = INITIAL_STATE;
+  STEPS = createSteps();
+
+  handleClickAdd = async () => {
+    const { replaceAccounts, existingAccounts } = this.props;
+    const { scannedAccounts, checkedAccountsIds, editedNames } = this.state;
+    replaceAccounts(
+      addAccounts({
+        scannedAccounts,
+        existingAccounts,
+        selectedIds: checkedAccountsIds,
+        renamings: editedNames,
+      }),
+    );
+  };
+
+  handleCloseModal = () => this.props.closeModal("MODAL_ADD_ACCOUNTS");
+  handleStepChange = (step: Step) => this.setState({ stepId: step.id });
+
+  handleSetCurrency = (currency: ?CryptoCurrency) => this.setState({ currency });
+
+  handleSetScanStatus = (scanStatus: string, err: ?Error = null) => {
+    if (err) {
+      logger.critical(err);
+    }
+    this.setState({ scanStatus, err });
+  };
+
+  handleSetAccountName = (account: Account, name: string) => {
+    this.setState(({ editedNames }) => ({
+      editedNames: { ...editedNames, [account.id]: name },
+    }));
+  };
+
+  handleSetScannedAccounts = ({
+    checkedAccountsIds,
+    scannedAccounts,
+  }: {
+    checkedAccountsIds: string[],
+    scannedAccounts: Account[],
+  }) => {
+    this.setState({
+      // $FlowFixMe
+      ...(checkedAccountsIds ? { checkedAccountsIds } : {}),
+      ...(scannedAccounts ? { scannedAccounts } : {}),
+    });
+  };
+
+  handleResetScanState = () => {
+    this.setState({
+      isAppOpened: false,
+      scanStatus: "idle",
+      err: null,
+      scannedAccounts: [],
+      checkedAccountsIds: [],
+    });
+  };
+
+  handleSetAppOpened = (isAppOpened: boolean) => this.setState({ isAppOpened });
+
+  handleBeforeOpen = ({ data }) => {
+    const { currency } = this.state;
+
+    if (!currency) {
+      if (data && data.currency) {
+        this.setState({
+          currency: data.currency,
+        });
+      }
+    }
+  };
+
+  onGoStep1 = () => {
+    this.setState(({ reset }) => ({ ...INITIAL_STATE, reset: reset + 1 }));
+  };
+
+  render() {
+    const { device, existingAccounts } = this.props;
+    const {
+      stepId,
+      currency,
+      isAppOpened,
+      scannedAccounts,
+      checkedAccountsIds,
+      scanStatus,
+      err,
+      editedNames,
+      reset,
+    } = this.state;
+
+    const stepperProps = {
+      currency,
+      device,
+      existingAccounts,
+      scannedAccounts,
+      checkedAccountsIds,
+      scanStatus,
+      err,
+      isAppOpened,
+      onClickAdd: this.handleClickAdd,
+      onCloseModal: this.handleCloseModal,
+      setScanStatus: this.handleSetScanStatus,
+      setCurrency: this.handleSetCurrency,
+      setScannedAccounts: this.handleSetScannedAccounts,
+      resetScanState: this.handleResetScanState,
+      setAppOpened: this.handleSetAppOpened,
+      setAccountName: this.handleSetAccountName,
+      onGoStep1: this.onGoStep1,
+      editedNames,
+    };
+    const title = <Trans i18nKey="addAccounts.title" />;
+
+    const errorSteps = err ? [2] : [];
+
+    return (
+      <Modal
+        centered
+        name={"MODAL_ADD_ACCOUNTS"}
+        refocusWhenChange={stepId}
+        onHide={() => this.setState({ ...INITIAL_STATE })}
+        onBeforeOpen={this.handleBeforeOpen}
+        preventBackdropClick={stepId === "import"}
+        render={({ onClose }) => (
+          <Stepper
+            key={reset} // THIS IS A HACK because stepper is not controllable. FIXME
+            title={title}
+            initialStepId="chooseCurrency"
+            onStepChange={this.handleStepChange}
+            onClose={onClose}
+            steps={this.STEPS}
+            errorSteps={errorSteps}
+            {...stepperProps}
+          >
+            <Track onUnmount event="CloseModalAddAccounts" />
+            <SyncSkipUnderPriority priority={100} />
+          </Stepper>
+        )}
+      />
+    );
+  }
+}
+
+const m: React$ComponentType<{}> = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withTranslation(),
+)(AddAccounts);
+
+export default m;
