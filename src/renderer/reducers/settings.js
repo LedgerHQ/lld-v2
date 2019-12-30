@@ -10,13 +10,32 @@ import {
 } from "@ledgerhq/live-common/lib/currencies";
 import type { CryptoCurrency, Currency } from "@ledgerhq/live-common/lib/types";
 import { getEnv } from "@ledgerhq/live-common/lib/env";
-
-import { currencySettingsDefaults } from "./../../helpers/SettingsDefault";
-import { getSystemLocale } from "./../../helpers/systemLocale";
-import { getLanguages } from "./../../config/languages";
-
-import type { CurrencySettings } from "./../../types/common";
+import { getSystemLocale } from "~/helpers/systemLocale";
+import { getLanguages } from "~/config/languages";
+import type { CurrencySettings } from "~/types/common";
 import type { State } from ".";
+
+type ConfirmationDefaults = {
+  confirmationsNb: ?{
+    min: number,
+    def: number,
+    max: number,
+  },
+};
+
+export const currencySettingsDefaults = (c: Currency): ConfirmationDefaults => {
+  let confirmationsNb;
+  if (c.type === "CryptoCurrency") {
+    const { blockAvgTime } = c;
+    if (blockAvgTime) {
+      const def = Math.ceil((30 * 60) / blockAvgTime); // 30 min approx validation
+      confirmationsNb = { min: 1, def, max: 3 * def };
+    }
+  }
+  return {
+    confirmationsNb,
+  };
+};
 
 const bitcoin = getCryptoCurrencyById("bitcoin");
 const ethereum = getCryptoCurrencyById("ethereum");
@@ -247,7 +266,7 @@ type CSS = Selector<*, { currency: CryptoCurrency }, CurrencySettings>;
 
 export const currencyPropExtractor = (_: *, { currency }: *) => currency;
 
-// TODO drop (bad perf implication)
+// TODO: drop (bad perf implication)
 export const currencySettingsSelector: CSS = createSelector(
   storeSelector,
   currencyPropExtractor,

@@ -10,6 +10,7 @@ import type { Item } from "~/renderer/components/Pills";
 import Box from "~/renderer/components/Box";
 import SectionDisplay from "./sections/General";
 import SectionExperimental from "./sections/Experimental";
+import SectionCryptoAssets from "./sections/CryptoAssets";
 
 const getItems = (t: string => string): Item[] => [
   {
@@ -17,11 +18,11 @@ const getItems = (t: string => string): Item[] => [
     label: t("settings.tabs.display"),
     value: SectionDisplay,
   },
-  // {
-  //   key: "currencies",
-  //   label: t("settings.tabs.cryptoAssets"),
-  //   value: "SectionCryptoAssets",
-  // },
+  {
+    key: "currencies",
+    label: t("settings.tabs.cryptoAssets"),
+    value: SectionCryptoAssets,
+  },
   // {
   //   key: "accounts",
   //   label: t("settings.tabs.accounts"),
