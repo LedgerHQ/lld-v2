@@ -7,9 +7,9 @@ import { handleActions, createAction } from "redux-actions";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 import { listSupportedCurrencies } from "@ledgerhq/live-common/lib/currencies";
 
-import { urls } from "./../../config/urls";
-import network from "./../../network";
-import logger from "./../../logger/logger";
+import { urls } from "~/config/urls";
+import network from "~/network";
+import logger from "~/logger/logger";
 
 import type { State } from ".";
 

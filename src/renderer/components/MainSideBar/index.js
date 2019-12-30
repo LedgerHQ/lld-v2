@@ -177,7 +177,7 @@ const MainSideBar = () => {
 
   const collapsed = useSelector(sidebarCollapsedSelector);
   const noAccounts = useSelector(accountsSelector).length === 0;
-  const hasStarredAccounts = useSelector(starredAccountsSelector);
+  const hasStarredAccounts = useSelector(starredAccountsSelector).length > 0;
 
   const handleCollapse = useCallback(() => {
     dispatch(setSidebarCollapsed(!collapsed));

@@ -109,7 +109,7 @@ const Default = () => {
               <HSMStatusBanner />
               <TopBar />
 
-              <Main ref={ref} tabIndex={-1} full>
+              <Main ref={ref} tabIndex={-1}>
                 <Switch>
                   <Route path="/" exact component={Dashboard} />
                   <Route path="/settings" component={Settings} />
