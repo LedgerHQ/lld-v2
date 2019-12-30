@@ -54,7 +54,7 @@ export async function createMainWindow() {
     minHeight: MIN_HEIGHT,
     show: false,
     webPreferences: {
-      nodeIntegration: true,
+      ...defaultWindowOptions.webPreferences,
     },
   };
 
