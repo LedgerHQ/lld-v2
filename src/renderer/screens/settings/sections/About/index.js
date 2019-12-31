@@ -11,7 +11,7 @@ import {
   SettingsSectionBody as Body,
   SettingsSectionRow as Row,
 } from "../../SettingsSection";
-import RowItem from "./RowItem";
+import RowItem from "../../RowItem";
 import ReleaseNotesButton from "./ReleaseNotesButton";
 
 const SectionHelp = () => {

@@ -1,21 +1,22 @@
 // @flow
 
-import React, { Fragment, PureComponent } from "react";
-import styled from "styled-components";
+import React, { PureComponent } from "react";
 import { remote } from "electron";
+import styled from "styled-components";
 import { withTranslation } from "react-i18next";
 import logger from "~/logger";
+import type { T } from "~/types/common";
 import { hardReset } from "~/renderer/reset";
-import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
-import SyncSkipUnderPriority from "./SyncSkipUnderPriority";
+import ConfirmModal from "~/renderer/modals/ConfirmModal";
+import ResetFallbackModal from "~/renderer/modals/ResetFallbackModal";
+import SyncSkipUnderPriority from "~/renderer/components/SyncSkipUnderPriority";
 import Box from "~/renderer/components/Box";
 import Button from "~/renderer/components/Button";
-import ResetFallbackModal from "~/renderer/modals/ResetFallbackModal";
-import ConfirmModal from "~/renderer/modals/ConfirmModal";
 import IconTriangleWarning from "~/renderer/icons/TriangleWarning";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
 type Props = {
-  t: *,
+  t: T,
 };
 
 type State = {
@@ -51,7 +52,7 @@ class ResetButton extends PureComponent<Props, State> {
     const { opened, pending, fallbackOpened } = this.state;
 
     return (
-      <Fragment>
+      <>
         <Button small danger onClick={this.open} event="HardResetIntent">
           {t("common.reset")}
         </Button>
@@ -79,12 +80,12 @@ class ResetButton extends PureComponent<Props, State> {
         </ConfirmModal>
 
         <ResetFallbackModal isOpened={fallbackOpened} onClose={this.closeFallback} />
-      </Fragment>
+      </>
     );
   }
 }
 
-export const IconWrapperCircle: ThemedComponent<{}> = styled(Box)`
+export const IconWrapperCircle: ThemedComponent<{ color?: string }> = styled(Box)`
   width: 50px;
   height: 50px;
   border-radius: 50%;
