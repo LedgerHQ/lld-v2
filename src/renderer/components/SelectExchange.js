@@ -24,22 +24,23 @@ const getExchanges = (from: Currency, to: Currency) => {
   return promise;
 };
 
-class SelectExchange extends Component<
-  {
-    from: Currency,
-    to: Currency,
-    exchangeId: ?string,
-    onChange: (?Exchange) => void,
-    style?: *,
-    t: T,
-  },
-  {
-    prevFromTo: string,
-    exchanges: ?(Exchange[]),
-    error: ?Error,
-    isLoading: boolean,
-  },
-> {
+type Props = {
+  from: Currency,
+  to: Currency,
+  exchangeId: ?string,
+  onChange: (?Exchange) => void,
+  style?: *,
+  t: T,
+};
+
+type State = {
+  prevFromTo: string,
+  exchanges: ?(Exchange[]),
+  error: ?Error,
+  isLoading: boolean,
+};
+
+class SelectExchange extends Component<Props, State> {
   state = {
     prevFromTo: "",
     exchanges: null,
