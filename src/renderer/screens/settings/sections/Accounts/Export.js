@@ -18,7 +18,8 @@ const SectionExport = () => {
   const onModalOpen = useCallback(
     (e: SyntheticEvent<HTMLButtonElement>) => {
       e.preventDefault();
-      dispatch(openModal("MODAL_EXPORT_OPERATIONS"));
+      // TODO: ExportAccounts Modal
+      dispatch(openModal("MODAL_EXPORT_ACCOUNTS"));
     },
     [dispatch],
   );

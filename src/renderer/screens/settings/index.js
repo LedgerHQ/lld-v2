@@ -12,6 +12,7 @@ import SectionDisplay from "./sections/General";
 import SectionExperimental from "./sections/Experimental";
 import SectionCryptoAssets from "./sections/CryptoAssets";
 import SectionAccounts from "./sections/Accounts";
+import SectionAbout from "./sections/About";
 
 const getItems = (t: string => string): Item[] => [
   {
@@ -29,11 +30,11 @@ const getItems = (t: string => string): Item[] => [
     label: t("settings.tabs.accounts"),
     value: SectionAccounts,
   },
-  // {
-  //   key: "about",
-  //   label: t("settings.tabs.about"),
-  //   value: "SectionAbout",
-  // },
+  {
+    key: "about",
+    label: t("settings.tabs.about"),
+    value: SectionAbout,
+  },
   // {
   //   key: "help",
   //   label: t("settings.tabs.help"),
