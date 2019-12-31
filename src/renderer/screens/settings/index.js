@@ -11,6 +11,7 @@ import Box from "~/renderer/components/Box";
 import SectionDisplay from "./sections/General";
 import SectionExperimental from "./sections/Experimental";
 import SectionCryptoAssets from "./sections/CryptoAssets";
+import SectionAccounts from "./sections/Accounts";
 
 const getItems = (t: string => string): Item[] => [
   {
@@ -23,11 +24,11 @@ const getItems = (t: string => string): Item[] => [
     label: t("settings.tabs.cryptoAssets"),
     value: SectionCryptoAssets,
   },
-  // {
-  //   key: "accounts",
-  //   label: t("settings.tabs.accounts"),
-  //   value: "SectionAccounts",
-  // },
+  {
+    key: "accounts",
+    label: t("settings.tabs.accounts"),
+    value: SectionAccounts,
+  },
   // {
   //   key: "about",
   //   label: t("settings.tabs.about"),
