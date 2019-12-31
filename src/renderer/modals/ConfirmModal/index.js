@@ -3,7 +3,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-// import TrackPage from '~/analytics/TrackPage'
+import TrackPage from "~/renderer/analytics/TrackPage";
 import Button from "~/renderer/components/Button";
 import Box from "~/renderer/components/Box";
 import Modal from "~/renderer/components/Modal";
@@ -27,6 +27,7 @@ type Props = {
   centered?: boolean,
   children?: *,
   narrow?: boolean,
+  name?: string,
 };
 
 const ConfirmModal = ({
@@ -47,13 +48,14 @@ const ConfirmModal = ({
   centered,
   children,
   narrow,
+  name,
   ...props
 }: Props) => {
   const { t } = useTranslation();
   const realConfirmText = confirmText || t("common.confirm");
   const realCancelText = cancelText || t("common.cancel");
   return (
-    <Modal isOpened={isOpened} centered={centered} width={narrow && 380}>
+    <Modal name={name} isOpened={isOpened} centered={centered} width={narrow && 380}>
       <ModalBody
         {...props}
         preventBackdropClick={isLoading}
@@ -100,7 +102,7 @@ const ConfirmModal = ({
           </Box>
         )}
       />
-      {/* <TrackPage category="Modal" name={analyticsName} /> */}
+      <TrackPage category="Modal" name={analyticsName} />
     </Modal>
   );
 };

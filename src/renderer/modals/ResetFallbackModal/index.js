@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react";
-import { useTranslate } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import ConfirmModal from "~/renderer/modals/ConfirmModal";
 import { openUserDataFolderAndQuit } from "~/renderer/reset";
@@ -12,7 +12,7 @@ type Props = {
 };
 
 const ResetFallbackModal = ({ isOpened, onClose }: Props) => {
-  const t = useTranslate();
+  const { t } = useTranslation();
   return (
     <ConfirmModal
       analyticsName="ResetModalFallback"

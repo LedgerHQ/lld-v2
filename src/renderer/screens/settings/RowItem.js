@@ -4,7 +4,7 @@ import React, { useCallback } from "react";
 import { openURL } from "~/renderer/linking";
 import IconExternalLink from "~/renderer/icons/ExternalLink";
 import { Tabbable } from "~/renderer/components/Box";
-import { SettingsSectionRow } from "../../SettingsSection";
+import { SettingsSectionRow } from "./SettingsSection";
 
 type Props = {
   url: string,
