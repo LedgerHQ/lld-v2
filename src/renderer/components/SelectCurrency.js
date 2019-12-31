@@ -18,14 +18,24 @@ type Props = {
   onChange: (?Currency) => void,
   currencies?: Currency[],
   value?: Currency,
-  placeholder: string,
+  placeholder?: string,
   autoFocus?: boolean,
+  minWidth?: number,
+  width?: number,
 };
 
 const getOptionValue = c => c.id;
 
 // TODO: I removed the {...props} that was passed to Select. We might need to check out it doesnt break other stuff
-const SelectCurrency = ({ onChange, value, placeholder, currencies, autoFocus }: Props) => {
+const SelectCurrency = ({
+  onChange,
+  value,
+  placeholder,
+  currencies,
+  autoFocus,
+  minWidth,
+  width,
+}: Props) => {
   const { t } = useTranslation();
   const devMode = useEnv("MANAGER_DEV_MODE");
   let c =
@@ -75,6 +85,8 @@ const SelectCurrency = ({ onChange, value, placeholder, currencies, autoFocus }:
       placeholder={placeholder || t("common.selectCurrency")}
       noOptionsMessage={noOptionsMessage}
       onChange={onChangeCallback}
+      minWidth={minWidth}
+      width={width}
     />
   );
 };
