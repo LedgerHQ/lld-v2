@@ -26,9 +26,9 @@ const cleanUpBeforeClosingSync = () => {
   rimraf.sync(path.resolve(LEDGER_CONFIG_DIRECTORY, "sqlite/*.log"));
 };
 
-const handleExit = (worker: cluster$Worker, code, signal) => {
-  const { process } = worker;
-  console.log(`worker ${process && process.pid} died with error code ${code} and signal ${signal}`);
+const handleExit = (worker: ?cluster$Worker, code, signal) => {
+  const pid = String(worker);
+  console.log(`worker ${pid} died with error code ${code} and signal ${signal}`);
   logger.warn(`Internal process ended with code ${code}`);
   internalProcess = null;
 };
@@ -131,8 +131,7 @@ function handleGlobalInternalMessage(payload) {
       logger.onLog(payload.log);
       break;
     case "setLibcoreBusy":
-    case "setDeviceBusy":
-    case "executeHttpQueryOnRenderer": {
+    case "setDeviceBusy": {
       const win = getMainWindow && getMainWindow();
       if (!win) {
         logger.warn(`can't ${payload.type} because no renderer`);
@@ -144,12 +143,6 @@ function handleGlobalInternalMessage(payload) {
     default:
   }
 }
-
-ipcMain.on("executeHttpQueryPayload", (event, payload) => {
-  const p = internalProcess;
-  if (!p) return;
-  p.send({ type: "executeHttpQueryPayload", payload });
-});
 
 // FIXME this should be a done with a env instead.
 /*

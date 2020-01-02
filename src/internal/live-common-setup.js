@@ -3,6 +3,7 @@ import "~/live-common-setup";
 import "./implement-libcore";
 
 import { throwError } from "rxjs";
+import usbDetect from "usb-detection";
 import throttle from "lodash/throttle";
 import "@ledgerhq/live-common/lib/load/tokens/ethereum/erc20";
 import { registerTransportModule } from "@ledgerhq/live-common/lib/hw";
@@ -76,4 +77,10 @@ if (getEnv("DEVICE_PROXY_URL")) {
     open: devicePath => retry(() => TransportNodeHidSingleton.open(), { maxRetry: 4 }),
     disconnect: () => Promise.resolve(),
   });
+}
+
+export function unsubscribeSetup() {
+  TransportNodeHidSingleton.disconnect();
+  // TODO to be done on the transport side as part of listen() unsubscribe
+  usbDetect.stopMonitoring();
 }

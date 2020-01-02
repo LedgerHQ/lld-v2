@@ -1,5 +1,5 @@
 // @flow
-import "./live-common-setup";
+import { unsubscribeSetup } from "./live-common-setup";
 
 import { serializeError } from "@ledgerhq/errors";
 import { getCurrencyBridge } from "@ledgerhq/live-common/lib/bridge";
@@ -8,7 +8,13 @@ import { log } from "@ledgerhq/logs";
 import logger from "~/logger";
 import LoggerTransport from "~/logger/logger-transport-internal";
 
-import { executeCommand, unsubscribeCommand } from "./commandHandler";
+import { executeCommand, unsubscribeCommand, unsubscribeAllCommands } from "./commandHandler";
+
+process.on("exit", () => {
+  logger.debug("exiting process, unsubscribing all...");
+  unsubscribeSetup();
+  unsubscribeAllCommands();
+});
 
 // import uuid from 'uuid/v4'
 // import sentry from '~/sentry/node'

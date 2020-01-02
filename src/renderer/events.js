@@ -1,8 +1,6 @@
 // @flow
-import path from "path";
 import { ipcRenderer } from "electron";
 import debug from "debug";
-import network from "~/network";
 import db from "~/helpers/db";
 import { CHECK_UPDATE_DELAY, DISABLE_ACTIVITY_INDICATORS } from "../config/constants";
 import { killInternalProcess } from "./reset";
@@ -32,17 +30,6 @@ export default ({ store }: { store: Object }) => {
     }
   });
 
-  ipcRenderer.on("executeHttpQueryOnRenderer", (event: any, { networkArg, id }) => {
-    network(networkArg).then(
-      result => {
-        ipcRenderer.send("executeHttpQueryPayload", { type: "success", id, result });
-      },
-      error => {
-        ipcRenderer.send("executeHttpQueryPayload", { type: "error", id, error });
-      },
-    );
-  });
-
   if (!DISABLE_ACTIVITY_INDICATORS) {
     ipcRenderer.on("setLibcoreBusy", (event: any, { busy }) => {
       onSetLibcoreBusy(busy);
@@ -53,12 +40,6 @@ export default ({ store }: { store: Object }) => {
     });
   }
 };
-
-if (module.hot) {
-  module.hot.accept(path.resolve(__dirname, "..", "commands"), () => {
-    killInternalProcess();
-  });
-}
 
 export function checkUpdates() {
   d.update("Update - check");
