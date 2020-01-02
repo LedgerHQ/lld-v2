@@ -1,4 +1,4 @@
 package.json
 test-e2e/**/*.json
-src/generated
+src/renderer/generated
 analytics.min.js

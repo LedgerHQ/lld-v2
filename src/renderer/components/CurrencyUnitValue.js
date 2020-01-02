@@ -6,7 +6,7 @@ import { formatCurrencyUnit } from "@ledgerhq/live-common/lib/currencies";
 import { localeSelector } from "~/renderer/reducers/settings";
 
 type RestProps = {
-  showCode: boolean,
+  showCode?: boolean,
   alwaysShowSign?: boolean,
 };
 
