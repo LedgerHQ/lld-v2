@@ -61,7 +61,7 @@ const ExportLogsBtn = ({ hookToShortcut }: Props) => {
     if (path) {
       const logs = await queryLogs();
       const json = JSON.stringify(logs);
-      await writeToFile(path, json);
+      await writeToFile(path.filePath, json);
     }
   }, []);
 
