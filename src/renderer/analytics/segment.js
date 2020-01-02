@@ -15,7 +15,6 @@ import type { State } from "~/renderer/reducers";
 
 // load analytics
 import "./inject-in-window";
-import "./analytics.min.js";
 
 invariant(typeof window !== "undefined", "analytics/segment must be called on renderer thread");
 
