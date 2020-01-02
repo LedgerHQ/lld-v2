@@ -400,6 +400,55 @@
     "noMoreOperations": "That's all"
   },
   "manager": {
+    "device": {
+      "title": "Connect your device",
+      "desc": "Follow the steps below to open the Manager",
+      "cta": "Connect my device"
+    },
+    "tabs": {
+      "appCatalog": "App Catalog",
+      "appsOnDevice": "Apps Installed"
+    },
+    "deviceStorage": {
+      "freeSpace": "{{space}} free",
+      "installed": "Installed",
+      "capacity": "Capacity",
+      "used": "Used",
+      "firmware": "Firmware {{version}}",
+      "genuine": "Device is genuine"
+    },
+    "applist": {
+      "placeholder": "There are no apps matching the search and filters selected",
+      "placeholderInstalled": "There are no installed apps matching the search and filters selected",
+      "filter": {
+        "title": "Filter",
+        "all": "All",
+        "supported": "Live Supported",
+        "installed": "Installed",
+        "notInstalled": "Not Installed"
+      },
+      "sort": {
+        "title": "Sort",
+        "name": "Name",
+        "marketcap": "Marketcap"
+      },
+      "updatable": {
+        "title": "Updates available"
+      },
+      "item": {
+        "installing": "Installing...",
+        "uninstalling": "Uninstalling...",
+        "scheduled": "Scheduled",
+        "cancel": "Cancel",
+        "update": "Update",
+        "updateAll": "Update All",
+        "install": "Install",
+        "installed": "Installed",
+        "uninstall": "Uninstall",
+        "notEnoughSpace": "Not enough space",
+        "supported": "Supported"
+      }
+    },
     "yourDeviceIsGenuine": "Your device is genuine",
     "goToAccounts": "Go to accounts",
     "intallEthApp": "Install Ethereum app",
@@ -482,12 +531,7 @@
       }
     },
     "title": "Manager",
-    "subtitle": "Install or uninstall apps on your device",
-    "device": {
-      "title": "Connect your device",
-      "desc": "Follow the steps below to open the Manager",
-      "cta": "Connect my device"
-    }
+    "subtitle": "Install or uninstall apps on your device"
   },
   "receive": {
     "title": "Receive",
