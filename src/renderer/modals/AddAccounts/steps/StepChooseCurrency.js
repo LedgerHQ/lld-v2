@@ -57,7 +57,7 @@ const StepChooseCurrency = ({ currency, setCurrency }: StepProps) => {
 export const StepChooseCurrencyFooter = ({ transitionTo, currency }: StepProps) => {
   const { t } = useTranslation();
   return (
-    <Box horizontal alignItems="center" justifyContent="flex-end" flow={2}>
+    <>
       <TrackPage category="AddAccounts" name="Step1" />
       {currency && <CurrencyBadge mr="auto" currency={currency} />}
       {currency && currency.type === "TokenCurrency" ? (
@@ -72,7 +72,7 @@ export const StepChooseCurrencyFooter = ({ transitionTo, currency }: StepProps) 
           {t("common.continue")}
         </Button>
       )}
-    </Box>
+    </>
   );
 };
 

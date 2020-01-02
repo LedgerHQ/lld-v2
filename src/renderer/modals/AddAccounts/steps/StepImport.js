@@ -345,17 +345,15 @@ export const StepImportFooter = ({
 
   return (
     <>
-      {currency && <CurrencyBadge mr="auto" currency={currency} />}
+      <Box grow>{currency && <CurrencyBadge currency={currency} />}</Box>
       {scanStatus === "error" && (
         <>
-          <ExternalLinkButton mr={2} label={t("common.getSupport")} url={urls.faq} />
+          <ExternalLinkButton label={t("common.getSupport")} url={urls.faq} />
           <RetryButton primary onClick={() => setScanStatus("scanning")} />
         </>
       )}
       {scanStatus === "scanning" && (
-        <Button mr={2} onClick={() => setScanStatus("finished")}>
-          {t("common.stop")}
-        </Button>
+        <Button onClick={() => setScanStatus("finished")}>{t("common.stop")}</Button>
       )}
       {scanStatus !== "error" && (
         <Button primary disabled={scanStatus !== "finished"} onClick={onClick}>
