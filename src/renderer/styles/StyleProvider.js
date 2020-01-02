@@ -17,7 +17,7 @@ type Props = {
 export type ThemedComponent<T> = StyledComponent<T, Theme, *>;
 
 const StyleProvider = ({ children }: Props) => {
-  const selectedPalette = useSelector(themeSelector);
+  const selectedPalette = useSelector(themeSelector) || "light";
 
   const theme: Theme = useMemo(
     () => ({
