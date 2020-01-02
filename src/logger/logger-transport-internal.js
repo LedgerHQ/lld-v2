@@ -6,10 +6,12 @@ export default class InternalTransport extends Transport {
       this.emit("logged", info);
     });
 
-    process.send({
-      type: "log",
-      log: info,
-    });
+    try {
+      process.send({
+        type: "log",
+        log: info,
+      });
+    } catch (e) {}
 
     callback();
   }
