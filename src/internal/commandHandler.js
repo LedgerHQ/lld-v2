@@ -1,6 +1,5 @@
 // @flow
 import { serializeError } from "@ledgerhq/errors";
-
 import { commandsById } from "./commands";
 import logger from "../logger";
 
@@ -46,5 +45,14 @@ export function unsubscribeCommand(requestId: string) {
   if (sub) {
     sub.unsubscribe();
     delete subscriptions[requestId];
+  }
+}
+
+export function unsubscribeAllCommands() {
+  for (const k in subscriptions) {
+    logger.debug("unsubscribeAllCommands: unsubscribe " + k);
+    const sub = subscriptions[k];
+    sub.unsubscribe();
+    delete subscriptions[k];
   }
 }
