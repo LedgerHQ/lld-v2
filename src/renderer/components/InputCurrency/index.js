@@ -37,20 +37,26 @@ function stopPropagation(e) {
 }
 
 type OwnProps = {
-  onChangeFocus: boolean => void,
+  onChangeFocus?: boolean => void,
   onChange: (BigNumber, Unit) => void, // FIXME Unit shouldn't be provided (this is not "standard" onChange)
-  onChangeUnit: Unit => void,
+  onChangeUnit?: Unit => void,
   renderRight: any,
-  unit: Unit,
-  units: Unit[],
+  defaultUnit?: Unit,
+  unit?: Unit,
+  units?: Unit[],
   value: ?BigNumber,
   showAllDigits?: boolean,
-  subMagnitude: number,
-  allowZero: boolean,
+  subMagnitude?: number,
+  allowZero?: boolean,
   disabled?: boolean,
 };
 
-type Props = OwnProps & {
+type Props = {
+  ...OwnProps,
+  unit: Unit,
+  units: Unit[],
+  onChangeFocus: boolean => void,
+  onChangeUnit: Unit => void,
   locale: string,
   forwardedRef: ?ElementRef<any>,
 };

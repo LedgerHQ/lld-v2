@@ -108,3 +108,5 @@ dist
 
 # Don't Ignore
 !jsconfig.json
+
+src/renderer/generated/
