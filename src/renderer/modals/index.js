@@ -5,6 +5,7 @@ import MODAL_CONFIRM from "./ConfirmModal";
 import MODAL_PASSWORD from "./PasswordModal";
 import MODAL_DISABLE_PASSWORD from "./DisablePasswordModal";
 import MODAL_ADD_ACCOUNTS from "./AddAccounts";
+import MODAL_RECEIVE from "./Receive";
 
 const modals: { [_: string]: React$ComponentType<any> } = {
   MODAL_EXPORT_OPERATIONS,
@@ -12,6 +13,7 @@ const modals: { [_: string]: React$ComponentType<any> } = {
   MODAL_PASSWORD,
   MODAL_DISABLE_PASSWORD,
   MODAL_ADD_ACCOUNTS,
+  MODAL_RECEIVE,
 };
 
 export default modals;
