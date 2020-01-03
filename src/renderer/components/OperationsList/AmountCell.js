@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { getOperationAmountNumber } from "@ledgerhq/live-common/lib/operation";
 import type { Currency, Unit, Operation } from "@ledgerhq/live-common/lib/types";
 import Box from "~/renderer/components/Box";
-// import CounterValue from "~/renderer/components/CounterValues";
+import CounterValue from "~/renderer/components/CounterValue";
 import FormattedVal from "~/renderer/components/FormattedVal";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
@@ -42,16 +42,14 @@ class AmountCell extends PureComponent<Props> {
           alwaysShowSign
           color={amount.isNegative() ? "palette.text.shade80" : undefined}
         />
-        {
-          //         <CounterValue
-          //           color="palette.text.shade60"
-          //           fontSize={3}
-          //           alwaysShowSign
-          //           date={operation.date}
-          //           currency={currency}
-          //           value={amount}
-          //         />
-        }
+        <CounterValue
+          color="palette.text.shade60"
+          fontSize={3}
+          alwaysShowSign
+          date={operation.date}
+          currency={currency}
+          value={amount}
+        />
       </Cell>
     );
   }

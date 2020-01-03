@@ -49,9 +49,19 @@ type Props = {
   content: React$Node,
   delay?: number,
   followCursor?: boolean,
+  enabled?: boolean,
+  placement?: string,
 };
 
-const ToolTip = ({ followCursor, tooltipBg, children, content, delay, ...props }: Props) => {
+const ToolTip = ({
+  followCursor,
+  tooltipBg,
+  children,
+  content,
+  delay,
+  enabled,
+  placement,
+}: Props) => {
   const colors = useTheme("colors");
 
   const bg = tooltipBg ? get(colors, tooltipBg, tooltipBg) : colors.palette.text.shade100;
@@ -63,6 +73,8 @@ const ToolTip = ({ followCursor, tooltipBg, children, content, delay, ...props }
       delay={[delay, 0]}
       arrow={content ? arrow(bg) : null}
       followCursor={followCursor}
+      enabled={enabled}
+      placement={placement}
     >
       <ChildrenContainer>{children}</ChildrenContainer>
     </Tippy>

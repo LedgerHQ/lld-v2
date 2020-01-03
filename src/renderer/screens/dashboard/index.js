@@ -15,6 +15,7 @@ import TrackPage from "~/renderer/analytics/TrackPage";
 import RefreshAccountsOrdering from "~/renderer/components/RefreshAccountsOrdering";
 // import StickyBackToTop from "~/renderer/components/StickyBackToTop";
 import OperationsList from "~/renderer/components/OperationsList";
+import AssetDistribution from "~/renderer/components/AssetDistribution";
 
 // TODO: REMOVE WHEN DONE
 import { useSelector } from "react-redux";
@@ -108,9 +109,7 @@ const DashboardPage = ({ push, saveSettings }: Props) => {
               //               selectedTimeRange={selectedTimeRange}
               //             />
             }
-            {
-              //             <AssetDistribution />
-            }
+            <AssetDistribution />
             {totalOperations > 0 && (
               <OperationsList
                 onAccountClick={onAccountClick}
