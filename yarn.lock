@@ -1253,10 +1253,15 @@
     rxjs-compat "^6.5.4"
     sha.js "^2.4.11"
 
-"@ledgerhq/logs@5.2.0", "@ledgerhq/logs@^5.2.0":
+"@ledgerhq/logs@5.2.0":
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-5.2.0.tgz#def70372cb069d806424ee25f5e9c9accd0a9bec"
   integrity sha512-EKB/xVFwMbRDA7Z56vBhxZiTl0NCXBGYmo9PrNCptlTCFlE7qx1UMgAaghtTJfIiQb/M5/dsBe4/ElnP5o/0Fg==
+
+"@ledgerhq/logs@^5.2.0", "@ledgerhq/logs@^5.3.0":
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-5.3.0.tgz#499e5b8c262204cf3712272eab848131db0a6870"
+  integrity sha512-OeCSsXM6WuFLpNI4s9Lr69xwb/blmE4K67AlFTPRW6Xc4miXXqRVn0YmEkEi/4h7iS/3Aq24cytZawBzr+evdw==
 
 "@octokit/endpoint@^5.5.0":
   version "5.5.1"
