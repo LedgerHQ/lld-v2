@@ -224,8 +224,8 @@ const Connected = uncontrollable(
   },
 );
 
-const module: React$ComponentType<OwnProps> = React.forwardRef(function InputCurrency(props, ref) {
+const m: React$ComponentType<OwnProps> = React.forwardRef(function InputCurrency(props, ref) {
   return <Connected {...props} forwardedRef={ref} />;
 });
 
-export default module;
+export default m;

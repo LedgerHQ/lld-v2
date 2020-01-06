@@ -2,7 +2,7 @@
 import React, { useCallback } from "react";
 import invariant from "invariant";
 import { BigNumber } from "bignumber.js";
-import { Trans, translate } from "react-i18next";
+import { Trans, withTranslation } from "react-i18next";
 import type { Account, Transaction } from "@ledgerhq/live-common/lib/types";
 import { getAccountBridge } from "@ledgerhq/live-common/lib/bridge";
 import Box from "~/renderer/components/Box";
@@ -62,6 +62,6 @@ const TagField = ({ onChange, account, transaction, t }: Props) => {
 };
 
 export default {
-  component: translate()(TagField),
+  component: withTranslation()(TagField),
   fields: ["tag"],
 };

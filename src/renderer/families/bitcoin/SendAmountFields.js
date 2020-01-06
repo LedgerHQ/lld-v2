@@ -4,7 +4,7 @@ import invariant from "invariant";
 import React, { useRef, useCallback, useMemo, useState } from "react";
 import { BigNumber } from "bignumber.js";
 import styled from "styled-components";
-import { Trans, translate } from "react-i18next";
+import { Trans, withTranslation } from "react-i18next";
 import last from "lodash/last";
 import type { Account, Transaction, TransactionStatus } from "@ledgerhq/live-common/lib/types";
 import { getAccountBridge } from "@ledgerhq/live-common/lib/bridge";
@@ -126,6 +126,6 @@ const FeesField = ({ transaction, account, onChange, status }: Props) => {
 };
 
 export default {
-  component: translate()(FeesField),
+  component: withTranslation()(FeesField),
   fields: ["feePerByte"],
 };

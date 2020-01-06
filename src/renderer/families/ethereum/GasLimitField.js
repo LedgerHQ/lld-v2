@@ -2,7 +2,7 @@
 import invariant from "invariant";
 import React, { useCallback } from "react";
 import { BigNumber } from "bignumber.js";
-import { Trans, translate } from "react-i18next";
+import { Trans, withTranslation } from "react-i18next";
 import type { Account, TransactionStatus } from "@ledgerhq/live-common/lib/types";
 import type { Transaction } from "@ledgerhq/live-common/lib/families/ethereum/types";
 import { getGasLimit } from "@ledgerhq/live-common/lib/families/ethereum/transaction";
@@ -60,4 +60,4 @@ const AdvancedOptions = ({ onChange, account, transaction, status }: Props) => {
   );
 };
 
-export default translate()(AdvancedOptions);
+export default withTranslation()(AdvancedOptions);

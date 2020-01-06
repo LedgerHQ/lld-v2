@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react";
-import { Trans, translate } from "react-i18next";
+import { Trans, withTranslation } from "react-i18next";
 import styled from "styled-components";
 import { getAccountUnit, getMainAccount } from "@ledgerhq/live-common/lib/account";
 import type {
@@ -122,4 +122,4 @@ const TransactionConfirm = ({ t, device, account, parentAccount, transaction, st
   );
 };
 
-export default translate()(TransactionConfirm);
+export default withTranslation()(TransactionConfirm);

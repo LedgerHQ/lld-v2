@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 
 import { openURL } from "~/renderer/linking";
 import Box from "~/renderer/components/Box";
@@ -9,7 +9,7 @@ import LabelWithExternalIcon from "~/renderer/components/LabelWithExternalIcon";
 import { urls } from "~/config/urls";
 import { track } from "~/renderer/analytics/segment";
 
-export default translate()(
+export default withTranslation()(
   ({
     children,
     header,
