@@ -2,11 +2,13 @@
 import React, { useCallback, useMemo } from "react";
 import Box from "~/renderer/components/Box";
 import { accountsSelector } from "~/renderer/reducers/accounts";
+import BalanceSummary from "~/renderer/components/BalanceSummary";
+import { colors } from "~/renderer/styles/theme";
 
-// import {
-//   counterValueCurrencySelector,
-//   selectedTimeRangeSelector,
-// } from "~/renderer/reducers/settings";
+import {
+  counterValueCurrencySelector,
+  selectedTimeRangeSelector,
+} from "~/renderer/reducers/settings";
 
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
@@ -16,6 +18,7 @@ import RefreshAccountsOrdering from "~/renderer/components/RefreshAccountsOrderi
 // import StickyBackToTop from "~/renderer/components/StickyBackToTop";
 import OperationsList from "~/renderer/components/OperationsList";
 import AssetDistribution from "~/renderer/components/AssetDistribution";
+import BalanceInfos from "~/renderer/components/BalanceInfos";
 
 // TODO: REMOVE WHEN DONE
 import { useSelector } from "react-redux";
@@ -48,8 +51,8 @@ type Props = {
 const DashboardPage = ({ push, saveSettings }: Props) => {
   const { t } = useTranslation();
   const accounts = useSelector(accountsSelector);
-  //  const counterValue = useSelector(counterValueCurrencySelector);
-  //  const selectedTimeRange = useSelector(selectedTimeRangeSelector);
+  const counterValue = useSelector(counterValueCurrencySelector);
+  const selectedTimeRange = useSelector(selectedTimeRangeSelector);
   const totalAccounts = accounts.length;
   const totalCurrencies = useMemo(() => uniq(accounts.map(a => a.currency.id)).length, [accounts]);
   const totalOperations = useMemo(() => accounts.reduce((sum, a) => sum + a.operations.length, 0), [
@@ -58,25 +61,25 @@ const DashboardPage = ({ push, saveSettings }: Props) => {
 
   const onAccountClick = useCallback(account => push(`/account/${account.id}`), [push]);
 
-  //   const handleChangeSelectedTime = useCallback(
-  //     item => saveSettings({ selectedTimeRange: item.key }),
-  //     [saveSettings],
-  //   );
+  const handleChangeSelectedTime = useCallback(
+    item => saveSettings({ selectedTimeRange: item.key }),
+    [saveSettings],
+  );
 
-  // const Header = useCallback(
-  //     ({ portfolio }) => (
-  //       <BalanceInfos
-  //         t={t}
-  //         unit={counterValue.units[0]}
-  //         isAvailable={portfolio.balanceAvailable}
-  //         since={selectedTimeRange}
-  //         valueChange={portfolio.countervalueChange}
-  //         totalBalance={portfolio.balanceHistory[portfolio.balanceHistory.length - 1].value}
-  //         handleChangeSelectedTime={handleChangeSelectedTime}
-  //       />
-  //     ),
-  //     [t, counterValue.units, selectedTimeRange, handleChangeSelectedTime],
-  //   );
+  const Header = useCallback(
+    ({ portfolio }) => (
+      <BalanceInfos
+        t={t}
+        unit={counterValue.units[0]}
+        isAvailable={portfolio.balanceAvailable}
+        since={selectedTimeRange}
+        valueChange={portfolio.countervalueChange}
+        totalBalance={portfolio.balanceHistory[portfolio.balanceHistory.length - 1].value}
+        handleChangeSelectedTime={handleChangeSelectedTime}
+      />
+    ),
+    [t, counterValue.units, selectedTimeRange, handleChangeSelectedTime],
+  );
 
   return (
     <>
@@ -97,18 +100,16 @@ const DashboardPage = ({ push, saveSettings }: Props) => {
       <Box flow={7}>
         {totalAccounts > 0 ? (
           <>
-            {
-              //             <BalanceSummary
-              //               counterValue={counterValue}
-              //               chartId="dashboard-chart"
-              //               chartColor={colors.wallet}
-              //               accounts={accounts}
-              //               range={selectedTimeRange}
-              //               Header={Header}
-              //               handleChangeSelectedTime={handleChangeSelectedTime}
-              //               selectedTimeRange={selectedTimeRange}
-              //             />
-            }
+            <BalanceSummary
+              counterValue={counterValue}
+              chartId="dashboard-chart"
+              chartColor={colors.wallet}
+              accounts={accounts}
+              range={selectedTimeRange}
+              Header={Header}
+              handleChangeSelectedTime={handleChangeSelectedTime}
+              selectedTimeRange={selectedTimeRange}
+            />
             <AssetDistribution />
             {totalOperations > 0 && (
               <OperationsList

@@ -5,7 +5,7 @@
 
 import React, { PureComponent, Fragment } from "react";
 import styled from "styled-components";
-import { Spring, animated } from "react-spring";
+import { Spring, animated } from "react-spring/renderprops";
 
 import Box from "~/renderer/components/Box";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
