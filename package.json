@@ -46,7 +46,7 @@
     "color": "^3.1.2",
     "d3": "^5.14.2",
     "dotenv": "^8.2.0",
-    "downshift": "^4.0.1",
+    "downshift": "^4.0.2",
     "electron-context-menu": "^0.15.2",
     "ethereumjs-tx": "^2.1.1",
     "fuse.js": "^3.4.6",
