@@ -1099,7 +1099,7 @@
   dependencies:
     commander "^2.20.0"
 
-"@ledgerhq/devices@5.2.0", "@ledgerhq/devices@^5.2.0":
+"@ledgerhq/devices@5.2.0":
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/@ledgerhq/devices/-/devices-5.2.0.tgz#1c3cc1e0241e0389242cbd36617770596b7f5187"
   integrity sha512-JGf6r5Qyj3ASaWNfayOUJoUDshJjJgXZrUT+czBYM6VjWssA2mOV+QRR/aX7xbcJo0u4APttUNO2zaTMJqFVHQ==
@@ -1107,6 +1107,15 @@
     "@ledgerhq/errors" "^5.2.0"
     "@ledgerhq/logs" "^5.2.0"
     rxjs "^6.5.3"
+
+"@ledgerhq/devices@^5.2.0", "@ledgerhq/devices@^5.3.0":
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/devices/-/devices-5.3.0.tgz#0d51296276822ec8dea61ffdb7bccf8738c4d3c9"
+  integrity sha512-rytxDnpotjqnP5PSjL3BKjLvu8mp1GUUmoRkfcPCO+LO0+Koxaqkrkdhgz6KwLlJMslYtDlTpeAVhychZ2VivQ==
+  dependencies:
+    "@ledgerhq/errors" "^5.3.0"
+    "@ledgerhq/logs" "^5.3.0"
+    rxjs "^6.5.4"
 
 "@ledgerhq/electron-updater@^3.3.1":
   version "3.3.1"
@@ -1124,10 +1133,15 @@
     semver "^5.6.0"
     source-map-support "^0.5.9"
 
-"@ledgerhq/errors@5.2.0", "@ledgerhq/errors@^5.2.0":
+"@ledgerhq/errors@5.2.0":
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/@ledgerhq/errors/-/errors-5.2.0.tgz#a6973d9d164e2ccb40834047821cda9a0924cdcc"
   integrity sha512-swkbHtx4q2qtiiNzX0+dtIYX9kE7cK3L2p74Kmh26l8HCrur64jm1B/hrKSxWDuE+ZIIBAGsBIeNHg83XbAr/g==
+
+"@ledgerhq/errors@^5.2.0", "@ledgerhq/errors@^5.3.0":
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/errors/-/errors-5.3.0.tgz#5af8afa7af5e2cd8f2e071f16a9a2972a77e7bc4"
+  integrity sha512-Sxd8xVjg5X6z3CaaLyh301fKQilH2wF2lEj0y+sD+ZnFp+yHVOXgRauwT0JJkSl6191iBJCcY+DsdoynY3oiEg==
 
 "@ledgerhq/hw-app-btc@5.2.0":
   version "5.2.0"
@@ -1253,10 +1267,15 @@
     rxjs-compat "^6.5.4"
     sha.js "^2.4.11"
 
-"@ledgerhq/logs@5.2.0", "@ledgerhq/logs@^5.2.0":
+"@ledgerhq/logs@5.2.0":
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-5.2.0.tgz#def70372cb069d806424ee25f5e9c9accd0a9bec"
   integrity sha512-EKB/xVFwMbRDA7Z56vBhxZiTl0NCXBGYmo9PrNCptlTCFlE7qx1UMgAaghtTJfIiQb/M5/dsBe4/ElnP5o/0Fg==
+
+"@ledgerhq/logs@^5.2.0", "@ledgerhq/logs@^5.3.0":
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-5.3.0.tgz#499e5b8c262204cf3712272eab848131db0a6870"
+  integrity sha512-OeCSsXM6WuFLpNI4s9Lr69xwb/blmE4K67AlFTPRW6Xc4miXXqRVn0YmEkEi/4h7iS/3Aq24cytZawBzr+evdw==
 
 "@octokit/endpoint@^5.5.0":
   version "5.5.1"
