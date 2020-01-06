@@ -8,6 +8,7 @@ import MODAL_ADD_ACCOUNTS from "./AddAccounts";
 import MODAL_RECEIVE from "./Receive";
 import MODAL_TERMS from "./Terms";
 import MODAL_SEND from "./Send";
+import MODAL_UPDATE_FIRMWARE from "./UpdateFirmwareModal";
 
 const modals: { [_: string]: React$ComponentType<any> } = {
   MODAL_EXPORT_OPERATIONS,
@@ -18,6 +19,7 @@ const modals: { [_: string]: React$ComponentType<any> } = {
   MODAL_RECEIVE,
   MODAL_TERMS,
   MODAL_SEND,
+  MODAL_UPDATE_FIRMWARE,
 };
 
 export default modals;

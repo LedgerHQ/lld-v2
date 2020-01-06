@@ -1,5 +1,5 @@
 // @flow
-import React, { Fragment, useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import ManagerConnect from "~/renderer/screens/manager/ManagerConnect";
 import HookDeviceChange from "~/renderer/screens/manager/HookDeviceChange";
 import Dashboard from "~/renderer/screens/manager/Dashboard";
@@ -20,10 +20,10 @@ const Manager = () => {
   }
 
   return (
-    <Fragment>
+    <>
       <HookDeviceChange onDeviceChanges={resetState} onDeviceDisconnected={resetState} />
       <Dashboard {...connectResult} />
-    </Fragment>
+    </>
   );
 };
 

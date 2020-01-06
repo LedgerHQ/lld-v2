@@ -10,7 +10,7 @@ jobs:
         with:
           node-version: 12.x
       - name: install linux dependencies
-        run: sudo apt-get install libudev-dev
+        run: sudo apt-get install libudev-dev libusb-1.0-0-dev
       - name: install dependencies
         run: |
           yarn --ignore-scripts
