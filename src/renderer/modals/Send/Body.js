@@ -21,6 +21,7 @@ import { updateAccountWithUpdater } from "~/renderer/actions/accounts";
 import { getCurrentDevice } from "~/renderer/reducers/devices";
 import Track from "~/renderer/analytics/Track";
 import { track } from "~/renderer/analytics/segment";
+import { useSignTransactionCallback } from "~/renderer/hooks/useSignTransaction";
 
 import type { Device } from "~/renderer/reducers/devices";
 import type { T } from "~/types/common";
@@ -219,67 +220,16 @@ const Body = ({
     [account, parentAccount, updateAccountWithUpdater],
   );
 
-  const handleSignTransaction = useCallback(
-    async ({ transitionTo }: { transitionTo: string => void }) => {
-      if (!account) return;
-      const mainAccount = getMainAccount(account, parentAccount);
-      const bridge = getAccountBridge(account, parentAccount);
-      if (!device) {
-        handleTransactionError(new DisconnectedDevice());
-        transitionTo("confirmation");
-        return;
-      }
-
-      invariant(account && transaction && bridge, "signTransaction invalid conditions");
-
-      const eventProps = {
-        currencyName: mainAccount.currency.name,
-        derivationMode: mainAccount.derivationMode,
-        freshAddressPath: mainAccount.freshAddressPath,
-        operationsLength: mainAccount.operations.length,
-      };
-      track("SendTransactionStart", eventProps);
-      signTransactionSubRef.current = bridge
-        .signAndBroadcast(mainAccount, transaction, device.path)
-        .subscribe({
-          next: e => {
-            switch (e.type) {
-              case "signed": {
-                track("SendTransactionSigned", eventProps);
-                setSigned(true);
-                transitionTo("confirmation");
-                break;
-              }
-              case "broadcasted": {
-                track("SendTransactionBroadcasted", eventProps);
-                handleOperationBroadcasted(e.operation);
-                break;
-              }
-              default:
-            }
-          },
-          error: err => {
-            if (err.statusCode === 0x6985) {
-              track("SendTransactionRefused", eventProps);
-              handleTransactionError(new UserRefusedOnDevice());
-              transitionTo("refused");
-            } else {
-              track("SendTransactionError", eventProps);
-              handleTransactionError(err);
-              transitionTo("confirmation");
-            }
-          },
-        });
-    },
-    [
-      device,
-      account,
-      parentAccount,
-      handleOperationBroadcasted,
-      transaction,
-      handleTransactionError,
-    ],
-  );
+  const handleSignTransaction = useSignTransactionCallback({
+    context: "Send",
+    device,
+    account,
+    parentAccount,
+    handleOperationBroadcasted,
+    transaction,
+    handleTransactionError,
+    setSigned,
+  });
 
   const handleStepChange = useCallback(e => onChangeStepId(e.id), [onChangeStepId]);
 

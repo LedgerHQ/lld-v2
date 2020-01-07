@@ -115,7 +115,6 @@
     "babel-loader": "^8.0.6",
     "babel-plugin-styled-components": "^1.10.6",
     "chalk": "^3.0.0",
-    "cli-progress": "^3.5.0",
     "css-loader": "^3.4.0",
     "electron": "6.1.7",
     "electron-builder": "^21.2.0",
