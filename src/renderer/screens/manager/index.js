@@ -47,7 +47,7 @@ const Manager = ({ device }: Props) => {
             <h2>Error</h2>
             <span>{error.message}</span>
           </div>
-        ) : listAppsRes ? (
+        ) : listAppsRes && deviceInfo ? (
           <div>
             <Dashboard device={device} deviceInfo={deviceInfo} listAppsRes={listAppsRes} />
           </div>
