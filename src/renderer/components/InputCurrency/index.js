@@ -144,7 +144,7 @@ class InputCurrency extends PureComponent<Props, State> {
     } = this.props;
     const { rawValue } = this.state;
     const value = rawValue
-      ? BigNumber(rawValue).times(BigNumber(10).pow(unit.magnitude))
+      ? BigNumber(sanitizeValueString(unit, rawValue, locale).value)
       : fallbackValue || "";
 
     this.setState({
@@ -224,8 +224,8 @@ const Connected = uncontrollable(
   },
 );
 
-const module: React$ComponentType<OwnProps> = React.forwardRef(function InputCurrency(props, ref) {
+const m: React$ComponentType<OwnProps> = React.forwardRef(function InputCurrency(props, ref) {
   return <Connected {...props} forwardedRef={ref} />;
 });
 
-export default module;
+export default m;

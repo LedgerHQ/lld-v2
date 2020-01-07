@@ -5,7 +5,7 @@ import invariant from "invariant";
 import { withTranslation } from "react-i18next";
 
 import { ModalBody } from "~/renderer/components/Modal";
-import Breadcrumb from "~/renderer/components/Breadcrumb";
+import Breadcrumb from "./Breadcrumb";
 
 export type StepProps = {
   t: *,
