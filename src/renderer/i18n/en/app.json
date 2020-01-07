@@ -429,8 +429,10 @@
       },
       "sort": {
         "title": "Sort",
-        "name": "Name",
-        "marketcap": "Marketcap"
+        "name_asc": "Name A-Z",
+        "name_desc": "Name Z-A",
+        "marketcap_asc": "Marketcap ASC",
+        "marketcap_desc": "Marketcap DESC"
       },
       "updatable": {
         "title": "Updates available"
