@@ -1,6 +1,7 @@
 // @flow
 
 import React from "react";
+import { connect } from "react-redux";
 import Transport from "@ledgerhq/hw-transport";
 import { NotEnoughBalance } from "@ledgerhq/errors";
 import { log } from "@ledgerhq/logs";
@@ -56,6 +57,7 @@ async function init() {
     React,
     log,
     Transport,
+    connect,
   });
 
   db.init(userDataDirectory);
