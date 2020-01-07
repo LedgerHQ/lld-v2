@@ -5,10 +5,8 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { createStructuredSelector } from "reselect";
 import { Trans, withTranslation } from "react-i18next";
-import invariant from "invariant";
-import { DisconnectedDevice, UserRefusedOnDevice } from "@ledgerhq/errors";
+import { UserRefusedOnDevice } from "@ledgerhq/errors";
 import { addPendingOperation, getMainAccount } from "@ledgerhq/live-common/lib/account";
-import { getAccountBridge } from "@ledgerhq/live-common/lib/bridge";
 import useBridgeTransaction from "@ledgerhq/live-common/lib/bridge/useBridgeTransaction";
 import type { Account, AccountLike, Operation } from "@ledgerhq/live-common/lib/types";
 
@@ -20,7 +18,6 @@ import { accountsSelector } from "~/renderer/reducers/accounts";
 import { updateAccountWithUpdater } from "~/renderer/actions/accounts";
 import { getCurrentDevice } from "~/renderer/reducers/devices";
 import Track from "~/renderer/analytics/Track";
-import { track } from "~/renderer/analytics/segment";
 import { useSignTransactionCallback } from "~/renderer/hooks/useSignTransaction";
 
 import type { Device } from "~/renderer/reducers/devices";
