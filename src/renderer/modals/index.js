@@ -9,6 +9,7 @@ import MODAL_RECEIVE from "./Receive";
 import MODAL_TERMS from "./Terms";
 import MODAL_SEND from "./Send";
 import MODAL_UPDATE_FIRMWARE from "./UpdateFirmwareModal";
+import MODAL_OPERATION_DETAILS from "./OperationDetails";
 
 const modals: { [_: string]: React$ComponentType<any> } = {
   MODAL_EXPORT_OPERATIONS,
@@ -20,6 +21,7 @@ const modals: { [_: string]: React$ComponentType<any> } = {
   MODAL_TERMS,
   MODAL_SEND,
   MODAL_UPDATE_FIRMWARE,
+  MODAL_OPERATION_DETAILS,
 };
 
 export default modals;
