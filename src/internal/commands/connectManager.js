@@ -5,7 +5,7 @@ import { withDevice } from "@ledgerhq/live-common/lib/hw/deviceAccess";
 import getDeviceInfo from "@ledgerhq/live-common/lib/hw/getDeviceInfo";
 import { listApps } from "@ledgerhq/live-common/lib/apps/hw";
 import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
-import { concatMap, distinctUntilChanged, scan, map } from "rxjs/operators";
+import { concatMap, scan } from "rxjs/operators";
 import { from, of } from "rxjs";
 import type { ListAppsResult } from "@ledgerhq/live-common/lib/apps";
 import logger from "~/logger";
@@ -32,7 +32,7 @@ const cmd = ({ devicePath }: Input): Observable<ManagerConnectState> =>
     from(getDeviceInfo(transport)).pipe(
       concatMap(deviceInfo => {
         if (deviceInfo.isBootloader || deviceInfo.isOSU) {
-          return of({ deviceInfo, event: {} }); // Maybe generic "not in dashboard state" event
+          return of({ ...seed, deviceInfo });
         }
 
         // Preload things in parallel
@@ -40,23 +40,22 @@ const cmd = ({ devicePath }: Input): Observable<ManagerConnectState> =>
           logger.warn(e);
         });
 
-        return listApps(transport, deviceInfo).pipe(map(event => ({ event, deviceInfo })));
+        return listApps(transport, deviceInfo).pipe(
+          scan((state: ManagerConnectState, e: *) => {
+            const response = { ...state, deviceInfo };
+
+            if (e.type === "device-permission-requested") {
+              response.allowManagerRequested = true;
+            } else if (e.type === "device-permission-granted") {
+              response.allowManagerGranted = true;
+            } else if (e.type === "result") {
+              response.listAppsRes = e.result;
+            }
+
+            return response;
+          }, seed),
+        );
       }),
-      scan((state: ManagerConnectState, e: *) => {
-        const { deviceInfo, event } = e;
-        const result = { ...state, deviceInfo };
-
-        if (event.type === "device-permission-requested") {
-          result.allowManagerRequested = true;
-        } else if (event.type === "device-permission-granted") {
-          result.allowManagerGranted = true;
-        } else if (event.type === "result") {
-          result.listAppsRes = event.result;
-        }
-
-        return result;
-      }, seed),
-      distinctUntilChanged(),
     ),
   );
 
