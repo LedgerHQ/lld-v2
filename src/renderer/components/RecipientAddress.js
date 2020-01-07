@@ -1,7 +1,7 @@
 // @flow
 
 import type { BigNumber } from "bignumber.js";
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import styled from "styled-components";
 import noop from "lodash/noop";
 import { decodeURIScheme } from "@ledgerhq/live-common/lib/currencies";
@@ -20,7 +20,7 @@ const Right = styled(Box).attrs(() => ({
   bg: "palette.background.default",
   px: 3,
   align: "center",
-  justify: "center",
+  justifyContent: "center",
 }))`
   border-top-right-radius: ${radii[1]}px;
   border-bottom-right-radius: ${radii[1]}px;
@@ -91,12 +91,12 @@ class RecipientAddress extends PureComponent<Props, State> {
       <Right onClick={this.handleClickQrCode}>
         <IconQrCode size={16} />
         {qrReaderOpened && (
-          <Fragment>
+          <>
             <BackgroundLayer />
             <WrapperQrCode>
               <QRCodeCameraPickerCanvas onPick={this.handleOnPick} />
             </WrapperQrCode>
-          </Fragment>
+          </>
         )}
       </Right>
     ) : null;
