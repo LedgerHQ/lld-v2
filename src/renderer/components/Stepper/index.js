@@ -24,6 +24,18 @@ export type Step = {
   noScroll?: boolean,
 };
 
+export type TypedStep<T> = {
+  id: T,
+  label: string,
+  excludeFromBreadcrumb?: boolean,
+  component: StepProps => React$Node,
+  footer: StepProps => React$Node,
+  shouldRenderFooter?: StepProps => boolean,
+  shouldPreventClose?: boolean | (StepProps => boolean),
+  onBack?: StepProps => void,
+  noScroll?: boolean,
+};
+
 type State = {
   stepId: string,
 };
