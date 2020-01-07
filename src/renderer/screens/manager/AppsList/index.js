@@ -2,15 +2,8 @@
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import { Trans } from "react-i18next";
-import {
-  getCryptoCurrencyById,
-  isCurrencySupported,
-} from "@ledgerhq/live-common/lib/data/cryptocurrencies";
 import { getActionPlan, useAppsRunner } from "@ledgerhq/live-common/lib/apps";
-import Item from "./Item";
-import DeviceStorage from "../DeviceStorage";
-import Filter from "./Filter";
-import Sort from "./Sort";
+import { useSortedFilteredApps } from "@ledgerhq/live-common/lib/apps/filtering";
 import Placeholder from "./Placeholder";
 import Button from "~/renderer/components/Button";
 import Text from "~/renderer/components/Text";
@@ -19,6 +12,10 @@ import Box from "~/renderer/components/Box";
 import Input from "~/renderer/components/Input";
 import IconLoader from "~/renderer/icons/Loader";
 import IconSearch from "~/renderer/icons/Search";
+import Item from "./Item";
+import DeviceStorage from "../DeviceStorage";
+import Filter from "./Filter";
+import Sort from "./Sort";
 
 const Tabs = styled.div`
   display: flex;
@@ -75,48 +72,32 @@ const Badge = styled(Text)`
 `;
 
 const AppsList = ({ deviceInfo, listAppsRes, exec }: *) => {
-  const [search, setSearch] = useState("");
+  const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("all");
-  const [sort, setSort] = useState("name");
-  const [state, dispatch] = useAppsRunner(listAppsRes, exec);
+  const [sort, setSort] = useState({ type: "name", order: "asc" });
   const [activeTab, setActiveTab] = useState(0);
+  const [state, dispatch] = useAppsRunner(listAppsRes, exec);
+  const onUpdateAll = useCallback(() => dispatch({ type: "updateAll" }), [dispatch]);
+
+  const { apps, installed: installedApps } = state;
   const onDeviceTab = activeTab === 1;
   const { currentProgress, currentError } = state;
   const plan = getActionPlan(state);
-  const onUpdateAll = useCallback(() => dispatch({ type: "updateAll" }), [dispatch]);
 
-  const searchFilter = ({ name, currencyId }) => {
-    if (!search) return true;
-    const currency = currencyId ? getCryptoCurrencyById(currencyId) : null;
-    const terms = `${name} ${currency ? `${currency.name} ${currency.ticker}` : ""}`;
-    return terms.toLowerCase().includes(search.toLowerCase().trim());
-  };
+  const appList = useSortedFilteredApps(apps, { query, installedApps, type: [] }, sort);
+  const installedAppList = useSortedFilteredApps(
+    apps,
+    { query, installedApps, type: ["installed"] },
+    sort,
+  );
 
-  const typeFilter = app => {
-    switch (filter) {
-      case "installed":
-        return state.installed.find(a => a.name === app.name);
-      case "notInstalled":
-        return !state.installed.find(a => a.name === app.name);
-      case "supported":
-        return app.currencyId && isCurrencySupported(getCryptoCurrencyById(app.currencyId));
-      default:
-        return true;
-    }
-  };
+  const updatableAppList = useSortedFilteredApps(
+    installedAppList,
+    { installedApps, type: ["updatable"] },
+    sort,
+  );
 
-  const installedApps = state.installed
-    .map(i => state.apps.find(a => a.name === i.name))
-    .filter(Boolean)
-    .filter(searchFilter);
-
-  const updatableApps = state.installed
-    .map(i => state.apps.find(a => a.name === i.name && !i.updated))
-    .filter(Boolean);
-
-  const appsList = (onDeviceTab ? installedApps : state.apps)
-    .filter(searchFilter)
-    .filter(typeFilter);
+  const displayedAppList = onDeviceTab ? installedAppList : appList;
 
   const mapApp = (app, appStoreView, onlyUpdate) => (
     <Item
@@ -159,14 +140,14 @@ const AppsList = ({ deviceInfo, listAppsRes, exec }: *) => {
         </Tab>
       </Tabs>
 
-      {onDeviceTab && updatableApps.length ? (
+      {onDeviceTab && updatableAppList.length ? (
         <Card mb={20}>
           <UpdatableHeader>
             <Text ff="Inter|SemiBold" fontSize={4} color="palette.primary.main">
               <Trans i18nKey="manager.applist.updatable.title" />
             </Text>
             <Badge ff="Inter|Bold" fontSize={3} color="palette.text.shade100">
-              {updatableApps.length}
+              {updatableAppList.length}
             </Badge>
             <Box flex={1} />
             <Button style={{ display: "flex" }} primary onClick={onUpdateAll} fontSize={3}>
@@ -176,7 +157,7 @@ const AppsList = ({ deviceInfo, listAppsRes, exec }: *) => {
               </Text>
             </Button>
           </UpdatableHeader>
-          <Box>{updatableApps.map(app => mapApp(app, false, true))}</Box>
+          <Box>{updatableAppList.map(app => mapApp(app, false, true))}</Box>
         </Card>
       ) : null}
 
@@ -185,7 +166,7 @@ const AppsList = ({ deviceInfo, listAppsRes, exec }: *) => {
           <Input
             containerProps={{ noBoxShadow: true }}
             renderLeft={<IconSearch size={16} />}
-            onChange={setSearch}
+            onChange={setQuery}
             placeholder="Search app or version number"
           />
           <Box mr={3}>
@@ -193,10 +174,10 @@ const AppsList = ({ deviceInfo, listAppsRes, exec }: *) => {
           </Box>
           {!onDeviceTab ? <Filter onFilterChange={setFilter} filter={filter} /> : null}
         </FilterHeader>
-        {appsList.length ? (
-          appsList.map(app => mapApp(app, !onDeviceTab))
+        {displayedAppList.length ? (
+          displayedAppList.map(app => mapApp(app, !onDeviceTab))
         ) : (
-          <Placeholder installed={onDeviceTab} search={search} />
+          <Placeholder installed={onDeviceTab} query={query} />
         )}
       </Card>
     </Box>

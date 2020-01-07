@@ -14,19 +14,31 @@ const Sort = ({ onSortChange, sort }: *) => {
       if (!item) {
         return;
       }
-      onSortChange(item.key);
+      onSortChange(item.sort);
     },
     [onSortChange],
   );
 
   const sortItems = [
     {
-      key: "name",
-      label: <Trans i18nKey="manager.applist.sort.name" />,
+      key: "name_asc",
+      sort: { type: "name", order: "asc" },
+      label: <Trans i18nKey="manager.applist.sort.name_asc" />,
     },
     {
-      key: "marketcap",
-      label: <Trans i18nKey="manager.applist.sort.marketcap" />,
+      key: "name_desc",
+      sort: { type: "name", order: "desc" },
+      label: <Trans i18nKey="manager.applist.sort.name_desc" />,
+    },
+    {
+      key: "marketcap_asc",
+      sort: { type: "marketcap", order: "asc" },
+      label: <Trans i18nKey="manager.applist.sort.marketcap_asc" />,
+    },
+    {
+      key: "marketcap_desc",
+      sort: { type: "marketcap", order: "desc" },
+      label: <Trans i18nKey="manager.applist.sort.marketcap_desc" />,
     },
   ];
 
@@ -48,6 +60,8 @@ const Sort = ({ onSortChange, sort }: *) => {
     [],
   );
 
+  const key = `${sort.type}_${sort.order}`;
+
   return (
     <DropDown
       flow={1}
@@ -56,14 +70,14 @@ const Sort = ({ onSortChange, sort }: *) => {
       items={sortItems}
       renderItem={renderItem}
       onStateChange={onSortChangeWrapper}
-      value={sortItems.find(item => item.key === sort)}
+      value={sortItems.find(item => item.key === key)}
     >
       <Text color="palette.text.shade60" ff="Inter|SemiBold" fontSize={4}>
         <Trans i18nKey="manager.applist.sort.title" />
       </Text>
       <Box alignItems="center" color="wallet" ff="Inter|SemiBold" flow={1} fontSize={4} horizontal>
         <Text color="wallet">
-          <Trans i18nKey={`manager.applist.sort.${sort || "name"}`} />
+          <Trans i18nKey={`manager.applist.sort.${key}`} />
         </Text>
         <IconAngleDown size={16} />
       </Box>

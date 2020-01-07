@@ -30,7 +30,7 @@ const Filter = ({ onFilterChange, filter }: *) => {
       label: <Trans i18nKey="manager.applist.filter.installed" />,
     },
     {
-      key: "notInstalled",
+      key: "not_installed",
       label: <Trans i18nKey="manager.applist.filter.notInstalled" />,
     },
     {

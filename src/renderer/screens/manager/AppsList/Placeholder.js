@@ -10,12 +10,12 @@ const PlaceholderWrapper: ThemedComponent<{}> = styled.div`
   padding: 20px;
 `;
 
-const Placeholder = ({ installed, search }: { installed: boolean, search: string }) => (
+const Placeholder = ({ installed, query }: { installed: boolean, query: string }) => (
   <PlaceholderWrapper>
     <Text ff="Inter|SemiBold" fontSize={6}>
       <Trans
         i18nKey={installed ? "manager.applist.placeholderInstalled" : "manager.applist.placeholder"}
-        values={{ search }}
+        values={{ search: query }}
       />
     </Text>
   </PlaceholderWrapper>
