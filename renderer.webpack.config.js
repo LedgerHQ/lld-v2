@@ -39,6 +39,9 @@ module.exports = {
     path: path.resolve(__dirname, ".webpack"),
     filename: "renderer.bundle.js",
   },
+  optimization: {
+    minimize: false,
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: "./src/renderer/index.html",
