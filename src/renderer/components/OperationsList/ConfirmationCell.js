@@ -65,7 +65,7 @@ class ConfirmationCell extends PureComponent<Props> {
     });
 
     return (
-      <Cell align="center" justify="flex-start">
+      <Cell alignItems="center" justifyContent="flex-start">
         <ConfirmationCheck
           type={operation.type}
           isConfirmed={isConfirmed}

@@ -19,12 +19,12 @@ function Installing({ progress, installing }: Props) {
         <ProgressCircle size={64} progress={progress} />
       </Box>
       <Box mx={7} mt={4} mb={2}>
-        <Text ff="Inter|Regular" align="center" color="palette.text.shade100" fontSize={6}>
+        <Text ff="Inter|Regular" textAlign="center" color="palette.text.shade100" fontSize={6}>
           {installing ? t(`manager.modal.steps.${installing}`) : null}
         </Text>
       </Box>
       <Box mx={7} mt={4} mb={7}>
-        <Text ff="Inter|Regular" align="center" color="palette.text.shade80" fontSize={4}>
+        <Text ff="Inter|Regular" textAlign="center" color="palette.text.shade80" fontSize={4}>
           {t("manager.modal.mcuPin")}
         </Text>
       </Box>

@@ -25,7 +25,7 @@ const ReceiveWarning = () => (
     </IconWrapper>
 
     <Box mt={25}>
-      <Text ff="Inter|Regular" color="palette.text.shade80" align="center" fontSize={4}>
+      <Text ff="Inter|Regular" color="palette.text.shade80" textAlign="center" fontSize={4}>
         <Trans i18nKey="receive.steps.warning.tezos.text" />
       </Text>
     </Box>

@@ -303,6 +303,9 @@ export const dismissedBannersSelector = (state: State) => state.settings.dismiss
 export const dismissedBannerSelector = (state: State, { bannerKey }: { bannerKey: string }) =>
   (state.settings.dismissedBanners || []).includes(bannerKey);
 
+export const dismissedBannerSelectorLoaded = (bannerKey: string) => (state: State) =>
+  (state.settings.dismissedBanners || []).includes(bannerKey);
+
 export const hideEmptyTokenAccountsSelector = (state: State) =>
   state.settings.hideEmptyTokenAccounts;
 

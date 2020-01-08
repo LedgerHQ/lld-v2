@@ -19,6 +19,7 @@ import RefreshAccountsOrdering from "~/renderer/components/RefreshAccountsOrderi
 import OperationsList from "~/renderer/components/OperationsList";
 import AssetDistribution from "~/renderer/components/AssetDistribution";
 import BalanceInfos from "~/renderer/components/BalanceInfos";
+import DelegationBanner from "~/renderer/families/tezos/Delegation/DelegationBanner";
 
 // TODO: REMOVE WHEN DONE
 import { useSelector } from "react-redux";
@@ -87,8 +88,8 @@ const DashboardPage = ({ push, saveSettings }: Props) => {
         {
           //         <UpdateBanner />
           //         <MigrationBanner />
-          //         <DelegationBanner />
         }
+        <DelegationBanner />
       </TopBannerContainer>
       <RefreshAccountsOrdering onMount />
       <TrackPage

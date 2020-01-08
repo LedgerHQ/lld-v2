@@ -44,8 +44,8 @@ type OwnProps = {
 
   disabled?: boolean,
 
-  validTransactionError: ?Error,
-  validTransactionWarning: ?Error,
+  validTransactionError?: ?Error,
+  validTransactionWarning?: ?Error,
 
   // max left value
   max?: BigNumber,

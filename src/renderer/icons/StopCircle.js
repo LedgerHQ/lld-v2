@@ -1,7 +1,7 @@
 // @flow
 import React from "react";
 
-const StopCircle = ({ size, color = "currentColor" }: { size: number, color: string }) => (
+const StopCircle = ({ size, color = "currentColor" }: { size: number, color?: string }) => (
   <svg viewBox="0 0 512 512" height={size} width={size}>
     <path
       fill={color}

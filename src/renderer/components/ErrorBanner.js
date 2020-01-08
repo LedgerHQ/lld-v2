@@ -14,7 +14,7 @@ type Props = {
 
 const ErrorBannerBox: ThemedComponent<{}> = styled(Box).attrs(() => ({
   horizontal: true,
-  align: "flex-start",
+  alignItems: "flex-start",
   color: "palette.background.paper",
   borderRadius: 1,
   fontSize: 1,

@@ -19,7 +19,7 @@ import IconQrCode from "~/renderer/icons/QrCode";
 const Right = styled(Box).attrs(() => ({
   bg: "palette.background.default",
   px: 3,
-  align: "center",
+  alignItems: "center",
   justifyContent: "center",
 }))`
   border-top-right-radius: ${radii[1]}px;

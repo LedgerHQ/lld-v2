@@ -19,24 +19,17 @@ async function main() {
   const file = "node_modules/.cache/LEDGER_HASH_yarn.lock.hash";
 
   try {
-    await fs.promises.access(file, fs.constants.F_OK);
-    const oldChecksum = await fs.promises.readFile(
-      "node_modules/.cache/LEDGER_HASH_yarn.lock.hash",
-      { encoding: "utf8" },
-    );
-
+    const oldChecksum = await fs.promises.readFile(file, { encoding: "utf8" });
     const currentChecksum = await hasha(file, { algorithm: "md5" });
-
     if (oldChecksum !== currentChecksum) {
       rebuildDeps(file);
     } else {
       console.log(chalk.blue("checksum are identical, no need to rebuild deps"));
     }
-  } catch (err) {
+  } catch (error) {
     console.log(
       chalk.blue("no previous checksum saved, will rebuild native deps and save new checksum"),
     );
-
     await rebuildDeps(file);
   }
 }

@@ -96,7 +96,12 @@ class StickyBackToTop extends PureComponent<Props, State> {
     const el = document.getElementById("sticky-back-to-top-root");
     if (!el) return null;
     return ReactDOM.createPortal(
-      <Container align="center" justify="center" visible={visible} onClick={this.onClick}>
+      <Container
+        alignItems="center"
+        justifyContent="center"
+        visible={visible}
+        onClick={this.onClick}
+      >
         <AngleUp size={20} />
       </Container>,
       el,

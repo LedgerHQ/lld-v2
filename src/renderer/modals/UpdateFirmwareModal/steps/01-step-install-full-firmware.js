@@ -79,7 +79,7 @@ const Body = ({
   if (!displayedOnDevice) {
     return (
       <>
-        <Text ff="Inter|Regular" align="center" color="palette.text.shade80">
+        <Text ff="Inter|Regular" textAlign="center" color="palette.text.shade80">
           {t("manager.firmware.downloadingUpdateDesc")}
         </Text>
         <Box my={5}>
@@ -91,11 +91,11 @@ const Body = ({
 
   return (
     <>
-      <Text ff="Inter|Regular" align="center" color="palette.text.shade80">
+      <Text ff="Inter|Regular" textAlign="center" color="palette.text.shade80">
         {t("manager.modal.confirmIdentifierText")}
       </Text>
       <Box mx={7} mt={5} mb={isBlue ? 0 : 5}>
-        <Text ff="Inter|SemiBold" align="center" color="palette.text.shade80">
+        <Text ff="Inter|SemiBold" textAlign="center" color="palette.text.shade80">
           {t("manager.modal.identifier")}
         </Text>
         <Address>{firmware.osu && formatHashName(firmware.osu.hash)}</Address>

@@ -11,6 +11,7 @@ const Text: ThemedComponent<{
   textAlign?: string,
   color?: string,
   fontWeight?: string,
+  align?: "DEPRECATED: USE textAlign INSTEAD",
 }> = styled.span`
   ${fontFamily};
   ${fontSize};

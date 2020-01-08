@@ -90,8 +90,8 @@ class DisclaimerModal extends PureComponent<Props, State> {
       <Modal isOpened={status === "disclaimer"} centered onClose={onClose}>
         <ModalBody
           grow
-          align="center"
-          justify="center"
+          alignItems="center"
+          justifyContent="center"
           mt={3}
           title={t("manager.firmware.update")}
           render={() => (
@@ -124,7 +124,7 @@ class DisclaimerModal extends PureComponent<Props, State> {
                       </Text>
                     </div>
                     <div>
-                      <Text align="center" ff="Inter" fontSize={4} color="palette.text.shade60">
+                      <Text textAlign="center" ff="Inter" fontSize={4} color="palette.text.shade60">
                         <Bullet />
                         <Trans i18nKey="manager.firmware.appsAutoUninstallBullet2" />
                       </Text>
@@ -134,7 +134,12 @@ class DisclaimerModal extends PureComponent<Props, State> {
               ) : (
                 <>
                   <TrackPage category="Manager" name="DisclaimerModal" />
-                  <Text ff="Inter|Regular" fontSize={4} color="palette.text.shade80" align="center">
+                  <Text
+                    ff="Inter|Regular"
+                    fontSize={4}
+                    color="palette.text.shade80"
+                    textAlign="center"
+                  >
                     <Trans
                       i18nKey="manager.firmware.disclaimerTitle"
                       values={{
