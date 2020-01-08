@@ -2,7 +2,6 @@
 
 import React from "react";
 import styled from "styled-components";
-import BigNumber from "bignumber.js";
 import { useSpring, animated, interpolate } from "react-spring";
 
 import useTheme from "~/renderer/hooks/useTheme";
@@ -30,20 +29,18 @@ type TooltipProps = {
   theme: Theme,
   renderTooltip: any,
   color?: string,
+  data: any,
 };
 
-const Tooltip = ({ tooltip, renderTooltip, color }: TooltipProps) => {
+const Tooltip = ({ tooltip, renderTooltip, color, data }: TooltipProps) => {
   const theme = useTheme("colors.palette");
   const { x, y } = useSpring({ x: tooltip.caretX, y: tooltip.caretY });
 
   return (
     <>
-      <animated.div
+      <div
         style={{
-          transform: interpolate(
-            [x, y],
-            (x, y) => `translate3d(${tooltip.caretX}px,${tooltip.caretY}px,0)`,
-          ),
+          transform: `translate3d(${tooltip.caretX}px,${tooltip.caretY}px,0)`,
           pointerEvents: "none",
           position: "absolute",
           top: 0,
@@ -61,7 +58,7 @@ const Tooltip = ({ tooltip, renderTooltip, color }: TooltipProps) => {
             fill={theme.background.paper}
           />
         </svg>
-      </animated.div>
+      </div>
       <animated.div
         style={{
           transform: interpolate([x, y], (x, y) => `translate3d(${x}px,${y - 35}px,0)`),
@@ -72,12 +69,7 @@ const Tooltip = ({ tooltip, renderTooltip, color }: TooltipProps) => {
         }}
       >
         <TooltipContainer opacity={tooltip.opacity} theme={theme}>
-          {tooltip.dataPoints
-            ? renderTooltip({
-                value: BigNumber(tooltip.dataPoints[0].yLabel),
-                date: tooltip.dataPoints[0].xLabel,
-              })
-            : null}
+          {tooltip.dataPoints ? renderTooltip(data[tooltip.dataPoints[0].index]) : null}
         </TooltipContainer>
       </animated.div>
     </>

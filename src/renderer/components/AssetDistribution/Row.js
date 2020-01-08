@@ -1,12 +1,13 @@
 // @flow
 
-import React, { Fragment, PureComponent } from "react";
+import React, { Fragment } from "react";
 import type { CryptoCurrency, TokenCurrency } from "@ledgerhq/live-common/lib/types/currencies";
 import { getCurrencyColor } from "~/renderer/getCurrencyColor";
 import { BigNumber } from "bignumber.js";
-import { connect } from "react-redux";
-import styled, { withTheme } from "styled-components";
+import styled from "styled-components";
 import CounterValue from "~/renderer/components/CounterValue";
+import { useHistory } from "react-router-dom";
+import useTheme from "~/renderer/hooks/useTheme";
 
 import FormattedVal from "~/renderer/components/FormattedVal";
 import Price from "~/renderer/components/Price";
@@ -24,16 +25,9 @@ export type DistributionItem = {
   countervalue: BigNumber, // countervalue of the amount that was calculated based of the rate provided
 };
 
-type OwnProps = {
+type Props = {
   item: DistributionItem,
 };
-
-type Props = {
-  ...OwnProps,
-  theme: any,
-};
-
-type State = {};
 
 const Wrapper: ThemedComponent<{}> = styled.div`
   display: flex;
@@ -91,85 +85,73 @@ const Value: ThemedComponent<{}> = styled.div`
   justify-content: flex-end;
 `;
 
-const mapDispatchToProps = {
-  //  push,
-};
-
-class Row extends PureComponent<Props, State> {
-  render() {
-    const {
-      item: { currency, amount, distribution },
-      theme,
-    } = this.props;
-    const color = getCurrencyColor(currency, theme.colors.palette.background.paper);
-    const percentage = (Math.floor(distribution * 10000) / 100).toFixed(2);
-    const icon = <CryptoCurrencyIcon currency={currency} size={16} />;
-    return (
-      <Wrapper>
-        <Asset>
-          {icon}
-          <Tooltip delay={1200} content={currency.name}>
-            <Ellipsis ff="Inter|SemiBold" color="palette.text.shade100" fontSize={3}>
-              {currency.name}
-            </Ellipsis>
-          </Tooltip>
-        </Asset>
-        <PriceSection>
+const Row = ({ item: { currency, amount, distribution } }: Props) => {
+  const theme = useTheme();
+  const history = useHistory();
+  const color = getCurrencyColor(currency, theme.colors.palette.background.paper);
+  const percentage = (Math.floor(distribution * 10000) / 100).toFixed(2);
+  const icon = <CryptoCurrencyIcon currency={currency} size={16} />;
+  return (
+    <Wrapper onClick={() => history.push(`/asset/${currency.id}`)}>
+      <Asset>
+        {icon}
+        <Tooltip delay={1200} content={currency.name}>
+          <Ellipsis ff="Inter|SemiBold" color="palette.text.shade100" fontSize={3}>
+            {currency.name}
+          </Ellipsis>
+        </Tooltip>
+      </Asset>
+      <PriceSection>
+        {distribution ? (
+          <Price from={currency} color="palette.text.shade80" fontSize={3} />
+        ) : (
+          <Text ff="Inter" color="palette.text.shade100" fontSize={3}>
+            {"-"}
+          </Text>
+        )}
+      </PriceSection>
+      <Distribution>
+        {!!distribution && (
+          <Fragment>
+            <Text ff="Inter" color="palette.text.shade100" fontSize={3}>
+              {`${percentage}%`}
+            </Text>
+            <Bar progress={percentage} progressColor={color} />
+          </Fragment>
+        )}
+      </Distribution>
+      <Amount>
+        <Ellipsis>
+          <FormattedVal
+            color={"palette.text.shade80"}
+            unit={currency.units[0]}
+            val={amount}
+            fontSize={3}
+            showCode
+          />
+        </Ellipsis>
+      </Amount>
+      <Value>
+        <Ellipsis>
           {distribution ? (
-            <Price from={currency} color="palette.text.shade80" fontSize={3} />
+            <CounterValue
+              currency={currency}
+              value={amount}
+              disableRounding
+              color="palette.text.shade100"
+              fontSize={3}
+              showCode
+              alwaysShowSign={false}
+            />
           ) : (
             <Text ff="Inter" color="palette.text.shade100" fontSize={3}>
               {"-"}
             </Text>
           )}
-        </PriceSection>
-        <Distribution>
-          {!!distribution && (
-            <Fragment>
-              <Text ff="Inter" color="palette.text.shade100" fontSize={3}>
-                {`${percentage}%`}
-              </Text>
-              <Bar progress={percentage} progressColor={color} />
-            </Fragment>
-          )}
-        </Distribution>
-        <Amount>
-          <Ellipsis>
-            <FormattedVal
-              color={"palette.text.shade80"}
-              unit={currency.units[0]}
-              val={amount}
-              fontSize={3}
-              showCode
-            />
-          </Ellipsis>
-        </Amount>
-        <Value>
-          <Ellipsis>
-            {distribution ? (
-              <CounterValue
-                currency={currency}
-                value={amount}
-                disableRounding
-                color="palette.text.shade100"
-                fontSize={3}
-                showCode
-                alwaysShowSign={false}
-              />
-            ) : (
-              <Text ff="Inter" color="palette.text.shade100" fontSize={3}>
-                {"-"}
-              </Text>
-            )}
-          </Ellipsis>
-        </Value>
-      </Wrapper>
-    );
-  }
-}
+        </Ellipsis>
+      </Value>
+    </Wrapper>
+  );
+};
 
-const ConnectedRow: React$ComponentType<OwnProps> = withTheme(
-  connect(null, mapDispatchToProps)(Row),
-);
-
-export default ConnectedRow;
+export default Row;

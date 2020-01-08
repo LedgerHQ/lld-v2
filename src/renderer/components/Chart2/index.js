@@ -33,7 +33,7 @@
  *
  */
 
-import React, { useRef, useLayoutEffect, useState } from "react";
+import React, { useRef, useLayoutEffect, useState, useMemo } from "react";
 import ChartJs from "chart.js";
 import styled from "styled-components";
 import Color from "color";
@@ -56,6 +56,7 @@ export type Props = {
   renderTooltip?: Function,
   renderTickY: (t: number) => string | number,
   onlyUpdateIfLastPointChanges?: boolean,
+  valueKey?: string,
 };
 
 const ChartContainer: ThemedComponent<{}> = styled.div.attrs(({ height }) => ({
@@ -66,98 +67,105 @@ const ChartContainer: ThemedComponent<{}> = styled.div.attrs(({ height }) => ({
   position: relative;
 `;
 
-const Chart = ({ height, data, color, renderTickY, renderTooltip }: Props) => {
+const Chart = ({ height, data, color, renderTickY, renderTooltip, valueKey = "value" }: Props) => {
   const canvasRef = useRef(null);
   const chartRef = useRef(null);
   const theme = useTheme("colors.palette");
   const [tooltip, setTooltip] = useState();
 
-  const chartData = {
-    datasets: [
-      {
-        label: "all accounts",
-        borderColor: color,
-        backgroundColor: ({ chart }) => {
-          const gradient = chart.ctx.createLinearGradient(0, 0, 0, chart.height / 1.2);
-          gradient.addColorStop(0, Color(color).alpha(0.4));
-          gradient.addColorStop(1, Color(color).alpha(0.0));
-          return gradient;
-        },
-        pointRadius: 0,
-        borderWidth: 2,
-        data: data.map(d => ({
-          x: new Date(d.date),
-          y: d.value,
-        })),
-      },
-    ],
-  };
-
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    tooltips: {
-      enabled: false,
-      intersect: false,
-      mode: "index",
-      custom: tooltip => setTooltip(tooltip),
-    },
-    legend: {
-      display: false,
-    },
-    scales: {
-      xAxes: [
+  const generatedData = useMemo(
+    () => ({
+      datasets: [
         {
-          type: "time",
-          gridLines: {
-            display: false,
-            color: theme.text.shade10,
-            zeroLineColor: theme.text.shade10,
+          label: "all accounts",
+          borderColor: color,
+          backgroundColor: ({ chart }) => {
+            const gradient = chart.ctx.createLinearGradient(0, 0, 0, chart.height / 1.2);
+            gradient.addColorStop(0, Color(color).alpha(0.4));
+            gradient.addColorStop(1, Color(color).alpha(0.0));
+            return gradient;
           },
-          ticks: {
-            fontColor: theme.text.shade60,
-            fontFamily: "Inter",
-            maxTicksLimit: 7,
-          },
-          time: {
-            displayFormats: {
-              quarter: "MMM YYYY",
+          pointRadius: 0,
+          borderWidth: 2,
+          data: data.map(d => ({
+            x: new Date(d.date),
+            y: d[valueKey].toNumber(),
+          })),
+        },
+      ],
+    }),
+    [data, valueKey],
+  );
+
+  const generateOptions = useMemo(
+    () => ({
+      responsive: true,
+      maintainAspectRatio: false,
+      tooltips: {
+        enabled: false,
+        intersect: false,
+        mode: "index",
+        custom: tooltip => setTooltip(tooltip),
+      },
+      legend: {
+        display: false,
+      },
+      scales: {
+        xAxes: [
+          {
+            type: "time",
+            gridLines: {
+              display: false,
+              color: theme.text.shade10,
+            },
+            ticks: {
+              fontColor: theme.text.shade60,
+              fontFamily: "Inter",
+              maxTicksLimit: 7,
+            },
+            time: {
+              displayFormats: {
+                quarter: "MMM YYYY",
+              },
             },
           },
-        },
-      ],
-      yAxes: [
-        {
-          gridLines: {
-            color: theme.text.shade10,
-            borderDash: [5, 5],
-            drawTicks: false,
-            drawBorder: false,
+        ],
+        yAxes: [
+          {
+            gridLines: {
+              color: theme.text.shade10,
+              borderDash: [5, 5],
+              drawTicks: false,
+              drawBorder: false,
+              zeroLineColor: theme.text.shade10,
+            },
+            ticks: {
+              maxTicksLimit: 4,
+              fontColor: theme.text.shade60,
+              fontFamily: "Inter",
+              padding: 10,
+              callback: value => renderTickY(value),
+            },
           },
-          ticks: {
-            maxTicksLimit: 4,
-            fontColor: theme.text.shade60,
-            fontFamily: "Inter",
-            padding: 10,
-            callback: value => renderTickY(value),
-          },
-        },
-      ],
-    },
-  };
+        ],
+      },
+    }),
+    [renderTickY, theme],
+  );
 
   useLayoutEffect(() => {
     if (chartRef.current) {
-      chartRef.current.data = chartData;
+      chartRef.current.data = generatedData;
+      chartRef.current.options = generateOptions;
       chartRef.current.update(0);
     }
-  }, [data]);
+  }, [data, valueKey]);
 
   useLayoutEffect(() => {
     chartRef.current = new ChartJs(canvasRef.current, {
       type: "line",
-      data: chartData,
-      options,
+      data: generatedData,
+      options: generateOptions,
     });
   }, []);
 
@@ -165,7 +173,13 @@ const Chart = ({ height, data, color, renderTickY, renderTooltip }: Props) => {
     <ChartContainer height={height}>
       <canvas ref={canvasRef} />
       {tooltip ? (
-        <Tooltip tooltip={tooltip} theme={theme} renderTooltip={renderTooltip} color={color} />
+        <Tooltip
+          tooltip={tooltip}
+          theme={theme}
+          renderTooltip={renderTooltip}
+          color={color}
+          data={data}
+        />
       ) : null}
     </ChartContainer>
   );
