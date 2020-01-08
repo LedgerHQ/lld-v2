@@ -400,6 +400,11 @@
     "noMoreOperations": "That's all"
   },
   "manager": {
+    "connect": {
+      "loading": "Loading",
+      "connectAndUnlockDevice": "Plug your device and enter your PIN code"
+    },
+    "loading": "Loading",
     "device": {
       "title": "Connect your device",
       "desc": "Follow the steps below to open the Manager",

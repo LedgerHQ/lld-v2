@@ -71,6 +71,7 @@
     "react-hot-loader": "^4.12.18",
     "react-i18next": "^11.2.5",
     "react-key-handler": "^1.2.0-beta.3",
+    "react-lottie": "^1.2.3",
     "react-markdown": "^4.3.0",
     "react-motion": "^0.5.2",
     "react-redux": "^7.1.3",
