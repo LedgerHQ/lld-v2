@@ -3,9 +3,9 @@ import { useContext } from "react";
 import { ThemeContext } from "styled-components";
 import get from "lodash/get";
 
-const useTheme = (path: any) => {
+const useTheme = (path?: any) => {
   const theme = useContext(ThemeContext);
-  return get(theme, path);
+  return path ? get(theme, path) : theme;
 };
 
 export default useTheme;
