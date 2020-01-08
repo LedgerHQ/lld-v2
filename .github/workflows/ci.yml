@@ -1,5 +1,5 @@
 name: CI
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   ci-linux:
@@ -12,9 +12,13 @@ jobs:
       - name: install linux dependencies
         run: sudo apt-get install libudev-dev libusb-1.0-0-dev
       - name: install dependencies
+        # yarn prepublish is actually run after a normal `yarn install`
+        # however since we skip with --ignore-scripts to avoid rebuilding libcore twice
+        # we need to run yarn prepublish
         run: |
           yarn --ignore-scripts
           yarn flow-typed
+          yarn prepublish
       - name: test
         run: yarn ci
   ci-macos:
@@ -28,6 +32,7 @@ jobs:
         run: |
           yarn --ignore-scripts
           yarn flow-typed
+          yarn prepublish
       - name: rebuild app deps
         run: yarn install-deps
       - name: test
