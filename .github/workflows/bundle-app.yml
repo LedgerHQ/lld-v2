@@ -1,8 +1,5 @@
 name: bundle app
-on:
-  push:
-  pull_request:
-    types: [ready_for_review, opened]
+on: [pull_request]
 
 jobs:
   bundle-macos:
