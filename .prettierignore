@@ -2,3 +2,4 @@ package.json
 test-e2e/**/*.json
 src/renderer/generated
 analytics.min.js
+src/renderer/animations/*.json
