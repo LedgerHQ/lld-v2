@@ -9,36 +9,47 @@ import type {
   TransactionStatus,
   TransactionStatusRaw,
   TransactionRaw,
-  SignAndBroadcastEventRaw,
+  SyncConfig,
   ScanAccountEventRaw,
+  SignOperationEventRaw,
+  SignedOperationRaw,
+  OperationRaw,
 } from "@ledgerhq/live-common/lib/types";
 import {
   fromTransactionRaw,
   toTransactionRaw,
   toTransactionStatusRaw,
-  toSignAndBroadcastEventRaw,
+  fromSignedOperationRaw,
+  toSignOperationEventRaw,
 } from "@ledgerhq/live-common/lib/transaction";
-import { fromAccountRaw, toAccountRaw } from "@ledgerhq/live-common/lib/account";
+import { fromAccountRaw, toAccountRaw, toOperationRaw } from "@ledgerhq/live-common/lib/account";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import { toScanAccountEventRaw } from "@ledgerhq/live-common/lib/bridge";
 import * as bridgeImpl from "@ledgerhq/live-common/lib/bridge/impl";
 
-const cmdCurrencyScanAccountsOnDevice = (o: {
+const cmdCurrencyScanAccounts = (o: {
   currencyId: string,
   deviceId: string,
+  syncConfig: SyncConfig,
 }): Observable<ScanAccountEventRaw> => {
   const currency = getCryptoCurrencyById(o.currencyId);
   const bridge = bridgeImpl.getCurrencyBridge(currency);
-  return bridge.scanAccountsOnDevice(currency, o.deviceId).pipe(map(toScanAccountEventRaw));
+  return bridge
+    .scanAccounts({
+      currency,
+      deviceId: o.deviceId,
+      syncConfig: o.syncConfig,
+    })
+    .pipe(map(toScanAccountEventRaw));
 };
 
-const cmdAccountStartSync = (o: {
+const cmdAccountSync = (o: {
   account: AccountRaw,
-  observation: boolean,
+  syncConfig: SyncConfig,
 }): Observable<AccountRaw> => {
   const account = fromAccountRaw(o.account);
   const bridge = bridgeImpl.getAccountBridge(account, null);
-  return bridge.startSync(account, o.observation).pipe(map(f => toAccountRaw(f(account))));
+  return bridge.sync(account, o.syncConfig).pipe(map(f => toAccountRaw(f(account))));
 };
 
 const cmdAccountPrepareTransaction = (o: {
@@ -65,23 +76,34 @@ const cmdAccountGetTransactionStatus = (o: {
   );
 };
 
-const cmdAccountSignAndBroadcast = (o: {
+const cmdAccountSignOperation = (o: {
   account: AccountRaw,
   transaction: TransactionRaw,
   deviceId: string,
-}): Observable<SignAndBroadcastEventRaw> => {
+}): Observable<SignOperationEventRaw> => {
   const account = fromAccountRaw(o.account);
   const transaction = fromTransactionRaw(o.transaction);
   const bridge = bridgeImpl.getAccountBridge(account, null);
   return bridge
-    .signAndBroadcast(account, transaction, o.deviceId)
-    .pipe(map(toSignAndBroadcastEventRaw));
+    .signOperation({ account, transaction, deviceId: o.deviceId })
+    .pipe(map(toSignOperationEventRaw));
+};
+
+const cmdAccountBroadcast = (o: {
+  account: AccountRaw,
+  signedOperation: SignedOperationRaw,
+}): Observable<OperationRaw> => {
+  const account = fromAccountRaw(o.account);
+  const signedOperation = fromSignedOperationRaw(o.signedOperation, account.id);
+  const bridge = bridgeImpl.getAccountBridge(account, null);
+  return from(bridge.broadcast({ account, signedOperation }).then(o => toOperationRaw(o, true)));
 };
 
 export const commands = {
-  AccountStartSync: cmdAccountStartSync,
+  AccountSync: cmdAccountSync,
   AccountGetTransactionStatus: cmdAccountGetTransactionStatus,
   AccountPrepareTransaction: cmdAccountPrepareTransaction,
-  AccountSignAndBroadcast: cmdAccountSignAndBroadcast,
-  CurrencyScanAccountsOnDevice: cmdCurrencyScanAccountsOnDevice,
+  AccountSignOperation: cmdAccountSignOperation,
+  AccountBroadcast: cmdAccountBroadcast,
+  CurrencyScanAccounts: cmdCurrencyScanAccounts,
 };

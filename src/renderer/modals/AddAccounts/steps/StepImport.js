@@ -144,9 +144,15 @@ class StepImport extends PureComponent<StepProps> {
       // will be set to false if an existing account is found
       let onlyNewAccounts = true;
 
+      const syncConfig = {
+        // TODO later we need to paginate only a few ops, not all (for add accounts)
+        // paginationConfig will come from redux
+        paginationConfig: {},
+      };
+
       this.scanSubscription = concat(
         from(prepareCurrency(mainCurrency)).pipe(ignoreElements()),
-        bridge.scanAccountsOnDevice(mainCurrency, devicePath),
+        bridge.scanAccounts({ currency: mainCurrency, deviceId: devicePath, syncConfig }),
       )
         .pipe(
           filter(e => e.type === "discovered"),

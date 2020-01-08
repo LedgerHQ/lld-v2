@@ -1,5 +1,7 @@
 // @flow
 
+import { concat, of, from } from "rxjs";
+import { concatMap, filter } from "rxjs/operators";
 import { useEffect, useRef, useCallback } from "react";
 import invariant from "invariant";
 import { getMainAccount } from "@ledgerhq/live-common/lib/account";
@@ -53,7 +55,25 @@ export const useSignTransactionCallback = ({
       };
       track(`${context}TransactionStart`, eventProps);
       signTransactionSubRef.current = bridge
-        .signAndBroadcast(mainAccount, transaction, device.path)
+        .signOperation({ account: mainAccount, transaction, deviceId: device.path })
+        .pipe(
+          // FIXME later we will need to treat more events
+          filter(e => e.type === "signed"),
+          concatMap(e =>
+            // later we will have more events
+            concat(
+              of(e),
+              from(
+                bridge
+                  .broadcast({
+                    account: mainAccount,
+                    signedOperation: e.signedOperation,
+                  })
+                  .then(operation => ({ type: "broadcasted", operation })),
+              ),
+            ),
+          ),
+        )
         .subscribe({
           next: e => {
             switch (e.type) {

@@ -144,9 +144,14 @@ class Provider extends Component<BridgeSyncProviderOwnProps, Sync> {
           }
         };
 
+        const syncConfig = {
+          // TODO paginationConfig will come from redux
+          paginationConfig: {},
+        };
+
         concat(
           from(prepareCurrency(account.currency)).pipe(ignoreElements()),
-          bridge.startSync(account, false),
+          bridge.sync(account, syncConfig),
         ).subscribe({
           next: accountUpdater => {
             this.props.updateAccountWithUpdater(accountId, accountUpdater);

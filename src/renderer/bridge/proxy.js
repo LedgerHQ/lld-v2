@@ -13,19 +13,21 @@ import isEqual from "lodash/isEqual";
 import {
   fromTransactionRaw,
   toTransactionRaw,
+  toSignedOperationRaw,
   fromTransactionStatusRaw,
-  fromSignAndBroadcastEventRaw,
+  fromSignOperationEventRaw,
 } from "@ledgerhq/live-common/lib/transaction";
-import { toAccountRaw } from "@ledgerhq/live-common/lib/account";
+import { toAccountRaw, fromOperationRaw } from "@ledgerhq/live-common/lib/account";
 import { patchAccount } from "@ledgerhq/live-common/lib/reconciliation";
 import { fromScanAccountEventRaw } from "@ledgerhq/live-common/lib/bridge";
 import * as bridgeImpl from "@ledgerhq/live-common/lib/bridge/impl";
 import { command } from "~/renderer/commands";
 
-const scanAccountsOnDevice = (currency, deviceId) =>
-  command("CurrencyScanAccountsOnDevice")({
+const scanAccounts = ({ currency, deviceId, syncConfig }) =>
+  command("CurrencyScanAccounts")({
     currencyId: currency.id,
     deviceId,
+    syncConfig,
   }).pipe(map(fromScanAccountEventRaw));
 
 export const getCurrencyBridge = (currency: CryptoCurrency): CurrencyBridge => ({
@@ -33,17 +35,17 @@ export const getCurrencyBridge = (currency: CryptoCurrency): CurrencyBridge => (
 
   hydrate: value => bridgeImpl.getCurrencyBridge(currency).hydrate(value),
 
-  scanAccountsOnDevice,
+  scanAccounts,
 });
 
 export const getAccountBridge = (
   account: AccountLike,
   parentAccount: ?Account,
 ): AccountBridge<any> => {
-  const startSync = (account, observation) =>
-    command("AccountStartSync")({
+  const sync = (account, syncConfig) =>
+    command("AccountSync")({
       account: toAccountRaw(account),
-      observation,
+      syncConfig,
     }).pipe(map(raw => account => patchAccount(account, raw)));
 
   const createTransaction = a =>
@@ -75,19 +77,28 @@ export const getAccountBridge = (
       .toPromise()
       .then(fromTransactionStatusRaw);
 
-  const signAndBroadcast = (a, t, deviceId) =>
-    command("AccountSignAndBroadcast")({
-      account: toAccountRaw(a),
-      transaction: toTransactionRaw(t),
+  const signOperation = ({ account, transaction, deviceId }) =>
+    command("AccountSignOperation")({
+      account: toAccountRaw(account),
+      transaction: toTransactionRaw(transaction),
       deviceId,
-    }).pipe(map(raw => fromSignAndBroadcastEventRaw(raw, a.id)));
+    }).pipe(map(raw => fromSignOperationEventRaw(raw, account.id)));
+
+  const broadcast = ({ account, signedOperation }) =>
+    command("AccountBroadcast")({
+      account: toAccountRaw(account),
+      signedOperation: toSignedOperationRaw(signedOperation),
+    })
+      .pipe(map(raw => fromOperationRaw(raw, account.id, account.subAccounts)))
+      .toPromise();
 
   return {
     createTransaction,
     updateTransaction,
     getTransactionStatus,
     prepareTransaction,
-    startSync,
-    signAndBroadcast,
+    sync,
+    signOperation,
+    broadcast,
   };
 };
