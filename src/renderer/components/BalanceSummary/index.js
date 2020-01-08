@@ -9,7 +9,7 @@ import moment from "moment";
 import { formatShort } from "@ledgerhq/live-common/lib/currencies";
 import type { Currency, PortfolioRange, Portfolio } from "@ledgerhq/live-common/lib/types";
 
-import Chart from "~/renderer/components/Chart";
+import Chart from "~/renderer/components/Chart2";
 import Box, { Card } from "~/renderer/components/Box";
 import FormattedVal from "~/renderer/components/FormattedVal";
 import PlaceholderChart from "~/renderer/components/PlaceholderChart";
