@@ -8,20 +8,11 @@ const ListenDevices = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     let sub;
-    let timeout;
     function syncDevices() {
       const devices = {};
       sub = command("listenDevices")().subscribe(
         ({ device, deviceModel, type }) => {
           if (device) {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => {
-              if (Object.keys(devices).length === 0) {
-                sub.unsubscribe();
-                syncDevices();
-              }
-            }, 5000);
-
             const stateDevice = {
               path: device.path,
               modelId: deviceModel ? deviceModel.id : "nanoS",
@@ -38,12 +29,10 @@ const ListenDevices = () => {
           }
         },
         () => {
-          clearTimeout(timeout);
           resetDevices();
           syncDevices();
         },
         () => {
-          clearTimeout(timeout);
           resetDevices();
           syncDevices();
         },
@@ -52,7 +41,6 @@ const ListenDevices = () => {
     syncDevices();
 
     return () => {
-      clearTimeout(timeout);
       sub.unsubscribe();
     };
   }, [dispatch]);

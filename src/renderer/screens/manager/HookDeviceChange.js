@@ -4,7 +4,7 @@ import { PureComponent } from "react";
 import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
 import { getCurrentDevice } from "~/renderer/reducers/devices";
-import type { Device } from "@ledgerhq/hw-transport/lib/Transport";
+import type { Device } from "~/renderer/reducers/devices";
 
 const hookDeviceChangeInstances = [];
 let frozen = 0;
