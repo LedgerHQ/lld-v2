@@ -9,6 +9,7 @@ import type {
   CryptoCurrency,
   PortfolioRange,
   TokenCurrency,
+  AccountLike,
 } from "@ledgerhq/live-common/lib/types";
 import { flattenAccounts, getAccountCurrency } from "@ledgerhq/live-common/lib/account";
 
@@ -28,7 +29,7 @@ export const balanceHistoryWithCountervalueSelector = (
     account,
     range,
   }: {
-    account: Account,
+    account: AccountLike,
     range: PortfolioRange,
   },
 ) => {
