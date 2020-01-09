@@ -6,8 +6,7 @@ import type { TokenAccount, Account, PortfolioRange } from "@ledgerhq/live-commo
 import Box from "~/renderer/components/Box";
 import AccountCardHeader from "./Header";
 import AccountCardBody from "./Body";
-// TODO port context menu
-// import AccountContextMenu from "~/renderer/components/ContextMenu/AccountContextMenu";
+import AccountContextMenu from "~/renderer/components/ContextMenu/AccountContextMenu";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
 const Card: ThemedComponent<{}> = styled(Box).attrs(() => ({
@@ -46,18 +45,18 @@ class AccountCard extends PureComponent<Props> {
     const { account, parentAccount, range, hidden, ...props } = this.props;
 
     return (
-      // <AccountContextMenu account={account} parentAccount={parentAccount}>
-      <Card
-        {...props}
-        style={{ display: hidden && "none" }}
-        p={20}
-        onClick={this.onClick}
-        data-e2e="dashboard_AccountCardWrapper"
-      >
-        <AccountCardHeader account={account} parentAccount={parentAccount} />
-        <AccountCardBody account={account} parentAccount={parentAccount} range={range} />
-      </Card>
-      // </AccountContextMenu>
+      <AccountContextMenu account={account} parentAccount={parentAccount}>
+        <Card
+          {...props}
+          style={{ display: hidden && "none" }}
+          p={20}
+          onClick={this.onClick}
+          data-e2e="dashboard_AccountCardWrapper"
+        >
+          <AccountCardHeader account={account} parentAccount={parentAccount} />
+          <AccountCardBody account={account} parentAccount={parentAccount} range={range} />
+        </Card>
+      </AccountContextMenu>
     );
   }
 }
