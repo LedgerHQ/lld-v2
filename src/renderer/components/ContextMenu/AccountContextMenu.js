@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from "react";
 import { openModal } from "~/renderer/actions/modals";
-import type { Account, TokenAccount } from "@ledgerhq/live-common/lib/types/account";
+import type { Account, AccountLike } from "@ledgerhq/live-common/lib/types/account";
 import { connect } from "react-redux";
 import IconReceive from "~/renderer/icons/Receive";
 import IconSend from "~/renderer/icons/Send";
@@ -12,8 +12,8 @@ import ContextMenuItem from "./ContextMenuItem";
 import { toggleStarAction } from "~/renderer/actions/settings";
 
 type OwnProps = {
-  account: TokenAccount | Account,
-  parentAccount: ?Account,
+  account: AccountLike,
+  parentAccount?: ?Account,
   leftClick?: boolean,
   children: any,
 };

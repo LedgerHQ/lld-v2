@@ -112,8 +112,8 @@ class AssetDistribution extends PureComponent<Props, State> {
   }
 }
 
-const ConnectedAssedDistribution: React$ComponentType<{}> = connect(mapStateToProps)(
+const ConnectedAssetDistribution: React$ComponentType<{}> = connect(mapStateToProps)(
   AssetDistribution,
 );
 
-export default ConnectedAssedDistribution;
+export default ConnectedAssetDistribution;
