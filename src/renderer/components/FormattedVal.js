@@ -15,7 +15,7 @@ import Box from "~/renderer/components/Box";
 import FlipTicker from "~/renderer/components/FlipTicker";
 import IconBottom from "~/renderer/icons/ArrowDownRight";
 import IconTop from "~/renderer/icons/ArrowUpRight";
-import Ellipsis from "../Ellipsis";
+import Ellipsis from "~/renderer/components/Ellipsis";
 
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
