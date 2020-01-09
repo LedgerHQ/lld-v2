@@ -34,7 +34,7 @@ const Container = styled(Box)`
 type Props = {
   scrollUpOnMount?: boolean,
   scrollThreshold: number,
-  getGrowScroll: () => { scrollContainer: ?HTMLDivElement },
+  growScroll: { scrollContainer: ?HTMLDivElement },
 };
 
 type State = {
@@ -51,7 +51,8 @@ class StickyBackToTop extends PureComponent<Props, State> {
   };
 
   componentDidMount() {
-    const { scrollContainer } = this.props.getGrowScroll();
+    console.log(this.props);
+    const { scrollContainer } = this.props.growScroll;
     if (scrollContainer) {
       const listener = () => {
         if (this._unmounted) return;
@@ -81,7 +82,7 @@ class StickyBackToTop extends PureComponent<Props, State> {
   _unmounted = false;
 
   onClick = () => {
-    const { scrollContainer } = this.props.getGrowScroll();
+    const { scrollContainer } = this.props.growScroll;
     if (scrollContainer) {
       // $FlowFixMe seems to be missing in flow
       scrollContainer.scrollTo({ top: 0, behavior: "smooth" });
@@ -106,7 +107,7 @@ class StickyBackToTop extends PureComponent<Props, State> {
 
 const StickyBackToTopWrapper = (props: { scrollThreshold?: number }) => (
   <GrowScrollContext.Consumer>
-    {getGrowScroll => <StickyBackToTop {...props} getGrowScroll={getGrowScroll} />}
+    {growScroll => <StickyBackToTop {...props} growScroll={growScroll} />}
   </GrowScrollContext.Consumer>
 );
 
