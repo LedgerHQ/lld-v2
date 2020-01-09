@@ -3,23 +3,15 @@
 import React from "react";
 import Lottie from "react-lottie";
 
-import * as connectDeviceEnterPinNanoX from "./connectDeviceEnterPinNanoX.json";
-
-const animations = {
-  connectDeviceEnterPinNanoX,
-};
-
-type LottieAnimations = $Keys<typeof animations>;
-
-const LottieAnimationWrapper = ({
-  name,
+const Animation = ({
+  animation,
   width = "100%",
   height = "auto",
   loop = true,
   autoplay = true,
   rendererSettings = { preserveAspectRatio: "xMidYMin" },
 }: {
-  name: LottieAnimations,
+  animation: Object,
   width?: string,
   height?: string,
   loop?: boolean,
@@ -34,10 +26,10 @@ const LottieAnimationWrapper = ({
     options={{
       loop,
       autoplay,
-      animationData: animations[name],
+      animationData: animation,
       rendererSettings,
     }}
   />
 );
 
-export default LottieAnimationWrapper;
+export default Animation;

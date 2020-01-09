@@ -26,8 +26,6 @@ const ErrorBannerBox: ThemedComponent<{}> = styled(Box).attrs(() => ({
 `;
 
 class ErrorBanner extends PureComponent<Props> {
-  onClick = () => {};
-
   render() {
     const { error, warning } = this.props;
     return (

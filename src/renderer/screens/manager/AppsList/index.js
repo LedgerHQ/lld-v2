@@ -2,6 +2,9 @@
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import { Trans } from "react-i18next";
+import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
+import type { ListAppsResult, Exec } from "@ledgerhq/live-common/lib/apps/types";
+import type { Device } from "~/renderer/reducers/devices";
 import { getActionPlan, useAppsRunner } from "@ledgerhq/live-common/lib/apps";
 import { useSortedFilteredApps } from "@ledgerhq/live-common/lib/apps/filtering";
 import Placeholder from "./Placeholder";
@@ -71,12 +74,19 @@ const Badge = styled(Text)`
   margin-left: 10px;
 `;
 
-const AppsList = ({ deviceInfo, listAppsRes, exec }: *) => {
+type Props = {
+  device: Device,
+  deviceInfo: DeviceInfo,
+  result: ListAppsResult,
+  exec: Exec,
+};
+
+const AppsList = ({ deviceInfo, result, exec }: Props) => {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("all");
   const [sort, setSort] = useState({ type: "name", order: "asc" });
   const [activeTab, setActiveTab] = useState(0);
-  const [state, dispatch] = useAppsRunner(listAppsRes, exec);
+  const [state, dispatch] = useAppsRunner(result, exec);
   const onUpdateAll = useCallback(() => dispatch({ type: "updateAll" }), [dispatch]);
 
   const { apps, installed: installedApps } = state;
