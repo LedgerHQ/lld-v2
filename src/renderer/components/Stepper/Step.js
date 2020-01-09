@@ -75,8 +75,7 @@ type Props = {
   children: any,
 };
 
-function Step(props: Props) {
-  const { number, status, children } = props;
+const Step = ({ number, status, children }: Props) => {
   return (
     <Wrapper status={status}>
       <StepNumber status={status}>
@@ -91,6 +90,6 @@ function Step(props: Props) {
       <Label status={status}>{children}</Label>
     </Wrapper>
   );
-}
+};
 
 export default Step;

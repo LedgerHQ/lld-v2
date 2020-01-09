@@ -67,7 +67,7 @@ export type Content = {
 
 type Props = {
   content?: Content,
-  status: string,
+  status?: string,
   dismissable?: boolean,
   bannerId?: string,
 };
