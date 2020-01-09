@@ -124,9 +124,9 @@ const HelpLink = styled.span.attrs(() => ({
 const FooterContent = styled(Box).attrs(() => ({
   flow: 2,
   horizontal: true,
-  align: "center",
+  alignItems: "center",
 }))`
-  justify: flex-end;
+  justify-content: flex-end;
 `;
 
 const Exclamation = styled.div`

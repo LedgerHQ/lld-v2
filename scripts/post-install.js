@@ -3,26 +3,31 @@ const hasha = require("hasha");
 const execa = require("execa");
 const fs = require("fs");
 
-const rebuildDeps = async file => {
-  try {
-    await execa("yarn", ["install-deps"], {
-      // env: { DEBUG: "electron-builder" },
-    }).stdout.pipe(process.stdout);
-    const checksum = await hasha.async(file, { algorithm: "md5" });
-    await fs.promises.writeFile(file, checksum);
-  } catch (err) {
-    console.log(chalk.red(err));
+const rebuildDeps = async (folder, file) => {
+  await execa("yarn", ["install-deps"], {
+    // env: { DEBUG: "electron-builder" },
+  });
+  const checksum = await hasha.async("yarn.lock", { algorithm: "md5" });
+  console.log(chalk.blue("creating a new file with checksum"));
+  if (fs.existsSync(folder)) {
+    await fs.promises.writeFile(`${folder}${file}`, checksum);
+  } else {
+    await fs.promises.mkdir(folder, { recursive: true });
+    await fs.promises.writeFile(`${folder}${file}`, checksum);
   }
+  console.log(chalk.blue("file created"));
 };
 
 async function main() {
-  const file = "node_modules/.cache/LEDGER_HASH_yarn.lock.hash";
+  const folder = "node_modules/.cache/";
+  const file = "LEDGER_HASH_yarn.lock.hash";
+  const fullPath = `${folder}${file}`;
 
   try {
-    const oldChecksum = await fs.promises.readFile(file, { encoding: "utf8" });
-    const currentChecksum = await hasha(file, { algorithm: "md5" });
+    const oldChecksum = await fs.promises.readFile(fullPath, { encoding: "utf8" });
+    const currentChecksum = await hasha("yarn.lock", { algorithm: "md5" });
     if (oldChecksum !== currentChecksum) {
-      rebuildDeps(file);
+      rebuildDeps(folder, file);
     } else {
       console.log(chalk.blue("checksum are identical, no need to rebuild deps"));
     }
@@ -30,7 +35,11 @@ async function main() {
     console.log(
       chalk.blue("no previous checksum saved, will rebuild native deps and save new checksum"),
     );
-    await rebuildDeps(file);
+    try {
+      await rebuildDeps(folder, file);
+    } catch (error) {
+      console.log(chalk.red("rebuilding error"));
+    }
   }
 }
 
