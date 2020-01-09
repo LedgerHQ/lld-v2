@@ -35,6 +35,7 @@ import KeyboardContent from "~/renderer/components/KeyboardContent";
 import PerfIndicator from "~/renderer/components/PerfIndicator";
 import MainSideBar from "~/renderer/components/MainSideBar";
 import TriggerAppReady from "~/renderer/components/TriggerAppReady";
+import ContextMenuWrapper from "~/renderer/components/ContextMenu/ContextMenuWrapper";
 import ModalsLayer from "./ModalsLayer";
 
 const Main: ThemedComponent<{
@@ -80,57 +81,59 @@ const Default = () => {
       {process.platform === "darwin" ? <AppRegionDrag /> : null}
 
       <IsUnlocked>
-        <OnboardingOrElse>
-          <ModalsLayer />
+        <ContextMenuWrapper>
+          <OnboardingOrElse>
+            <ModalsLayer />
 
-          <CheckTermsAccepted />
+            <CheckTermsAccepted />
 
-          <IsNewVersion />
+            <IsNewVersion />
 
-          {/* TODO: UpdaterContext and autoUpdate command */}
-          {/* {process.env.DEBUG_UPDATE && <DebugUpdater />} */}
+            {/* TODO: UpdaterContext and autoUpdate command */}
+            {/* {process.env.DEBUG_UPDATE && <DebugUpdater />} */}
 
-          <SyncContinuouslyPendingOperations priority={20} interval={SYNC_PENDING_INTERVAL} />
-          <SyncBackground />
+            <SyncContinuouslyPendingOperations priority={20} interval={SYNC_PENDING_INTERVAL} />
+            <SyncBackground />
 
-          <div id="sticky-back-to-top-root" />
+            <div id="sticky-back-to-top-root" />
 
-          <Box grow horizontal bg="palette.background.paper">
-            <MainSideBar />
-            <Box
-              className="main-container"
-              shrink
-              grow
-              bg="palette.background.default"
-              color="palette.text.shade60"
-              overflow="visible"
-              relative
-            >
-              <HSMStatusBanner />
-              <TopBar />
+            <Box grow horizontal bg="palette.background.paper">
+              <MainSideBar />
+              <Box
+                className="main-container"
+                shrink
+                grow
+                bg="palette.background.default"
+                color="palette.text.shade60"
+                overflow="visible"
+                relative
+              >
+                <HSMStatusBanner />
+                <TopBar />
 
-              <Main ref={ref} tabIndex={-1}>
-                <Switch>
-                  <Route path="/" exact component={Dashboard} />
-                  <Route path="/settings" component={Settings} />
-                  <Route path="/accounts" component={Accounts} />
-                  <Route path="/manager" component={Manager} />
-                  <Route path="/partners" component={Partners} />
-                  <Route path="/account/:parentId/:id" component={Account} />
-                  <Route path="/account/:id" component={Account} />
-                  <Route path="/asset/:assetId+" component={Asset} />
-                </Switch>
-              </Main>
+                <Main ref={ref} tabIndex={-1}>
+                  <Switch>
+                    <Route path="/" exact component={Dashboard} />
+                    <Route path="/settings" component={Settings} />
+                    <Route path="/accounts" component={Accounts} />
+                    <Route path="/manager" component={Manager} />
+                    <Route path="/partners" component={Partners} />
+                    <Route path="/account/:parentId/:id" component={Account} />
+                    <Route path="/account/:id" component={Account} />
+                    <Route path="/asset/:assetId+" component={Asset} />
+                  </Switch>
+                </Main>
+              </Box>
             </Box>
-          </Box>
 
-          <LibcoreBusyIndicator />
-          <DeviceBusyIndicator />
+            <LibcoreBusyIndicator />
+            <DeviceBusyIndicator />
 
-          <KeyboardContent sequence="BJBJBJ">
-            <PerfIndicator />
-          </KeyboardContent>
-        </OnboardingOrElse>
+            <KeyboardContent sequence="BJBJBJ">
+              <PerfIndicator />
+            </KeyboardContent>
+          </OnboardingOrElse>
+        </ContextMenuWrapper>
       </IsUnlocked>
     </>
   );
