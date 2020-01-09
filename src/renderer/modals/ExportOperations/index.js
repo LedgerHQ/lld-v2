@@ -3,7 +3,7 @@ import { remote } from "electron";
 import fs from "fs";
 import React, { PureComponent } from "react";
 import { Trans } from "react-i18next";
-import connect from "react-redux/es/connect/connect";
+import { connect } from "react-redux";
 import styled from "styled-components";
 import moment from "moment";
 import { createStructuredSelector } from "reselect";
@@ -21,7 +21,8 @@ import AccountsList from "~/renderer/components/AccountsList";
 import IconDownloadCloud from "~/renderer/icons/DownloadCloud";
 import IconCheckCircle from "~/renderer/icons/CheckCircle";
 
-type Props = {
+type OwnProps = {};
+type Props = OwnProps & {
   closeModal: string => void,
   accounts: Account[],
 };
@@ -213,4 +214,9 @@ const Title = styled(Box).attrs(() => ({
   text-align: center;
 `;
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExportOperations);
+const ConnectedExportOperations: React$ComponentType<OwnProps> = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ExportOperations);
+
+export default ConnectedExportOperations;

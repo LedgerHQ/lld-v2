@@ -11,6 +11,7 @@ import MODAL_TERMS from "./Terms";
 import MODAL_SEND from "./Send";
 import MODAL_UPDATE_FIRMWARE from "./UpdateFirmwareModal";
 import MODAL_OPERATION_DETAILS from "./OperationDetails";
+import MODAL_MIGRATE_ACCOUNTS from "./MigrateAccounts";
 
 const modals: { [_: string]: React$ComponentType<any> } = {
   MODAL_EXPORT_OPERATIONS,
@@ -24,6 +25,7 @@ const modals: { [_: string]: React$ComponentType<any> } = {
   MODAL_UPDATE_FIRMWARE,
   MODAL_OPERATION_DETAILS,
   MODAL_DELEGATE,
+  MODAL_MIGRATE_ACCOUNTS,
 };
 
 export default modals;

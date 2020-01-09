@@ -22,9 +22,7 @@ import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import AccountList from "./AccountList";
 import AccountsHeader from "./AccountsHeader";
 import EmptyState from "./EmptyState";
-
-// TODO Restore MigrationBanner
-// import MigrationBanner from "~/renderer/modals/MigrateAccounts/Banner";
+import MigrationBanner from "~/renderer/modals/MigrateAccounts/Banner";
 
 type Props = {
   accounts: (Account | TokenAccount)[],
@@ -83,7 +81,7 @@ const AccountsPage = (props: Props) => {
         <TrackPage category="Accounts" accountsLength={accounts.length} />
         <TopBannerContainer>
           <UpdateBanner />
-          {/* <MigrationBanner /> */}
+          <MigrationBanner />
         </TopBannerContainer>
         <EmptyState />
       </>
