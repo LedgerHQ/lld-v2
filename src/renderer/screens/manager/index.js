@@ -85,7 +85,7 @@ const Manager = ({ device }: Props) => {
           <AnimationWrapper>
             <Animation name="connectDeviceEnterPinNanoX" />
           </AnimationWrapper>
-          <Text ff="Inter|Regular" color="palette.text.shade100" align="center" fontSize={5}>
+          <Text ff="Inter|Regular" color="palette.text.shade100" textAlign="center" fontSize={5}>
             <Trans i18nKey="manager.connect.connectAndUnlockDevice" />
           </Text>
         </Wrapper>
@@ -106,7 +106,7 @@ const Manager = ({ device }: Props) => {
             mt={60}
             ff="Inter|Regular"
             color="palette.text.shade100"
-            align="center"
+            textAlign="center"
             fontSize={5}
           >
             <Trans i18nKey="manager.connect.loading" />

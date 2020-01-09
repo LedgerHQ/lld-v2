@@ -1,5 +1,6 @@
 // @flow
 
+import MODAL_DELEGATE from "~/renderer/families/tezos/DelegateFlowModal";
 import MODAL_EXPORT_OPERATIONS from "./ExportOperations";
 import MODAL_CONFIRM from "./ConfirmModal";
 import MODAL_PASSWORD from "./PasswordModal";
@@ -22,6 +23,7 @@ const modals: { [_: string]: React$ComponentType<any> } = {
   MODAL_SEND,
   MODAL_UPDATE_FIRMWARE,
   MODAL_OPERATION_DETAILS,
+  MODAL_DELEGATE,
 };
 
 export default modals;
