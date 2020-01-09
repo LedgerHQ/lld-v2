@@ -11,9 +11,10 @@ import { dragDropStarAction } from "~/renderer/actions/settings";
 
 import Hide from "~/renderer/components/MainSideBar/Hide";
 import Text from "~/renderer/components/Text";
-// TODO: rework Image component
-// import Image from '~/renderer/components/Image'
 import Tooltip from "~/renderer/components/Tooltip";
+import Image from "~/renderer/components/Image";
+import emptyBookmarksDark from "~/renderer/images/dark-empty-bookmarks.png";
+import emptyBookmarksLight from "~/renderer/images/light-empty-bookmarks.png";
 
 import Item from "./Item";
 
@@ -89,13 +90,15 @@ const Stars = ({ pathname, collapsed }: Props) => {
   ) : (
     <Hide visible={!collapsed}>
       <Placeholder>
-        {/* <Image
+        <Image
           alt="stars placeholder"
-          resource="empty-bookmarks.png"
+          resource={{
+            light: emptyBookmarksLight,
+            dark: emptyBookmarksDark,
+          }}
           width="95"
           height="53"
-          themeTyped
-        /> */}
+        />
         <Text
           ff="Inter|SemiBold"
           color="palette.text.shade60"

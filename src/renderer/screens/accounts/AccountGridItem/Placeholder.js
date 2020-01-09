@@ -8,9 +8,10 @@ import styled from "styled-components";
 import { openModal } from "~/renderer/actions/modals";
 import Box from "~/renderer/components/Box";
 import Button from "~/renderer/components/Button";
-// TODO rework Image component
-// import Image from "~/renderer/components/Image";
+import Image from "~/renderer/components/Image";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
+import lightEmptyAccountTile from "~/renderer/images/light-empty-account-tile.svg";
+import darkEmptyAccountTile from "~/renderer/images/dark-empty-account-tile.svg";
 
 const Wrapper: ThemedComponent<{}> = styled(Box).attrs(() => ({
   p: 4,
@@ -30,7 +31,14 @@ const Placeholder = () => {
     <Box mb={5}>
       <Wrapper data-e2e="dashboard_AccountPlaceOrder">
         <Box mt={2}>
-          {/* <Image alt="empty account placeholder" resource="empty-account-tile.svg" themeTyped /> */}
+          <Image
+            alt="empty account placeholder"
+            resource={{
+              light: lightEmptyAccountTile,
+              dark: darkEmptyAccountTile,
+            }}
+            themeTyped
+          />
         </Box>
         <Box
           ff="Inter"

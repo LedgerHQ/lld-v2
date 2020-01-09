@@ -5,7 +5,7 @@ import { Trans } from "react-i18next";
 import styled from "styled-components";
 import { listSubAccounts } from "@ledgerhq/live-common/lib/account/helpers";
 import { listTokenTypesForCryptoCurrency } from "@ledgerhq/live-common/lib/currencies";
-import type { Account, TokenAccount } from "@ledgerhq/live-common/lib/types/account";
+import type { Account, TokenAccount, AccountLike } from "@ledgerhq/live-common/lib/types/account";
 import type { PortfolioRange } from "@ledgerhq/live-common/lib/types/portfolio";
 
 import Box from "~/renderer/components/Box";
@@ -20,11 +20,9 @@ import Balance from "./Balance";
 import Countervalue from "./Countervalue";
 import Delta from "./Delta";
 import Header from "./Header";
+import TokenRow from "~/renderer/components/TokenRow";
 
-// TODO Port TokenRow
-// import TokenRow from "~/renderer/components/TokenRow";
-// TODO Port Stars
-// import Star from "~/renderer/components/Stars/Star";
+import Star from "~/renderer/components/Stars/Star";
 
 const Row: ThemedComponent<{}> = styled(Box)`
   background: ${p => p.theme.colors.palette.background.paper};
@@ -114,7 +112,7 @@ type Props = {
   account: TokenAccount | Account,
   parentAccount?: ?Account,
   disableRounding?: boolean,
-  onClick: (Account | TokenAccount, ?Account) => void,
+  onClick: (AccountLike, ?Account) => void,
   hidden?: boolean,
   range: PortfolioRange,
   search?: string,
@@ -171,15 +169,7 @@ class AccountRowItem extends PureComponent<Props, State> {
   };
 
   render() {
-    const {
-      account,
-      parentAccount,
-      range,
-      hidden,
-      // onClick,
-      disableRounding,
-      search,
-    } = this.props;
+    const { account, parentAccount, range, hidden, onClick, disableRounding, search } = this.props;
     const { expanded } = this.state;
 
     let currency;
@@ -233,30 +223,29 @@ class AccountRowItem extends PureComponent<Props, State> {
               <Balance unit={unit} balance={account.balance} disableRounding={disableRounding} />
               <Countervalue account={account} currency={currency} range={range} />
               <Delta account={account} range={range} />
-              {/* <Star accountId={account.id} /> */}
+              <Star accountId={account.id} />
             </RowContent>
           </AccountContextMenu>
-          {showTokensIndicator && expanded && (
+          {!!parentAccount && showTokensIndicator && expanded ? (
             <TokenContentWrapper>
               <TokenBarIndicator onClick={this.toggleAccordion} />
               <TokenContent>
                 {tokens &&
                   tokens.map((token, index) => (
                     <AccountContextMenu key={token.id} account={token} parentAccount={mainAccount}>
-                      <Box>TokenRow</Box>
-                      {/* <TokenRow
+                      <TokenRow
                         nested
                         index={index}
                         range={range}
                         account={token}
-                        parentAccount={mainAccount}
+                        parentAccount={parentAccount}
                         onClick={onClick}
-                      /> */}
+                      />
                     </AccountContextMenu>
                   ))}
               </TokenContent>
             </TokenContentWrapper>
-          )}
+          ) : null}
           {showTokensIndicator && !disabled && tokens && (
             <TokenShowMoreIndicator expanded={expanded} onClick={this.toggleAccordion}>
               <Text color="wallet" ff="Inter|SemiBold" fontSize={4}>
