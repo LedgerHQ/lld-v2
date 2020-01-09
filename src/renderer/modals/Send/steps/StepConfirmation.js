@@ -48,7 +48,7 @@ const Text: ThemedComponent<{}> = styled(Box).attrs(() => ({
 
 const Disclaimer: ThemedComponent<{}> = styled(Box).attrs(() => ({
   horizontal: true,
-  align: "center",
+  alignItems: "center",
   color: "palette.background.paper",
   borderRadius: 1,
   p: 3,

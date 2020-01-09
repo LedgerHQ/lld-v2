@@ -9,8 +9,9 @@ import styled from "styled-components";
 import { openModal } from "~/renderer/actions/modals";
 import Box from "~/renderer/components/Box";
 import Button from "~/renderer/components/Button";
-// TODO rework Image component
-// import Image from "~/renderer/components/Image";
+import Image from "~/renderer/components/Image";
+import lightEmptyStateAccounts from "~/renderer/images/light-empty-state-accounts.svg";
+import darkEmptyStateAccounts from "~/renderer/images/dark-empty-state-accounts.svg";
 
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
@@ -26,12 +27,15 @@ const EmptyState = () => {
 
   return (
     <Box alignItems="center" pb={8} style={{ margin: "auto" }}>
-      {/* <Image
+      <Image
         alt="emptyState Dashboard logo"
-        resource="empty-state-accounts.svg"
+        resource={{
+          light: lightEmptyStateAccounts,
+          dark: darkEmptyStateAccounts,
+        }}
         width="500"
         themeTyped
-      /> */}
+      />
       <Box mt={5} alignItems="center">
         <Title data-e2e="dashboard_empty_title">{t("emptyState.dashboard.title")}</Title>
         <Description mt={3} style={{ maxWidth: 600 }}>

@@ -1,15 +1,12 @@
 // @flow
 
-// TODO: REWORK THIS NONSENSE
-// We need to get away from that static path handler shit
-// and import images directly in our files using webpack
 /**
  *                                   Image
  *                                   -----
  *  Usage:
  *
  *    <Image
- *      resource="name"   // The asset name located in static/images
+ *      resource=Asset || { dark: Asset1, light: Asset2 }   // The asset
  *      themeTyped        // Should I load a contrasted version based on theme type ? (light/dark)
  *      ...Props          // The remaining props will be forwarded to the img
  *    />
@@ -18,18 +15,13 @@
 
 import React from "react";
 import styled from "styled-components";
-import path from "path";
-
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
 import useTheme from "~/renderer/hooks/useTheme";
-import { i } from "~/helpers/staticPath";
 
 type Props = {
-  resource: string,
-  resourcePath?: string,
+  resource: { [string]: string } | string,
   alt: string,
-  themeTyped?: boolean,
   className?: string,
 };
 
@@ -38,12 +30,11 @@ const Img: ThemedComponent<{}> = styled.img`
   pointer-events: none;
 `;
 
-const Image = ({ resource, alt, themeTyped = false, resourcePath, className, ...rest }: Props) => {
+const Image = ({ resource, alt, className, ...rest }: Props) => {
   const type = useTheme("colors.palette.type");
-  const fileName = themeTyped ? `${type}-${resource}` : resource;
-  const finalPath = resourcePath ? path.join(resourcePath, fileName) : fileName;
+  const asset = typeof resource === "object" ? resource[type] : resource;
 
-  return <Img {...rest} alt={alt} className={className} src={i(finalPath)} />;
+  return <Img {...rest} alt={alt} className={className} src={asset} />;
 };
 
 export default Image;
