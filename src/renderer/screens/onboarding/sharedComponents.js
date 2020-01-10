@@ -49,7 +49,6 @@ export const Inner: ThemedComponent<{}> = styled(Box).attrs(() => ({
 export const FixedTopContainer: ThemedComponent<{}> = styled(Box).attrs(() => ({
   sticky: true,
   mt: 170,
-  backgroundColor: "red",
 }))``;
 // FOOTER
 
@@ -74,7 +73,7 @@ export const DisclaimerBox = ({ disclaimerNotes, ...p }: { disclaimerNotes: any 
           <IconSensitiveOperationShield />
         </DisclaimerBoxIconContainer>
         {disclaimerNotes.map(note => (
-          <OptionRow justify="center" key={note.key} step={note} />
+          <OptionRow justifyContent="center" key={note.key} step={note} />
         ))}
       </Box>
     </DisclaimerBoxContainer>
@@ -82,7 +81,7 @@ export const DisclaimerBox = ({ disclaimerNotes, ...p }: { disclaimerNotes: any 
 };
 
 // Not enough styled as a warning
-const DisclaimerBoxContainer: ThemedComponent<{}> = styled(Box).attrs(() => ({
+export const DisclaimerBoxContainer: ThemedComponent<{}> = styled(Box).attrs(() => ({
   shrink: 1,
   grow: true,
   borderRadius: "4px",
@@ -91,7 +90,7 @@ const DisclaimerBoxContainer: ThemedComponent<{}> = styled(Box).attrs(() => ({
   min-width: 620px;
   border: 1px dashed ${p => p.theme.colors.palette.divider};
 `;
-const DisclaimerBoxIconContainer = styled(Box).attrs(p => ({
+export const DisclaimerBoxIconContainer: ThemedComponent<{}> = styled(Box).attrs(p => ({
   color: p.theme.colors.alertRed,
 }))`
   position: absolute;

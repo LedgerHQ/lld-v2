@@ -2,15 +2,17 @@
 
 import React from "react";
 import { Trans, withTranslation } from "react-i18next";
-import { configureAsNewDevice } from "@ledgerhq/live-common/lib/deviceWordings";
 import Text from "~/renderer/components/Text";
 import Box from "~/renderer/components/Box";
-import { IconOptionRow, Inner, OptionRow } from "~/renderer/screens/onboarding";
 import IconChevronRight from "~/renderer/icons/ChevronRight";
 import { getDeviceModel } from "@ledgerhq/devices";
 import InvertableImg from "~/renderer/components/InvertableImg";
+import OptionRow, { IconOptionRow } from "~/renderer/components/OptionRow";
+import { Inner } from "~/renderer/screens/onboarding/sharedComponents";
 import { DisclaimerBox } from "~/renderer/screens/onboarding/steps/SelectPIN/index";
 import SelectPinNanoS from "~/renderer/images/select-pin-nano-onb.svg";
+import type { T } from "~/types/common";
+import { configureAsNewDevice } from "@ledgerhq/live-common/lib/deviceWordings";
 
 type Props = {
   t: T,
@@ -67,7 +69,7 @@ const SelectPINnano = ({ t }: Props) => {
   ];
 
   return (
-    <Box align="center" mt={3}>
+    <Box alignItems="center" mt={3}>
       <Inner style={{ width: 700 }}>
         <InvertableImg alt="" src={SelectPinNanoS} />
         <Box shrink grow flow={4} style={{ marginLeft: 40 }}>

@@ -4,13 +4,15 @@ import React from "react";
 import { Trans, withTranslation } from "react-i18next";
 import Text from "~/renderer/components/Text";
 import Box from "~/renderer/components/Box";
-import { IconOptionRow, Inner, OptionRow } from "~/renderer/screens/onboarding";
 import IconChevronRight from "~/renderer/icons/ChevronRight";
 import { getDeviceModel } from "@ledgerhq/devices";
 import InvertableImg from "~/renderer/components/InvertableImg";
 import { DisclaimerBox } from "~/renderer/screens/onboarding/steps/SelectPIN/index";
+import OptionRow, { IconOptionRow } from "~/renderer/components/OptionRow";
+import { Inner } from "~/renderer/screens/onboarding/sharedComponents";
 import RestoreBlue from "~/renderer/images/select-pin-blue-onb.svg";
 import { restoreConfiguration } from "@ledgerhq/live-common/lib/deviceWordings";
+import type { T } from "~/types/common";
 
 type Props = {
   t: T,
@@ -63,7 +65,7 @@ const SelectPINrestoreBlue = ({ t }: Props) => {
   ];
 
   return (
-    <Box align="center">
+    <Box alignItems="center">
       <Inner style={{ width: 550 }}>
         <Box style={{ width: 180, justifyContent: "center", alignItems: "center" }}>
           <InvertableImg alt="" src={RestoreBlue} />

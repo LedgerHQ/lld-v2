@@ -4,13 +4,15 @@ import React from "react";
 import { Trans, withTranslation } from "react-i18next";
 import Text from "~/renderer/components/Text";
 import Box from "~/renderer/components/Box";
-import { IconOptionRow, Inner, OptionRow } from "~/renderer/screens/onboarding";
 import IconChevronRight from "~/renderer/icons/ChevronRight";
 import { getDeviceModel } from "@ledgerhq/devices";
 import InvertableImg from "~/renderer/components/InvertableImg";
 import { DisclaimerBox } from "~/renderer/screens/onboarding/steps/SelectPIN/index";
+import OptionRow, { IconOptionRow } from "~/renderer/components/OptionRow";
+import { Inner } from "~/renderer/screens/onboarding/sharedComponents";
 import SelectPinNanoX from "~/renderer/images/select-pin-nano-x-onb.svg";
 import { setUpAsNewDevice } from "@ledgerhq/live-common/lib/deviceWordings";
+import type { T } from "~/types/common";
 
 type Props = {
   t: T,
@@ -67,7 +69,7 @@ const SelectPINnanoX = ({ t }: Props) => {
   ];
 
   return (
-    <Box align="center" mt={3}>
+    <Box alignItems="center" mt={3}>
       <Inner style={{ width: 700 }}>
         <InvertableImg alt="" src={SelectPinNanoX} />
         <Box shrink grow flow={4} style={{ marginLeft: 40 }}>

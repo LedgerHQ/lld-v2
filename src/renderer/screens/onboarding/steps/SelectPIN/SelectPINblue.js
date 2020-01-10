@@ -1,16 +1,17 @@
 // @flow
 import React, { PureComponent } from "react";
 import { Trans, withTranslation } from "react-i18next";
-import { configureAsNewDevice } from "@ledgerhq/live-common/lib/deviceWordings";
 import Text from "~/renderer/components/Text";
 import Box from "~/renderer/components/Box";
-import { IconOptionRow, Inner, OptionRow } from "~/renderer/screens/onboarding";
 import IconChevronRight from "~/renderer/icons/ChevronRight";
 import { getDeviceModel } from "@ledgerhq/devices";
 import InvertableImg from "~/renderer/components/InvertableImg";
-
+import OptionRow, { IconOptionRow } from "~/renderer/components/OptionRow";
+import { Inner } from "~/renderer/screens/onboarding/sharedComponents";
 import SelectPinBlue from "~/renderer/images/select-pin-blue-onb.svg";
 import { DisclaimerBox } from "~/renderer/screens/onboarding/steps/SelectPIN/index";
+import type { T } from "~/types/common";
+import { configureAsNewDevice } from "@ledgerhq/live-common/lib/deviceWordings";
 
 type Props = {
   t: T,
@@ -66,7 +67,7 @@ class SelectPIN extends PureComponent<Props, *> {
     ];
 
     return (
-      <Box align="center">
+      <Box alignItems="center">
         <Inner style={{ width: 550 }}>
           <Box style={{ width: 180, justifyContent: "center", alignItems: "center" }}>
             <InvertableImg alt="" src={SelectPinBlue} />

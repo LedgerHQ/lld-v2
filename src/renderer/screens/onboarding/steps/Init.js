@@ -101,7 +101,7 @@ export function OptionFlowCard({ card }: { card: CardType }) {
   return (
     <InitCardContainer onClick={onClick} color="palette.text.shade100">
       <Box justifyContent="center" color={"palette.primary.main"}>
-        <InitIconContainer justify="center">{icon}</InitIconContainer>
+        <InitIconContainer justifyContent="center">{icon}</InitIconContainer>
       </Box>
       <Box justifyContent="center" grow>
         <CardTitle>{title}</CardTitle>
