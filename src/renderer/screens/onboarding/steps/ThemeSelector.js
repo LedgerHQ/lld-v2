@@ -5,7 +5,6 @@ import map from "lodash/map";
 import { Trans } from "react-i18next";
 import { connect } from "react-redux";
 import styled from "styled-components";
-
 import palettes from "~/renderer/styles/palettes";
 import { themeSelector } from "~/renderer/reducers/settings";
 import { setTheme } from "~/renderer/actions/settings";

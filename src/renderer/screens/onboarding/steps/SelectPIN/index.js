@@ -35,14 +35,14 @@
 //         {onboarding.flowType === "restoreDevice" ? (
 //           <Box grow alignItems="center">
 //             <Title>{t("onboarding.selectPIN.restore.title")}</Title>
-//             <Box align="center" mt={7}>
+//             <Box alignItems="center" mt={7}>
 //               <SelectPin modelId={model.id} restore />
 //             </Box>
 //           </Box>
 //         ) : (
 //           <Box grow alignItems="center">
 //             <Title>{t("onboarding.selectPIN.initialize.title")}</Title>
-//             <Box align="center" mt={7}>
+//             <Box alignItems="center" mt={7}>
 //               <SelectPin modelId={model.id} />
 //             </Box>
 //           </Box>

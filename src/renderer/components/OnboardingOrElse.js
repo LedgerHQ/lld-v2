@@ -2,7 +2,7 @@
 
 import React, { memo } from "react";
 import { useSelector } from "react-redux";
-import { hasCompletedOnboardingSelector } from "~/renderer/reducers/settings";
+// import { hasCompletedOnboardingSelector } from "~/renderer/reducers/settings";
 import { onboardingRelaunchedSelector } from "~/renderer/reducers/onboarding";
 import Onboarding from "~/renderer/screens/onboarding";
 
@@ -11,7 +11,7 @@ type Props = {
 };
 
 const OnboardingOrElse = ({ children }: Props) => {
-  const hasCompletedOnboarding = useSelector(hasCompletedOnboardingSelector);
+  // const hasCompletedOnboarding = useSelector(hasCompletedOnboardingSelector);
   const onboardingRelaunched = useSelector(onboardingRelaunchedSelector);
 
   // if (!hasCompletedOnboarding || onboardingRelaunched) { // FIXME put the hadCompletedOboarding check back

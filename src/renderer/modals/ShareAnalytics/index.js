@@ -4,7 +4,9 @@ import React, { Fragment, PureComponent } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import styled from "styled-components";
+import type { T } from "~/types/common";
 import { closeModal } from "~/renderer/actions/modals";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import Modal, { ModalBody } from "~/renderer/components/Modal";
 import { Trans, withTranslation } from "react-i18next";
 import Box from "~/renderer/components/Box";
@@ -18,7 +20,7 @@ const mapDispatchToProps = {
   closeModal,
 };
 
-class ShareAnalytics extends PureComponent<Props, *> {
+class ShareAnalyticsC extends PureComponent<Props, *> {
   onClose = () => this.props.closeModal("MODAL_SHARE_ANALYTICS");
   render() {
     const { t } = this.props;
@@ -92,9 +94,14 @@ class ShareAnalytics extends PureComponent<Props, *> {
   }
 }
 
-export default compose(withTranslation(), connect(null, mapDispatchToProps))(ShareAnalytics);
+const ShareAnalytics: React$ComponentType<{}> = compose(
+  withTranslation(),
+  connect(null, mapDispatchToProps),
+)(ShareAnalyticsC);
 
-export const Ul = styled.ul.attrs(() => ({
+export default ShareAnalytics;
+
+export const Ul: ThemedComponent<{}> = styled.ul.attrs(() => ({
   ff: "Inter|Regular",
 }))`
   margin-top: 15px;
@@ -102,7 +109,7 @@ export const Ul = styled.ul.attrs(() => ({
   color: ${p => p.theme.colors.palette.text.shade80};
   line-height: 1.69;
 `;
-export const InlineDesc = styled(Box).attrs(() => ({
+export const InlineDesc: ThemedComponent<{}> = styled(Box).attrs(() => ({
   ff: "Inter|SemiBold",
   fontSize: 4,
   color: "palette.text.shade100",

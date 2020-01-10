@@ -2,6 +2,7 @@
 
 import React, { Fragment, PureComponent } from "react";
 import { compose } from "redux";
+import type { T } from "~/types/common";
 import { closeModal } from "~/renderer/actions/modals";
 import Modal, { ModalBody } from "~/renderer/components/Modal";
 import Box from "~/renderer/components/Box";
