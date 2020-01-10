@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
@@ -50,6 +50,18 @@ type ItemType = DropDownItemType & {
 const OptionsButton = () => {
   const dispatch = useDispatch();
   const hideEmptyTokenAccounts = useSelector(hideEmptyTokenAccountsSelector);
+  const onOpenModal = useCallback(
+    (modal: string) => {
+      dispatch(openModal(modal));
+    },
+    [dispatch],
+  );
+  const onSetHideEmptyTokenAccounts = useCallback(
+    (status: boolean) => {
+      dispatch(setHideEmptyTokenAccounts(status));
+    },
+    [dispatch],
+  );
   const { t } = useTranslation();
 
   const items: DropDownItemType[] = [
@@ -57,13 +69,13 @@ const OptionsButton = () => {
       key: "exportOperations",
       label: t("accounts.optionsMenu.exportOperations"),
       icon: <IconDownloadCloud size={16} />,
-      onClick: () => dispatch(openModal("MODAL_EXPORT_OPERATIONS")),
+      onClick: () => onOpenModal("MODAL_EXPORT_OPERATIONS"),
     },
     {
       key: "exportAccounts",
       label: t("accounts.optionsMenu.exportToMobile"),
       icon: <IconSend size={16} />,
-      onClick: () => dispatch(openModal("MODAL_EXPORT_ACCOUNTS")),
+      onClick: () => onOpenModal("MODAL_EXPORT_ACCOUNTS"),
     },
     {
       key: "sep1",
@@ -75,7 +87,7 @@ const OptionsButton = () => {
       label: t("settings.accounts.hideEmptyTokens.title"),
       onClick: (e: MouseEvent) => {
         e.preventDefault();
-        dispatch(setHideEmptyTokenAccounts(!hideEmptyTokenAccounts));
+        onSetHideEmptyTokenAccounts(!hideEmptyTokenAccounts);
       },
     },
   ];
@@ -103,10 +115,7 @@ const OptionsButton = () => {
                   : "hideEmptyTokenAccountsDisabled"
               }
             />
-            <Switch
-              isChecked={hideEmptyTokenAccounts}
-              onChange={newState => dispatch(setHideEmptyTokenAccounts(newState))}
-            />
+            <Switch isChecked={hideEmptyTokenAccounts} onChange={onSetHideEmptyTokenAccounts} />
           </Box>
         ) : item.icon ? (
           <Box mr={4}>{item.icon}</Box>
@@ -134,4 +143,4 @@ const OptionsButton = () => {
   );
 };
 
-export default OptionsButton;
+export default React.memo<{}>(OptionsButton);

@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
 import type { PortfolioRange } from "@ledgerhq/live-common/lib/types/portfolio";
@@ -18,31 +18,37 @@ type Props = {
   range?: PortfolioRange,
 };
 
-const renderItem = ({
-  item,
-  isHighlighted,
-  isActive,
-}: {
+type RangeItemProps = {
   item: DropDownItemType,
   isHighlighted: boolean,
   isActive: boolean,
-}) => (
-  <DropDownItem
-    alignItems="center"
-    justifyContent="flex-start"
-    horizontal
-    isHighlighted={isHighlighted}
-    isActive={isActive}
-    flow={2}
-  >
-    <Box grow alignItems="flex-start">
-      <BoldToggle isBold={isActive}>{item.label}</BoldToggle>
-    </Box>
-  </DropDownItem>
-);
+};
+
+const RangeItem: React$ComponentType<RangeItemProps> = React.memo(function RangeItem({
+  item,
+  isHighlighted,
+  isActive,
+}: RangeItemProps) {
+  return (
+    <DropDownItem
+      alignItems="center"
+      justifyContent="flex-start"
+      horizontal
+      isHighlighted={isHighlighted}
+      isActive={isActive}
+      flow={2}
+    >
+      <Box grow alignItems="flex-start">
+        <BoldToggle isBold={isActive}>{item.label}</BoldToggle>
+      </Box>
+    </DropDownItem>
+  );
+});
 
 const Range = ({ range, ...props }: Props) => {
   const { t } = useTranslation();
+
+  const renderItem = useCallback(props => <RangeItem {...props} />, []);
 
   const rangeItems = [
     {
@@ -63,6 +69,7 @@ const Range = ({ range, ...props }: Props) => {
     if (!item) {
       return;
     }
+
     props.onRangeChange(item.key);
   };
 

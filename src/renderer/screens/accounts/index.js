@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { createSelector, createStructuredSelector } from "reselect";
@@ -68,10 +68,13 @@ export const GenericBox: ThemedComponent<{}> = styled(Box)`
 const AccountsPage = (props: Props) => {
   const history = useHistory();
 
-  const onAccountClick = (account: Account | TokenAccount, parentAccount: ?Account) =>
-    parentAccount
-      ? history.push(`/account/${parentAccount.id}/${account.id}`)
-      : history.push(`/account/${account.id}`);
+  const onAccountClick = useCallback(
+    (account: Account | TokenAccount, parentAccount: ?Account) =>
+      parentAccount
+        ? history.push(`/account/${parentAccount.id}/${account.id}`)
+        : history.push(`/account/${account.id}`),
+    [history],
+  );
 
   const { accounts, mode, setAccountsViewMode, setSelectedTimeRange, range } = props;
 
@@ -91,7 +94,9 @@ const AccountsPage = (props: Props) => {
   return (
     <Box>
       <TrackPage category="Accounts" accountsLength={accounts.length} />
-      <TopBannerContainer>{/* <MigrationBanner /> */}</TopBannerContainer>
+      <TopBannerContainer>
+        <MigrationBanner />
+      </TopBannerContainer>
       <AccountsHeader />
       <AccountList
         onAccountClick={onAccountClick}

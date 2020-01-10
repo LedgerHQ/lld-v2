@@ -85,4 +85,4 @@ const Header = ({ onModeChange, onTextChange, onRangeChange, mode, search, range
   );
 };
 
-export default Header;
+export default React.memo<Props>(Header);

@@ -51,4 +51,4 @@ const ListBody = ({
   </Box>
 );
 
-export default ListBody;
+export default React.memo<Props>(ListBody);

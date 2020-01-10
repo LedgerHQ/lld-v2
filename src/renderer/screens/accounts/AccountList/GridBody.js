@@ -59,4 +59,4 @@ const GridBody = ({
   </GridBox>
 );
 
-export default GridBody;
+export default React.memo<Props>(GridBody);

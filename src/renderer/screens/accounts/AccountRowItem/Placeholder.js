@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
@@ -34,13 +34,13 @@ const Placeholder = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
+  const openAddAccounts = useCallback(() => {
+    dispatch(openModal("MODAL_ADD_ACCOUNTS"));
+  }, [dispatch]);
+
   return (
     <Box mb={5}>
-      <AddAccountButton
-        isAccountRow
-        onClick={() => dispatch(openModal("MODAL_ADD_ACCOUNTS"))}
-        pb={6}
-      >
+      <AddAccountButton isAccountRow onClick={openAddAccounts} pb={6}>
         <IconPlus size={16} mr={20} />
         <Box ml={2} ff="Inter|Regular" fontSize={4}>
           {t("addAccounts.cta.add")}
@@ -50,4 +50,4 @@ const Placeholder = () => {
   );
 };
 
-export default Placeholder;
+export default React.memo<{}>(Placeholder);

@@ -59,4 +59,4 @@ const Header = ({ account, nested }: Props) => {
   );
 };
 
-export default Header;
+export default React.memo<Props>(Header);

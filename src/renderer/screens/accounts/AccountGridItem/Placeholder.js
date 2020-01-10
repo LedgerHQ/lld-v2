@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
@@ -27,6 +27,10 @@ const Placeholder = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
+  const openAddAccounts = useCallback(() => {
+    dispatch(openModal("MODAL_ADD_ACCOUNTS"));
+  }, [dispatch]);
+
   return (
     <Box mb={5}>
       <Wrapper data-e2e="dashboard_AccountPlaceOrder">
@@ -51,7 +55,7 @@ const Placeholder = () => {
         >
           {t("dashboard.emptyAccountTile.desc")}
         </Box>
-        <Button primary onClick={() => dispatch(openModal("MODAL_ADD_ACCOUNTS"))}>
+        <Button primary onClick={openAddAccounts}>
           {t("dashboard.emptyAccountTile.createAccount")}
         </Button>
       </Wrapper>
