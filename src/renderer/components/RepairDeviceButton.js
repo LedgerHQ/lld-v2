@@ -68,6 +68,7 @@ const RepairDeviceButton = ({ onRepair, buttonProps }: Props) => {
       error: error => {
         logger.critical(error);
         if (timeout.current) clearTimeout(timeout.current);
+        setError(error);
         setIsLoading(false);
         setProgress(0);
       },

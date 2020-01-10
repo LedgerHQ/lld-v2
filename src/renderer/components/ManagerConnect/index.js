@@ -115,7 +115,7 @@ const ManagerConnect = ({
       deviceInfo,
       repairModalOpened,
     },
-    { onRetry, onAutoRepair, closeRepairModal, openRepairModal },
+    { onRetry, onAutoRepair, closeRepairModal, onRepairModal },
   ] = useManagerConnect(reduxDevice);
 
   const type = useTheme("colors.palette.type");
@@ -127,12 +127,8 @@ const ManagerConnect = ({
     }
   }, [modelId]);
 
-  if (repairModalOpened) {
-    if (repairModalOpened.auto) {
-      return <AutoRepair onDone={closeRepairModal} />;
-    } else {
-      return null;
-    }
+  if (repairModalOpened && repairModalOpened.auto) {
+    return <AutoRepair onDone={closeRepairModal} />;
   }
 
   if (inApp) {
@@ -189,7 +185,7 @@ const ManagerConnect = ({
         </Title>
         <div style={{ height: 120 }}>
           {!device ? (
-            <ConnectTroubleshooting appearsAfterDelay={20000} onRepair={openRepairModal} />
+            <ConnectTroubleshooting appearsAfterDelay={20000} onRepair={onRepairModal} />
           ) : null}
         </div>
       </Wrapper>
