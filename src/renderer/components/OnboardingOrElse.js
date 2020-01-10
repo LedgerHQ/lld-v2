@@ -4,7 +4,7 @@ import React, { memo } from "react";
 import { useSelector } from "react-redux";
 import { hasCompletedOnboardingSelector } from "~/renderer/reducers/settings";
 import { onboardingRelaunchedSelector } from "~/renderer/reducers/onboarding";
-import Onboarding from "~/renderer/screens/Onboarding";
+import Onboarding from "~/renderer/screens/onboarding";
 
 type Props = {
   children: React$Node,

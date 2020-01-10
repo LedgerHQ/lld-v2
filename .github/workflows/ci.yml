@@ -31,8 +31,6 @@ jobs:
         run: |
           yarn --ignore-scripts
           yarn prepublish
-      - name: rebuild app deps
-        run: yarn install-deps
       - name: test
         run: yarn ci
   # ci-windows:
