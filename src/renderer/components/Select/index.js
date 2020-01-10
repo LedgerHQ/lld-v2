@@ -207,6 +207,7 @@ class Select extends PureComponent<Props> {
         menuPlacement="auto"
         blurInputOnSelect={false}
         backspaceRemovesValue
+        captureMenuScroll={false}
         menuShouldBlockScroll
         menuPortalTarget={document.body}
         small={small}
