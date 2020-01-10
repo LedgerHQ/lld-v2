@@ -10,7 +10,7 @@ import { getAccountCurrency } from "@ledgerhq/live-common/lib/account";
 import Box from "~/renderer/components/Box";
 import FormattedVal from "~/renderer/components/FormattedVal";
 import CounterValue from "~/renderer/components/CounterValue";
-import Chart from "~/renderer/components/Chart";
+import Chart from "~/renderer/components/Chart2Preview";
 import useTheme from "~/renderer/hooks/useTheme";
 
 const Placeholder = styled.div`
@@ -21,10 +21,6 @@ type Props = {
   account: Account | TokenAccount,
   range: PortfolioRange,
 };
-
-// $FlowFixMe
-const mapValueCounterValue = d => d.countervalue.toNumber();
-const mapValue = d => d.value.toNumber();
 
 const Body = ({ account, range }: Props) => {
   const { history, countervalueAvailable, countervalueChange } = useSelector(state =>
@@ -62,11 +58,8 @@ const Body = ({ account, range }: Props) => {
       <Chart
         data={history}
         color={getCurrencyColor(currency, bgColor)}
-        mapValue={countervalueAvailable ? mapValueCounterValue : mapValue}
+        valueKey={countervalueAvailable ? "countervalue" : "value"}
         height={52}
-        hideAxis
-        isInteractive={false}
-        id={`account-chart-${account.id}`}
       />
     </Box>
   );
