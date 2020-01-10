@@ -3,7 +3,7 @@
 import type { DeviceModelId } from "@ledgerhq/devices";
 import { handleActions } from "redux-actions";
 
-import { SKIP_ONBOARDING } from "../../config/constants";
+import { SKIP_ONBOARDING } from "~/config/constants";
 import type { State } from ".";
 
 type Step = {
@@ -180,6 +180,8 @@ const handlers = {
 };
 
 export default handleActions(handlers, initialState);
+
+export const onboardingSelector = (s: State): OnboardingState => s.onboarding;
 
 export const onboardingRelaunchedSelector = (s: State): ?boolean =>
   s.onboarding.onboardingRelaunched;

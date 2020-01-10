@@ -1,27 +1,27 @@
 // @flow
 
-// import React from "react";
+import { memo } from "react";
+// import React, { memo } from "react";
 // import { useSelector } from "react-redux";
 // import { hasCompletedOnboardingSelector } from "~/renderer/reducers/settings";
 // import { onboardingRelaunchedSelector } from "~/renderer/reducers/onboarding";
-
-// TODO: ONBOARDING
-// import Onboarding from '~/renderer/components/Onboarding'
+// import Onboarding from "~/renderer/screens/onboarding";
 
 type Props = {
   children: React$Node,
 };
 
-const OnboardingOrElse = ({ children }: Props) => {
+const OnboardingOrElseC = ({ children }: Props) => {
   // const hasCompletedOnboarding = useSelector(hasCompletedOnboardingSelector);
   // const onboardingRelaunched = useSelector(onboardingRelaunchedSelector);
 
-  // TODO: UNCOMMENT WHEN ONBOARDING IS DONE
   // if (!hasCompletedOnboarding || onboardingRelaunched) {
-  //   return <h1>Onboarding</h1>
+  //   return <Onboarding />;
   // }
 
   return children;
 };
+
+const OnboardingOrElse: React$ComponentType<Props> = memo(OnboardingOrElseC);
 
 export default OnboardingOrElse;

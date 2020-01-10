@@ -17,7 +17,6 @@ jobs:
         # we need to run yarn prepublish
         run: |
           yarn --ignore-scripts
-          yarn flow-typed
           yarn prepublish
       - name: test
         run: yarn ci
@@ -31,10 +30,7 @@ jobs:
       - name: install dependencies
         run: |
           yarn --ignore-scripts
-          yarn flow-typed
           yarn prepublish
-      - name: rebuild app deps
-        run: yarn install-deps
       - name: test
         run: yarn ci
   # ci-windows:
