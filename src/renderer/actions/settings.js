@@ -1,6 +1,7 @@
 // @flow
 
 import type { Dispatch } from "redux";
+import type { DeviceModelId } from "@ledgerhq/devices";
 import type { PortfolioRange } from "@ledgerhq/live-common/lib/types/portfolio";
 import type { Currency } from "@ledgerhq/live-common/lib/types";
 
@@ -82,3 +83,6 @@ export const replaceStarAccountId = (payload: { oldId: string, newId: string }) 
   type: "SETTINGS_REPLACE_STAR_ID",
   payload,
 });
+
+export const setPreferredDeviceModel = (preferredDeviceModel: DeviceModelId) =>
+  saveSettings({ preferredDeviceModel });

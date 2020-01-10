@@ -8,6 +8,7 @@ import {
   getCryptoCurrencyById,
   getFiatCurrencyByTicker,
 } from "@ledgerhq/live-common/lib/currencies";
+import type { DeviceModelId } from "@ledgerhq/devices";
 import type { CryptoCurrency, Currency } from "@ledgerhq/live-common/lib/types";
 import { getEnv } from "@ledgerhq/live-common/lib/env";
 import { getSystemLocale } from "~/helpers/systemLocale";
@@ -60,6 +61,7 @@ export type SettingsState = {
   hasCompletedOnboarding: boolean,
   starredAccountIds: string[],
   counterValue: string,
+  preferredDeviceModel: DeviceModelId,
   language: ?string,
   theme: ?string,
   region: ?string,
@@ -97,6 +99,7 @@ const INITIAL_STATE: SettingsState = {
   hasCompletedOnboarding: false,
   starredAccountIds: [],
   counterValue: "USD",
+  preferredDeviceModel: "nanoS",
   language: null,
   theme: null,
   region: null,
@@ -288,6 +291,7 @@ export const confirmationsNbForCurrencySelector = (
   return defs.confirmationsNb ? defs.confirmationsNb.def : 0;
 };
 
+export const preferredDeviceModelSelector = (state: State) => state.settings.preferredDeviceModel;
 export const sidebarCollapsedSelector = (state: State) => state.settings.sidebarCollapsed;
 export const accountsViewModeSelector = (state: State) => state.settings.accountsViewMode;
 export const marketIndicatorSelector = (state: State) => state.settings.marketIndicator;

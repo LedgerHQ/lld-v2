@@ -401,8 +401,10 @@
   },
   "manager": {
     "connect": {
-      "loading": "Loading",
-      "connectAndUnlockDevice": "Plug your device and enter your PIN code"
+      "allowPermission": "{{wording}} on your device",
+      "loading": "Loading...",
+      "connectAndUnlockDevice": "Plug your device and enter your PIN code",
+      "quitApp": "Please quit application on your device"
     },
     "loading": "Loading",
     "device": {
@@ -1233,8 +1235,8 @@
       "description": "An unexpected error occurred, so please try again"
     },
     "DeviceSocketFail": {
-      "title": "{{message}}",
-      "description": "Please try again"
+      "title": "Please restart your Ledger device and retry",
+      "description": "An unexpected error occurred, so please try again. ({{message}})"
     },
     "DeviceSocketNoBulkStatus": {
       "title": "Oops, connection failed",
