@@ -1,14 +1,14 @@
 // @flow
 import React from "react";
+import { Trans } from "react-i18next";
 import Box from "~/renderer/components/Box";
 import TrackPage from "~/renderer/analytics/TrackPage";
-import type { StepProps } from "~/renderer/screens/onboarding";
 import LedgerLiveImg from "~/renderer/images/ledgerlive-logo.svg";
 import LedgerLiveLogo from "~/renderer/components/LedgerLiveLogo";
-import { Trans } from "react-i18next";
-import ThemeSelector from "~/renderer/screens/onboarding/steps/ThemeSelector";
 import Button from "~/renderer/components/Button";
-import { Description, Title } from "~/renderer/screens/onboarding";
+import { Description, Title } from "../sharedComponents";
+import type { StepProps } from "..";
+import ThemeSelector from "./ThemeSelector";
 
 const Start = (props: StepProps) => {
   const { jumpStep } = props;

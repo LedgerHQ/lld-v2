@@ -3,7 +3,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import Button from "~/renderer/components/Button";
-import OnboardingFooterWrapper from "./OnboardingFooterWrapper";
+import { OnboardingFooterWrapper } from "./sharedComponents";
 
 type Props = {
   nextStep: () => void,

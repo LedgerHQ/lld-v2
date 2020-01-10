@@ -11,10 +11,10 @@ import GrowScroll from "~/renderer/components/GrowScroll";
 import LedgerLiveLogo from "~/renderer/components/LedgerLiveLogo";
 import LedgerLiveImg from "~/renderer/images/ledgerlive-logo.svg";
 import TrackPage from "~/renderer/analytics/TrackPage";
-import { Title } from "~/renderer/screens/onboarding";
 import { OptionFlowCard } from "~/renderer/screens/onboarding/steps/Init";
-import OnboardingFooterWrapper from "~/renderer/screens/onboarding/OnboardingFooterWrapper";
 import Button from "~/renderer/components/Button";
+import { Title, OnboardingFooterWrapper } from "../sharedComponents";
+import type { StepProps } from "..";
 
 class NoDevice extends PureComponent<StepProps, *> {
   render() {

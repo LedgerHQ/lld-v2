@@ -2,25 +2,27 @@
 import React, { PureComponent } from "react";
 import { Trans } from "react-i18next";
 import styled from "styled-components";
+import type { DeviceModelId } from "@ledgerhq/devices";
 import { getDeviceModel } from "@ledgerhq/devices";
 import { connect } from "react-redux";
-import Tooltip from "~/renderer/components/Tooltip";
-import { FixedTopContainer, Inner, StepContainerInner, Title } from "~/renderer/screens/onboarding";
 import TrackPage from "~/renderer/analytics/TrackPage";
-import Box from "~/renderer/components/Box";
-import InvertableImg from "~/renderer/components/InvertableImg";
-import OnboardingFooter from "~/renderer/screens/onboarding/OnboardingFooter";
 import { rgba } from "~/renderer/styles/helpers";
 import { deviceModelId } from "~/renderer/actions/onboarding";
-import IconCheckCirle from "~/renderer/icons/Check";
-
+import Tooltip from "~/renderer/components/Tooltip";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
+import Box from "~/renderer/components/Box";
+import InvertableImg from "~/renderer/components/InvertableImg";
+import IconCheckCircle from "~/renderer/icons/Check";
+import OnboardingFooter from "~/renderer/screens/onboarding/OnboardingFooter";
 import LedgerBlue from "~/renderer/images/ledger-blue-onb.svg";
 import LedgerNanoS from "~/renderer/images/ledger-nano-s-onb.svg";
 import LedgerNanoX from "~/renderer/images/ledger-nano-x-onb.svg";
+import { FixedTopContainer, Inner, StepContainerInner, Title } from "../sharedComponents";
+import type { StepProps } from "..";
 
 const mapDispatchToProps = { deviceModelId };
 
-class SelectDevice extends PureComponent<StepProps, {}> {
+class SelectDeviceC extends PureComponent<StepProps, {}> {
   handleDeviceModelId = (deviceModelId: DeviceModelId) => {
     this.props.deviceModelId(deviceModelId);
   };
@@ -95,7 +97,12 @@ class SelectDevice extends PureComponent<StepProps, {}> {
   }
 }
 
-export default connect(null, mapDispatchToProps)(SelectDevice);
+const SelectDevice: React$ComponentType<StepProps> = connect(
+  null,
+  mapDispatchToProps,
+)(SelectDeviceC);
+
+export default SelectDevice;
 
 const DeviceContainer = styled(Box).attrs(() => ({
   alignItems: "center",
@@ -110,7 +117,8 @@ const DeviceContainer = styled(Box).attrs(() => ({
       p.isActive ? p.theme.colors.palette.primary.main : p.theme.colors.palette.divider
     }`};
   &:hover {
-    cursor: default; // this here needs reset because it inherits from cursor: text from parent
+    /* this here needs reset because it inherits from cursor: text from parent */
+    cursor: default;
     background: ${p => rgba(p.theme.colors.wallet, 0.04)};
   }
 `;
@@ -122,7 +130,7 @@ const DeviceIcon = styled(Box).attrs(() => ({
   height: 80px;
 `;
 
-export const BlockTitle = styled(Box).attrs(() => ({
+export const BlockTitle: ThemedComponent<{}> = styled(Box).attrs(() => ({
   ff: "Inter|SemiBold",
   fontSize: 4,
   textAlign: "center",
@@ -138,12 +146,12 @@ export function DeviceSelected() {
         right: "10px",
       }}
     >
-      <IconCheckCirle size={10} />
+      <IconCheckCircle size={10} />
     </SelectDeviceIconWrapper>
   );
 }
 
-const SelectDeviceIconWrapper = styled(Box).attrs(() => ({
+const SelectDeviceIconWrapper: ThemedComponent<{}> = styled(Box).attrs(() => ({
   alignItems: "center",
   justifyContent: "center",
   color: "palette.background.paper",

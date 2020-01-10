@@ -3,24 +3,24 @@ import React, { PureComponent } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 
-import { flowType } from "~/renderer/reducers/onboarding";
+import { flowType } from "~/renderer/actions/onboarding";
 import GrowScroll from "~/renderer/components/GrowScroll";
 import TrackPage from "~/renderer/analytics/TrackPage";
 import LedgerLiveImg from "~/renderer/images/ledgerlive-logo.svg";
 import LedgerLiveLogo from "~/renderer/components/LedgerLiveLogo";
-import { Title } from "~/renderer/screens/onboarding";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import Box from "~/renderer/components/Box";
-
 import IconPlus from "~/renderer/icons/Plus";
 import IconRecover from "~/renderer/icons/Recover";
 import IconCheck from "~/renderer/icons/Check";
 import IconChevronRight from "~/renderer/icons/ChevronRight";
-
 import IconExternalLink from "~/renderer/icons/ExternalLink";
+import { Title } from "../sharedComponents";
+import type { StepProps } from "..";
 
 const mapDispatchToProps = { flowType };
 
-class Init extends PureComponent<StepProps, *> {
+class InitC extends PureComponent<StepProps, *> {
   render() {
     const { t, flowType, jumpStep } = this.props;
 
@@ -86,7 +86,9 @@ class Init extends PureComponent<StepProps, *> {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Init);
+const Init: React$ComponentType<StepProps> = connect(null, mapDispatchToProps)(InitC);
+
+export default Init;
 
 type CardType = {
   icon: any,
@@ -98,20 +100,20 @@ export function OptionFlowCard({ card }: { card: CardType }) {
   const { icon, title, onClick } = card;
   return (
     <InitCardContainer onClick={onClick} color="palette.text.shade100">
-      <Box justify="center" color={"palette.primary.main"}>
+      <Box justifyContent="center" color={"palette.primary.main"}>
         <InitIconContainer justify="center">{icon}</InitIconContainer>
       </Box>
-      <Box justify="center" grow>
+      <Box justifyContent="center" grow>
         <CardTitle>{title}</CardTitle>
       </Box>
-      <Box justify="center" mx={1} my={4}>
+      <Box justifyContent="center" mx={1} my={4}>
         <IconChevronRight size={16} />
       </Box>
     </InitCardContainer>
   );
 }
 
-const InitCardContainer = styled(Box).attrs(() => ({
+const InitCardContainer: ThemedComponent<{}> = styled(Box).attrs(() => ({
   p: 3,
   horizontal: true,
   borderRadius: "4px",
@@ -126,7 +128,7 @@ const InitCardContainer = styled(Box).attrs(() => ({
   }
 `;
 
-export const CardTitle = styled(Box).attrs(() => ({
+export const CardTitle: ThemedComponent<{}> = styled(Box).attrs(() => ({
   ff: "Inter|SemiBold",
   fontSize: 4,
   textAlign: "left",

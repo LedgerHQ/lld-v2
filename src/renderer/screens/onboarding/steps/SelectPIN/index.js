@@ -1,7 +1,5 @@
 // @flow
 import React from "react";
-import styled from "styled-components";
-import { FixedTopContainer, OptionRow, Title } from "~/renderer/screens/onboarding";
 import { getDeviceModel } from "@ledgerhq/devices";
 import TrackPage from "~/renderer/analytics/TrackPage";
 import GrowScroll from "~/renderer/components/GrowScroll";
@@ -14,6 +12,15 @@ import SelectPINnano from "~/renderer/screens/onboarding/steps/SelectPIN/SelectP
 import SelectPINrestoreNano from "~/renderer/screens/onboarding/steps/SelectPIN/SelectPINrestoreNano";
 import SelectPINnanoX from "~/renderer/screens/onboarding/steps/SelectPIN/SelectPINnanoX";
 import IconSensitiveOperationShield from "~/renderer/icons/SensitiveOperationShield";
+import {
+  DisclaimerBoxContainer,
+  DisclaimerBoxIconContainer,
+  FixedTopContainer,
+  Title,
+} from "~/renderer/screens/onboarding/sharedComponents";
+import type { StepProps } from "~/renderer/screens/onboarding";
+import type { DeviceModelId } from "@ledgerhq/devices/lib";
+import OptionRow from "~/renderer/components/OptionRow";
 
 const SelectPin = ({ modelId, restore = false }: { modelId: DeviceModelId, restore?: boolean }) => {
   switch (modelId) {
@@ -26,7 +33,7 @@ const SelectPin = ({ modelId, restore = false }: { modelId: DeviceModelId, resto
   }
 };
 
-export default (props: StepProps) => {
+const SelectPinMain = (props: StepProps) => {
   const { nextStep, prevStep, t, onboarding } = props;
 
   const model = getDeviceModel(onboarding.deviceModelId || "nanoS");
@@ -43,14 +50,14 @@ export default (props: StepProps) => {
         {onboarding.flowType === "restoreDevice" ? (
           <Box grow alignItems="center">
             <Title>{t("onboarding.selectPIN.restore.title")}</Title>
-            <Box align="center" mt={7}>
+            <Box alignItems="center" mt={7}>
               <SelectPin modelId={model.id} restore />
             </Box>
           </Box>
         ) : (
           <Box grow alignItems="center">
             <Title>{t("onboarding.selectPIN.initialize.title")}</Title>
-            <Box align="center" mt={7}>
+            <Box alignItems="center" mt={7}>
               <SelectPin modelId={model.id} />
             </Box>
           </Box>
@@ -61,24 +68,7 @@ export default (props: StepProps) => {
   );
 };
 
-// FIXME MOVE THIS OUT OF HERE
-const DisclaimerBoxContainer = styled(Box).attrs(() => ({
-  shrink: 1,
-  grow: true,
-  borderRadius: "4px",
-  bg: "palette.background.default",
-}))`
-  min-width: 620px;
-  border: 1px dashed ${p => p.theme.colors.palette.divider};
-`;
-
-const DisclaimerBoxIconContainer = styled(Box).attrs(p => ({
-  color: p.theme.colors.alertRed,
-}))`
-  position: absolute;
-  top: 0;
-  right: 0;
-`;
+export default SelectPinMain;
 
 export function DisclaimerBox({ disclaimerNotes, ...p }: { disclaimerNotes: any }) {
   return (

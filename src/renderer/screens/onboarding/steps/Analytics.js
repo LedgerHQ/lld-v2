@@ -1,25 +1,22 @@
 // @flow
 import React, { PureComponent } from "react";
+import { connect } from "react-redux";
+import { Trans } from "react-i18next";
+import styled from "styled-components";
+import { getDeviceModel } from "@ledgerhq/devices";
+import { urls } from "~/config/urls";
+import { openURL } from "~/renderer/linking";
+import Track from "~/renderer/analytics/Track";
 import { saveSettings } from "~/renderer/actions/settings";
 import { openModal } from "~/renderer/actions/modals";
-import { openURL } from "~/renderer/linking";
-import { urls } from "~/config/urls";
-import styled from "styled-components";
-import { connect } from "react-redux";
-import { getDeviceModel } from "@ledgerhq/devices";
-import {
-  Description,
-  FixedTopContainer,
-  StepContainerInner,
-  Title,
-} from "~/renderer/screens/onboarding";
 import TrackPage from "~/renderer/analytics/TrackPage";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import Box from "~/renderer/components/Box";
 import { FakeLink } from "~/renderer/components/FakeLink";
 import Switch from "~/renderer/components/Switch";
-import Track from "~/renderer/analytics/Track";
-import { Trans } from "react-i18next";
-import OnboardingFooter from "~/renderer/screens/onboarding/OnboardingFooter";
+import OnboardingFooter from "../OnboardingFooter";
+import { Description, FixedTopContainer, StepContainerInner, Title } from "../sharedComponents";
+import type { StepProps } from "..";
 
 const mapDispatchToProps = { saveSettings, openModal };
 
@@ -33,7 +30,7 @@ const INITIAL_STATE = {
   sentryLogsToggle: true,
 };
 
-class Analytics extends PureComponent<StepProps, State> {
+class AnalyticsC extends PureComponent<StepProps, State> {
   state = INITIAL_STATE;
 
   handleSentryLogsToggle = (isChecked: boolean) => {
@@ -191,7 +188,7 @@ class Analytics extends PureComponent<StepProps, State> {
         </StepContainerInner>
         <OnboardingFooter
           horizontal
-          align="center"
+          alignItems="center"
           flow={2}
           t={t}
           nextStep={nextStep}
@@ -202,16 +199,19 @@ class Analytics extends PureComponent<StepProps, State> {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Analytics);
+const Analytics: React$ComponentType<StepProps> = connect(null, mapDispatchToProps)(AnalyticsC);
 
-const MandatoryText = styled(Box).attrs(() => ({
+export default Analytics;
+
+const MandatoryText: ThemedComponent<{}> = styled(Box).attrs(() => ({
   ff: "Inter|Regular",
   fontSize: 2,
   textAlign: "left",
   color: "palette.text.shade60",
   mt: 1,
 }))``;
-export const AnalyticsText = styled(Box).attrs(() => ({
+
+export const AnalyticsText: ThemedComponent<{}> = styled(Box).attrs(() => ({
   ff: "Inter|Regular",
   fontSize: 3,
   textAlign: "left",
@@ -219,19 +219,22 @@ export const AnalyticsText = styled(Box).attrs(() => ({
 }))`
   max-width: 400px;
 `;
-export const AnalyticsTitle = styled(Box).attrs(() => ({
+
+export const AnalyticsTitle: ThemedComponent<{}> = styled(Box).attrs(() => ({
   ff: "Inter|SemiBold",
   fontSize: 4,
   textAlign: "left",
   color: "palette.text.shade100",
 }))``;
-const Container = styled(Box).attrs(() => ({
+
+const Container: ThemedComponent<{}> = styled(Box).attrs(() => ({
   horizontal: true,
   p: 3,
 }))`
   width: 550px;
   justify-content: space-between;
 `;
+
 const LearnMoreWrapper = styled(Box)`
   ${FakeLink}:hover {
     color: ${p => p.theme.colors.wallet};
