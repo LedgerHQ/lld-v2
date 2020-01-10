@@ -3701,10 +3701,10 @@ css-color-keywords@^1.0.0:
   resolved "https://registry.yarnpkg.com/css-color-keywords/-/css-color-keywords-1.0.0.tgz#fea2616dc676b2962686b3af8dbdbe180b244e05"
   integrity sha1-/qJhbcZ2spYmhrOvjb2+GAskTgU=
 
-css-loader@^3.4.0:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-3.4.1.tgz#dfb7968aa9bffb26bd20375afdffe77d5a234b77"
-  integrity sha512-+ybmv7sVxxNEenQhkifQDvny/1iNQM7YooJbSfVUdQQvisyg1aKIqgGjCjoFSyVLJMp17z9rfZFQaR5HGHcMbw==
+css-loader@^3.4.2:
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-3.4.2.tgz#d3fdb3358b43f233b78501c5ed7b1c6da6133202"
+  integrity sha512-jYq4zdZT0oS0Iykt+fqnzVLRIeiPWhka+7BqPn+oSIpWJAHak5tmB/WZrJ2a21JhCeFyNnnlroSl8c+MtVndzA==
   dependencies:
     camelcase "^5.3.1"
     cssesc "^3.0.0"
@@ -4420,10 +4420,10 @@ dotenv@^8.0.0, dotenv@^8.2.0:
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
   integrity sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
 
-downshift@^4.0.1:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/downshift/-/downshift-4.0.2.tgz#bb3f3edef75f5593090114a3968f409ec66019a1"
-  integrity sha512-T6OZFBFssteZymuvcf/B3uF0hMZHuTpPXRVQRFJeEprKtC9Aue2gn5tixoOehv7dMrNWzKHo188wnEB4QmkqAw==
+downshift@^4.0.4:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/downshift/-/downshift-4.0.4.tgz#d7e44799563dd488d737a56ebb56237ea79bdc63"
+  integrity sha512-NIwOW2DE+JOu6EQuIa/lmnS7ParIyII/qkk95QUb6DE4g7OEyyI8GKkLFQaIisJIHfLQyVNhCnzzqeWUKSmutA==
   dependencies:
     "@babel/runtime" "^7.4.5"
     compute-scroll-into-view "^1.0.9"
