@@ -10,37 +10,35 @@ import Box from "~/renderer/components/Box";
 import Button from "~/renderer/components/Button";
 import Exporter from "~/renderer/components/Exporter";
 
-type OwnProps = {
-  isOpen: boolean,
+type ModalRenderProps = {
   onClose: () => void,
-  accounts?: Account[],
+  data?: {
+    accounts?: Account[],
+  },
 };
 
-type Props = {
-  ...OwnProps,
-};
-
-const ExportAccountsModal = ({ isOpen, onClose, accounts }: Props) => {
+const ExportAccountsModal = () => {
   const { t } = useTranslation();
 
   return (
     <Modal
-      isOpened={isOpen}
-      onClose={onClose}
-      render={({ onClose }: any) => (
-        <ModalBody
-          onClose={onClose}
-          title={t("settings.export.modal.title")}
-          render={() => <Exporter accounts={accounts} />}
-          renderFooter={() => (
-            <Box>
-              <Button small onClick={onClose} primary>
-                <Trans i18nKey="settings.export.modal.button" />
-              </Button>
-            </Box>
-          )}
-        />
-      )}
+      name="MODAL_EXPORT_ACCOUNTS"
+      render={({ onClose, data }: ModalRenderProps) => {
+        return (
+          <ModalBody
+            onClose={onClose}
+            title={t("settings.export.modal.title")}
+            render={() => <Exporter {...data} />}
+            renderFooter={() => (
+              <Box>
+                <Button small onClick={onClose} primary>
+                  <Trans i18nKey="settings.export.modal.button" />
+                </Button>
+              </Box>
+            )}
+          />
+        );
+      }}
     />
   );
 };

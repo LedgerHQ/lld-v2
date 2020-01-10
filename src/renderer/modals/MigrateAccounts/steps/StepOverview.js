@@ -1,9 +1,11 @@
 // @flow
 
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useCallback } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Trans } from "react-i18next";
 import reduce from "lodash/reduce";
+import { openModal } from "~/renderer/actions/modals";
 import { rgba } from "~/renderer/styles/helpers";
 import Button from "~/renderer/components/Button";
 import Box from "~/renderer/components/Box";
@@ -15,7 +17,6 @@ import IconExclamationCircle from "~/renderer/icons/ExclamationCircle";
 import AccountRow from "~/renderer/components/AccountsList/AccountRow";
 import IconExternalLink from "~/renderer/icons/ExternalLink";
 import { openURL } from "~/renderer/linking";
-import ExportAccountsModal from "~/renderer/modals/ExportAccounts";
 import { urls } from "~/config/urls";
 import type { StepProps } from "~/renderer/modals/MigrateAccounts";
 
@@ -169,16 +170,15 @@ const StepOverview = ({
   migratedAccounts,
 }: StepProps) => {
   const migratedAccountNames = Object.keys(migratedAccounts);
-  const [isExporting, setExporting] = useState(false);
+  const dispatch = useDispatch();
+  const openExportModal = useCallback(() => {
+    dispatch(
+      openModal("MODAL_EXPORT_ACCOUNTS", { accounts: getAllImportedAccounts(migratedAccounts) }),
+    );
+  }, [dispatch]);
 
   return (
     <Box alignItems="center">
-      <ExportAccountsModal
-        onClose={() => setExporting(false)}
-        isOpen={isExporting}
-        accounts={getAllImportedAccounts(migratedAccounts)}
-      />
-
       <TrackPage category="MigrateAccounts" name="Step1" />
 
       <Logo>
@@ -289,7 +289,7 @@ const StepOverview = ({
                 </MobileDesc>
               </MobileTextWrapper>
             </MobileContent>
-            <MobileCTA primary onClick={() => setExporting(true)}>
+            <MobileCTA primary onClick={openExportModal}>
               <Trans i18nKey="migrateAccounts.overview.mobileCTA" />
             </MobileCTA>
           </MobileWrapper>
