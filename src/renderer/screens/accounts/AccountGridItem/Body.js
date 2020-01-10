@@ -65,4 +65,6 @@ const Body = ({ account, range }: Props) => {
   );
 };
 
-export default Body;
+const MemoedBody: React$ComponentType<Props> = React.memo(Body);
+
+export default MemoedBody;

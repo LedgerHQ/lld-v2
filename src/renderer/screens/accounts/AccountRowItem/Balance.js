@@ -1,8 +1,9 @@
 // @flow
 
-import type { BigNumber } from "bignumber.js";
 import React, { PureComponent } from "react";
+import type { BigNumber } from "bignumber.js";
 import type { Unit } from "@ledgerhq/live-common/lib/types";
+
 import Box from "~/renderer/components/Box";
 import FormattedVal from "~/renderer/components/FormattedVal";
 

@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -15,15 +15,18 @@ import darkEmptyStateAccounts from "~/renderer/images/dark-empty-state-accounts.
 
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
-const handleInstallApp = () => {
-  const { push } = useHistory();
-
-  push("/manager");
-};
-
 const EmptyState = () => {
-  const { t } = useTranslation();
   const dispatch = useDispatch();
+  const { push } = useHistory();
+  const { t } = useTranslation();
+
+  const handleInstallApp = useCallback(() => {
+    push("/manager");
+  }, [push]);
+
+  const openAddAccounts = useCallback(() => {
+    dispatch(openModal("MODAL_ADD_ACCOUNTS"));
+  }, [dispatch]);
 
   return (
     <Box alignItems="center" pb={8} style={{ margin: "auto" }}>
@@ -53,7 +56,7 @@ const EmptyState = () => {
           <Button
             outline
             style={{ minWidth: 120 }}
-            onClick={() => dispatch(openModal("MODAL_ADD_ACCOUNTS"))}
+            onClick={openAddAccounts}
             data-e2e="dashboard_empty_AddAccounts"
           >
             {t("emptyState.dashboard.buttons.addAccount")}
@@ -77,4 +80,4 @@ export const Description: ThemedComponent<{}> = styled(Box).attrs(() => ({
   textAlign: "center",
 }))``;
 
-export default EmptyState;
+export default React.memo<{}>(EmptyState);

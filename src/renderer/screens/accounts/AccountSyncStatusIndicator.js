@@ -91,14 +91,16 @@ class StatusError extends PureComponent<{ onClick: (*) => void, error: ?Error }>
   }
 }
 
-const StatusNeedsMigration = () => {
+const StatusNeedsMigration = React.memo<{}>(function StatusNeedsMigration() {
   const dispatch = useDispatch();
 
-  const openMigrateAccountsModal = e => {
-    e.stopPropagation();
-    // TODO integrate migrate accounts modal
-    dispatch(openModal("MODAL_MIGRATE_ACCOUNTS"));
-  };
+  const openMigrateAccountsModal = useCallback(
+    (e: MouseEvent) => {
+      e.stopPropagation();
+      dispatch(openModal("MODAL_MIGRATE_ACCOUNTS"));
+    },
+    [dispatch],
+  );
 
   return (
     <Tooltip content={<Trans i18nKey="common.sync.needsMigration" />}>
@@ -107,7 +109,7 @@ const StatusNeedsMigration = () => {
       </Box>
     </Tooltip>
   );
-};
+});
 
 type OwnProps = {
   accountId: string,

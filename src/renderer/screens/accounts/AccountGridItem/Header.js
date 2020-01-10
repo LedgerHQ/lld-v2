@@ -13,10 +13,10 @@ import Bar from "~/renderer/components/Bar";
 import Text from "~/renderer/components/Text";
 import FormattedVal from "~/renderer/components/FormattedVal";
 import ParentCryptoCurrencyIcon from "~/renderer/components/ParentCryptoCurrencyIcon";
+import Star from "~/renderer/components/Stars/Star";
 import Tooltip from "~/renderer/components/Tooltip";
+
 import AccountSyncStatusIndicator from "../AccountSyncStatusIndicator";
-// TODO Port Stars 🌟
-// import Star from "~/renderer/components/Stars/Star";
 
 class HeadText extends PureComponent<{
   title: string,
@@ -74,7 +74,7 @@ class Header extends PureComponent<{
             accountId={(parentAccount && parentAccount.id) || account.id}
             account={account}
           />
-          {/* <Star accountId={account.id} /> */}
+          <Star accountId={account.id} />
         </Box>
         <Bar size={1} color="palette.divider" />
         <Box justifyContent="center">
