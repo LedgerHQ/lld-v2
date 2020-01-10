@@ -1,5 +1,5 @@
 // @flow
-import React from "react";
+import React, { useEffect } from "react";
 import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
 import { Trans } from "react-i18next";
@@ -7,26 +7,61 @@ import styled from "styled-components";
 import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
 import type { ListAppsResult } from "@ledgerhq/live-common/lib/apps/types";
 import { getCurrentDevice } from "~/renderer/reducers/devices";
+import { setPreferredDeviceModel } from "~/renderer/actions/settings";
+import { preferredDeviceModelSelector } from "~/renderer/reducers/settings";
 import type { DeviceModelId } from "@ledgerhq/devices";
 import type { Device } from "~/renderer/reducers/devices";
 import Animation from "~/renderer/animations";
 import TranslatedError from "~/renderer/components/TranslatedError";
-import BigSpinner from "~/renderer/components/BigSpinner";
+import Spinner from "~/renderer/components/Spinner";
+import AutoRepair from "~/renderer/components/AutoRepair";
+import Button from "~/renderer/components/Button";
+import ConnectTroubleshooting from "~/renderer/components/ConnectTroubleshooting";
+import Box from "~/renderer/components/Box";
 import Text from "~/renderer/components/Text";
-import nanoXAllowManager from "~/renderer/animations/nanoX/allowManager.json";
-import nanoXPlugAndPinCode from "~/renderer/animations/nanoX/plugAndPinCode.json";
-import nanoXQuitApp from "~/renderer/animations/nanoX/quitApp.json";
+import useTheme from "~/renderer/hooks/useTheme";
 import { useManagerConnect } from "./logic";
 
 const animations: { [k: DeviceModelId]: * } = {
   nanoX: {
-    allowManager: nanoXAllowManager,
-    plugAndPinCode: nanoXPlugAndPinCode,
-    quitApp: nanoXQuitApp,
+    allowManager: {
+      light: require("~/renderer/animations/nanoX/allowManager/light.json"),
+    },
+    plugAndPinCode: {
+      light: require("~/renderer/animations/nanoX/plugAndPinCode/light.json"),
+    },
+    quitApp: {
+      light: require("~/renderer/animations/nanoX/quitApp/light.json"),
+    },
   },
+  /*
+  nanoS: {
+    allowManager: {
+      light: require("~/renderer/animations/nanoS/allowManager/light.json"),
+    },
+    plugAndPinCode: {
+      light: require("~/renderer/animations/nanoS/plugAndPinCode/light.json"),
+    },
+    quitApp: {
+      light: require("~/renderer/animations/nanoS/quitApp/light.json"),
+    },
+  },
+  */
+};
+
+export const getDeviceAnimation = (
+  modelId: DeviceModelId,
+  theme: "light" | "dark",
+  key: string,
+) => {
+  const lvl1 = animations[modelId] || animations.nanoX;
+  const lvl2 = lvl1[key] || animations.nanoX[key];
+  if (!lvl2) throw new Error("no such animation " + key);
+  return lvl2[theme] || lvl2.light;
 };
 
 type OwnProps = {
+  overridesPreferredDeviceModel?: DeviceModelId,
   Success?: React$ComponentType<{
     device: Device,
     deviceInfo: DeviceInfo,
@@ -36,38 +71,79 @@ type OwnProps = {
 
 type Props = OwnProps & {
   reduxDevice?: Device,
+  preferredDeviceModel: DeviceModelId,
+  dispatch: (*) => void,
 };
 
 const AnimationWrapper = styled.div`
   width: 600px;
-  height: 350px;
+  height: 200px;
   align-self: center;
 `;
 
 const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
   flex: 1;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
 `;
 
-const ManagerConnect = ({ reduxDevice, Success }: Props) => {
+const Title = styled(Text).attrs({
+  ff: "Inter|SemiBold",
+  color: "palette.text.shade100",
+  textAlign: "center",
+  fontSize: 5,
+})``;
+
+const ManagerConnect = ({
+  reduxDevice,
+  Success,
+  overridesPreferredDeviceModel,
+  preferredDeviceModel,
+  dispatch,
+}: Props) => {
   const [
-    { device, error, isLoading, allowManagerRequestedWording, inApp, result, deviceInfo },
-    { onRetry },
+    {
+      device,
+      unresponsive,
+      error,
+      isLoading,
+      allowManagerRequestedWording,
+      inApp,
+      result,
+      deviceInfo,
+      repairModalOpened,
+    },
+    { onRetry, onAutoRepair, closeRepairModal, openRepairModal },
   ] = useManagerConnect(reduxDevice);
 
-  const defaultModelId = "nanoX"; // TODO we will store in redux the last preferred device model used to infer here the correct one
-  const animation = animations[device ? device.modelId : defaultModelId] || animations.nanoX; // fallback nanoX in case not defined
+  const type = useTheme("colors.palette.type");
+
+  const modelId = device ? device.modelId : overridesPreferredDeviceModel || preferredDeviceModel;
+  useEffect(() => {
+    if (modelId !== preferredDeviceModel) {
+      dispatch(setPreferredDeviceModel(modelId));
+    }
+  }, [modelId]);
+
+  if (repairModalOpened) {
+    if (repairModalOpened.auto) {
+      return <AutoRepair onDone={closeRepairModal} />;
+    } else {
+      return null;
+    }
+  }
 
   if (inApp) {
     return (
       <Wrapper>
         <AnimationWrapper>
-          <Animation animation={animation.quitApp} />
+          <Animation animation={getDeviceAnimation(modelId, type, "quitApp")} />
         </AnimationWrapper>
-        Device is not in dashboard
+        <Title>
+          <Trans i18nKey="manager.connect.quitApp" />
+        </Title>
       </Wrapper>
     );
   }
@@ -76,18 +152,46 @@ const ManagerConnect = ({ reduxDevice, Success }: Props) => {
     return (
       <Wrapper>
         <AnimationWrapper>
-          <Animation animation={animation.allowManager} />
+          <Animation animation={getDeviceAnimation(modelId, type, "allowManager")} />
         </AnimationWrapper>
-        <h2>Please {allowManagerRequestedWording}</h2>
+        <Title>
+          <Trans
+            i18nKey="manager.connect.allowPermission"
+            values={{ wording: allowManagerRequestedWording }}
+          />
+        </Title>
       </Wrapper>
     );
   }
 
-  if (error) {
+  if (!isLoading && error) {
     return (
       <Wrapper>
-        <TranslatedError error={error} />
-        <button onClick={onRetry}>RETRY (UI todo)</button>
+        <Title>
+          <TranslatedError error={error} />
+        </Title>
+        <Button mt={2} primary onClick={onRetry}>
+          <Trans i18nKey="common.retry" />
+        </Button>
+      </Wrapper>
+    );
+  }
+
+  if ((!isLoading && !device) || unresponsive) {
+    return (
+      <Wrapper>
+        <div style={{ height: 120 }} />
+        <AnimationWrapper>
+          <Animation animation={getDeviceAnimation(modelId, type, "plugAndPinCode")} />
+        </AnimationWrapper>
+        <Title>
+          <Trans i18nKey="manager.connect.connectAndUnlockDevice" />
+        </Title>
+        <div style={{ height: 120 }}>
+          {!device ? (
+            <ConnectTroubleshooting appearsAfterDelay={20000} onRepair={openRepairModal} />
+          ) : null}
+        </div>
       </Wrapper>
     );
   }
@@ -95,34 +199,17 @@ const ManagerConnect = ({ reduxDevice, Success }: Props) => {
   if (isLoading) {
     return (
       <Wrapper>
-        <BigSpinner size={50} />
-        <Text
-          mt={60}
-          ff="Inter|Regular"
-          color="palette.text.shade100"
-          textAlign="center"
-          fontSize={5}
-        >
+        <Box horizontal style={{ height: 200 }} alignItems="center">
+          <Spinner size={50} />
+        </Box>
+        <Title>
           <Trans i18nKey="manager.connect.loading" />
-        </Text>
+        </Title>
       </Wrapper>
     );
   }
 
-  if (!device) {
-    return (
-      <Wrapper>
-        <AnimationWrapper>
-          <Animation animation={animation.plugAndPinCode} />
-        </AnimationWrapper>
-        <Text ff="Inter|Regular" color="palette.text.shade100" textAlign="center" fontSize={5}>
-          <Trans i18nKey="manager.connect.connectAndUnlockDevice" />
-        </Text>
-      </Wrapper>
-    );
-  }
-
-  if (!deviceInfo) {
+  if (!deviceInfo || !device) {
     // this case should not happen because we are either loading or error
     return null;
   }
@@ -130,9 +217,12 @@ const ManagerConnect = ({ reduxDevice, Success }: Props) => {
   if (deviceInfo.isBootloader) {
     return (
       <Wrapper>
-        <Text ff="Inter|Regular" color="palette.text.shade100" textAlign="center" fontSize={5}>
-          BOOTLOADER CASE TODO
-        </Text>
+        <Title>
+          <Trans i18nKey="genuinecheck.deviceInBootloader" />
+        </Title>
+        <Button mt={2} primary onClick={onAutoRepair}>
+          <Trans i18nKey="common.continue" />
+        </Button>
       </Wrapper>
     );
   }
@@ -142,6 +232,7 @@ const ManagerConnect = ({ reduxDevice, Success }: Props) => {
 
 const mapStateToProps = createStructuredSelector({
   reduxDevice: getCurrentDevice,
+  preferredDeviceModel: preferredDeviceModelSelector,
 });
 
 const component: React$ComponentType<OwnProps> = connect(mapStateToProps)(ManagerConnect);
