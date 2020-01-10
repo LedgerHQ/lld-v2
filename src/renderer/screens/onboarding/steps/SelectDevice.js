@@ -51,7 +51,7 @@ class SelectDevice extends PureComponent<StepProps, {}> {
               >
                 {onboarding.deviceModelId === "nanoX" && <DeviceSelected />}
                 <DeviceIcon>
-                  <InvertableImg alt="" src={LedgerBlue} />
+                  <InvertableImg alt="" src={LedgerNanoX} />
                 </DeviceIcon>
                 <BlockTitle>{getDeviceModel("nanoX").productName}</BlockTitle>
                 <Tooltip content={<Trans i18nKey="onboarding.selectDevice.usbOnlyTooltip" />}>
@@ -76,7 +76,7 @@ class SelectDevice extends PureComponent<StepProps, {}> {
               >
                 {onboarding.deviceModelId === "blue" && <DeviceSelected />}
                 <DeviceIcon>
-                  <InvertableImg alt="" src={LedgerNanoX} />
+                  <InvertableImg alt="" src={LedgerBlue} />
                 </DeviceIcon>
                 <BlockTitle>{getDeviceModel("blue").productName}</BlockTitle>
               </DeviceContainer>

@@ -37,6 +37,7 @@ import SetPassword from "./steps/SetPassword";
 import Analytics from "./steps/Analytics";
 import Finish from "./steps/Finish";
 import GrowScroll from "~/renderer/components/GrowScroll";
+import OptionRowDesc from "~/renderer/components/OptionRowDesc";
 
 const STEPS = {
   init: InitStep,
@@ -214,6 +215,19 @@ const Container = styled(Box).attrs(() => ({
   transition: background-color ease-out 300ms;
   transition-delay: 300ms;
 `;
+
+export const OptionRow = ({ step, ...p }: { step: StepType }) => {
+  const { icon, desc } = step;
+  return (
+    <Box horizontal m="7px" style={{ minWidth: 420 }}>
+      <Box {...p}>{icon}</Box>
+      <Box justify="center" shrink>
+        <OptionRowDesc>{desc}</OptionRowDesc>
+      </Box>
+    </Box>
+  );
+};
+
 const StepContainer = styled(Box).attrs(() => ({
   p: 40,
 }))``;
