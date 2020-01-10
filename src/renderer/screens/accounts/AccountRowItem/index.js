@@ -11,6 +11,7 @@ import type { PortfolioRange } from "@ledgerhq/live-common/lib/types/portfolio";
 import Box from "~/renderer/components/Box";
 import AccountContextMenu from "~/renderer/components/ContextMenu/AccountContextMenu";
 import Text from "~/renderer/components/Text";
+import TokenRow from "~/renderer/components/TokenRow";
 import IconAngleDown from "~/renderer/icons/AngleDown";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
@@ -20,7 +21,6 @@ import Balance from "./Balance";
 import Countervalue from "./Countervalue";
 import Delta from "./Delta";
 import Header from "./Header";
-import TokenRow from "~/renderer/components/TokenRow";
 
 import Star from "~/renderer/components/Stars/Star";
 
@@ -226,7 +226,7 @@ class AccountRowItem extends PureComponent<Props, State> {
               <Star accountId={account.id} />
             </RowContent>
           </AccountContextMenu>
-          {!!parentAccount && showTokensIndicator && expanded ? (
+          {showTokensIndicator && expanded ? (
             <TokenContentWrapper>
               <TokenBarIndicator onClick={this.toggleAccordion} />
               <TokenContent>
@@ -238,7 +238,8 @@ class AccountRowItem extends PureComponent<Props, State> {
                         index={index}
                         range={range}
                         account={token}
-                        parentAccount={parentAccount}
+                        // $FlowFixMe
+                        parentAccount={mainAccount}
                         onClick={onClick}
                       />
                     </AccountContextMenu>
