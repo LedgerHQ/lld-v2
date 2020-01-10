@@ -13,7 +13,7 @@ import LedgerLiveImg from "~/renderer/images/ledgerlive-logo.svg";
 import TrackPage from "~/renderer/analytics/TrackPage";
 import { OptionFlowCard } from "~/renderer/screens/onboarding/steps/Init";
 import Button from "~/renderer/components/Button";
-import { Title, OnboardingFooterWrapper } from "../SharedComponents";
+import { Title, OnboardingFooterWrapper } from "../sharedComponents";
 import type { StepProps } from "..";
 
 class NoDevice extends PureComponent<StepProps, *> {

@@ -17,7 +17,7 @@ import OnboardingFooter from "~/renderer/screens/onboarding/OnboardingFooter";
 import LedgerBlue from "~/renderer/images/ledger-blue-onb.svg";
 import LedgerNanoS from "~/renderer/images/ledger-nano-s-onb.svg";
 import LedgerNanoX from "~/renderer/images/ledger-nano-x-onb.svg";
-import { FixedTopContainer, Inner, StepContainerInner, Title } from "../SharedComponents";
+import { FixedTopContainer, Inner, StepContainerInner, Title } from "../sharedComponents";
 import type { StepProps } from "..";
 
 const mapDispatchToProps = { deviceModelId };

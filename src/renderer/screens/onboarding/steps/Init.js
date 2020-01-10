@@ -15,7 +15,7 @@ import IconRecover from "~/renderer/icons/Recover";
 import IconCheck from "~/renderer/icons/Check";
 import IconChevronRight from "~/renderer/icons/ChevronRight";
 import IconExternalLink from "~/renderer/icons/ExternalLink";
-import { Title } from "../SharedComponents";
+import { Title } from "../sharedComponents";
 import type { StepProps } from "..";
 
 const mapDispatchToProps = { flowType };

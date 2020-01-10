@@ -15,7 +15,7 @@ import Box from "~/renderer/components/Box";
 import { FakeLink } from "~/renderer/components/FakeLink";
 import Switch from "~/renderer/components/Switch";
 import OnboardingFooter from "../OnboardingFooter";
-import { Description, FixedTopContainer, StepContainerInner, Title } from "../SharedComponents";
+import { Description, FixedTopContainer, StepContainerInner, Title } from "../sharedComponents";
 import type { StepProps } from "..";
 
 const mapDispatchToProps = { saveSettings, openModal };

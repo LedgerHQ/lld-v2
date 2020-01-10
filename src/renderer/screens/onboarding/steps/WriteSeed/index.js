@@ -9,7 +9,7 @@ import Box from "~/renderer/components/Box";
 // import WriteSeedNano from "./WriteSeedNano";
 // import WriteSeedBlue from "./WriteSeedBlue";
 // import WriteSeedRestore from "./WriteSeedRestore";
-import { FixedTopContainer } from "../../SharedComponents";
+import { FixedTopContainer } from "../../sharedComponents";
 import OnboardingFooter from "../../OnboardingFooter";
 import type { StepProps } from "../..";
 

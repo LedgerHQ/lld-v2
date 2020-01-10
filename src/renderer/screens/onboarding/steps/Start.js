@@ -6,7 +6,7 @@ import TrackPage from "~/renderer/analytics/TrackPage";
 import LedgerLiveImg from "~/renderer/images/ledgerlive-logo.svg";
 import LedgerLiveLogo from "~/renderer/components/LedgerLiveLogo";
 import Button from "~/renderer/components/Button";
-import { Description, Title } from "../SharedComponents";
+import { Description, Title } from "../sharedComponents";
 import type { StepProps } from "..";
 import ThemeSelector from "./ThemeSelector";
 
