@@ -82,9 +82,8 @@ const Default = () => {
 
       <IsUnlocked>
         <ContextMenuWrapper>
+          <ModalsLayer />
           <OnboardingOrElse>
-            <ModalsLayer />
-
             <CheckTermsAccepted />
 
             <IsNewVersion />

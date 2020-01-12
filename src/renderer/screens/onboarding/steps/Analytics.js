@@ -12,7 +12,7 @@ import { openModal } from "~/renderer/actions/modals";
 import TrackPage from "~/renderer/analytics/TrackPage";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import Box from "~/renderer/components/Box";
-import { FakeLink } from "~/renderer/components/FakeLink";
+import FakeLink from "~/renderer/components/FakeLink";
 import Switch from "~/renderer/components/Switch";
 import OnboardingFooter from "../OnboardingFooter";
 import { Description, FixedTopContainer, StepContainerInner, Title } from "../sharedComponents";
@@ -30,7 +30,7 @@ const INITIAL_STATE = {
   sentryLogsToggle: true,
 };
 
-class AnalyticsC extends PureComponent<StepProps, State> {
+class Analytics extends PureComponent<StepProps, State> {
   state = INITIAL_STATE;
 
   handleSentryLogsToggle = (isChecked: boolean) => {
@@ -199,9 +199,12 @@ class AnalyticsC extends PureComponent<StepProps, State> {
   }
 }
 
-const Analytics: React$ComponentType<StepProps> = connect(null, mapDispatchToProps)(AnalyticsC);
+const ConnectedAnalytics: React$ComponentType<StepProps> = connect(
+  null,
+  mapDispatchToProps,
+)(Analytics);
 
-export default Analytics;
+export default ConnectedAnalytics;
 
 const MandatoryText: ThemedComponent<{}> = styled(Box).attrs(() => ({
   ff: "Inter|Regular",
