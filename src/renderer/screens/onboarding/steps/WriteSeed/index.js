@@ -5,13 +5,12 @@ import { getDeviceModel } from "@ledgerhq/devices";
 import TrackPage from "~/renderer/analytics/TrackPage";
 import GrowScroll from "~/renderer/components/GrowScroll";
 import Box from "~/renderer/components/Box";
-
-// import WriteSeedNano from "./WriteSeedNano";
-// import WriteSeedBlue from "./WriteSeedBlue";
-// import WriteSeedRestore from "./WriteSeedRestore";
 import { FixedTopContainer } from "../../sharedComponents";
 import OnboardingFooter from "../../OnboardingFooter";
 import type { StepProps } from "../..";
+import WriteSeedRestore from "~/renderer/screens/onboarding/steps/WriteSeed/WriteSeedRestore";
+import WriteSeedNano from "~/renderer/screens/onboarding/steps/WriteSeed/WriteSeedNano";
+import WriteSeedBlue from "~/renderer/screens/onboarding/steps/WriteSeed/WriteSeedBlue";
 
 const WriteSeed = (props: StepProps) => {
   const { nextStep, prevStep, t, onboarding } = props;
@@ -28,13 +27,13 @@ const WriteSeed = (props: StepProps) => {
           deviceType={model.productName}
         />
         <Box grow alignItems="center">
-          {/* {onboarding.flowType === "restoreDevice" ? (
+          {onboarding.flowType === "restoreDevice" ? (
             <WriteSeedRestore onboarding={onboarding} />
           ) : onboarding.deviceModelId === "nanoS" ? (
             <WriteSeedNano />
           ) : (
             <WriteSeedBlue />
-          )} */}
+          )}
         </Box>
       </GrowScroll>
       <OnboardingFooter
