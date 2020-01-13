@@ -20,11 +20,11 @@ import {
   flowType,
   relaunchOnboarding,
 } from "~/renderer/actions/onboarding";
+import GenuineCheck from "~/renderer/screens/onboarding/steps/GenuineCheck";
 import { saveSettings } from "~/renderer/actions/settings";
 import { openModal } from "~/renderer/actions/modals";
 import { unlock } from "~/renderer/actions/application";
 import Box from "~/renderer/components/Box";
-import ManagerConnect from "~/renderer/components/ManagerConnect";
 import IconCross from "~/renderer/icons/Cross";
 import Start from "./steps/Start";
 import InitStep from "./steps/Init";
@@ -42,7 +42,7 @@ const STEPS = {
   selectDevice: SelectDevice,
   selectPIN: SelectPIN,
   writeSeed: WriteSeed,
-  genuineCheck: ManagerConnect,
+  genuineCheck: GenuineCheck, // TODO @gre all yours
   setPassword: SetPassword,
   analytics: Analytics,
   finish: Finish,
@@ -192,6 +192,13 @@ class OnboardingC extends PureComponent<Props> {
   }
 }
 
+const Onboarding: React$ComponentType<{}> = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withTranslation(),
+)(OnboardingC);
+
+export default Onboarding;
+
 const Container = styled(Box).attrs(() => ({
   p: 60,
   selectable: true,
@@ -206,13 +213,7 @@ const Container = styled(Box).attrs(() => ({
   transition: background-color ease-out 300ms;
   transition-delay: 300ms;
 `;
+
 const StepContainer = styled(Box).attrs(() => ({
   p: 40,
 }))``;
-
-const Onboarding: React$ComponentType<{}> = compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  withTranslation(),
-)(OnboardingC);
-
-export default Onboarding;

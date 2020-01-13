@@ -6,20 +6,20 @@ export const urls = {
   // Social
   twitter: "https://twitter.com/Ledger",
   github: "https://github.com/LedgerHQ/ledger-live-desktop",
-  reddit: "https://www.reddit.com/r/ledgerwallet/",
+  reddit: "https://www.reddit.com/r/ledger/",
 
   // Campaigns
   promoNanoX:
     "https://www.ledger.com/pages/ledger-nano-x#utm_source=Ledger%20Live%20Desktop%20App&utm_medium=Ledger%20Live&utm_campaign=Ledger%20Live%20Desktop%20-%20Banner%20LNX",
 
   // Ledger support
-  faq: "https://support.ledgerwallet.com/hc/en-us",
+  faq: "https://support.ledger.com/hc/en-us",
   terms: "https://www.ledger.com/pages/terms-of-use-and-disclaimer",
-  noDeviceBuyNew: "https://www.ledgerwallet.com/",
-  noDeviceTrackOrder: "http://order.ledgerwallet.com/",
-  noDeviceLearnMore: "https://www.ledgerwallet.com/",
+  noDeviceBuyNew: "https://www.ledger.com/",
+  noDeviceTrackOrder: "http://order.ledger.com/",
+  noDeviceLearnMore: "https://www.ledger.com/",
   managerHelpRequest: "https://support.ledger.com/hc/en-us/articles/360006523674 ",
-  contactSupport: "https://support.ledgerwallet.com/hc/en-us/requests/new?ticket_form_id=248165",
+  contactSupport: "https://support.ledger.com/hc/en-us/requests/new?ticket_form_id=248165",
   feesMoreInfo: "https://support.ledger.com/hc/en-us/articles/360006535873",
   recipientAddressInfo: "https://support.ledger.com/hc/en-us/articles/360006433934",
   privacyPolicy: "https://www.ledger.com/pages/privacy-policy",

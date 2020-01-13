@@ -2,7 +2,7 @@
 
 import React from "react";
 import Box from "~/renderer/components/Box";
-import OptionRowDesc from "~/renderer/components/OptionRowDesc";
+import { OptionRowDesc } from "~/renderer/components/OptionRow";
 
 type StepType = {
   icon: any,

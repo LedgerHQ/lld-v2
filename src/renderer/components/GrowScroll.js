@@ -9,7 +9,7 @@ import Box from "~/renderer/components/Box";
 
 type Props = {
   children: any,
-  full: boolean,
+  full?: boolean,
   maxHeight?: number,
 };
 

@@ -1,4 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="400" height="90">
+ledger-blue-onb.svg
+        ledger-nano-s-onb.svg
+        ledger-nano-x-onb.svg
+        nano-error-onb.svg
+        nano-x-error-onb.svg
+        select-pin-blue-onb.svg
+        select-pin-nano-onb.svg
+        select-pin-nano-x-onb.svg
+        write-seed-onb.svg
+        blue-error-onb.svg
+        get-started-onb.svg<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="400" height="90">
     <defs/>
     <defs>
         <filter id="a" width="105%" height="263.6%" x="-2.5%" y="-63.6%" filterUnits="objectBoundingBox">

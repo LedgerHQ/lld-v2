@@ -13,6 +13,8 @@ import MODAL_UPDATE_FIRMWARE from "./UpdateFirmwareModal";
 import MODAL_OPERATION_DETAILS from "./OperationDetails";
 import MODAL_MIGRATE_ACCOUNTS from "./MigrateAccounts";
 import MODAL_EXPORT_ACCOUNTS from "./ExportAccounts";
+import MODAL_TECHNICAL_DATA from "./TechnicalData";
+import MODAL_SHARE_ANALYTICS from "./ShareAnalytics";
 
 const modals: { [_: string]: React$ComponentType<any> } = {
   MODAL_EXPORT_OPERATIONS,
@@ -28,6 +30,8 @@ const modals: { [_: string]: React$ComponentType<any> } = {
   MODAL_DELEGATE,
   MODAL_MIGRATE_ACCOUNTS,
   MODAL_EXPORT_ACCOUNTS,
+  MODAL_TECHNICAL_DATA,
+  MODAL_SHARE_ANALYTICS,
 };
 
 export default modals;
