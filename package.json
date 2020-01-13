@@ -20,6 +20,7 @@
     "postinstall": "node ./scripts/post-install.js",
     "dist:internal": "DEBUG=electron-builder NODE_ENV=production electron-builder",
     "dist": "node ./tools/dist.js",
+    "dist:dirty": "node ./tools/dist.js --dirty",
     "pack": "node ./tools/dist.js -p",
     "nightly": "node ./tools/dist.js -n",
     "ci": "node ./tools/ci.js"

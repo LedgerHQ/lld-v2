@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// @flow
 
 const yargs = require("yargs");
 const execa = require("execa");
@@ -100,24 +101,28 @@ const buildTasks = (args = {}) =>
     { collapse: false },
   );
 
-const mainTask = (pack = false) =>
-  new Listr(
-    [
-      {
-        title: "Cleanup",
-        task: () => cleaningTasks,
-      },
-      {
-        title: "Setup",
-        task: () => setupTasks,
-      },
-      {
-        title: "Build",
-        task: () => buildTasks(pack),
-      },
-    ],
-    { collapse: false },
-  );
+const mainTask = args => {
+  const { dirty } = args;
+  const tasks = dirty
+    ? []
+    : [
+        {
+          title: "Cleanup",
+          task: () => cleaningTasks,
+        },
+        {
+          title: "Setup",
+          task: () => setupTasks,
+        },
+      ];
+
+  tasks.push({
+    title: "Build",
+    task: () => buildTasks(args),
+  });
+
+  return new Listr(tasks, { collapse: false });
+};
 
 yargs
   .usage("Usage: $0 <command> [options]")
@@ -133,6 +138,10 @@ yargs
         .option("n", {
           alias: "nightly",
           type: "boolean",
+        })
+        .option("dirty", {
+          type: "boolean",
+          describe: "Don't clean-up and rebuild dependencies before building",
         }),
     handler: args => {
       mainTask(args)
