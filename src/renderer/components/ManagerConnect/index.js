@@ -25,28 +25,32 @@ import { useManagerConnect } from "./logic";
 const animations: { [k: DeviceModelId]: * } = {
   nanoX: {
     allowManager: {
-      light: require("~/renderer/animations/nanoX/allowManager/light.json"),
+      light: require("~/renderer/animations/nanoX/5AllowManager/light.json"),
+      dark: require("~/renderer/animations/nanoX/5AllowManager/dark.json"),
     },
     plugAndPinCode: {
-      light: require("~/renderer/animations/nanoX/plugAndPinCode/light.json"),
+      light: require("~/renderer/animations/nanoX/1PlugAndPinCode/light.json"),
+      dark: require("~/renderer/animations/nanoX/1PlugAndPinCode/dark.json"),
     },
     quitApp: {
-      light: require("~/renderer/animations/nanoX/quitApp/light.json"),
+      light: require("~/renderer/animations/nanoX/4QuitApp/light.json"),
+      dark: require("~/renderer/animations/nanoX/4QuitApp/dark.json"),
     },
   },
-  /*
   nanoS: {
     allowManager: {
-      light: require("~/renderer/animations/nanoS/allowManager/light.json"),
+      light: require("~/renderer/animations/nanoS/5AllowManager/light.json"),
+      dark: require("~/renderer/animations/nanoS/5AllowManager/dark.json"),
     },
     plugAndPinCode: {
-      light: require("~/renderer/animations/nanoS/plugAndPinCode/light.json"),
+      light: require("~/renderer/animations/nanoS/1PlugAndPinCode/light.json"),
+      dark: require("~/renderer/animations/nanoS/1PlugAndPinCode/dark.json"),
     },
     quitApp: {
-      light: require("~/renderer/animations/nanoS/quitApp/light.json"),
+      light: require("~/renderer/animations/nanoS/4QuitApp/light.json"),
+      dark: require("~/renderer/animations/nanoS/4QuitApp/dark.json"),
     },
   },
-  */
 };
 
 export const getDeviceAnimation = (
