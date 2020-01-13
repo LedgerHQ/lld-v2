@@ -99,7 +99,7 @@ const ModalHeader = ({
           </Text>
         </ModalHeaderAction>
       ) : (
-        <ModalHeaderAction />
+        <div />
       )}
       <ModalTitle data-e2e="modalTitle">{children}</ModalTitle>
       {onClose ? (
@@ -107,7 +107,7 @@ const ModalHeader = ({
           <IconCross size={16} />
         </ModalHeaderAction>
       ) : (
-        <ModalHeaderAction />
+        <div />
       )}
     </div>
   );
