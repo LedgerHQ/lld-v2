@@ -124,6 +124,7 @@ const Chart = ({ height, data, color, renderTickY, renderTooltip, valueKey = "va
               maxTicksLimit: 7,
             },
             time: {
+              minUnit: "day",
               displayFormats: {
                 quarter: "MMM YYYY",
               },
