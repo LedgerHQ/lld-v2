@@ -1,4 +1,5 @@
-import { BrowserWindow, app, Menu } from "electron";
+import { app, Menu } from "electron";
+import { getMainWindow } from "./window-lifecycle";
 
 const { DEV_TOOLS, DEV_TOOLS_MODE } = process.env;
 
@@ -47,15 +48,11 @@ const template = [
               {
                 label: "Main Window Dev Tools",
                 click() {
-                  const mainWindow = BrowserWindow.getAllWindows().find(
-                    w => w.name === "MainWindow",
-                  );
-                  if (mainWindow) {
-                    mainWindow.openDevTools({
-                      // mode = "right" | "bottom" | "undocked" | "detach"
-                      mode: DEV_TOOLS_MODE,
-                    });
-                  }
+                  const mainWindow = getMainWindow();
+                  mainWindow.webContents.openDevTools({
+                    // mode = "right" | "bottom" | "undocked" | "detach"
+                    mode: DEV_TOOLS_MODE,
+                  });
                 },
               },
               ...props(process.platform === "darwin", [{ type: "separator" }], []),

@@ -80,6 +80,7 @@ export const DEBUG_TAB_KEY = boolFromEnv("DEBUG_TAB_KEY");
 export const DEBUG_LIBCORE = boolFromEnv("DEBUG_LIBCORE");
 export const DEBUG_WS = boolFromEnv("DEBUG_WS");
 export const DEBUG_SYNC = boolFromEnv("DEBUG_SYNC");
+export const DEV_TOOLS = boolFromEnv("DEV_TOOLS");
 export const SKIP_GENUINE = boolFromEnv("SKIP_GENUINE");
 export const SKIP_ONBOARDING = boolFromEnv("SKIP_ONBOARDING");
 export const SHOW_LEGACY_NEW_ACCOUNT = boolFromEnv("SHOW_LEGACY_NEW_ACCOUNT");
