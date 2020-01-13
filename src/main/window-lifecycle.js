@@ -6,6 +6,7 @@ import {
   MIN_WIDTH,
   DEFAULT_WINDOW_WIDTH,
   DEFAULT_WINDOW_HEIGHT,
+  DEV_TOOLS,
 } from "./../config/constants";
 import { terminateAllTheThings } from "./terminator";
 
@@ -69,7 +70,7 @@ export async function createMainWindow() {
     mainWindow.loadURL(`file://${__dirname}/index.html`);
   }
 
-  if (__DEV__) {
+  if (__DEV__ || DEV_TOOLS) {
     mainWindow.webContents.openDevTools();
   }
 
