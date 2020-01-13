@@ -21,15 +21,15 @@ import AssetDistribution from "~/renderer/components/AssetDistribution";
 import BalanceInfos from "~/renderer/components/BalanceInfos";
 import DelegationBanner from "~/renderer/families/tezos/Delegation/DelegationBanner";
 import MigrationBanner from "~/renderer/modals/MigrateAccounts/Banner";
-
-// TODO: REMOVE WHEN DONE
-import { useSelector } from "react-redux";
+import { saveSettings } from "~/renderer/actions/settings";
+import { connect, useSelector } from "react-redux";
 import uniq from "lodash/uniq";
 import { Redirect } from "react-router";
 import type { Currency } from "@ledgerhq/live-common/lib/types/currencies";
 import type { Account } from "@ledgerhq/live-common/lib/types/account";
-import type { T } from "~/types/common";
 import type { TimeRange } from "~/renderer/reducers/settings";
+import { useHistory } from "react-router-dom";
+import { createStructuredSelector } from "reselect";
 
 // This forces only one visible top banner at a time
 export const TopBannerContainer: ThemedComponent<{}> = styled.div`
@@ -42,7 +42,6 @@ export const TopBannerContainer: ThemedComponent<{}> = styled.div`
 `;
 
 type Props = {
-  t: T,
   accounts: Account[],
   push: Function,
   counterValue: Currency,
@@ -50,9 +49,10 @@ type Props = {
   saveSettings: ({ selectedTimeRange: TimeRange }) => *,
 };
 
-const DashboardPage = ({ push, saveSettings }: Props) => {
+const DashboardPage = ({ saveSettings }: Props) => {
   const { t } = useTranslation();
   const accounts = useSelector(accountsSelector);
+  const history = useHistory();
   const counterValue = useSelector(counterValueCurrencySelector);
   const selectedTimeRange = useSelector(selectedTimeRangeSelector);
   const totalAccounts = accounts.length;
@@ -61,8 +61,7 @@ const DashboardPage = ({ push, saveSettings }: Props) => {
     accounts,
   ]);
 
-  const onAccountClick = useCallback(account => push(`/account/${account.id}`), [push]);
-
+  const onAccountClick = useCallback(account => history.push(`/account/${account.id}`), [history]);
   const handleChangeSelectedTime = useCallback(
     item => saveSettings({ selectedTimeRange: item.key }),
     [saveSettings],
@@ -134,4 +133,19 @@ const DashboardPage = ({ push, saveSettings }: Props) => {
   );
 };
 
-export default DashboardPage;
+const mapStateToProps = createStructuredSelector({
+  accounts: accountsSelector,
+  counterValue: counterValueCurrencySelector,
+  selectedTimeRange: selectedTimeRangeSelector,
+});
+
+const mapDispatchToProps = {
+  saveSettings,
+};
+
+const ConnectedDashboardPage: React$ComponentType<{}> = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(DashboardPage);
+
+export default ConnectedDashboardPage;
