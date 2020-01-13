@@ -1,7 +1,6 @@
 // @flow
 import React, { PureComponent } from "react";
 import { connect } from "react-redux";
-import { Trans } from "react-i18next";
 import styled from "styled-components";
 import { getDeviceModel } from "@ledgerhq/devices";
 import { urls } from "~/config/urls";
@@ -164,26 +163,6 @@ class Analytics extends PureComponent<StepProps, State> {
                 <Switch isChecked={sentryLogsToggle} onChange={this.handleSentryLogsToggle} />
               </Box>
             </Container>
-            <Container>
-              <Box>
-                <Box mb={1}>
-                  <AnalyticsTitle data-e2e="analytics_terms">
-                    {t("onboarding.analytics.terms.title")}
-                  </AnalyticsTitle>
-                </Box>
-                <AnalyticsText>
-                  <div>
-                    <Trans i18nKey="onboarding.analytics.terms.desc">
-                      {"Accept the "}
-                      <HoveredLink onClick={this.onClickTerms}>{"terms of license"}</HoveredLink>
-                      {"and"}
-                      <HoveredLink onClick={this.onClickPrivacy}>{"privacy"}</HoveredLink>
-                      {"."}
-                    </Trans>
-                  </div>
-                </AnalyticsText>
-              </Box>
-            </Container>
           </Box>
         </StepContainerInner>
         <OnboardingFooter
@@ -240,14 +219,6 @@ const Container: ThemedComponent<{}> = styled(Box).attrs(() => ({
 
 const LearnMoreWrapper = styled(Box)`
   ${FakeLink}:hover {
-    color: ${p => p.theme.colors.wallet};
-  }
-`;
-
-const HoveredLink = styled.span`
-  cursor: pointer;
-  text-decoration: underline;
-  &:hover {
     color: ${p => p.theme.colors.wallet};
   }
 `;
