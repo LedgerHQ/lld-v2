@@ -6,7 +6,7 @@ import React, { Component } from "react";
 // import autoUpdate from '~/commands/autoUpdate'
 // ^these must not be a command!!!
 
-const autoUpdate = () => ({ send: () => ({ subscribe: () => {} }) });
+// const autoUpdate = () => ({ send: () => ({ subscribe: () => {} }) });
 
 export type UpdateStatus =
   | "idle"
@@ -46,18 +46,18 @@ class Provider extends Component<UpdaterProviderProps, UpdaterProviderState> {
     super();
 
     if (!__DEV__) {
-      this.sub = autoUpdate.send({}).subscribe({
-        next: e => {
-          if (e.status === "download-progress") {
-            const downloadProgress =
-              e.payload && e.payload.percent ? e.payload.percent.toFixed(0) : 0;
-            this.setState({ status: e.status, downloadProgress });
-          } else {
-            this.setStatus(e.status);
-          }
-        },
-        error: error => this.setState({ status: "error", error }),
-      });
+      // this.sub = autoUpdate.send({}).subscribe({
+      //   next: e => {
+      //     if (e.status === "download-progress") {
+      //       const downloadProgress =
+      //         e.payload && e.payload.percent ? e.payload.percent.toFixed(0) : 0;
+      //       this.setState({ status: e.status, downloadProgress });
+      //     } else {
+      //       this.setStatus(e.status);
+      //     }
+      //   },
+      //   error: error => this.setState({ status: "error", error }),
+      // });
     }
 
     this.state = {
