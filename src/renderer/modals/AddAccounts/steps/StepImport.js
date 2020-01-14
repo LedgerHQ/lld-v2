@@ -26,7 +26,7 @@ import Text from "~/renderer/components/Text";
 import DebugAppInfosForCurrency from "~/renderer/components/DebugAppInfosForCurrency";
 import IconExclamationCircleThin from "~/renderer/icons/ExclamationCircleThin";
 
-import type { StepProps } from "../index";
+import type { StepProps } from "..";
 
 // $FlowFixMe
 const remapTransportError = (err: mixed, appName: string): Error => {

@@ -1115,13 +1115,11 @@
       "errorPage": {
         "title": {
           "pinFailed": "Didn't choose your own PIN code?",
-          "recoveryPhraseFailed": "Didn't save your recovery phrase by yourself?",
-          "isGenuineFail": "Oops, your device does not seem genuine..."
+          "recoveryPhraseFailed": "Didn't save your recovery phrase by yourself?"
         },
         "desc": {
           "pinFailed": "Never use a device supplied with a PIN code. Please contact us when in doubt.",
-          "recoveryPhraseFailed": "Only save a recovery phrase that was displayed on your device and to you alone. Please contact us when in doubt.",
-          "isGenuineFail": "Your device did not pass the authenticity test required to connect to Ledger’s secure server. Please contact Ledger Support to get assistance."
+          "recoveryPhraseFailed": "Only save a recovery phrase that was displayed on your device and to you alone. Please contact us when in doubt."
         }
       }
     },
@@ -1259,6 +1257,10 @@
       "title": "Firmware or app update required",
       "description": "Please use the Manager to uninstall all apps and check if a firmware update is available before reinstalling them"
     },
+    "FirmwareNotRecognized": {
+      "title": "Firmware is not recognized",
+      "description": "Please contact Ledger Support"
+    },
     "HardResetFail": {
       "title": "Oops, could not reset",
       "description": "Please try again or contact us when in doubt"
@@ -1381,11 +1383,11 @@
       "description": "Please navigate back to Dashboard on your device"
     },
     "WebsocketConnectionError": {
-      "title": "Sorry, try again (websocket error)",
+      "title": "Sorry, try again (connection error)",
       "description": null
     },
     "WebsocketConnectionFailed": {
-      "title": "Sorry, try again (websocket failed)",
+      "title": "Sorry, try again (connection closed)",
       "description": null
     },
     "WrongDeviceForAccount": {

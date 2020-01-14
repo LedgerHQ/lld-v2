@@ -6,7 +6,7 @@ import Box from "~/renderer/components/Box";
 import IconChevronRight from "~/renderer/icons/ChevronRight";
 import { getDeviceModel } from "@ledgerhq/devices";
 import InvertableImg from "~/renderer/components/InvertableImg";
-import { DisclaimerBox } from "~/renderer/screens/onboarding/steps/SelectPIN/index";
+import { DisclaimerBox } from "~/renderer/screens/onboarding/steps/SelectPIN";
 import OptionRow, { IconOptionRow } from "~/renderer/components/OptionRow";
 import { Inner } from "~/renderer/screens/onboarding/sharedComponents";
 import RestoreNanoS from "~/renderer/images/select-pin-blue-onb.svg";
