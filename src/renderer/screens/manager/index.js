@@ -9,12 +9,12 @@ const CompensateAlignment: any = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding-bottom: ${p => p.theme.sizes.topBarHeight + p.theme.space[6]}px;
+  margin-top: ${p => -p.theme.space[6]}px;
 `;
 
 const Manager = () => (
   <CompensateAlignment>
-    <ManagerConnect Success={Dashboard} />
+    <ManagerConnect edges={180} Success={Dashboard} />
   </CompensateAlignment>
 );
 

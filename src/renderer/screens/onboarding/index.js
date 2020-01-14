@@ -66,6 +66,7 @@ const mapDispatchToProps = {
   unlock,
   openModal,
   relaunchOnboarding,
+  updateGenuineCheck,
 };
 
 type Props = {
@@ -82,6 +83,7 @@ type Props = {
   unlock: Function,
   openModal: string => void,
   relaunchOnboarding: boolean => void,
+  updateGenuineCheck: (*) => void,
 };
 
 export type StepProps = {
@@ -149,6 +151,7 @@ class OnboardingC extends PureComponent<Props> {
       settings,
       t,
       onboardingRelaunched,
+      updateGenuineCheck,
     } = this.props;
 
     const StepComponent = STEPS[onboarding.stepName];
