@@ -129,7 +129,7 @@ const ManagerConnect = ({
     if (modelId !== preferredDeviceModel) {
       dispatch(setPreferredDeviceModel(modelId));
     }
-  }, [modelId]);
+  }, [dispatch, modelId, preferredDeviceModel]);
 
   if (repairModalOpened && repairModalOpened.auto) {
     return <AutoRepair onDone={closeRepairModal} />;

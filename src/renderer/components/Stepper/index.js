@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import invariant from "invariant";
 import { withTranslation } from "react-i18next";
 
@@ -128,7 +128,7 @@ class Stepper extends PureComponent<Props, State> {
         title={title}
         noScroll={noScroll}
         render={() => (
-          <Fragment>
+          <>
             {!hideBreadcrumb && (
               <Breadcrumb
                 mb={props.error && props.signed ? 4 : 6}
@@ -140,7 +140,7 @@ class Stepper extends PureComponent<Props, State> {
             )}
             <StepComponent {...stepProps} />
             {children}
-          </Fragment>
+          </>
         )}
         renderFooter={renderFooter ? () => <StepFooter {...stepProps} /> : undefined}
       />

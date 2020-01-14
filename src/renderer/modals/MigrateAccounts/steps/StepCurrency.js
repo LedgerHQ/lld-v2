@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment, PureComponent } from "react";
+import React, { PureComponent } from "react";
 import styled from "styled-components";
 import { filter, map, reduce } from "rxjs/operators";
 import { findAccountMigration, migrateAccounts } from "@ledgerhq/live-common/lib/account";
@@ -160,7 +160,7 @@ class StepCurrency extends PureComponent<Props> {
     }
 
     return (
-      <Fragment>
+      <>
         <TrackPage category="MigrateAccounts" name="Step3" />
         <Box alignItems="center" pt={pending ? 30 : 0} pb={pending ? 40 : 0}>
           {scanStatus === "finished-empty" ? (
@@ -198,7 +198,7 @@ class StepCurrency extends PureComponent<Props> {
             />
           </Text>
         </Box>
-      </Fragment>
+      </>
     );
   }
 }
@@ -214,10 +214,10 @@ export const StepCurrencyFooter = ({
 }: StepProps) => {
   if (scanStatus === "error") {
     return (
-      <Fragment>
+      <>
         <ExternalLinkButton mr={2} label={<Trans i18nKey="common.getSupport" />} url={urls.faq} />
         <RetryButton primary onClick={() => transitionTo("device")} />
-      </Fragment>
+      </>
     );
   }
   if (!["finished", "finished-empty"].includes(scanStatus) || !currency) return null;

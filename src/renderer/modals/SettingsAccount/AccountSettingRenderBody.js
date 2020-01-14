@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import get from "lodash/get";
 import { setDataModal } from "~/renderer/actions/modals";
 import { removeAccount, updateAccount } from "~/renderer/actions/accounts";
@@ -162,7 +162,7 @@ class AccountSettingRenderBody extends PureComponent<Props, State> {
         onClose={onClose}
         title={t("account.settings.title")}
         render={() => (
-          <Fragment>
+          <>
             <TrackPage category="Modal" name="AccountSettings" />
             <Container>
               <Box>
@@ -216,10 +216,10 @@ class AccountSettingRenderBody extends PureComponent<Props, State> {
               desc={t("settings.removeAccountModal.desc")}
             />
             <Space of={20} />
-          </Fragment>
+          </>
         )}
         renderFooter={() => (
-          <Fragment>
+          <>
             <Button
               event="OpenAccountDelete"
               danger
@@ -231,7 +231,7 @@ class AccountSettingRenderBody extends PureComponent<Props, State> {
             <Button event="DoneEditingAccount" ml="auto" onClick={onSubmit} primary>
               {t("common.apply")}
             </Button>
-          </Fragment>
+          </>
         )}
       />
     );

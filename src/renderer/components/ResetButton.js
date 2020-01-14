@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment, PureComponent } from "react";
+import React, { PureComponent } from "react";
 import styled from "styled-components";
 import { remote } from "electron";
 import { withTranslation } from "react-i18next";
@@ -51,7 +51,7 @@ class ResetButton extends PureComponent<Props, State> {
     const { opened, pending, fallbackOpened } = this.state;
 
     return (
-      <Fragment>
+      <>
         <Button small danger onClick={this.open} event="HardResetIntent">
           {t("common.reset")}
         </Button>
@@ -79,7 +79,7 @@ class ResetButton extends PureComponent<Props, State> {
         </ConfirmModal>
 
         <ResetFallbackModal isOpened={fallbackOpened} onClose={this.closeFallback} />
-      </Fragment>
+      </>
     );
   }
 }

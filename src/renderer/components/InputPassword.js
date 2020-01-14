@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment, PureComponent } from "react";
+import React, { PureComponent } from "react";
 import styled from "styled-components";
 import { withTranslation } from "react-i18next";
 import zxcvbn from "zxcvbn";
@@ -109,7 +109,7 @@ class InputPassword extends PureComponent<Props, State> {
           }
         />
         {withStrength && (
-          <Fragment>
+          <>
             <Box flow={1} horizontal>
               {[0, 1, 2].map(v => (
                 <Strength
@@ -124,7 +124,7 @@ class InputPassword extends PureComponent<Props, State> {
                 {t(`password.warning_${passwordStrength}`)}
               </Warning>
             )}
-          </Fragment>
+          </>
         )}
       </Box>
     );

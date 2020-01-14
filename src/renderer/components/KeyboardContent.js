@@ -26,14 +26,14 @@ const KeyboardContent = ({ children, sequence }: Props) => {
         setEnabled(prevEnable => !prevEnable);
       }
     },
-    [sequence, setEnabled, sequenceIndex.current],
+    [sequence, setEnabled],
   );
 
   useEffect(() => {
     window.addEventListener("keypress", onKeyPress);
 
     return () => window.removeEventListener("keypress", onKeyPress);
-  }, []);
+  }, [onKeyPress]);
 
   return enabled ? children : null;
 };

@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import { uncontrollable } from "uncontrollable";
 import styled from "styled-components";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
@@ -57,7 +57,7 @@ class Spoiler extends PureComponent<Props, State> {
   render() {
     const { title, opened, onOpen, children, ...p } = this.props;
     return (
-      <Fragment>
+      <>
         <Box
           onClick={this.toggle}
           horizontal
@@ -70,7 +70,7 @@ class Spoiler extends PureComponent<Props, State> {
           <Title {...p}>{title}</Title>
         </Box>
         {opened && children}
-      </Fragment>
+      </>
     );
   }
 }

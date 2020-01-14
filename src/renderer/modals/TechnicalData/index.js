@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment, PureComponent } from "react";
+import React, { PureComponent } from "react";
 import { compose } from "redux";
 import type { T } from "~/types/common";
 import { closeModal } from "~/renderer/actions/modals";
@@ -47,7 +47,7 @@ class TechnicalData extends PureComponent<Props, *> {
           onClose={this.onClose}
           title={t("onboarding.analytics.technicalData.mandatoryContextual.title")}
           render={() => (
-            <Fragment>
+            <>
               <InlineDesc>
                 <Trans i18nKey="onboarding.analytics.technicalData.desc" />
               </InlineDesc>
@@ -58,14 +58,14 @@ class TechnicalData extends PureComponent<Props, *> {
                   ))}
                 </Ul>
               </Box>
-            </Fragment>
+            </>
           )}
           renderFooter={() => (
-            <Fragment>
+            <>
               <Button onClick={this.onClose} primary data-e2e="modal_buttonClose_techData">
                 <Trans i18nKey="common.close" />
               </Button>
-            </Fragment>
+            </>
           )}
         />
       </Modal>

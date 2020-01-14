@@ -75,6 +75,7 @@ const IsUnlocked = ({ children }: Props) => {
       });
       setIncorrectPassword(null);
     },
+    [inputValue],
   );
 
   const handleSubmit = useCallback(
@@ -114,11 +115,14 @@ const IsUnlocked = ({ children }: Props) => {
     }
   }, []);
 
-  const hardResetIconRender = useMemo(() => (
-    <IconWrapperCircle color="alertRed">
-      <IconTriangleWarning width={23} height={21} />
-    </IconWrapperCircle>
-  ));
+  const hardResetIconRender = useMemo(
+    () => (
+      <IconWrapperCircle color="alertRed">
+        <IconTriangleWarning width={23} height={21} />
+      </IconWrapperCircle>
+    ),
+    [],
+  );
 
   if (isLocked) {
     return (
@@ -164,7 +168,6 @@ const IsUnlocked = ({ children }: Props) => {
             </Button>
           </Box>
         </form>
-        {/* TODO: remove that ******* modal from there */}
         <ConfirmModal
           analyticsName="HardReset"
           isDanger

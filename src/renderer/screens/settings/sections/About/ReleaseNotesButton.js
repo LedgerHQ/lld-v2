@@ -11,11 +11,14 @@ const ReleaseNotesButton = () => {
   const dispatch = useDispatch();
 
   const version = __APP_VERSION__;
-  const onClick = useCallback((e: SyntheticEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    // TODO: Modal release notes
-    dispatch(openModal("MODAL_RELEASE_NOTES", version));
-  }, []);
+  const onClick = useCallback(
+    (e: SyntheticEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      // TODO: Modal release notes
+      dispatch(openModal("MODAL_RELEASE_NOTES", version));
+    },
+    [dispatch, version],
+  );
 
   return (
     <Button small primary onClick={onClick}>

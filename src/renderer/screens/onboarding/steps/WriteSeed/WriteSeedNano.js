@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import OptionRow, { IconOptionRow } from "~/renderer/components/OptionRow";
 import { seedWord1 } from "@ledgerhq/live-common/lib/deviceWordings";
 import Text from "~/renderer/components/Text";
@@ -82,7 +82,7 @@ class WriteSeedNano extends PureComponent<Props, *> {
     ];
 
     return (
-      <Fragment>
+      <>
         <Box mb={3}>
           <Title>{t("onboarding.writeSeed.initialize.title")}</Title>
           <Description>{t("onboarding.writeSeed.initialize.desc")}</Description>
@@ -101,7 +101,7 @@ class WriteSeedNano extends PureComponent<Props, *> {
           </Inner>
           <DisclaimerBox mt={6} disclaimerNotes={disclaimerNotes} color="palette.text.shade80" />
         </Box>
-      </Fragment>
+      </>
     );
   }
 }

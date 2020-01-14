@@ -80,7 +80,8 @@ const AssetCrumb = () => {
   ]);
 
   const activeItem = useMemo(() => distribution.list.find(dist => dist.currency.id === assetId), [
-    processedItems,
+    assetId,
+    distribution.list,
   ]);
 
   if (!distribution || !distribution.list) return null;

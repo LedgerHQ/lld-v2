@@ -98,7 +98,10 @@ const UpdateModal = ({
     [t],
   );
 
-  const steps = useMemo(() => createSteps({ deviceModel: deviceModelId }), [deviceModelId]);
+  const steps = useMemo(() => createSteps({ deviceModel: deviceModelId }), [
+    createSteps,
+    deviceModelId,
+  ]);
   const stepsId = steps.map(step => step.id);
   const errorSteps = err ? [stepsId.indexOf(stateStepId)] : [];
 
@@ -114,7 +117,7 @@ const UpdateModal = ({
     setErr(null);
     setStateStepId(steps[0].id);
     setNonce(curr => curr++);
-  }, [setErr, setStateStepId, setNonce]);
+  }, [steps]);
 
   const handleStepChange = useCallback((step: Step) => {
     setStateStepId(step.id);

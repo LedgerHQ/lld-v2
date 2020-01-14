@@ -69,7 +69,7 @@ const Default = () => {
     if (ref && ref.current) {
       ref.current.scrollTo(0, 0);
     }
-  }, [location]);
+  }, [location, ref]);
 
   return (
     <>
