@@ -1,7 +1,7 @@
 // @flow
 
 import { remote } from "electron";
-import React, { useEffect, createRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Route, Switch, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
@@ -57,7 +57,7 @@ const reloadApp = event => {
 
 const Default = () => {
   const location = useLocation();
-  const ref: React$ElementRef<any> = createRef();
+  const ref: React$ElementRef<any> = useRef();
 
   useEffect(() => {
     window.addEventListener("keydown", reloadApp);
@@ -69,7 +69,7 @@ const Default = () => {
     if (ref && ref.current) {
       ref.current.scrollTo(0, 0);
     }
-  }, [location, ref]);
+  }, [location]);
 
   return (
     <>
