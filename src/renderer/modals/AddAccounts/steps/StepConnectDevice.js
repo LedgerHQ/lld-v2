@@ -10,7 +10,7 @@ import Button from "~/renderer/components/Button";
 import Box from "~/renderer/components/Box";
 import { CurrencyCircleIcon } from "~/renderer/components/CurrencyBadge";
 import ParentCryptoCurrencyIcon from "~/renderer/components/ParentCryptoCurrencyIcon";
-import type { StepProps } from "../index";
+import type { StepProps } from "..";
 
 const StepConnectDevice = ({ currency, device, setAppOpened }: StepProps) => {
   invariant(currency, "No crypto asset given");

@@ -9,7 +9,7 @@ import { getDeviceModel } from "@ledgerhq/devices";
 import InvertableImg from "~/renderer/components/InvertableImg";
 import OptionRow, { IconOptionRow } from "~/renderer/components/OptionRow";
 import { Inner } from "~/renderer/screens/onboarding/sharedComponents";
-import { DisclaimerBox } from "~/renderer/screens/onboarding/steps/SelectPIN/index";
+import { DisclaimerBox } from "~/renderer/screens/onboarding/steps/SelectPIN";
 import SelectPinNanoS from "~/renderer/images/select-pin-nano-onb.svg";
 import type { T } from "~/types/common";
 import { configureAsNewDevice } from "@ledgerhq/live-common/lib/deviceWordings";

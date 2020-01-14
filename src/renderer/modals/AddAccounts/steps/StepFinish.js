@@ -9,7 +9,7 @@ import Button from "~/renderer/components/Button";
 import { CurrencyCircleIcon } from "~/renderer/components/CurrencyBadge";
 import RefreshAccountsOrdering from "~/renderer/components/RefreshAccountsOrdering";
 import IconCheckFull from "~/renderer/icons/CheckFull";
-import type { StepProps } from "../index";
+import type { StepProps } from "..";
 
 const Title = styled(Box).attrs(() => ({
   ff: "Inter",

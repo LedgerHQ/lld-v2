@@ -4,7 +4,7 @@ import React from "react";
 import styled, { keyframes, css } from "styled-components";
 
 import Box from "~/renderer/components/Box";
-import IconBigSpinner from "~/renderer/icons/BigSpinner/index";
+import IconBigSpinner from "~/renderer/icons/BigSpinner";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
 const rotate = keyframes`

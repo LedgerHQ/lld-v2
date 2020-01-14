@@ -11,7 +11,7 @@ import ListIcon from "~/renderer/icons/List";
 import SearchIcon from "~/renderer/icons/Search";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
-import { GenericBox } from "../index";
+import { GenericBox } from "..";
 import AccountsOrder from "./Order";
 import AccountsRange from "./Range";
 
