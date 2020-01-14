@@ -12,6 +12,7 @@ import CounterValues from "~/renderer/countervalues";
 import StyleProvider from "~/renderer/styles/StyleProvider";
 import { UpdaterProvider } from "~/renderer/components/Updater/UpdaterContext";
 import ThrowBlock from "~/renderer/components/ThrowBlock";
+import LiveStyleSheetManager from "~/renderer/styles/LiveStyleSheetManager";
 import Default from "./Default";
 
 type Props = {
@@ -19,21 +20,23 @@ type Props = {
 };
 
 const App = ({ store }: Props) => (
-  <Provider store={store}>
-    <BridgeSyncProvider>
-      <CounterValues.PollingProvider>
-        <StyleProvider selectedPalette="light">
-          <ThrowBlock>
-            <UpdaterProvider>
-              <Router>
-                <Default />
-              </Router>
-            </UpdaterProvider>
-          </ThrowBlock>
-        </StyleProvider>
-      </CounterValues.PollingProvider>
-    </BridgeSyncProvider>
-  </Provider>
+  <LiveStyleSheetManager>
+    <Provider store={store}>
+      <BridgeSyncProvider>
+        <CounterValues.PollingProvider>
+          <StyleProvider selectedPalette="light">
+            <ThrowBlock>
+              <UpdaterProvider>
+                <Router>
+                  <Default />
+                </Router>
+              </UpdaterProvider>
+            </ThrowBlock>
+          </StyleProvider>
+        </CounterValues.PollingProvider>
+      </BridgeSyncProvider>
+    </Provider>
+  </LiveStyleSheetManager>
 );
 
 export default hot(App);
