@@ -73,7 +73,7 @@ const Item = ({ account, index, pathname, collapsed }: Props) => {
     parentAccountId
       ? history.push(`/account/${parentAccountId}/${account.id}`)
       : history.push(`/account/${account.id}`);
-  }, [account, history.push]);
+  }, [account, history]);
 
   const unit = getAccountUnit(account);
 

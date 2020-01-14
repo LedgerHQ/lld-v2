@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import { Trans, withTranslation } from "react-i18next";
 import { seedConfirmation, seedNext } from "@ledgerhq/live-common/lib/deviceWordings";
 import OptionRow, { IconOptionRow } from "~/renderer/components/OptionRow";
@@ -80,7 +80,7 @@ class WriteSeedBlue extends PureComponent<Props, *> {
     ];
 
     return (
-      <Fragment>
+      <>
         <Box mb={3}>
           <Title>{t("onboarding.writeSeed.initialize.title")}</Title>
           <Description>{t("onboarding.writeSeed.initialize.desc")}</Description>
@@ -98,7 +98,7 @@ class WriteSeedBlue extends PureComponent<Props, *> {
           </Inner>
           <DisclaimerBox mt={6} disclaimerNotes={disclaimerNotes} color="palette.text.shade80" />
         </Box>
-      </Fragment>
+      </>
     );
   }
 }

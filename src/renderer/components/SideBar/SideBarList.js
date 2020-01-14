@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import styled from "styled-components";
 
 import GrowScroll from "~/renderer/components/GrowScroll";
@@ -22,15 +22,15 @@ class SideBarList extends Component<Props> {
     const ListWrapper: React$ComponentType<any> = scroll ? GrowScroll : Box;
 
     return (
-      <Fragment>
+      <>
         {!!title && (
-          <Fragment>
+          <>
             <SideBarListTitle collapsed={collapsed}>
               {title}
               {!!titleRight && <Box ml="auto">{titleRight}</Box>}
             </SideBarListTitle>
             <Space of={20} />
-          </Fragment>
+          </>
         )}
         {children ? (
           <ListWrapper flow={2} px={3} fontSize={3}>
@@ -41,7 +41,7 @@ class SideBarList extends Component<Props> {
             {emptyState}
           </Box>
         ) : null}
-      </Fragment>
+      </>
     );
   }
 }

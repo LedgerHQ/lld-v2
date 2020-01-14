@@ -189,7 +189,7 @@ const MainSideBar = () => {
 
       history.push(to);
     },
-    [history.push, location.pathname],
+    [history, location.pathname],
   );
 
   const handleClickDashboard = useCallback(() => {

@@ -57,7 +57,7 @@ const SocketExport = () => {
     return () => {
       if (server.current) server.current.stop();
     };
-  }, []);
+  }, [resetServer]);
 
   // componentDidUpdate
   useEffect(() => {
@@ -65,7 +65,7 @@ const SocketExport = () => {
     if (!server.current) {
       resetServer();
     }
-  }, [active, accounts, settings]);
+  }, [active, accounts, settings, resetServer]);
 
   return active ? (
     <QRCode size={50} data={`${secret.current}~${IP.address()}`} />

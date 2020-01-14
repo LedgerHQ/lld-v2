@@ -89,7 +89,7 @@ const Settings = ({ history, location, match }: Props) => {
 
   useEffect(() => {
     setTab(getCurrentTab({ url: match.url, pathname: location.pathname }));
-  }, [location, match]);
+  }, [getCurrentTab, location, match]);
 
   return (
     <Box pb={4} selectable>

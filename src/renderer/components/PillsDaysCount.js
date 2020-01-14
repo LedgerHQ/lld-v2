@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment, PureComponent } from "react";
+import React, { PureComponent } from "react";
 import { withTranslation } from "react-i18next";
 import type { T } from "~/types/common";
 import Pills from "~/renderer/components/Pills";
@@ -18,7 +18,7 @@ class PillsDaysCount extends PureComponent<Props> {
   render() {
     const { selected, onChange, t } = this.props;
     return (
-      <Fragment>
+      <>
         <Track onUpdate event="PillsDaysChange" selected={selected} />
         <Pills
           items={Object.keys(timeRangeDaysByKey).map((key: TimeRange) => ({
@@ -30,7 +30,7 @@ class PillsDaysCount extends PureComponent<Props> {
           onChange={onChange}
           bordered
         />
-      </Fragment>
+      </>
     );
   }
 }

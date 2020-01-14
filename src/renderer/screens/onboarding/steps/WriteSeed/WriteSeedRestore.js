@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment, PureComponent } from "react";
+import React, { PureComponent } from "react";
 import { seedWord1 } from "@ledgerhq/live-common/lib/deviceWordings";
 import OptionRow, { IconOptionRow } from "~/renderer/components/OptionRow";
 import Text from "~/renderer/components/Text";
@@ -110,7 +110,7 @@ class WriteSeedRestore extends PureComponent<Props, *> {
     ];
 
     return (
-      <Fragment>
+      <>
         <Box mb={3}>
           <Title>{t("onboarding.writeSeed.restore.title")}</Title>
           <Description>{t("onboarding.writeSeed.restore.desc")}</Description>
@@ -136,7 +136,7 @@ class WriteSeedRestore extends PureComponent<Props, *> {
           </Inner>
           <DisclaimerBox mt={6} disclaimerNotes={disclaimerNotes} color="palette.text.shade80" />
         </Box>
-      </Fragment>
+      </>
     );
   }
 }

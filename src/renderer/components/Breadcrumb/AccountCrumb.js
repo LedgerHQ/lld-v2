@@ -27,7 +27,7 @@ const AccountCrumb = () => {
 
   const account: ?Account = useMemo(
     () => (parentId ? accounts.find(a => a.id === parentId) : accounts.find(a => a.id === id)),
-    [parentId, id],
+    [parentId, accounts, id],
   );
 
   const tokenAccount: ?AccountLike = useMemo(
@@ -75,7 +75,7 @@ const AccountCrumb = () => {
   }, []);
 
   const onAccountSelected = useCallback(
-    ({ selectedIem: item }) => {
+    ({ selectedItem: item }) => {
       if (!item) {
         return null;
       }

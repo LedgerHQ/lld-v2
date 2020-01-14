@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment, PureComponent } from "react";
+import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { portfolioSelector } from "~/renderer/actions/portfolio";
@@ -28,7 +28,7 @@ type Props = {
 };
 
 const Tooltip = ({ counterValue, d }: *) => (
-  <Fragment>
+  <>
     <FormattedVal
       alwaysShowSign={false}
       fontSize={5}
@@ -40,7 +40,7 @@ const Tooltip = ({ counterValue, d }: *) => (
     <Box ff="Inter|Regular" color="palette.text.shade60" fontSize={3} mt={2}>
       {moment(d.date).format("LL")}
     </Box>
-  </Fragment>
+  </>
 );
 
 class PortfolioBalanceSummary extends PureComponent<Props> {

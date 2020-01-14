@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment, useCallback } from "react";
+import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Trans } from "react-i18next";
@@ -175,7 +175,7 @@ const StepOverview = ({
     dispatch(
       openModal("MODAL_EXPORT_ACCOUNTS", { accounts: getAllImportedAccounts(migratedAccounts) }),
     );
-  }, [dispatch]);
+  }, [dispatch, migratedAccounts]);
 
   return (
     <Box alignItems="center">
@@ -311,7 +311,7 @@ export const StepOverviewFooter = ({
   hideLoopNotice,
   onCloseModal,
 }: StepProps) => (
-  <Fragment>
+  <>
     {!migratableAccounts.length ? (
       <FooterContent>
         <Button primary onClick={onCloseModal}>
@@ -354,5 +354,5 @@ export const StepOverviewFooter = ({
         </Box>
       </Footer>
     )}
-  </Fragment>
+  </>
 );

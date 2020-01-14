@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment, useCallback } from "react";
+import React, { useCallback } from "react";
 import { getCurrencyColor } from "~/renderer/getCurrencyColor";
 import { getAccountName } from "@ledgerhq/live-common/lib/account";
 import type { Account, TokenAccount } from "@ledgerhq/live-common/lib/types/account";
@@ -101,13 +101,16 @@ const Row = ({ item: { currency, amount, distribution, account } }: Props) => {
   const accounts = useSelector(accountsSelector);
   const theme = useTheme();
   const history = useHistory();
-  const onAccountClick = useCallback(account => {
-    history.push(
-      account.type !== "Account"
-        ? `/account/${account.parentId}/${account.id}`
-        : `/account/${account.id}`,
-    );
-  });
+  const onAccountClick = useCallback(
+    account => {
+      history.push(
+        account.type !== "Account"
+          ? `/account/${account.parentId}/${account.id}`
+          : `/account/${account.id}`,
+      );
+    },
+    [history],
+  );
 
   const parentAccount =
     account.type !== "Account" ? accounts.find(a => a.id === account.parentId) : null;
@@ -135,12 +138,12 @@ const Row = ({ item: { currency, amount, distribution, account } }: Props) => {
         </AccountWrapper>
         <Distribution>
           {!!distribution && (
-            <Fragment>
+            <>
               <Text ff="Inter" color="palette.text.shade100" fontSize={3}>
                 {`${percentage}%`}
               </Text>
               <Bar progress={percentage} progressColor={color} />
-            </Fragment>
+            </>
           )}
         </Distribution>
         <Amount>

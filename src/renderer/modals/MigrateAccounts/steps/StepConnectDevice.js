@@ -1,7 +1,7 @@
 // @flow
 
 import invariant from "invariant";
-import React, { Fragment } from "react";
+import React from "react";
 import { Trans } from "react-i18next";
 import TrackPage from "~/renderer/analytics/TrackPage";
 import { CurrencyCircleIcon } from "~/renderer/components/CurrencyBadge";
@@ -15,7 +15,7 @@ const StepConnectDevice = ({ t, currency, device, setAppOpened }: StepProps) => 
 
   const currencyName = `${currency.name} (${currency.ticker})`;
   return (
-    <Fragment>
+    <>
       <TrackPage category="MigrateAccounts" name="Step2" />
       <Box alignItems="center" mb={6}>
         <CurrencyCircleIcon borderRadius="10px" mb={15} size={40} currency={currency} />
@@ -43,7 +43,7 @@ const StepConnectDevice = ({ t, currency, device, setAppOpened }: StepProps) => 
           }
         }}
       />
-    </Fragment>
+    </>
   );
 };
 

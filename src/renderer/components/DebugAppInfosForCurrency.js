@@ -27,7 +27,7 @@ const DebugAppInfosForCurrency = ({ children }: Props) => {
     return () => {
       unmounted.current = true;
     };
-  }, []);
+  }, [device]);
 
   return children ? children(version) : null;
 };

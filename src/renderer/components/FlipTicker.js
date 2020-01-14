@@ -3,7 +3,7 @@
 /* eslint-disable react/no-did-mount-set-state */
 /* eslint-disable react/no-array-index-key */
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import styled from "styled-components";
 import { Spring, animated } from "react-spring/renderprops";
 
@@ -61,7 +61,7 @@ class FlipTicker extends PureComponent<Props, State> {
                 l
               )
             ) : (
-              <Fragment>
+              <>
                 <span
                   style={{
                     visibility: "hidden",
@@ -70,7 +70,7 @@ class FlipTicker extends PureComponent<Props, State> {
                   {l}
                 </span>
                 {height && <Tick height={height} value={l} />}
-              </Fragment>
+              </>
             )}
           </Box>
         ))}

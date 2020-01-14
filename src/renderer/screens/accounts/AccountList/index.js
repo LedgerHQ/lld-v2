@@ -17,7 +17,9 @@ import type {
 import StickyBackToTop from "~/renderer/components/StickyBackToTop";
 import Text from "~/renderer/components/Text";
 
-import AccountListHeader from "./Header";
+import { GenericBox } from "../index";
+import SearchBox from "./SearchBox";
+import DisplayOptions from "./DisplayOptions";
 import GridBody from "./GridBody";
 import ListBody from "./ListBody";
 
@@ -98,15 +100,15 @@ class AccountList extends Component<Props, State> {
 
     return (
       <div style={{ paddingBottom: 70 }}>
-        <AccountListHeader
-          onTextChange={this.onTextChange}
-          onModeChange={onModeChange}
-          onRangeChange={onRangeChange}
-          mode={mode}
-          range={range}
-          search={search}
-          accountsLength={accounts.length}
-        />
+        <GenericBox horizontal p={0} alignItems="center">
+          <SearchBox onTextChange={this.onTextChange} search={search} />
+          <DisplayOptions
+            onModeChange={onModeChange}
+            onRangeChange={onRangeChange}
+            mode={mode}
+            range={range}
+          />
+        </GenericBox>
         {visibleAccounts.length === 0 ? (
           <Text style={{ display: "block", padding: 60, textAlign: "center" }}>
             <Trans i18nKey="accounts.noResultFound" />

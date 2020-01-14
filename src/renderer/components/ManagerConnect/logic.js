@@ -126,12 +126,12 @@ function useReplaySubject<T>(value: T): ReplaySubject<T> {
   const [subject] = useState(() => new ReplaySubject());
   useEffect(() => {
     subject.next(value);
-  }, [value]);
+  }, [subject, value]);
   useEffect(() => {
     return () => {
       subject.complete();
     };
-  }, []);
+  }, [subject]);
   return subject;
 }
 
@@ -195,19 +195,19 @@ export const useManagerConnect = (device: ?Device): [State, Cbs] => {
 
   const onRepairModal = useCallback(open => {
     setRepairModalOpened(open ? { auto: false } : null);
-  });
+  }, []);
 
   const closeRepairModal = useCallback(() => {
     setRepairModalOpened(null);
-  });
+  }, []);
 
   const onRetry = useCallback(() => {
-    setResetIndex(resetIndex + 1);
-  }, [resetIndex]);
+    setResetIndex(currIndex => currIndex + 1);
+  }, []);
 
   const onAutoRepair = useCallback(() => {
     setRepairModalOpened({ auto: true });
-  });
+  }, []);
 
   return [
     { ...state, repairModalOpened },

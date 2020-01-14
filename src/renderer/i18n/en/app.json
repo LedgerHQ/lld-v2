@@ -793,6 +793,7 @@
     },
     "currencies": {
       "desc": "Change settings for each of your crypto assets",
+      "placeholder": "No settings for this asset",
       "select": "Select a crypto asset to edit its settings.",
       "exchange": "Rate provider ({{ticker}} → BTC)",
       "exchangeDesc": "Choose the provider of the exchange rate from {{currencyName}} to Bitcoin, used to estimate the value of your crypto assets ({{ticker}} → BTC → {{fiat}}).",

@@ -29,7 +29,7 @@ const ParentCryptoCurrencyIconWrapper: ThemedComponent<{
   line-height: ${p => (p.bigger ? "18px" : "18px")};
   font-size: ${p => (p.bigger ? "12px" : "12px")};
   > :nth-child(2) {
-    margin-top: ${p => (p.bigger ? "-15px" : "-13px")};
+    margin-top: ${p => (p.bigger ? "-10px" : "-8px")};
     margin-left: ${p => (p.bigger ? "10px" : "8px")};
     border: 2px solid transparent;
   }

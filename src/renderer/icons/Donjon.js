@@ -1,9 +1,9 @@
 // @flow
 
-import React, { Fragment } from "react";
+import React from "react";
 
 const path = (
-  <Fragment>
+  <>
     <path
       fill="currentColor"
       d="m1085.1 267.76v-110.55c0-7.85 3.74-12.45 9-12.21l-144.56-80.23a33.93 33.93 0 0 1 10.11 23.23v110.55z"
@@ -29,7 +29,7 @@ const path = (
       fill="currentColor"
       d="m294.46 814.91q1.86 205.53 76.34 387.56 67.47 166.41 186.66 290.1 107.94 114.69 236.09 166.43a98.88 98.88 0 0 0 40.48 9v-1152.4z"
     />
-  </Fragment>
+  </>
 );
 
 const Donjon = ({ size }: { size: number }) => (

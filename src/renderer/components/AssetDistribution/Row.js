@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment } from "react";
+import React from "react";
 import type { CryptoCurrency, TokenCurrency } from "@ledgerhq/live-common/lib/types/currencies";
 import { getCurrencyColor } from "~/renderer/getCurrencyColor";
 import { BigNumber } from "bignumber.js";
@@ -112,12 +112,12 @@ const Row = ({ item: { currency, amount, distribution } }: Props) => {
       </PriceSection>
       <Distribution>
         {!!distribution && (
-          <Fragment>
+          <>
             <Text ff="Inter" color="palette.text.shade100" fontSize={3}>
               {`${percentage}%`}
             </Text>
             <Bar progress={percentage} progressColor={color} />
-          </Fragment>
+          </>
         )}
       </Distribution>
       <Amount>

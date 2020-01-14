@@ -84,7 +84,7 @@ const RateRow = ({ from, to, exchange, timeRange }: Props) => {
         ]),
       );
     },
-    [from, to],
+    [dispatch, from, to],
   );
 
   return (
