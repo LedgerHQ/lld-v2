@@ -1,7 +1,7 @@
 // @flow
 
 import React, { PureComponent } from "react";
-import { withTranslation } from "react-i18next";
+import { Trans, withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
@@ -15,7 +15,8 @@ import {
 } from "~/renderer/reducers/settings";
 import type { SettingsState, CurrencySettings } from "~/renderer/reducers/settings";
 import StepperNumber from "~/renderer/components/StepperNumber";
-import { SettingsSectionRow as Row } from "../../SettingsSection";
+import { SettingsSectionRow as Row, SettingsSectionRowContainer } from "../../SettingsSection";
+import Box from "~/renderer/components/Box";
 
 type Props = {
   t: T,
@@ -57,6 +58,8 @@ class CurrencyRows extends PureComponent<Props> {
     const { currency, t, currencySettings } = this.props;
     const { confirmationsNb } = currencySettings;
     const defaults = currencySettingsDefaults(currency);
+    // NB ideally we would have a dynamic list of settings
+
     return (
       <>
         {defaults.confirmationsNb ? (
@@ -75,7 +78,13 @@ class CurrencyRows extends PureComponent<Props> {
               />
             ) : null}
           </Row>
-        ) : null}
+        ) : (
+          <SettingsSectionRowContainer>
+            <Box ff="Inter|SemiBold" color="palette.text.shade100" fontSize={4}>
+              <Trans i18nKey="settings.currencies.placeholder" />
+            </Box>
+          </SettingsSectionRowContainer>
+        )}
       </>
     );
   }
