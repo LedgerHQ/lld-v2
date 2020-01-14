@@ -8,6 +8,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - name: check if current commit is on tag
+        run: |
+          git describe --exact-match &>/dev/null \
+            && echo "You are on a tag. Exiting." \
+            && exit 1 \
+            || true
       - name: set git user
         run: |
           git config user.email "team-live@ledger.fr"
