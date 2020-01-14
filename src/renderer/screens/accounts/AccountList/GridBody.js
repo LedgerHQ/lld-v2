@@ -36,27 +36,21 @@ const GridBody = ({
   ...rest
 }: Props) => (
   <GridBox {...rest}>
-    {visibleAccounts.map(account => (
-      <AccountCard
-        key={account.id}
-        account={account}
-        parentAccount={account.type !== "Account" ? lookupParentAccount(account.parentId) : null}
-        range={range}
-        onClick={onAccountClick}
-      />
-    ))}
-    {showNewAccount ? <AccountCardPlaceholder key="placeholder" /> : null}
-    {hiddenAccounts.map(account => (
-      <AccountCard
-        hidden
-        key={account.id}
-        account={account}
-        parentAccount={account.type !== "Account" ? lookupParentAccount(account.parentId) : null}
-        range={range}
-        onClick={onAccountClick}
-      />
-    ))}
+    {[...visibleAccounts, ...(showNewAccount ? [null] : []), ...hiddenAccounts].map((account, i) =>
+      !account ? (
+        <AccountCardPlaceholder key="placeholder" />
+      ) : (
+        <AccountCard
+          hidden={i >= visibleAccounts.length}
+          key={account.id}
+          account={account}
+          parentAccount={account.type !== "Account" ? lookupParentAccount(account.parentId) : null}
+          range={range}
+          onClick={onAccountClick}
+        />
+      ),
+    )}
   </GridBox>
 );
 
-export default React.memo<Props>(GridBody);
+export default GridBody;

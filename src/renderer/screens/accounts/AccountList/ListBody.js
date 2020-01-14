@@ -26,29 +26,22 @@ const ListBody = ({
   search,
 }: Props) => (
   <Box>
-    {visibleAccounts.map(account => (
-      <AccountItem
-        key={account.id}
-        account={account}
-        search={search}
-        parentAccount={account.type !== "Account" ? lookupParentAccount(account.parentId) : null}
-        range={range}
-        onClick={onAccountClick}
-      />
-    ))}
-    {showNewAccount ? <AccountItemPlaceholder /> : null}
-    {hiddenAccounts.map(account => (
-      <AccountItem
-        hidden
-        key={account.id}
-        account={account}
-        search={search}
-        parentAccount={account.type !== "Account" ? lookupParentAccount(account.parentId) : null}
-        range={range}
-        onClick={onAccountClick}
-      />
-    ))}
+    {[...visibleAccounts, ...(showNewAccount ? [null] : []), ...hiddenAccounts].map((account, i) =>
+      !account ? (
+        <AccountItemPlaceholder key="placeholder" />
+      ) : (
+        <AccountItem
+          hidden={i >= visibleAccounts.length}
+          key={account.id}
+          account={account}
+          search={search}
+          parentAccount={account.type !== "Account" ? lookupParentAccount(account.parentId) : null}
+          range={range}
+          onClick={onAccountClick}
+        />
+      ),
+    )}
   </Box>
 );
 
-export default React.memo<Props>(ListBody);
+export default ListBody;

@@ -24,7 +24,7 @@ type RangeItemProps = {
   isActive: boolean,
 };
 
-const RangeItem: React$ComponentType<RangeItemProps> = React.memo(function RangeItem({
+const RangeItem = React.memo<RangeItemProps>(function RangeItem({
   item,
   isHighlighted,
   isActive,
@@ -95,4 +95,4 @@ const Range = ({ range, ...props }: Props) => {
   );
 };
 
-export default Range;
+export default React.memo<Props>(Range);
