@@ -1257,6 +1257,10 @@
       "title": "Firmware or app update required",
       "description": "Please use the Manager to uninstall all apps and check if a firmware update is available before reinstalling them"
     },
+    "FirmwareNotRecognized": {
+      "title": "Firmware is not recognized",
+      "description": "Please contact Ledger Support"
+    },
     "HardResetFail": {
       "title": "Oops, could not reset",
       "description": "Please try again or contact us when in doubt"
