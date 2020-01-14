@@ -36,17 +36,20 @@ const GridBody = ({
   ...rest
 }: Props) => (
   <GridBox {...rest}>
-    {[...visibleAccounts, ...hiddenAccounts].map((account, i) => (
-      <AccountCard
-        hidden={i >= visibleAccounts.length}
-        key={account.id}
-        account={account}
-        parentAccount={account.type !== "Account" ? lookupParentAccount(account.parentId) : null}
-        range={range}
-        onClick={onAccountClick}
-      />
-    ))}
-    {showNewAccount ? <AccountCardPlaceholder key="placeholder" /> : null}
+    {[...visibleAccounts, ...(showNewAccount ? [null] : []), ...hiddenAccounts].map((account, i) =>
+      !account ? (
+        <AccountCardPlaceholder key="placeholder" />
+      ) : (
+        <AccountCard
+          hidden={i >= visibleAccounts.length}
+          key={account.id}
+          account={account}
+          parentAccount={account.type !== "Account" ? lookupParentAccount(account.parentId) : null}
+          range={range}
+          onClick={onAccountClick}
+        />
+      ),
+    )}
   </GridBox>
 );
 

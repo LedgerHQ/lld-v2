@@ -26,18 +26,21 @@ const ListBody = ({
   search,
 }: Props) => (
   <Box>
-    {[...visibleAccounts, ...hiddenAccounts].map((account, i) => (
-      <AccountItem
-        hidden={i >= visibleAccounts.length}
-        key={account.id}
-        account={account}
-        search={search}
-        parentAccount={account.type !== "Account" ? lookupParentAccount(account.parentId) : null}
-        range={range}
-        onClick={onAccountClick}
-      />
-    ))}
-    {showNewAccount ? <AccountItemPlaceholder /> : null}
+    {[...visibleAccounts, ...(showNewAccount ? [null] : []), ...hiddenAccounts].map((account, i) =>
+      !account ? (
+        <AccountItemPlaceholder key="placeholder" />
+      ) : (
+        <AccountItem
+          hidden={i >= visibleAccounts.length}
+          key={account.id}
+          account={account}
+          search={search}
+          parentAccount={account.type !== "Account" ? lookupParentAccount(account.parentId) : null}
+          range={range}
+          onClick={onAccountClick}
+        />
+      ),
+    )}
   </Box>
 );
 
