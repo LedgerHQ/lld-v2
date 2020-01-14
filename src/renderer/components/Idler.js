@@ -26,7 +26,7 @@ const Idler = () => {
         dispatch(lock());
       }
     }
-  }, [autoLockTimeout, hasPassword]);
+  }, [autoLockTimeout, dispatch, hasPassword, lastAction, timeout]);
 
   // onMount & willUnmount
   useEffect(() => {
@@ -38,7 +38,7 @@ const Idler = () => {
       window.removeEventListener("mouseover", debounceOnChange);
       debounceOnChange.cancel();
     };
-  }, []);
+  }, [debounceOnChange]);
 
   useInterval(checkForAutoLock, 10000);
 

@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment } from "react";
+import React from "react";
 import { Trans } from "react-i18next";
 import { getMainAccount } from "@ledgerhq/live-common/lib/account/helpers";
 import Box from "~/renderer/components/Box";
@@ -22,7 +22,7 @@ export default function StepConnectDevice({
   const tokenCur = (account && account.type === "TokenAccount" && account.token) || token;
 
   return (
-    <Fragment>
+    <>
       {mainAccount ? <CurrencyDownStatusAlert currency={mainAccount.currency} /> : null}
       <EnsureDeviceApp
         account={mainAccount}
@@ -31,7 +31,7 @@ export default function StepConnectDevice({
         onSuccess={() => onChangeAppOpened(true)}
       />
       {!tokenCur ? null : <TokenTips token={tokenCur} />}
-    </Fragment>
+    </>
   );
 }
 

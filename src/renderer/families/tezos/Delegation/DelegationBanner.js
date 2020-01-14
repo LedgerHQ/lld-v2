@@ -47,9 +47,7 @@ const DelegationBanner = () => {
   const isDismissed = useSelector(dismissedBannerSelectorLoaded("DELEGATION_BANNER"));
   const hasUndelegated = useSelector(haveUndelegatedAccountsSelector);
 
-  const closeBanner = useCallback(() => dispatch(dismissBanner("DELEGATION_BANNER")), [
-    dismissBanner,
-  ]);
+  const closeBanner = useCallback(() => dispatch(dismissBanner("DELEGATION_BANNER")), [dispatch]);
 
   return hasUndelegated && !isDismissed ? (
     <Card

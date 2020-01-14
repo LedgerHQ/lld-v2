@@ -12,7 +12,7 @@ const CheckTermsAccepted = () => {
     if (!isAcceptedTerms()) {
       dispatch(openModal("MODAL_TERMS"));
     }
-  }, []);
+  }, [dispatch]);
 
   return null;
 };

@@ -18,7 +18,7 @@ const IsNewVersion = () => {
       dispatch(openModal("MODAL_RELEASES_NOTES", currentVersion));
       dispatch(saveSettings({ lastUsedVersion: currentVersion }));
     }
-  }, []);
+  }, [currentVersion, dispatch, lastUsedVersion]);
 
   return null;
 };

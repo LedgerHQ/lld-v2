@@ -27,12 +27,14 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: "module",
   },
-  plugins: ["react", "flowtype"],
+  plugins: ["react", "react-hooks", "flowtype"],
   rules: {
     "space-before-function-paren": 0,
     "comma-dangle": 0,
     "no-prototype-builtins": 0,
     "promise/param-names": 0,
+    "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
+    "react-hooks/exhaustive-deps": "warn", // Checks effect dependencies
   },
   settings: {
     react: {

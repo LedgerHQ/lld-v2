@@ -94,7 +94,7 @@ const Chart = ({ height, data, color, renderTickY, renderTooltip, valueKey = "va
         },
       ],
     }),
-    [data, valueKey],
+    [color, data, valueKey],
   );
 
   const generateOptions = useMemo(
@@ -160,7 +160,7 @@ const Chart = ({ height, data, color, renderTickY, renderTooltip, valueKey = "va
       chartRef.current.options = generateOptions;
       chartRef.current.update(0);
     }
-  }, [data, valueKey]);
+  }, [data, generateOptions, generatedData, valueKey]);
 
   useLayoutEffect(() => {
     chartRef.current = new ChartJs(canvasRef.current, {
@@ -168,7 +168,7 @@ const Chart = ({ height, data, color, renderTickY, renderTooltip, valueKey = "va
       data: generatedData,
       options: generateOptions,
     });
-  }, []);
+  }, [generateOptions, generatedData]);
 
   return (
     <ChartContainer height={height}>
