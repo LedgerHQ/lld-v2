@@ -36,8 +36,9 @@ const GridBody = ({
   ...rest
 }: Props) => (
   <GridBox {...rest}>
-    {visibleAccounts.map(account => (
+    {[...visibleAccounts, ...hiddenAccounts].map((account, i) => (
       <AccountCard
+        hidden={i >= visibleAccounts.length}
         key={account.id}
         account={account}
         parentAccount={account.type !== "Account" ? lookupParentAccount(account.parentId) : null}
@@ -46,17 +47,7 @@ const GridBody = ({
       />
     ))}
     {showNewAccount ? <AccountCardPlaceholder key="placeholder" /> : null}
-    {hiddenAccounts.map(account => (
-      <AccountCard
-        hidden
-        key={account.id}
-        account={account}
-        parentAccount={account.type !== "Account" ? lookupParentAccount(account.parentId) : null}
-        range={range}
-        onClick={onAccountClick}
-      />
-    ))}
   </GridBox>
 );
 
-export default React.memo<Props>(GridBody);
+export default GridBody;
