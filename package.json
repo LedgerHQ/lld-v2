@@ -105,7 +105,6 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
-<<<<<<< HEAD
     "@actions/core": "^1.2.1",
     "@actions/github": "^2.0.1",
     "@babel/core": "^7.8.3",
@@ -117,19 +116,6 @@
     "@babel/preset-env": "^7.8.3",
     "@babel/preset-flow": "^7.8.3",
     "@babel/preset-react": "^7.8.3",
-=======
-    "@actions/core": "^1.2.0",
-    "@actions/github": "^2.0.0",
-    "@babel/core": "^7.7.7",
-    "@babel/plugin-proposal-class-properties": "^7.7.4",
-    "@babel/plugin-proposal-export-default-from": "^7.7.4",
-    "@babel/plugin-proposal-export-namespace-from": "^7.7.4",
-    "@babel/plugin-syntax-dynamic-import": "^7.7.4",
-    "@babel/plugin-syntax-import-meta": "^7.7.4",
-    "@babel/preset-env": "^7.7.7",
-    "@babel/preset-flow": "^7.7.4",
-    "@babel/preset-react": "^7.7.4",
->>>>>>> setup e2e tests
     "@octokit/rest": "^16.36.0",
     "babel-cli": "^6.26.0",
     "babel-eslint": "^10.0.3",
@@ -163,11 +149,7 @@
     "jest": "^24.9.0",
     "listr": "^0.14.3",
     "prettier": "^1.19.1",
-<<<<<<< HEAD
-    "spectron": "^9.0.0",
-=======
     "spectron": "8",
->>>>>>> setup e2e tests
     "style-loader": "^1.1.1",
     "url-loader": "^3.0.0",
     "webpack": "^4.41.2",
