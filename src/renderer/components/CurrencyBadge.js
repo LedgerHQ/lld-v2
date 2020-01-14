@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { getCryptoCurrencyIcon } from "@ledgerhq/live-common/lib/react";
 import type { CryptoCurrency, TokenCurrency } from "@ledgerhq/live-common/lib/types";
 import { rgba } from "~/renderer/styles/helpers";
-import IconCheck from "~/renderer/icons/Check";
+import IconCheckFull from "~/renderer/icons/CheckFull";
 import Box from "~/renderer/components/Box";
 import ParentCryptoCurrencyIcon from "~/renderer/components/ParentCryptoCurrencyIcon";
 import useTheme from "~/renderer/hooks/useTheme";
@@ -27,23 +27,22 @@ const CryptoIconWrapper: ThemedComponent<{
   position: relative;
 
   & > :nth-child(2) {
-    background: ${p =>
-      p.showCheckmark ? p.theme.colors.positiveGreen : "palette.background.paper"};
-    border-radius: 100%;
-    padding: 2px;
     position: absolute;
     right: -6px;
     top: -6px;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid ${p => p.theme.colors.palette.background.paper};
-    & > svg {
-      width: 12px;
-    }
   }
+`;
+
+const SpinnerWrapper: ThemedComponent<{}> = styled.div`
+  background: ${p => p.theme.colors.palette.background.paper};
+  border-radius: 100%;
+  padding: 2px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid ${p => p.theme.colors.palette.background.paper};
 `;
 
 export function CurrencyCircleIcon({
@@ -71,10 +70,14 @@ export function CurrencyCircleIcon({
       {Icon && <Icon size={size / 2} />}
       {showCheckmark && (
         <div>
-          <IconCheck color="white" size={16} />
+          <IconCheckFull size={22} />
         </div>
       )}
-      {showSpinner && <Spinner color="palette.text.shade60" size={14} />}
+      {showSpinner && (
+        <SpinnerWrapper>
+          <Spinner color="palette.text.shade60" size={14} />
+        </SpinnerWrapper>
+      )}
     </CryptoIconWrapper>
   );
 }

@@ -16,7 +16,7 @@ import Text from "~/renderer/components/Text";
 import NanoS from "~/renderer/icons/device/NanoS";
 import NanoX from "~/renderer/icons/device/NanoX";
 import Blue from "~/renderer/icons/device/Blue";
-import CheckFull from "~/renderer/icons/CheckFull";
+import IconCheckFull from "~/renderer/icons/CheckFull";
 import UpdateFirmwareButton from "./UpdateFirmwareButton";
 import type { ModalStatus } from "./types";
 
@@ -116,7 +116,7 @@ class FirmwareUpdate extends PureComponent<Props, State> {
               </Text>
               <Box color="wallet" ml={2}>
                 <Tooltip content={t("manager.yourDeviceIsGenuine")}>
-                  <CheckFull size={13} tickColor="white" />
+                  <IconCheckFull size={13} />
                 </Tooltip>
               </Box>
             </Box>

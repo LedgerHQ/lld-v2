@@ -4,8 +4,8 @@ import React from "react";
 
 const CheckFull = ({
   size,
-  color = "currentColor",
-  tickColor = "transparent",
+  color = "#6490f1",
+  tickColor = "white",
 }: {
   size: number,
   color?: string,
