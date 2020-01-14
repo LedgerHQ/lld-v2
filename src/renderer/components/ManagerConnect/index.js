@@ -234,9 +234,7 @@ const ManagerConnect = ({
           <Title>
             <Trans i18nKey="manager.connect.connectAndUnlockDevice" />
           </Title>
-          {!device ? (
-            <ConnectTroubleshooting appearsAfterDelay={20000} onRepair={onRepairModal} />
-          ) : null}
+          {!device ? <ConnectTroubleshooting onRepair={onRepairModal} /> : null}
         </Footer>
       </Wrapper>
     );
