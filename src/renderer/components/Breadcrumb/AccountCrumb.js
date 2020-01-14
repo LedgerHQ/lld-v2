@@ -75,7 +75,7 @@ const AccountCrumb = () => {
   }, []);
 
   const onAccountSelected = useCallback(
-    ({ selectedIem: item }) => {
+    ({ selectedItem: item }) => {
       if (!item) {
         return null;
       }
