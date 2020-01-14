@@ -32,15 +32,16 @@ const CryptoIconWrapper: ThemedComponent<{
     border-radius: 100%;
     padding: 2px;
     position: absolute;
-    right: -8px;
-    top: -8px;
-    width: 22px;
-    height: 22px;
+    right: -6px;
+    top: -6px;
+    width: 24px;
+    height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 2px solid ${p => p.theme.colors.palette.background.paper};
     & > svg {
-      width: 14px;
+      width: 12px;
     }
   }
 `;
@@ -70,7 +71,7 @@ export function CurrencyCircleIcon({
       {Icon && <Icon size={size / 2} />}
       {showCheckmark && (
         <div>
-          <IconCheck color="palette.background.paper" size={16} />
+          <IconCheck color="white" size={16} />
         </div>
       )}
       {showSpinner && <Spinner color="palette.text.shade60" size={14} />}

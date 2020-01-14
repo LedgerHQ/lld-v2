@@ -31,7 +31,7 @@ import InitStep from "./steps/Init";
 import NoDeviceStep from "./steps/NoDevice";
 import OnboardingBreadcrumb from "./OnboardingBreadcrumb";
 import SelectDevice from "./steps/SelectDevice";
-import SelectPIN from "./steps/SelectPIN/index";
+import SelectPIN from "./steps/SelectPIN";
 import WriteSeed from "./steps/WriteSeed/index";
 import SetPassword from "./steps/SetPassword";
 import Analytics from "./steps/Analytics";

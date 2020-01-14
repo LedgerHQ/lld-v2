@@ -99,7 +99,7 @@ const FreeInfo = styled.div`
 `;
 
 const GenuineCheckBadge = styled.div`
-  color: ${p => p.theme.colors.palette.background.paper};
+  color: white;
   border-radius: 50%;
   width: 18px;
   height: 18px;
