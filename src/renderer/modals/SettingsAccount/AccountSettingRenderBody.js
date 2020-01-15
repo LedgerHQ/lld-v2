@@ -250,7 +250,7 @@ const AdvancedLogsContainer: ThemedComponent<{}> = styled.div`
   white-space: pre-wrap;
   word-wrap: break-word;
   overflow: auto;
-  user-select: auto;
+  user-select: text;
 `;
 
 const ConnectedAccountSettingRenderBody: React$ComponentType<{}> = compose(
