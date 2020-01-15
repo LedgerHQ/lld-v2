@@ -1,23 +1,116 @@
-# LLD-V2 REWORK
+# Ledger Live (desktop) [![CircleCI](https://circleci.com/gh/LedgerHQ/ledger-live-desktop.svg?style=svg)](https://circleci.com/gh/LedgerHQ/ledger-live-desktop) [![Crowdin](https://d322cqt584bo4o.cloudfront.net/ledger-wallet/localized.svg)](https://crowdin.com/project/ledger-wallet)
 
-## DEVTOOLS
+- Related: [ledger-live-mobile](https://github.com/ledgerhq/ledger-live-mobile)
+- Backed by: [ledger-live-common](https://github.com/ledgerhq/ledger-live-common)
 
-### VSCode
+> Ledger Live is a new generation wallet desktop application providing a unique interface to maintain multiple cryptocurrencies for your Ledger Nano S / Blue. Manage your device, create accounts, receive and send cryptoassets, [...and many more](https://www.ledger.fr/2018/07/09/ledger-launches-ledger-live-the-all-in-one-companion-app-to-your-ledger-device/).
 
-If you use VSCode, you might need to configure it correctly to have flow / eslint / prettier working nicely together  
-Go to your workspace settings and set it up like so:
+<a href="https://github.com/LedgerHQ/ledger-live-desktop/releases">
+  <p align="center">
+    <img src="/docs/screenshot.png" width="550"/>
+  </p>
+ </a>
 
+## Architecture
 
-```json
-{
-  "flow.enabled": true,
-  "flow.useNPMPackagedFlow": true,
-  "editor.formatOnPaste": true,
-  "editor.formatOnSave": true,
-  "javascript.format.enable": false,
-  "javascript.validate.enable": false,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  },
-}
+Ledger Live is an hybrid desktop application built with Electron, React, Redux, RxJS,.. and highly optimized with [ledger-core](https://github.com/LedgerHQ/lib-ledger-core) C++ library to deal with blockchains (sync, broadcast,..) via [ledger-core-node-bindings](https://github.com/LedgerHQ/lib-ledger-core-node-bindings). It communicates to Ledger hardware wallet devices (Nano S / Blue) to verify address and sign transactions with [ledgerjs](https://github.com/LedgerHQ/ledgerjs). Some logic is shared with [live-common](https://github.com/LedgerHQ/ledger-live-common).
+
+<p align="center">
+ <img src="/docs/architecture.png" width="550"/>
+</p>
+
+## Setup
+
+### Requirements
+
+- [NodeJS](https://nodejs.org) lts/erbium (Node 12.x)
+- [Yarn](https://yarnpkg.com) lts
+- [Python](https://www.python.org/) v2.7.10 (used by [node-gyp](https://github.com/nodejs/node-gyp) to build native addons)
+- You will also need a C++ compiler
+
+## Install
+
+```bash
+# install dependencies
+yarn
+```
+
+## Run
+
+```bash
+# launch the app
+yarn start
+```
+
+## Build
+
+```bash
+# Build & package the whole app
+# Creates a .dmg for Mac, .exe installer for Windows, or .AppImage for Linux
+# Output files will be created in dist/ folder
+yarn dist
+```
+
+---
+
+## Config (optional helpers)
+
+### Environment variables
+
+(you can use a .env or export environment variables)
+
+```bash
+NO_DEBUG_COMMANDS=1
+NO_DEBUG_DB=1
+NO_DEBUG_ACTION=1
+NO_DEBUG_TAB_KEY=1
+NO_DEBUG_NETWORK=1
+NO_DEBUG_ANALYTICS=1
+NO_DEBUG_WS=1
+NO_DEBUG_DEVICE=1
+```
+
+other envs can be seen in (live-common:src/env.js)[https://github.com/LedgerHQ/ledger-live-common/blob/master/src/env.js)
+
+### Run code quality checks
+
+```bash
+yarn ci
+```
+
+## File structure
+
+```
+src
+├── main : the main process is the mother of all process. it boots internal and renderer process and starts the window.
+├── internal : related to internal thread that runs commands, device logic, libcore,..
+├── renderer : everything related to the UI.
+│   ├── screens
+│   ├── modals
+│   ├── components : all components that are not screens or modals, flattened.
+│   ├── animations
+│   ├── icons
+│   ├── images
+│   ├── styles
+│   ├── bridge : logic related to interacting with accounts and currencies.
+│   ├── families : per currency specific logic and components
+│   ├── actions : redux actions
+│   ├── reducers : redux reducers
+│   ├── middlewares
+│   ├── analytics
+│   ├── fonts
+│   ├── hooks
+│   ├── i18n : all translation files
+│   ├── index.html : html point point
+│   ├── index.js : js entry point
+│   ├── init.js : initialize the rendering
+│   ├── live-common-setup.js : set up live-common for renderer specific parts
+│   └── ... other files related to renderer
+├── config : constants files. DEPRECATED. will be moved to live-common.
+├── helpers : helpers. DEPRECATED. will be moved to live-common or in relevant places.
+├── live-common-set-supported-currencies.js : generic set up of supported coins
+├── live-common-setup.js : generic set up of live-common
+├── logger : internal logging library. used by all thread. produces the "export logs".
+├── network.js : network implementation. will eventually move back to live-common.
+└── sentry : related to bug report API
 ```
