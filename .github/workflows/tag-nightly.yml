@@ -39,7 +39,7 @@ jobs:
           tags: false
       - name: push tag
         run: |
-          curl -s -X POST https://api.github.com/repos/LedgerHQ/${{ steps.variables.outputs.repo }}/git/refs \
+          curl -s -X POST https://api.github.com/repos/LedgerHQ/${{ steps.config.outputs.repo }}/git/refs \
           -H "Authorization: token ${{ secrets.ACCESS_TOKEN_VAL }}" \
           -d @- << EOF
           {
