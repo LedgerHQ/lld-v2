@@ -24,7 +24,7 @@ const MarketIndicatorRadio = () => {
   ];
 
   const onChange = useCallback(
-    (item: { label: string, key: string }) => {
+    (item: { key: string }) => {
       dispatch(setMarketIndicator(item.key));
     },
     [dispatch],

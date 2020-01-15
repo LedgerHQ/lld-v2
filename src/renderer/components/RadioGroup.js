@@ -40,7 +40,7 @@ const Btn = styled(Box).attrs(p => ({
 `;
 
 type Item = {
-  label: string,
+  label: React$Node,
   key: string,
 };
 

@@ -7,7 +7,7 @@ import Box from "~/renderer/components/Box";
 import IconCheck from "~/renderer/icons/Check";
 import IconAngleDown from "~/renderer/icons/AngleDown";
 import IconCross from "~/renderer/icons/Cross";
-import type { Option } from "./index";
+import type { Option } from ".";
 
 type OptionProps = *;
 

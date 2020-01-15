@@ -173,7 +173,7 @@ export const useManagerConnect = (device: ?Device): [State, Cbs] => {
             return empty();
           }
           // default debounce (to be tweak)
-          return interval(1000);
+          return interval(1500);
         }),
       )
       // the state simply goes into a React state

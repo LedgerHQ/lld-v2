@@ -32,7 +32,7 @@ import NoDeviceStep from "./steps/NoDevice";
 import OnboardingBreadcrumb from "./OnboardingBreadcrumb";
 import SelectDevice from "./steps/SelectDevice";
 import SelectPIN from "./steps/SelectPIN";
-import WriteSeed from "./steps/WriteSeed/index";
+import WriteSeed from "./steps/WriteSeed";
 import SetPassword from "./steps/SetPassword";
 import Analytics from "./steps/Analytics";
 import Finish from "./steps/Finish";
@@ -66,6 +66,7 @@ const mapDispatchToProps = {
   unlock,
   openModal,
   relaunchOnboarding,
+  updateGenuineCheck,
 };
 
 type Props = {
@@ -82,6 +83,7 @@ type Props = {
   unlock: Function,
   openModal: string => void,
   relaunchOnboarding: boolean => void,
+  updateGenuineCheck: (*) => void,
 };
 
 export type StepProps = {
@@ -149,6 +151,7 @@ class OnboardingC extends PureComponent<Props> {
       settings,
       t,
       onboardingRelaunched,
+      updateGenuineCheck,
     } = this.props;
 
     const StepComponent = STEPS[onboarding.stepName];
