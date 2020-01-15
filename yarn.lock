@@ -1289,10 +1289,10 @@
     bindings "1.3.0"
     nan "^2.6.2"
 
-"@ledgerhq/live-common@^11.0.0-rc.4":
-  version "11.0.0-rc.4"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/live-common/-/live-common-11.0.0-rc.4.tgz#5f42eb81c2e42ec8390299c42a4bdb0482fc7f79"
-  integrity sha512-gP0bi3VZh+nuqKct8Xi3biYaYu9ILJaQrgNRMpShYEOsDjTA5jHQCk8Cg4CCeBczyesJLDrTicQaEQlVSVJyNw==
+"@ledgerhq/live-common@^11.0.0-rc.6":
+  version "11.0.0-rc.6"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/live-common/-/live-common-11.0.0-rc.6.tgz#3771e9b99a126e0e6f2f22845d15df18ba081625"
+  integrity sha512-cJ9X4faHIZtvwhLdAMSeOP1RMLTq+PsqWs5a7HeaB1cU4tLhVlFx+pwRN8ghhoJvQhYsQ9Pm5qSQIe9hyfMvuA==
   dependencies:
     "@ledgerhq/compressjs" "1.3.2"
     "@ledgerhq/devices" "5.5.0"
@@ -4493,10 +4493,10 @@ dotenv@^8.0.0, dotenv@^8.2.0:
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
   integrity sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
 
-downshift@^4.0.5:
-  version "4.0.5"
-  resolved "https://registry.yarnpkg.com/downshift/-/downshift-4.0.5.tgz#567066de12bd31930663f30274a2ac84066e6376"
-  integrity sha512-8q6ImB06zvBjE75f1W8cKxYcBCaqtD7TMPJn4nAzdrYxGDxwHsNb8965GQME4TklGPsSMhIBygIdKCLMEYda+Q==
+downshift@^4.0.6:
+  version "4.0.6"
+  resolved "https://registry.yarnpkg.com/downshift/-/downshift-4.0.6.tgz#1f3b089c3027506916e4c2f2af03cbc9fd217984"
+  integrity sha512-Ij22VjbVeU0B0/0TRneBtL58VfQxhjb9ELku/aolgQxSd2ugmp+81hjD5d2iKB3ZSv4ZGssHzieYBYUsHO8rSA==
   dependencies:
     "@babel/runtime" "^7.4.5"
     compute-scroll-into-view "^1.0.9"
@@ -5607,10 +5607,10 @@ flatted@^2.0.0:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-2.0.1.tgz#69e57caa8f0eacbc281d2e2cb458d46fdb449e08"
   integrity sha512-a1hQMktqW9Nmqr5aktAux3JMNqaucxGcjtjWnZLHX7yyPCmlSV3M54nGYbqT8K+0GhF3NBgmJCc3ma+WOgX8Jg==
 
-flow-bin@^0.115.0:
-  version "0.115.0"
-  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.115.0.tgz#22e3ad9e5c7198967de80138ba8a9154ff387960"
-  integrity sha512-xW+U2SrBaAr0EeLvKmXAmsdnrH6x0Io17P6yRJTNgrrV42G8KXhBAD00s6oGbTTqRyHD0nP47kyuU34zljZpaQ==
+flow-bin@^0.116.0:
+  version "0.116.0"
+  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.116.0.tgz#f2e5ef318838ceb760e3f588b66076bc8ee1dc87"
+  integrity sha512-6q1f84mhAzHlUp9eTpIIJqINFBXf2+HGQllYfrkdQ+DfOLkF2wEZNHpVlYX1DL0G3uS8D//XEfsN2seZAc7jiw==
 
 flow-typed@^2.6.2:
   version "2.6.2"
@@ -8762,10 +8762,10 @@ opencollective-postinstall@^2.0.2:
   resolved "https://registry.yarnpkg.com/opencollective-postinstall/-/opencollective-postinstall-2.0.2.tgz#5657f1bede69b6e33a45939b061eb53d3c6c3a89"
   integrity sha512-pVOEP16TrAO2/fjej1IdOyupJY8KDUM1CvsaScRbw6oddvpQoOfGk4ywha0HKKVAD6RkW4x6Q+tNBwhf3Bgpuw==
 
-openpgp@^4.7.2:
-  version "4.7.2"
-  resolved "https://registry.yarnpkg.com/openpgp/-/openpgp-4.7.2.tgz#87ab211e044b684ef8c8554ef0f30027dab99bf5"
-  integrity sha512-/vCTBelOvrsvgTrc22TPweH8OPIa9UR9SG2aNey9oxg/pUFvnL4yLuNuwsv3YBFSfmh+dy2wX/dH5MkyHfIwGg==
+openpgp@^4.8.0:
+  version "4.8.0"
+  resolved "https://registry.yarnpkg.com/openpgp/-/openpgp-4.8.0.tgz#6eb8a8105c712c20cdd75807d5d753f9c3de17ec"
+  integrity sha512-fW2RxU28PVQOyW8FO/+ctlHuLqbzRC3za4TsRh5DuOrFskAb43gG0W9fNEGLi/H+OtjigW4y0LXSl/+UUNVakg==
   dependencies:
     asn1.js "^5.0.0"
     node-fetch "^2.1.2"
