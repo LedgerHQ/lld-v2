@@ -11,9 +11,8 @@ import Tooltip from "~/renderer/components/Tooltip";
 import Card from "~/renderer/components/Box/Card";
 import Box from "~/renderer/components/Box";
 
-import IconCheck from "~/renderer/icons/Check";
 import IconTriangleWarning from "~/renderer/icons/TriangleWarning";
-
+import IconCheckFull from "~/renderer/icons/CheckFull";
 import nanoS from "./images/nanoS.png";
 import nanoX from "./images/nanoX.png";
 import blue from "./images/blue.png";
@@ -98,19 +97,6 @@ const FreeInfo = styled.div`
   color: ${p => (p.danger ? p.theme.colors.alertRed : p.theme.colors.palette.text.shade100)};
 `;
 
-const GenuineCheckBadge = styled.div`
-  color: ${p => p.theme.colors.palette.background.paper};
-  border-radius: 50%;
-  width: 18px;
-  height: 18px;
-  padding: 2px;
-  display: flex;
-  margin-left: 8px;
-  align-items: center;
-  justify-content: center;
-  background-color: ${p => p.theme.colors.palette.primary.main};
-`;
-
 const TooltipContentWrapper: ThemedComponent<{}> = styled.div`
   & > :nth-child(1) {
     color: ${p => rgba(p.theme.colors.palette.background.paper, 0.7)};
@@ -160,9 +146,9 @@ const DeviceStorage = ({ state, deviceInfo }: *) => {
               {state.deviceModel.productName}
             </Text>
             <Tooltip content={<Trans i18nKey="manager.deviceStorage.genuine" />}>
-              <GenuineCheckBadge>
-                <IconCheck size={12} />
-              </GenuineCheckBadge>
+              <Box ml={2}>
+                <IconCheckFull size={18} />
+              </Box>
             </Tooltip>
           </Box>
           <Box>
