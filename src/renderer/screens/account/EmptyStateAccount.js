@@ -6,7 +6,7 @@ import { compose } from "redux";
 import { withTranslation, Trans } from "react-i18next";
 
 import { openModal } from "~/renderer/actions/modals";
-import type { T } from "~/types/common";
+import type { TFunction } from "react-i18next";
 import type { Account, AccountLike } from "@ledgerhq/live-common/lib/types";
 import { listTokenTypesForCryptoCurrency } from "@ledgerhq/live-common/lib/currencies";
 import { getMainAccount } from "@ledgerhq/live-common/lib/account";
@@ -32,7 +32,7 @@ type OwnProps = {
 
 type Props = {
   ...OwnProps,
-  t: T,
+  t: TFunction,
   openModal: Function,
 };
 

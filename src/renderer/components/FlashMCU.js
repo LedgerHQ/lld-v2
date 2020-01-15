@@ -23,7 +23,7 @@ const Separator = styled(Box).attrs(() => ({
 `;
 
 type Props = {
-  deviceModelId: DeviceModelId,
+  deviceModelId?: DeviceModelId,
 };
 
 const FlashMCUNanosLocal = ({ deviceModelId }: Props) => (
@@ -34,7 +34,12 @@ const FlashMCUNanosLocal = ({ deviceModelId }: Props) => (
         <Trans i18nKey="manager.modal.mcuFirst" />
       </Text>
       <Box mt={5}>
-        <Interactions screen="empty" wire="disconnecting" type={deviceModelId} width={368} />
+        <Interactions
+          screen="empty"
+          wire="disconnecting"
+          type={deviceModelId || "nanoS"}
+          width={368}
+        />
       </Box>
     </Box>
     <Separator my={6} />
@@ -54,7 +59,7 @@ const FlashMCUNanosLocal = ({ deviceModelId }: Props) => (
           screen="empty"
           action="left"
           wire="connecting"
-          type={deviceModelId}
+          type={deviceModelId || "nanoS"}
           width={368}
         />
       </Box>
@@ -81,7 +86,7 @@ const FlashMCUBlueLocal = ({ deviceModelId }: Props) => (
           <Trans i18nKey="manager.modal.mcuBlueFirst" />
         </Text>
         <Box mt={5}>
-          <Interactions wire="wired" type={deviceModelId} width={120} />
+          <Interactions wire="wired" type={deviceModelId || "nanoS"} width={120} />
         </Box>
       </Container>
       <Container>
@@ -90,7 +95,12 @@ const FlashMCUBlueLocal = ({ deviceModelId }: Props) => (
           <Trans i18nKey="manager.modal.mcuBlueSecond" />
         </Text>
         <Box mt={5}>
-          <Interactions screen="bootloader" wire="wired" type={deviceModelId} width={120} />
+          <Interactions
+            screen="bootloader"
+            wire="wired"
+            type={deviceModelId || "nanoS"}
+            width={120}
+          />
         </Box>
       </Container>
     </Box>

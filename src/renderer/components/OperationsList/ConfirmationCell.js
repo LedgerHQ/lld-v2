@@ -2,12 +2,12 @@
 
 import React, { PureComponent } from "react";
 import { connect } from "react-redux";
+import type { TFunction } from "react-i18next";
 import styled from "styled-components";
 import { createStructuredSelector } from "reselect";
 import type { Account, Operation, AccountLike } from "@ledgerhq/live-common/lib/types";
 import { getMainAccount } from "@ledgerhq/live-common/lib/account";
 import { getOperationAmountNumber } from "@ledgerhq/live-common/lib/operation";
-import type { T } from "~/types/common";
 import {
   confirmationsNbForCurrencySelector,
   marketIndicatorSelector,
@@ -36,7 +36,7 @@ const Cell: ThemedComponent<{}> = styled(Box).attrs(() => ({
 type OwnProps = {
   account: AccountLike,
   parentAccount?: Account,
-  t: T,
+  t: TFunction,
   operation: Operation,
 };
 

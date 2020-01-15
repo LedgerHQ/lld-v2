@@ -4,10 +4,10 @@ import React, { PureComponent } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { withTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 import { BigNumber } from "bignumber.js";
 import styled from "styled-components";
 import type { Currency, ValueChange, Account, TokenAccount } from "@ledgerhq/live-common/lib/types";
-import type { T } from "~/types/common";
 import { getAccountCurrency, getAccountUnit } from "@ledgerhq/live-common/lib/account";
 import type { TimeRange } from "~/renderer/reducers/settings";
 import { setSelectedTimeRange } from "~/renderer/actions/settings";
@@ -36,7 +36,7 @@ type OwnProps = {
 
 type Props = {
   ...OwnProps,
-  t: T,
+  t: TFunction,
   setSelectedTimeRange: TimeRange => *,
 };
 
@@ -79,6 +79,7 @@ const mapDispatchToProps = {
 
 class AccountBalanceSummaryHeader extends PureComponent<Props> {
   handleChangeSelectedTime = item => {
+    // $FlowFixMe
     this.props.setSelectedTimeRange(item.key);
   };
 

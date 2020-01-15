@@ -2,6 +2,7 @@
 
 import React, { Component } from "react";
 import { withTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 import type { Account, CryptoCurrency, TokenCurrency } from "@ledgerhq/live-common/lib/types";
 import Box from "~/renderer/components/Box";
 import FakeLink from "~/renderer/components/FakeLink";
@@ -11,19 +12,19 @@ import AccountRow from "./AccountRow";
 class AccountsList extends Component<
   {
     accounts: Account[],
-    currency: CryptoCurrency | TokenCurrency,
+    currency?: CryptoCurrency | TokenCurrency,
     checkedIds?: string[],
     editedNames: { [accountId: string]: string },
     setAccountName?: (Account, string) => void,
     onToggleAccount?: Account => void,
     onSelectAll?: (Account[]) => void,
     onUnselectAll?: (Account[]) => void,
-    title?: string,
-    emptyText?: string,
+    title?: React$Node,
+    emptyText?: React$Node,
     autoFocusFirstInput?: boolean,
     collapsible?: boolean,
     hideAmount?: boolean,
-    t: *,
+    t: TFunction,
   },
   {
     collapsed: boolean,

@@ -1,6 +1,7 @@
 // @flow
 import React, { PureComponent } from "react";
 import { Trans, withTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 import Text from "~/renderer/components/Text";
 import Box from "~/renderer/components/Box";
 import IconChevronRight from "~/renderer/icons/ChevronRight";
@@ -14,10 +15,9 @@ import {
   configureAsNewDevice,
   restoreConfiguration,
 } from "@ledgerhq/live-common/lib/deviceWordings";
-import type { T } from "~/types/common";
 
 type Props = {
-  t: T,
+  t: TFunction,
 };
 
 class SelectPINrestoreNano extends PureComponent<Props, *> {

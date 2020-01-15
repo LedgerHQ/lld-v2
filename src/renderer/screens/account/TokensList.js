@@ -13,7 +13,7 @@ import type { Account, AccountLike } from "@ledgerhq/live-common/lib/types/accou
 import { openModal } from "~/renderer/actions/modals";
 import Box from "~/renderer/components/Box";
 import Text from "~/renderer/components/Text";
-import type { T } from "~/types/common";
+import type { TFunction } from "react-i18next";
 import IconPlus from "~/renderer/icons/Plus";
 import TokenRow from "~/renderer/components/TokenRow";
 import Button from "~/renderer/components/Button";
@@ -31,7 +31,7 @@ type OwnProps = {
 
 type Props = {
   ...OwnProps,
-  t: T,
+  t: TFunction,
   openModal: Function,
   router: any,
 };

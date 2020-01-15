@@ -3,10 +3,10 @@
 import React, { PureComponent } from "react";
 import { compose } from "redux";
 import { withTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import type { DeviceModelId } from "@ledgerhq/devices";
-import type { T } from "~/types/common";
 import type { OnboardingState } from "~/renderer/reducers/onboarding";
 import type { SettingsState } from "~/renderer/reducers/settings";
 import { getCurrentDevice } from "~/renderer/reducers/devices";
@@ -70,7 +70,7 @@ const mapDispatchToProps = {
 };
 
 type Props = {
-  t: T,
+  t: TFunction,
   hasCompletedOnboarding: boolean,
   onboardingRelaunched: boolean,
   saveSettings: Function,
@@ -87,7 +87,7 @@ type Props = {
 };
 
 export type StepProps = {
-  t: T,
+  t: TFunction,
   onboarding: OnboardingState,
   settings: SettingsState,
   prevStep: Function,

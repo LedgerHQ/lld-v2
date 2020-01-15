@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { compose } from "redux";
 import { createStructuredSelector } from "reselect";
 import { withTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import type { Account } from "@ledgerhq/live-common/lib/types/account";
@@ -22,7 +23,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 class ExportOperationsBtn extends Component<{
-  t: *,
+  t: TFunction,
   openModal: (string, any) => void,
   primary?: boolean,
   accounts: Account[],

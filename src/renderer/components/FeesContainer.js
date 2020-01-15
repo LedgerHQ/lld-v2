@@ -2,7 +2,7 @@
 
 import React from "react";
 import { withTranslation } from "react-i18next";
-
+import type { TFunction } from "react-i18next";
 import { openURL } from "~/renderer/linking";
 import Box from "~/renderer/components/Box";
 import LabelWithExternalIcon from "~/renderer/components/LabelWithExternalIcon";
@@ -19,7 +19,7 @@ export default withTranslation()(
     children: React$Node,
     header?: React$Node,
     i18nKeyOverride?: string,
-    t: *,
+    t: TFunction,
   }) => (
     <Box flow={1}>
       <Box horizontal alignItems="center" justifyContent="space-between">

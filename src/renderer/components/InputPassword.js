@@ -8,7 +8,7 @@ import zxcvbn from "zxcvbn";
 import debounce from "lodash/debounce";
 import noop from "lodash/noop";
 
-import type { T } from "~/types/common";
+import type { TFunction } from "react-i18next";
 
 import Box from "~/renderer/components/Box";
 import Input from "~/renderer/components/Input";
@@ -50,7 +50,7 @@ type State = {
 
 type Props = {
   onChange: Function,
-  t: T,
+  t: TFunction,
   value: string,
   withStrength?: boolean,
 };

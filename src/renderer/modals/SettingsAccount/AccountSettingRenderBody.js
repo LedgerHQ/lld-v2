@@ -23,7 +23,7 @@ import { connect } from "react-redux";
 import { withTranslation } from "react-i18next";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import type { Account, Unit } from "@ledgerhq/live-common/lib/types";
-import type { T } from "~/types/common";
+import type { TFunction } from "react-i18next";
 
 type State = {
   accountName: ?string,
@@ -38,7 +38,7 @@ type Props = {
   setDataModal: Function,
   updateAccount: Function,
   removeAccount: Function,
-  t: T,
+  t: TFunction,
   onClose: () => void,
   data: any,
 };

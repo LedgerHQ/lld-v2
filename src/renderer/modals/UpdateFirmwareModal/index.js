@@ -1,12 +1,13 @@
 //  @flow
 import React, { useState, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 import type { DeviceModelId } from "@ledgerhq/devices";
 import type { FirmwareUpdateContext } from "@ledgerhq/live-common/lib/types/manager";
 import logger from "~/logger";
 import Modal from "~/renderer/components/Modal";
 import Stepper from "~/renderer/components/Stepper";
-import type { StepProps as DefaultStepProps, TypedStep } from "~/renderer/components/Stepper";
+import type { Step as TypedStep } from "~/renderer/components/Stepper";
 import SyncSkipUnderPriority from "~/renderer/components/SyncSkipUnderPriority";
 import { FreezeDeviceChangeEvents } from "~/renderer/screens/manager/HookDeviceChange";
 import type { ModalStatus } from "~/renderer/screens/manager/FirmwareUpdate/types";
@@ -17,17 +18,19 @@ import StepConfirmation, { StepConfirmFooter } from "./steps/03-step-confirmatio
 
 type MaybeError = ?Error;
 
-export type StepProps = DefaultStepProps & {
+export type StepProps = {
   firmware: FirmwareUpdateContext,
   onCloseModal: () => void,
   error: ?Error,
   setError: Error => void,
   deviceModelId: DeviceModelId,
+  t: TFunction,
+  transitionTo: string => void,
 };
 
 export type StepId = "idCheck" | "updateMCU" | "finish" | "resetDevice";
 
-type Step = TypedStep<StepId>;
+type Step = TypedStep<StepId, StepProps>;
 
 type Props = {
   status: ModalStatus,

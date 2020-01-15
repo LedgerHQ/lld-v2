@@ -3,36 +3,25 @@
 import React, { PureComponent } from "react";
 import invariant from "invariant";
 import { withTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 
 import { ModalBody } from "~/renderer/components/Modal";
 import Breadcrumb from "./Breadcrumb";
 
-export type StepProps = {
-  t: *,
+export type BasicStepProps = {
+  t: TFunction,
   transitionTo: string => void,
 };
 
-export type Step = {
-  id: string,
-  label: string,
-  excludeFromBreadcrumb?: boolean,
-  component: StepProps => React$Node,
-  footer: StepProps => React$Node,
-  shouldRenderFooter?: StepProps => boolean,
-  shouldPreventClose?: boolean | (StepProps => boolean),
-  onBack?: StepProps => void,
-  noScroll?: boolean,
-};
-
-export type TypedStep<T> = {
+export type Step<T, StepProps> = {
   id: T,
-  label: string,
+  label?: React$Node,
   excludeFromBreadcrumb?: boolean,
-  component: StepProps => React$Node,
-  footer: StepProps => React$Node,
+  component: React$ComponentType<StepProps>,
+  footer?: React$ComponentType<StepProps>,
   shouldRenderFooter?: StepProps => boolean,
   shouldPreventClose?: boolean | (StepProps => boolean),
-  onBack?: StepProps => void,
+  onBack?: ?(StepProps) => void,
   noScroll?: boolean,
 };
 
@@ -40,22 +29,23 @@ type State = {
   stepId: string,
 };
 
-type Props = {
-  t: *,
-  title: string,
-  steps: Step[],
+type Props<T, StepProps> = {
+  t: TFunction,
+  title?: React$Node,
+  steps: Step<T, StepProps>[],
   initialStepId: string,
   hideBreadcrumb?: boolean,
   onClose: void => void,
-  onStepChange?: Step => void,
+  onStepChange?: (Step<T, StepProps>) => void,
   disabledSteps?: number[],
   errorSteps?: number[],
   children: any,
-  error?: Error,
+  error?: ?Error,
   signed?: boolean,
+  children?: React$Node,
 };
 
-class Stepper extends PureComponent<Props, State> {
+class Stepper<T, StepProps> extends PureComponent<Props<T, StepProps>, State> {
   state = {
     stepId: this.props.initialStepId,
   };
@@ -106,6 +96,7 @@ class Stepper extends PureComponent<Props, State> {
       noScroll,
     } = step;
 
+    // $FlowFixMe we'll need to improve this. also ...props is bad practice...
     const stepProps: StepProps = {
       ...props,
       t,
@@ -142,7 +133,7 @@ class Stepper extends PureComponent<Props, State> {
             {children}
           </>
         )}
-        renderFooter={renderFooter ? () => <StepFooter {...stepProps} /> : undefined}
+        renderFooter={renderFooter && StepFooter ? () => <StepFooter {...stepProps} /> : undefined}
       />
     );
   }

@@ -28,8 +28,6 @@ import { urls } from "~/config/urls";
 
 import type { StepProps } from "~/renderer/modals/MigrateAccounts";
 
-type Props = StepProps & { replaceAccounts: (Account[]) => void };
-
 const MigrationError = ({ error }: { error: Error }) => (
   <Box style={{ height: 200 }} px={5} justifyContent="center">
     <Box color="alertRed" alignItems="center">
@@ -75,7 +73,7 @@ const Exclamation = styled.div`
   justify-content: center;
 `;
 
-class StepCurrency extends PureComponent<Props> {
+class StepCurrency extends PureComponent<StepProps> {
   componentDidMount() {
     this.props.setScanStatus("scanning");
     this.startScanAccountsDevice();

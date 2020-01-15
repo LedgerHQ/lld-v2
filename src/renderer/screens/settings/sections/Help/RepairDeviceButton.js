@@ -5,7 +5,7 @@ import { compose } from "redux";
 import { withRouter } from "react-router-dom";
 import { withTranslation } from "react-i18next";
 import logger from "~/logger";
-import type { T } from "~/types/common";
+import type { TFunction } from "react-i18next";
 import { command } from "~/renderer/commands";
 import Button from "~/renderer/components/Button";
 import RepairModal from "~/renderer/modals/RepairModal";
@@ -16,7 +16,7 @@ type OwnProps = {
 };
 
 type Props = OwnProps & {
-  t: T,
+  t: TFunction,
   history: *,
 };
 

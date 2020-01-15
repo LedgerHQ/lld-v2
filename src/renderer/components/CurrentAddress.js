@@ -8,7 +8,7 @@ import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
 import noop from "lodash/noop";
 
-import type { T } from "~/types/common";
+import type { TFunction } from "react-i18next";
 
 import { rgba } from "~/renderer/styles/helpers";
 import { urls } from "~/config/urls";
@@ -142,10 +142,10 @@ type Props = {
   name: string,
   currency: CryptoCurrency,
   address: string,
-  isAddressVerified?: boolean,
+  isAddressVerified?: ?boolean,
   onCopy: () => void,
   onVerify: () => void,
-  t: T,
+  t: TFunction,
 };
 
 class CurrentAddress extends PureComponent<Props, { copyFeedback: boolean }> {

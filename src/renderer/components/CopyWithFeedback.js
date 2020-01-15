@@ -3,6 +3,7 @@
 import React, { PureComponent } from "react";
 import styled from "styled-components";
 import { withTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 import { darken, lighten } from "~/renderer/styles/helpers";
 
 import IconCopy from "~/renderer/icons/Copy";
@@ -16,7 +17,7 @@ if (!process.env.STORYBOOK_ENV) {
 }
 
 type Props = {
-  t: *,
+  t: TFunction,
   text: string,
 };
 

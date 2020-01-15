@@ -1,6 +1,7 @@
 // @flow
 import React, { useCallback } from "react";
 import { Trans } from "react-i18next";
+import type { TFunction } from "react-i18next";
 import { BigNumber } from "bignumber.js";
 import type {
   Account,
@@ -21,7 +22,7 @@ type Props = {
   transaction: Transaction,
   onChangeTransaction: (*) => void,
   status: TransactionStatus,
-  t: *,
+  t: TFunction,
 };
 
 const AmountField = ({

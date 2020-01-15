@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Trans, withTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 import styled from "styled-components";
 import { getAccountUnit, getMainAccount } from "@ledgerhq/live-common/lib/account";
 import type {
@@ -35,7 +36,7 @@ const Info = styled(Box).attrs(() => ({
 `;
 
 type Props = {
-  t: *,
+  t: TFunction,
   device: Device,
   account: AccountLike,
   parentAccount: ?Account,

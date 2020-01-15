@@ -4,9 +4,10 @@ import React, { PureComponent } from "react";
 
 import Button from "~/renderer/components/Button";
 import { withTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 
 type Props = {
-  t: *,
+  t: TFunction,
 };
 
 class RetryButton extends PureComponent<Props> {

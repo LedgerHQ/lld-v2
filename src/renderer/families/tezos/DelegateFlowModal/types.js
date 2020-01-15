@@ -8,10 +8,11 @@ import type {
   Operation,
 } from "@ledgerhq/live-common/lib/types";
 import type { Device } from "~/renderer/reducers/devices";
-import type { StepProps as DefaultStepProps } from "~/renderer/components/Stepper";
+import type { TFunction } from "react-i18next";
 
 export type StepProps = {
-  ...DefaultStepProps,
+  t: TFunction,
+  transitionTo: string => void,
   openedFromAccount: boolean,
   device: ?Device,
   account: ?AccountLike,

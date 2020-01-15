@@ -2,6 +2,7 @@
 
 import React, { PureComponent } from "react";
 import { Trans, withTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 import Text from "~/renderer/components/Text";
 import Box from "~/renderer/components/Box";
 import IconChevronRight from "~/renderer/icons/ChevronRight";
@@ -12,10 +13,9 @@ import { restoreConfiguration, setUpAsNewDevice } from "@ledgerhq/live-common/li
 import OptionRow, { IconOptionRow } from "~/renderer/components/OptionRow";
 import { Inner } from "~/renderer/screens/onboarding/sharedComponents";
 import RestoreNanoX from "~/renderer/images/select-pin-blue-onb.svg";
-import type { T } from "~/types/common";
 
 type Props = {
-  t: T,
+  t: TFunction,
 };
 
 class SelectPINrestoreNanoX extends PureComponent<Props, *> {

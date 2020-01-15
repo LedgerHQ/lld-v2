@@ -4,7 +4,7 @@ import React, { PureComponent } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import type { T } from "~/types/common";
+import type { TFunction } from "react-i18next";
 import { closeModal } from "~/renderer/actions/modals";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import Modal, { ModalBody } from "~/renderer/components/Modal";
@@ -13,7 +13,7 @@ import Box from "~/renderer/components/Box";
 import Button from "~/renderer/components/Button";
 
 type Props = {
-  t: T,
+  t: TFunction,
   closeModal: string => void,
 };
 const mapDispatchToProps = {

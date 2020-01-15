@@ -1,11 +1,11 @@
 // @flow
 
 import React, { PureComponent } from "react";
+import type { TFunction } from "react-i18next";
 import { seedWord1 } from "@ledgerhq/live-common/lib/deviceWordings";
 import OptionRow, { IconOptionRow } from "~/renderer/components/OptionRow";
 import Text from "~/renderer/components/Text";
 import { Trans, withTranslation } from "react-i18next";
-import type { T } from "~/types/common";
 import IconChevronRight from "~/renderer/icons/ChevronRight";
 import Box from "~/renderer/components/Box";
 import {
@@ -19,7 +19,7 @@ import WriteSeedOnb from "~/renderer/images/write-seed-onb.svg";
 import type { OnboardingState } from "~/renderer/reducers/onboarding";
 
 type Props = {
-  t: T,
+  t: TFunction,
   onboarding: OnboardingState,
 };
 

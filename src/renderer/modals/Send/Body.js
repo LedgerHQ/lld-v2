@@ -3,13 +3,13 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
+import type { TFunction } from "react-i18next";
 import { createStructuredSelector } from "reselect";
 import { Trans, withTranslation } from "react-i18next";
 import { UserRefusedOnDevice } from "@ledgerhq/errors";
 import { addPendingOperation, getMainAccount } from "@ledgerhq/live-common/lib/account";
 import useBridgeTransaction from "@ledgerhq/live-common/lib/bridge/useBridgeTransaction";
 import type { Account, AccountLike, Operation } from "@ledgerhq/live-common/lib/types";
-
 import logger from "~/logger";
 import Stepper from "~/renderer/components/Stepper";
 import SyncSkipUnderPriority from "~/renderer/components/SyncSkipUnderPriority";
@@ -21,7 +21,6 @@ import Track from "~/renderer/analytics/Track";
 import { useSignTransactionCallback } from "~/renderer/hooks/useSignTransaction";
 
 import type { Device } from "~/renderer/reducers/devices";
-import type { T } from "~/types/common";
 
 import StepRecipient, { StepRecipientFooter } from "./steps/StepRecipient";
 import StepAmount, { StepAmountFooter } from "./steps/StepAmount";
@@ -30,6 +29,7 @@ import StepVerification from "./steps/StepVerification";
 import StepSummary, { StepSummaryFooter } from "./steps/StepSummary";
 import StepConfirmation, { StepConfirmationFooter } from "./steps/StepConfirmation";
 import StepWarning, { StepWarningFooter } from "./steps/StepWarning";
+import type { St } from "./types";
 
 type OwnProps = {|
   stepId: string,
@@ -43,7 +43,7 @@ type OwnProps = {|
 |};
 
 type StateProps = {|
-  t: T,
+  t: TFunction,
   device: ?Device,
   accounts: Account[],
   closeModal: string => void,
@@ -56,7 +56,7 @@ type Props = {|
   ...StateProps,
 |};
 
-const createSteps = () => [
+const createSteps = (): St[] => [
   {
     id: "warning",
     excludeFromBreadcrumb: true,
