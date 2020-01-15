@@ -26,7 +26,7 @@ const makeCallOnMount = cb => {
   function Success() {
     useEffect(() => {
       cb();
-    }, [cb]);
+    }, []);
     return null;
   }
   return Success;
