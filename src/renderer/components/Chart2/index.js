@@ -97,6 +97,10 @@ const Chart = ({ height, data, color, renderTickY, renderTooltip, valueKey = "va
     [color, data, valueKey],
   );
 
+  const min = useMemo(() => Math.min(...generatedData.datasets[0].data.map(d => d.y)), [
+    generatedData,
+  ]);
+
   const generateOptions = useMemo(
     () => ({
       responsive: true,
@@ -122,6 +126,8 @@ const Chart = ({ height, data, color, renderTickY, renderTooltip, valueKey = "va
               fontColor: theme.text.shade60,
               fontFamily: "Inter",
               maxTicksLimit: 7,
+              maxRotation: 0,
+              minRotation: 0,
             },
             time: {
               minUnit: "day",
@@ -141,6 +147,7 @@ const Chart = ({ height, data, color, renderTickY, renderTooltip, valueKey = "va
               zeroLineColor: theme.text.shade10,
             },
             ticks: {
+              min: min * 0.8,
               maxTicksLimit: 4,
               fontColor: theme.text.shade60,
               fontFamily: "Inter",
@@ -151,7 +158,7 @@ const Chart = ({ height, data, color, renderTickY, renderTooltip, valueKey = "va
         ],
       },
     }),
-    [renderTickY, theme],
+    [min, renderTickY, theme],
   );
 
   useLayoutEffect(() => {
@@ -159,16 +166,14 @@ const Chart = ({ height, data, color, renderTickY, renderTooltip, valueKey = "va
       chartRef.current.data = generatedData;
       chartRef.current.options = generateOptions;
       chartRef.current.update(0);
+    } else {
+      chartRef.current = new ChartJs(canvasRef.current, {
+        type: "line",
+        data: generatedData,
+        options: generateOptions,
+      });
     }
   }, [data, generateOptions, generatedData, valueKey]);
-
-  useLayoutEffect(() => {
-    chartRef.current = new ChartJs(canvasRef.current, {
-      type: "line",
-      data: generatedData,
-      options: generateOptions,
-    });
-  }, [generateOptions, generatedData]);
 
   return (
     <ChartContainer height={height}>
