@@ -61,7 +61,7 @@ const spawnCoreProcess = () => {
     SENTRY_USER_ID: userId,
   };
 
-  cluster.setupMaster({ exec: "./.webpack/main.bundle.js" });
+  cluster.setupMaster({ exec: `${__dirname}/main.bundle.js` });
 
   const worker = cluster.fork(env);
   setInternalProcessPID(worker.process.pid);
