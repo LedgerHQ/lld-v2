@@ -1,23 +1,41 @@
 // @flow
 
-import { concat, of, from } from "rxjs";
-import { concatMap, filter } from "rxjs/operators";
+import { concat, of } from "rxjs";
+import { concatMap, filter, tap } from "rxjs/operators";
 import { useEffect, useRef, useCallback } from "react";
 import invariant from "invariant";
+import { DisconnectedDevice, UserRefusedOnDevice } from "@ledgerhq/errors";
 import { getMainAccount } from "@ledgerhq/live-common/lib/account";
+import type {
+  AccountLike,
+  Account,
+  SignOperationEvent,
+  Operation,
+  Transaction,
+} from "@ledgerhq/live-common/lib/types";
 import { getAccountBridge } from "@ledgerhq/live-common/lib/bridge";
+import { getEnv } from "@ledgerhq/live-common/lib/env";
+import type { Device } from "~/renderer/reducers/devices";
 import { track } from "~/renderer/analytics/segment";
 
-import { DisconnectedDevice, UserRefusedOnDevice } from "@ledgerhq/errors";
-
-// FIXME
-type SignTransactionArgs = *;
+type SignTransactionArgs = {
+  context: string,
+  device: ?Device,
+  transaction: ?Transaction,
+  account: ?AccountLike,
+  parentAccount: ?Account,
+  onSignOperationEvent?: SignOperationEvent => void,
+  handleOperationBroadcasted: Operation => void,
+  handleTransactionError: Error => void,
+  setSigned: boolean => void,
+};
 
 export const useSignTransactionCallback = ({
   context,
   device,
   account,
   parentAccount,
+  onSignOperationEvent,
   handleOperationBroadcasted,
   transaction,
   handleTransactionError,
@@ -57,21 +75,23 @@ export const useSignTransactionCallback = ({
       signTransactionSubRef.current = bridge
         .signOperation({ account: mainAccount, transaction, deviceId: device.path })
         .pipe(
-          // FIXME later we will need to treat more events
+          filter(e => e.type !== "device-streaming" || (e.progress !== 0 && e.progress !== 1)),
+          tap(e => onSignOperationEvent && onSignOperationEvent(e)),
           filter(e => e.type === "signed"),
           concatMap(e =>
-            // later we will have more events
-            concat(
-              of(e),
-              from(
-                bridge
-                  .broadcast({
-                    account: mainAccount,
-                    signedOperation: e.signedOperation,
-                  })
-                  .then(operation => ({ type: "broadcasted", operation })),
-              ),
-            ),
+            getEnv("DISABLE_TRANSACTION_BROADCAST")
+              ? of(e)
+              : concat(
+                  of(e),
+                  // TODO the broadcast part should be split OUT of the hook
+                  // into a second hook
+                  bridge
+                    .broadcast({
+                      account: mainAccount,
+                      signedOperation: e.signedOperation,
+                    })
+                    .then(operation => ({ type: "broadcasted", operation })),
+                ),
           ),
         )
         .subscribe({
@@ -113,6 +133,7 @@ export const useSignTransactionCallback = ({
       handleTransactionError,
       setSigned,
       handleOperationBroadcasted,
+      onSignOperationEvent,
     ],
   );
 

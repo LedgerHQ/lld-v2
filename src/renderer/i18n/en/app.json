@@ -615,7 +615,11 @@
         "unitPerByte": "{{unit}} per byte"
       },
       "verification": {
-        "title": "Verification"
+        "title": "Verification",
+        "streaming": {
+          "accurate": "Signing transaction ({{index}} of {{total}})",
+          "inaccurate": "Signing transaction..."
+        }
       },
       "confirmation": {
         "title": "Confirmation",
@@ -623,6 +627,10 @@
           "title": "Transaction sent",
           "text": "Your account balance will update once the blockchain has confirmed the transaction",
           "cta": "View details"
+        },
+        "streaming": {
+          "accurate": "Finalizing transaction ({{index}} of {{total}})",
+          "inaccurate": "Finalizing transaction..."
         },
         "pending": {
           "title": "Broadcasting transaction..."
