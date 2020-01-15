@@ -11,6 +11,7 @@ import { addPendingOperation, getMainAccount } from "@ledgerhq/live-common/lib/a
 import useBridgeTransaction from "@ledgerhq/live-common/lib/bridge/useBridgeTransaction";
 import type { Account, AccountLike, Operation } from "@ledgerhq/live-common/lib/types";
 import logger from "~/logger";
+import { useThrottledCallback } from "~/renderer/hooks/useDebounce";
 import Stepper from "~/renderer/components/Stepper";
 import SyncSkipUnderPriority from "~/renderer/components/SyncSkipUnderPriority";
 import { closeModal, openModal } from "~/renderer/actions/modals";
@@ -186,6 +187,7 @@ const Body = ({
   );
 
   const handleRetry = useCallback(() => {
+    setSignOperationEvent(null);
     setTransactionError(null);
     setOptimisticOperation(null);
     setAppOpened(false);
@@ -217,11 +219,15 @@ const Body = ({
     [account, parentAccount, updateAccountWithUpdater],
   );
 
+  const [lastSignOperationEvent, setSignOperationEvent] = useState(null);
+  const onSignOperationEvent = useThrottledCallback(setSignOperationEvent, 100);
+
   const handleSignTransaction = useSignTransactionCallback({
     context: "Send",
     device,
     account,
     parentAccount,
+    onSignOperationEvent,
     handleOperationBroadcasted,
     transaction,
     handleTransactionError,
@@ -269,6 +275,7 @@ const Body = ({
     optimisticOperation,
     openModal,
     onClose,
+    lastSignOperationEvent,
     closeModal: handleCloseModal,
     onChangeAccount: handleChangeAccount,
     onChangeAppOpened: setAppOpened,

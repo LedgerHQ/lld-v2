@@ -7,6 +7,7 @@ import type {
   Transaction,
   TransactionStatus,
   Operation,
+  SignOperationEvent,
 } from "@ledgerhq/live-common/lib/types";
 import type { Device } from "~/renderer/reducers/devices";
 
@@ -34,6 +35,7 @@ export type StepProps = {
   bridgeError: ?Error,
   bridgePending: boolean,
   error: ?Error,
+  lastSignOperationEvent: ?SignOperationEvent,
   signed: boolean,
   optimisticOperation: ?Operation,
   closeModal: void => void,

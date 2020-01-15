@@ -59,6 +59,7 @@ const Disclaimer: ThemedComponent<{}> = styled(Box).attrs(() => ({
   color: ${p => p.theme.colors.alertRed};
 `;
 
+// TODO the "broadcasting" step need to be split out in another step, or at least a component
 function StepConfirmation({
   account,
   t,
