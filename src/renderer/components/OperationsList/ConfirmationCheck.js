@@ -7,7 +7,7 @@ import type { OperationType } from "@ledgerhq/live-common/lib/types";
 
 import { rgba } from "~/renderer/styles/helpers";
 
-import type { T } from "~/types/common";
+import type { TFunction } from "react-i18next";
 
 import IconClock from "~/renderer/icons/Clock";
 import IconReceive from "~/renderer/icons/Receive";
@@ -80,7 +80,7 @@ const iconsComponent = {
 class ConfirmationCheck extends PureComponent<{
   marketColor: string,
   isConfirmed: boolean,
-  t: T,
+  t: TFunction,
   type: OperationType,
   withTooltip?: boolean,
   hasFailed?: boolean,

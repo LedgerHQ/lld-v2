@@ -5,31 +5,23 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { withTranslation } from "react-i18next";
-
+import type { TFunction } from "react-i18next";
+import type { Operation, Account, AccountLike } from "@ledgerhq/live-common/lib/types";
+import keyBy from "lodash/keyBy";
 import {
   groupAccountOperationsByDay,
   groupAccountsOperationsByDay,
   flattenAccounts,
 } from "@ledgerhq/live-common/lib/account";
-
 import logger from "~/logger";
-import type { Operation, Account, AccountLike } from "@ledgerhq/live-common/lib/types";
-
-import keyBy from "lodash/keyBy";
-
-import type { T } from "~/types/common";
-
 import { openModal } from "~/renderer/actions/modals";
-
 import IconAngleDown from "~/renderer/icons/AngleDown";
-
 import Box, { Card } from "~/renderer/components/Box";
 import Text from "~/renderer/components/Text";
 import Track from "~/renderer/analytics/Track";
 import { track } from "~/renderer/analytics/segment";
 import { createStructuredSelector } from "reselect";
 import { accountsSelector } from "~/renderer/reducers/accounts";
-
 import SectionTitle from "./SectionTitle";
 import OperationC from "./Operation";
 
@@ -58,7 +50,7 @@ type Props = {
   accounts: AccountLike[],
   allAccounts: AccountLike[],
   openModal: (string, Object) => *,
-  t: T,
+  t: TFunction,
   withAccount?: boolean,
   withSubAccounts?: boolean,
   title?: string,

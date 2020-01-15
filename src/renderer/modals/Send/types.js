@@ -1,5 +1,6 @@
 // @flow
 
+import type { TFunction } from "react-i18next";
 import type {
   Account,
   AccountLike,
@@ -8,10 +9,22 @@ import type {
   Operation,
 } from "@ledgerhq/live-common/lib/types";
 import type { Device } from "~/renderer/reducers/devices";
-import type { StepProps as DefaultStepProps } from "~/renderer/components/Stepper";
+
+import type { Step } from "~/renderer/components/Stepper";
+
+export type StepId =
+  | "warning"
+  | "recipient"
+  | "amount"
+  | "summary"
+  | "device"
+  | "verification"
+  | "refused"
+  | "confirmation";
 
 export type StepProps = {
-  ...DefaultStepProps,
+  t: TFunction,
+  transitionTo: string => void,
   openedFromAccount: boolean,
   device: ?Device,
   account: ?AccountLike,
@@ -34,3 +47,5 @@ export type StepProps = {
   onRetry: void => void,
   signTransaction: ({ transitionTo: string => void }) => void,
 };
+
+export type St = Step<StepId, StepProps>;

@@ -7,7 +7,7 @@ import Text from "~/renderer/components/Text";
 import { Trans, withTranslation } from "react-i18next";
 import IconChevronRight from "~/renderer/icons/ChevronRight";
 import Box from "~/renderer/components/Box";
-import type { T } from "~/types/common";
+import type { TFunction } from "react-i18next";
 import {
   Description,
   DisclaimerBox,
@@ -18,7 +18,7 @@ import InvertableImg from "~/renderer/components/InvertableImg";
 import WriteSeedOnb from "~/renderer/images/write-seed-onb.svg";
 
 type Props = {
-  t: T,
+  t: TFunction,
 };
 
 class WriteSeedNano extends PureComponent<Props, *> {

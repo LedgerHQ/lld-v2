@@ -103,6 +103,7 @@ const createSteps = params => [
     excludeFromBreadcrumb: true,
     component: StepConfirmation,
     footer: StepConfirmationFooter,
+    // $FlowFixMe this deserve better typing
     onBack: ({ transitionTo, onRetry }) => {
       onRetry();
       transitionTo("summary");

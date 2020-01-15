@@ -5,7 +5,7 @@ import type { BigNumber } from "bignumber.js";
 import styled from "styled-components";
 
 import type { Unit, ValueChange } from "@ledgerhq/live-common/lib/types";
-import type { T } from "~/types/common";
+import type { TFunction } from "react-i18next";
 
 import Box from "~/renderer/components/Box";
 import FormattedVal from "~/renderer/components/FormattedVal";
@@ -24,7 +24,7 @@ type BalanceSinceProps = {
   valueChange: ValueChange,
   totalBalance: BigNumber,
   isAvailable: boolean,
-  t: T,
+  t: TFunction,
 };
 
 type BalanceTotalProps = {

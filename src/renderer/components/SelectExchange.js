@@ -1,11 +1,11 @@
 // @flow
 import React, { Component } from "react";
 import { withTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 import LRU from "lru-cache";
 import type { Currency } from "@ledgerhq/live-common/lib/types";
 import type { Exchange } from "@ledgerhq/live-common/lib/countervalues/types";
 import logger from "~/logger";
-import type { T } from "~/types/common";
 import Track from "~/renderer/analytics/Track";
 import CounterValues from "~/renderer/countervalues";
 import Select from "~/renderer/components/Select";
@@ -30,7 +30,7 @@ type Props = {
   exchangeId: ?string,
   onChange: (?Exchange) => void,
   style?: *,
-  t: T,
+  t: TFunction,
 };
 
 type State = {

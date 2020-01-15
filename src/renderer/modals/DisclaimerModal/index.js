@@ -2,9 +2,9 @@
 
 import React, { PureComponent } from "react";
 import { Trans, withTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 import styled from "styled-components";
 import type { FinalFirmware, OsuFirmware } from "@ledgerhq/live-common/lib/types/manager";
-import type { T } from "~/types/common";
 import { urls } from "~/config/urls";
 import TrackPage from "~/renderer/analytics/TrackPage";
 import { openURL } from "~/renderer/linking";
@@ -24,11 +24,11 @@ import type { ModalStatus } from "~/renderer/screens/manager/FirmwareUpdate/type
 import getCleanVersion from "~/renderer/screens/manager/FirmwareUpdate/getCleanVersion";
 
 type Props = {
-  t: T,
+  t: TFunction,
   status: ModalStatus,
   firmware: {
-    osu: ?OsuFirmware,
-    final: ?FinalFirmware,
+    osu: OsuFirmware,
+    final: FinalFirmware,
   },
   goToNextStep: () => void,
   onClose: () => void,

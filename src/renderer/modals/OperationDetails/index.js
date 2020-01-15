@@ -4,6 +4,7 @@ import React, { Component, useCallback } from "react";
 import { connect, useDispatch } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import { Trans, withTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 import styled from "styled-components";
 import uniq from "lodash/uniq";
 import moment from "moment";
@@ -54,7 +55,6 @@ import {
 } from "~/renderer/reducers/settings";
 import { getMarketColor } from "~/renderer/styles/helpers";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
-import type { T } from "~/types/common";
 
 const OpDetailsSection = styled(Box).attrs(() => ({
   horizontal: true,
@@ -177,7 +177,7 @@ const mapStateToProps = (state, { operationId, accountId, parentId }) => {
 };
 
 type OwnProps = {
-  t: T,
+  t: TFunction,
   operation: ?Operation,
   account: ?AccountLike,
   onClose: () => void,
@@ -573,7 +573,7 @@ type ModalRenderProps = {
   onClose: Function,
 };
 
-const OperationDetailsWrapper = ({ t }: { t: T }) => (
+const OperationDetailsWrapper = ({ t }: { t: TFunction }) => (
   <Modal
     name={"MODAL_OPERATION_DETAILS"}
     centered
@@ -596,7 +596,7 @@ const More = styled(Text).attrs(p => ({
   outline: none;
 `;
 
-export class DataList extends Component<{ lines: string[], t: T }, *> {
+export class DataList extends Component<{ lines: string[], t: TFunction }, *> {
   state = {
     showMore: false,
   };

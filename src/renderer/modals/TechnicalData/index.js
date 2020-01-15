@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from "react";
 import { compose } from "redux";
-import type { T } from "~/types/common";
+import type { TFunction } from "react-i18next";
 import { closeModal } from "~/renderer/actions/modals";
 import Modal, { ModalBody } from "~/renderer/components/Modal";
 import Box from "~/renderer/components/Box";
@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 import Button from "~/renderer/components/Button";
 
 type Props = {
-  t: T,
+  t: TFunction,
   closeModal: string => void,
 };
 

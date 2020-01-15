@@ -8,7 +8,7 @@ import styled from "styled-components";
 import type { Account, AccountLike } from "@ledgerhq/live-common/lib/types";
 import Tooltip from "~/renderer/components/Tooltip";
 import { isAccountEmpty, canSend, getMainAccount } from "@ledgerhq/live-common/lib/account";
-import type { T } from "~/types/common";
+import type { TFunction } from "react-i18next";
 import { rgba } from "~/renderer/styles/helpers";
 import { openModal } from "~/renderer/actions/modals";
 import IconAccountSettings from "~/renderer/icons/AccountSettings";
@@ -48,7 +48,7 @@ type OwnProps = {
 };
 
 type Props = OwnProps & {
-  t: T,
+  t: TFunction,
   openModal: Function,
 };
 

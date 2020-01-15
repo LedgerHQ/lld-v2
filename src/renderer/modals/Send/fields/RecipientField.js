@@ -3,11 +3,11 @@ import React, { useCallback } from "react";
 import { RecipientRequired } from "@ledgerhq/errors";
 import { getAccountBridge } from "@ledgerhq/live-common/lib/bridge";
 import type { Account, Transaction, TransactionStatus } from "@ledgerhq/live-common/lib/types";
+import type { TFunction } from "react-i18next";
 
 import Box from "~/renderer/components/Box";
 import Label from "~/renderer/components/Label";
 import RecipientAddress from "~/renderer/components/RecipientAddress";
-import type { T } from "~/types/common";
 
 type Props = {
   account: Account,
@@ -15,7 +15,7 @@ type Props = {
   autoFocus?: boolean,
   status: TransactionStatus,
   onChangeTransaction: Transaction => void,
-  t: T,
+  t: TFunction,
   label?: React$Node,
 };
 

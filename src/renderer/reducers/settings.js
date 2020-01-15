@@ -13,8 +13,15 @@ import type { CryptoCurrency, Currency } from "@ledgerhq/live-common/lib/types";
 import { getEnv } from "@ledgerhq/live-common/lib/env";
 import { getSystemLocale } from "~/helpers/systemLocale";
 import { getLanguages } from "~/config/languages";
-import type { CurrencySettings } from "~/types/common";
 import type { State } from ".";
+
+export type CurrencySettings = {
+  confirmationsNb: number,
+};
+
+export type CurrenciesSettings = {
+  [id: string]: CurrencySettings,
+};
 
 type ConfirmationDefaults = {
   confirmationsNb: ?{
@@ -53,8 +60,6 @@ export const timeRangeDaysByKey = {
 };
 
 export type TimeRange = $Keys<typeof timeRangeDaysByKey>;
-
-export type { CurrencySettings };
 
 export type SettingsState = {
   loaded: boolean, // is the settings loaded from db (it not we don't save them)

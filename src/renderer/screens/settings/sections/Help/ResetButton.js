@@ -5,7 +5,7 @@ import { remote } from "electron";
 import styled from "styled-components";
 import { withTranslation } from "react-i18next";
 import logger from "~/logger";
-import type { T } from "~/types/common";
+import type { TFunction } from "react-i18next";
 import { hardReset } from "~/renderer/reset";
 import ConfirmModal from "~/renderer/modals/ConfirmModal";
 import ResetFallbackModal from "~/renderer/modals/ResetFallbackModal";
@@ -16,7 +16,7 @@ import IconTriangleWarning from "~/renderer/icons/TriangleWarning";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
 type Props = {
-  t: T,
+  t: TFunction,
 };
 
 type State = {

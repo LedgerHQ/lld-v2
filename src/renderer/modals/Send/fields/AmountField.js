@@ -9,6 +9,7 @@ import type {
   Transaction,
   TransactionStatus,
 } from "@ledgerhq/live-common/lib/types";
+import type { TFunction } from "react-i18next";
 
 import Box from "~/renderer/components/Box";
 import Label from "~/renderer/components/Label";
@@ -23,7 +24,7 @@ type Props = {
   onChangeTransaction: (*) => void,
   status: TransactionStatus,
   bridgePending: boolean,
-  t: *,
+  t: TFunction,
 };
 
 const AmountField = ({

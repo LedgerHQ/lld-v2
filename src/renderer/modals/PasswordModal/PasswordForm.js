@@ -2,13 +2,13 @@
 
 import React, { PureComponent } from "react";
 import { PasswordsDontMatchError } from "@ledgerhq/errors";
-import type { T } from "~/types/common";
+import type { TFunction } from "react-i18next";
 import Box from "~/renderer/components/Box";
 import InputPassword from "~/renderer/components/InputPassword";
 import Label from "~/renderer/components/Label";
 
 type Props = {
-  t: T,
+  t: TFunction,
   hasPassword: boolean,
   currentPassword: string,
   newPassword: string,

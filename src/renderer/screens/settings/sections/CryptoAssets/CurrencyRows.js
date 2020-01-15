@@ -3,9 +3,9 @@
 import React, { PureComponent } from "react";
 import { Trans, withTranslation } from "react-i18next";
 import { connect } from "react-redux";
+import type { TFunction } from "react-i18next";
 import { createStructuredSelector } from "reselect";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
-import type { T } from "~/types/common";
 import Track from "~/renderer/analytics/Track";
 import { saveSettings } from "~/renderer/actions/settings";
 import {
@@ -19,7 +19,7 @@ import { SettingsSectionRow as Row, SettingsSectionRowContainer } from "../../Se
 import Box from "~/renderer/components/Box";
 
 type Props = {
-  t: T,
+  t: TFunction,
   currency: CryptoCurrency,
   currencySettings: CurrencySettings,
   // FIXME: the stuff bellow to be to be gone!

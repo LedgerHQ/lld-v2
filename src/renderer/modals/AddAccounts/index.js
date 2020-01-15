@@ -1,6 +1,7 @@
 // @flow
 import React, { PureComponent } from "react";
 import { Trans, withTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { createStructuredSelector } from "reselect";
@@ -13,7 +14,7 @@ import { accountsSelector } from "~/renderer/reducers/accounts";
 import { replaceAccounts } from "~/renderer/actions/accounts";
 import { closeModal } from "~/renderer/actions/modals";
 import Track from "~/renderer/analytics/Track";
-import type { StepProps as DefaultStepProps, Step } from "~/renderer/components/Stepper";
+import type { Step } from "~/renderer/components/Stepper";
 import SyncSkipUnderPriority from "~/renderer/components/SyncSkipUnderPriority";
 import Modal from "~/renderer/components/Modal";
 import Stepper from "~/renderer/components/Stepper";
@@ -22,7 +23,42 @@ import StepConnectDevice, { StepConnectDeviceFooter } from "./steps/StepConnectD
 import StepImport, { StepImportFooter } from "./steps/StepImport";
 import StepFinish, { StepFinishFooter } from "./steps/StepFinish";
 
-const createSteps = () => {
+type Props = {
+  device: ?Device,
+  existingAccounts: Account[],
+  closeModal: string => void,
+  replaceAccounts: (Account[]) => void,
+};
+
+type StepId = "chooseCurrency" | "connectDevice" | "import" | "finish";
+type ScanStatus = "idle" | "scanning" | "error" | "finished";
+
+export type StepProps = {
+  t: TFunction,
+  transitionTo: string => void,
+  currency: ?CryptoCurrency | ?TokenCurrency,
+  device: ?Device,
+  isAppOpened: boolean,
+  scannedAccounts: Account[],
+  existingAccounts: Account[],
+  checkedAccountsIds: string[],
+  scanStatus: ScanStatus,
+  err: ?Error,
+  onClickAdd: () => Promise<void>,
+  onGoStep1: () => void,
+  onCloseModal: () => void,
+  resetScanState: () => void,
+  setCurrency: (?CryptoCurrency) => void,
+  setAppOpened: boolean => void,
+  setScanStatus: (ScanStatus, ?Error) => string,
+  setAccountName: (Account, string) => void,
+  editedNames: { [_: string]: string },
+  setScannedAccounts: ({ scannedAccounts?: Account[], checkedAccountsIds?: string[] }) => void,
+};
+
+type St = Step<StepId, StepProps>;
+
+const createSteps = (): St[] => {
   const onBack = ({ transitionTo, resetScanState }: StepProps) => {
     resetScanState();
     transitionTo("chooseCurrency");
@@ -64,20 +100,8 @@ const createSteps = () => {
   ];
 };
 
-type Props = {
-  device: ?Device,
-  existingAccounts: Account[],
-  closeModal: string => void,
-  replaceAccounts: (Account[]) => void,
-};
-
-type StepId = "chooseCurrency" | "connectDevice" | "import" | "finish";
-type ScanStatus = "idle" | "scanning" | "error" | "finished";
-
 type State = {
-  // TODO: I'm sure there will be always StepId and ScanStatus given,
-  // but I struggle making flow understand it. So I put string as fallback
-  stepId: StepId | string,
+  stepId: StepId,
   scanStatus: ScanStatus | string,
 
   isAppOpened: boolean,
@@ -87,28 +111,6 @@ type State = {
   editedNames: { [_: string]: string },
   err: ?Error,
   reset: number,
-};
-
-export type StepProps = DefaultStepProps & {
-  t: *,
-  currency: ?CryptoCurrency | ?TokenCurrency,
-  device: ?Device,
-  isAppOpened: boolean,
-  scannedAccounts: Account[],
-  existingAccounts: Account[],
-  checkedAccountsIds: string[],
-  scanStatus: ScanStatus,
-  err: ?Error,
-  onClickAdd: () => Promise<void>,
-  onGoStep1: () => void,
-  onCloseModal: () => void,
-  resetScanState: () => void,
-  setCurrency: (?CryptoCurrency) => void,
-  setAppOpened: boolean => void,
-  setScanStatus: (ScanStatus, ?Error) => string,
-  setAccountName: (Account, string) => void,
-  editedNames: { [_: string]: string },
-  setScannedAccounts: ({ scannedAccounts?: Account[], checkedAccountsIds?: string[] }) => void,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -151,7 +153,7 @@ class AddAccounts extends PureComponent<Props, State> {
   };
 
   handleCloseModal = () => this.props.closeModal("MODAL_ADD_ACCOUNTS");
-  handleStepChange = (step: Step) => this.setState({ stepId: step.id });
+  handleStepChange = (step: St) => this.setState({ stepId: step.id });
 
   handleSetCurrency = (currency: ?CryptoCurrency) => this.setState({ currency });
 

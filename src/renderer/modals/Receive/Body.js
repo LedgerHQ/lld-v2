@@ -2,6 +2,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
+import type { TFunction } from "react-i18next";
 import { Trans, withTranslation } from "react-i18next";
 import { createStructuredSelector } from "reselect";
 
@@ -10,16 +11,12 @@ import SyncSkipUnderPriority from "~/renderer/components/SyncSkipUnderPriority";
 import Track from "~/renderer/analytics/Track";
 import type { Account, TokenCurrency, AccountLike } from "@ledgerhq/live-common/lib/types";
 
-import type { T } from "~/types/common";
 import type { Device } from "~/renderer/reducers/devices";
-import type { StepProps as DefaultStepProps } from "~/renderer/components/Stepper";
-
 import { getCurrentDevice } from "~/renderer/reducers/devices";
 import { accountsSelector } from "~/renderer/reducers/accounts";
 import { closeModal } from "~/renderer/actions/modals";
-
+import type { Step } from "~/renderer/components/Stepper";
 import Stepper from "~/renderer/components/Stepper";
-
 import StepAccount, { StepAccountFooter } from "./steps/StepAccount";
 import StepConnectDevice, { StepConnectDeviceFooter } from "./steps/StepConnectDevice";
 import StepConfirmAddress, { StepConfirmAddressFooter } from "./steps/StepConfirmAddress";
@@ -42,7 +39,7 @@ type OwnProps = {|
 |};
 
 type StateProps = {|
-  t: T,
+  t: TFunction,
   device: ?Device,
   accounts: Account[],
   device: ?Device,
@@ -54,7 +51,9 @@ type Props = {|
   ...StateProps,
 |};
 
-export type StepProps = DefaultStepProps & {
+export type StepProps = {
+  t: TFunction,
+  transitionTo: string => void,
   device: ?Device,
   account: ?AccountLike,
   parentAccount: ?Account,
@@ -73,7 +72,9 @@ export type StepProps = DefaultStepProps & {
   onChangeAddressVerified: (?boolean, ?Error) => void,
 };
 
-const createSteps = () => [
+export type St = Step<"warning" | "account" | "device" | "confirm" | "receive", StepProps>;
+
+const createSteps = (): Array<St> => [
   {
     id: "warning",
     excludeFromBreadcrumb: true,

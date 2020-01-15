@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from "react";
 import { withTranslation } from "react-i18next";
-import type { T } from "~/types/common";
+import type { TFunction } from "react-i18next";
 import Pills from "~/renderer/components/Pills";
 import { timeRangeDaysByKey } from "~/renderer/reducers/settings";
 import type { TimeRange } from "~/renderer/reducers/settings";
@@ -11,7 +11,7 @@ import Track from "~/renderer/analytics/Track";
 type Props = {|
   selected: string,
   onChange: ({ key: string, value: *, label: React$Node }) => *,
-  t: T,
+  t: TFunction,
 |};
 
 class PillsDaysCount extends PureComponent<Props> {

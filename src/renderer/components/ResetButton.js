@@ -4,6 +4,7 @@ import React, { PureComponent } from "react";
 import styled from "styled-components";
 import { remote } from "electron";
 import { withTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 import logger from "~/logger";
 import { hardReset } from "~/renderer/reset";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
@@ -15,7 +16,7 @@ import ConfirmModal from "~/renderer/modals/ConfirmModal";
 import IconTriangleWarning from "~/renderer/icons/TriangleWarning";
 
 type Props = {
-  t: *,
+  t: TFunction,
 };
 
 type State = {

@@ -214,7 +214,8 @@ export const StepSummaryFooter = ({
   transitionTo,
 }: StepProps) => {
   if (!account) return null;
-  const error = bridgeError || Object.values(status.errors)[0];
+  // $FlowFixMe
+  const error: ?Error = bridgeError || Object.values(status.errors)[0];
   const canNext = !bridgePending && !error;
   return (
     <Box horizontal alignItems="center" flow={2} grow>

@@ -4,6 +4,7 @@ import React, { PureComponent } from "react";
 import styled from "styled-components";
 import { remote } from "electron";
 import { withTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 import { openURL } from "~/renderer/linking";
 import { urls } from "~/config/urls";
 import IconTriangleWarning from "~/renderer/icons/TriangleWarning";
@@ -42,7 +43,7 @@ const printError = (error: mixed) => {
 
 type Props = {
   error: Error,
-  t: *,
+  t: TFunction,
   withoutAppData?: boolean,
   children?: *,
 };
