@@ -232,7 +232,13 @@ const ManagerConnect = ({
         </AnimationWrapper>
         <Footer edges={edges}>
           <Title>
-            <Trans i18nKey="manager.connect.connectAndUnlockDevice" />
+            <Trans
+              i18nKey={
+                unresponsive
+                  ? "manager.connect.unlockDevice"
+                  : "manager.connect.connectAndUnlockDevice"
+              }
+            />
           </Title>
           {!device ? <ConnectTroubleshooting onRepair={onRepairModal} /> : null}
         </Footer>

@@ -404,6 +404,7 @@
       "allowPermission": "{{wording}} on your device",
       "loading": "Loading...",
       "connectAndUnlockDevice": "Plug your device and enter your PIN code",
+      "unlockDevice": "Enter your PIN code",
       "quitApp": "Please quit application on your device"
     },
     "loading": "Loading",
