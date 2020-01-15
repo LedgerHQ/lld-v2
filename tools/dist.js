@@ -44,6 +44,7 @@ const setupTasks = new Listr(
           const { stdout } = await execa("yarn");
           return stdout;
         } catch (error) {
+          process.stderr.write(error);
           throw new Error("Could not install node_modules");
         }
       },
@@ -55,6 +56,7 @@ const setupTasks = new Listr(
           const { stdout } = await execa("yarn", ["install-deps"]);
           return stdout;
         } catch (error) {
+          process.stderr.write(error);
           throw new Error("Could not rebuild app deps");
         }
       },
@@ -73,6 +75,7 @@ const buildTasks = (args = {}) =>
             const { stdout } = await execa("yarn", ["build"]);
             return stdout;
           } catch (error) {
+            process.stderr.write(error);
             throw new Error("Could not build the app");
           }
         },
@@ -93,6 +96,7 @@ const buildTasks = (args = {}) =>
             const { stdout } = await execa("yarn", commands);
             return stdout;
           } catch (error) {
+            process.stderr.write(error);
             throw new Error(`Could not ${args.p ? "pack" : "bundle"} the electron app`);
           }
         },

@@ -1,6 +1,6 @@
 name: nightly build
 on:
-  create:
+  push:
     tags:
       - "*nightly"
 
