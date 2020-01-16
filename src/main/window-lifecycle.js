@@ -8,7 +8,7 @@ import {
   DEFAULT_WINDOW_HEIGHT,
   DEV_TOOLS,
 } from "./../config/constants";
-import { terminateAllTheThings } from "./terminator";
+import { terminate } from "./terminator";
 
 let mainWindow = null;
 
@@ -74,7 +74,7 @@ export async function createMainWindow() {
     mainWindow.webContents.openDevTools();
   }
 
-  mainWindow.on("close", terminateAllTheThings);
+  mainWindow.on("close", terminate);
 
   mainWindow.on("closed", () => {
     mainWindow = null;
