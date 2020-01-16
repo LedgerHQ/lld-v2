@@ -4,8 +4,8 @@
 //                                                       /      . }\
 //                                                       ;--..--._|}
 //                                    (\                 '--/\--'  )
-//        DISCLAIMER                   \\                | '-'  :'|
-//        This is a dirty hack          \\               . -==- .-|
+//                                     \\                | '-'  :'|
+//                                      \\               . -==- .-|
 //                                       \\               \.__.'   \--._
 //                                       [\\          __.--|       //  _/'--.
 //                                       \ \\       .'-._ ('-----'/ __/      \
@@ -16,6 +16,7 @@
 //                                            \  \      \        /
 
 let INTERNAL_PROCESS_PID: ?number = null;
+let terminated = false;
 
 function kill(processType, pid) {
   console.log(`-> Killing ${processType} process ${pid}`); // eslint-disable-line no-console
@@ -24,6 +25,9 @@ function kill(processType, pid) {
 
 exports.setInternalProcessPID = (pid: number) => (INTERNAL_PROCESS_PID = pid);
 
-exports.terminateAllTheThings = () => {
+exports.terminate = () => {
+  terminated = true;
   if (INTERNAL_PROCESS_PID) kill("internal", INTERNAL_PROCESS_PID);
 };
+
+exports.isTerminated = () => terminated;

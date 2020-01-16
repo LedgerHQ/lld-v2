@@ -11,6 +11,7 @@ import { isRestartNeeded } from "~/helpers/env";
 import logger from "~/logger";
 import { setInternalProcessPID } from "./terminator";
 import { getMainWindow } from "./window-lifecycle";
+import { isTerminated } from "~/main/terminator";
 
 // ~~~ Local state that main thread keep
 
@@ -199,6 +200,7 @@ function ipcMainListenReceiveCommands(o: {
 
   const onCommand = (event, command) => {
     o.onCommand(command, payload => {
+      if (isTerminated()) return;
       event.sender.send("command-event", payload);
     });
   };
