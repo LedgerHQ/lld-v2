@@ -63,6 +63,7 @@ const colors = {
   greenPill: "#41ccb4",
   smoke: "#666666",
   wallet: "#6490f1",
+  blueTransparentBackground: "#6490F138",
   pillActiveBackground: "rgba(100, 144, 241, 0.1)",
   lightRed: "rgba(234, 46, 73, 0.1)",
   white: "#ffffff",

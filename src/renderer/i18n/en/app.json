@@ -78,6 +78,9 @@
       "UNDELEGATE": "Undelegated"
     }
   },
+  "byteSize": {
+    "kbUnit": "{{size}}Kb"
+  },
   "time": {
     "day": "Day",
     "day_plural": "Days",
@@ -419,7 +422,7 @@
       "appsOnDevice": "Apps Installed"
     },
     "deviceStorage": {
-      "freeSpace": "{{space}} free",
+      "freeSpace": "<0>{{space}}</0> free",
       "installed": "Installed",
       "capacity": "Capacity",
       "used": "Used",
@@ -447,6 +450,8 @@
         "title": "Updates available"
       },
       "item": {
+        "version": "Version {{version}}",
+        "versionNew": "Version {{version}} (NEW)",
         "installing": "Installing...",
         "uninstalling": "Uninstalling...",
         "scheduled": "Scheduled",

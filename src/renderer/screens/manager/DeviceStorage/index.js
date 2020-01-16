@@ -1,10 +1,11 @@
 // @flow
 
 import React from "react";
-import { distribute, formatSize } from "@ledgerhq/live-common/lib/apps";
+import { distribute, isIncompleteState } from "@ledgerhq/live-common/lib/apps";
 import styled from "styled-components";
 import { Trans } from "react-i18next";
 
+import ByteSize from "~/renderer/components/ByteSize";
 import { rgba } from "~/renderer/styles/helpers";
 import Text from "~/renderer/components/Text";
 import Tooltip from "~/renderer/components/Tooltip";
@@ -109,14 +110,24 @@ const TooltipContentWrapper: ThemedComponent<{}> = styled.div`
   }
 `;
 
-const TooltipContent = ({ name, bytes }: { name: string, bytes: number }) => (
+const TooltipContent = ({
+  name,
+  bytes,
+  deviceModel,
+}: {
+  name: string,
+  bytes: number,
+  deviceModel: *,
+}) => (
   <TooltipContentWrapper>
     <Text>{name}</Text>
-    <Text>{formatSize(bytes)}</Text>
+    <Text>
+      <ByteSize value={bytes} deviceModel={deviceModel} />
+    </Text>
   </TooltipContentWrapper>
 );
 
-export const StorageBar = ({ distribution }: { distribution: * }) => (
+export const StorageBar = ({ distribution, deviceModel }: { distribution: *, deviceModel: * }) => (
   <StorageBarWrapper>
     {distribution.apps.map(({ name, currency, bytes, blocks }) => {
       const color = currency ? currency.color : "black";
@@ -126,7 +137,9 @@ export const StorageBar = ({ distribution }: { distribution: * }) => (
           style={{ background: color }}
           ratio={blocks / (distribution.totalBlocks - distribution.osBlocks)}
         >
-          <Tooltip content={<TooltipContent name={name} bytes={bytes} />} />
+          <Tooltip
+            content={<TooltipContent name={name} bytes={bytes} deviceModel={deviceModel} />}
+          />
         </StorageBarItem>
       );
     })}
@@ -142,7 +155,7 @@ const DeviceStorage = ({ state, deviceInfo }: *) => {
         <DeviceIllustration deviceModel={state.deviceModel} />
         <div style={{ flex: 1 }}>
           <Box horizontal alignItems="center">
-            <Text ff="Inter|Bold" color="palette.text.shade100" fontSize={5}>
+            <Text ff="Inter|SemiBold" color="palette.text.shade100" fontSize={5}>
               {state.deviceModel.productName}
             </Text>
             <Tooltip content={<Trans i18nKey="manager.deviceStorage.genuine" />}>
@@ -151,51 +164,55 @@ const DeviceStorage = ({ state, deviceInfo }: *) => {
               </Box>
             </Tooltip>
           </Box>
-          <Box>
-            <Text ff="Inter|Regular" color="palette.text.shade40" fontSize={4}>
-              <Trans
-                i18nKey="manager.deviceStorage.firmware"
-                values={{ version: deviceInfo.version }}
-              />
-            </Text>
-          </Box>
+          <Text ff="Inter|Regular" color="palette.text.shade40" fontSize={4}>
+            <Trans
+              i18nKey="manager.deviceStorage.firmware"
+              values={{ version: deviceInfo.version }}
+            />
+          </Text>
           <Separator />
-          <Info>
-            <div>
-              <Text fontSize={3}>
-                <Trans i18nKey="manager.deviceStorage.used" />
-              </Text>
-              <Text color="palette.text.shade40" ff="Inter|Bold" fontSize={3}>
-                {formatSize(distribution.totalAppsBytes)}
-              </Text>
-            </div>
-            <div>
-              <Text fontSize={3}>
-                <Trans i18nKey="manager.deviceStorage.capacity" />
-              </Text>
-              <Text color="palette.text.shade40" ff="Inter|Bold" fontSize={3}>
-                {formatSize(distribution.appsSpaceBytes)}
-              </Text>
-            </div>
-            <div>
-              <Text fontSize={3}>
-                <Trans i18nKey="manager.deviceStorage.installed" />
-              </Text>
-              <Text color="palette.text.shade40" ff="Inter|Bold" fontSize={3}>
-                {distribution.apps.length}
-              </Text>
-            </div>
-          </Info>
-          <StorageBar distribution={distribution} />
-          <FreeInfo danger={distribution.shouldWarnMemory}>
-            {distribution.shouldWarnMemory ? <IconTriangleWarning /> : ""}{" "}
-            <Text ff="Inter|SemiBold" fontSize={3}>
-              <Trans
-                i18nKey="manager.deviceStorage.freeSpace"
-                values={{ space: formatSize(distribution.freeSpaceBytes) || "0" }}
-              />
-            </Text>
-          </FreeInfo>
+          {isIncompleteState(state) ? (
+            "TODO: “Some of your apps were not recognized by our apps catalog. Please uninstall or reinstall them.”"
+          ) : (
+            <>
+              <Info>
+                <div>
+                  <Text fontSize={4}>
+                    <Trans i18nKey="manager.deviceStorage.used" />
+                  </Text>
+                  <Text color="palette.text.shade100" ff="Inter|Bold" fontSize={4}>
+                    <ByteSize deviceModel={state.deviceModel} value={distribution.totalAppsBytes} />
+                  </Text>
+                </div>
+                <div>
+                  <Text fontSize={4}>
+                    <Trans i18nKey="manager.deviceStorage.capacity" />
+                  </Text>
+                  <Text color="palette.text.shade100" ff="Inter|Bold" fontSize={4}>
+                    <ByteSize deviceModel={state.deviceModel} value={distribution.appsSpaceBytes} />
+                  </Text>
+                </div>
+                <div>
+                  <Text fontSize={4}>
+                    <Trans i18nKey="manager.deviceStorage.installed" />
+                  </Text>
+                  <Text color="palette.text.shade100" ff="Inter|Bold" fontSize={4}>
+                    {distribution.apps.length}
+                  </Text>
+                </div>
+              </Info>
+              <StorageBar distribution={distribution} deviceModel={state.deviceModel} />
+              <FreeInfo danger={distribution.shouldWarnMemory}>
+                {distribution.shouldWarnMemory ? <IconTriangleWarning /> : ""}{" "}
+                <Text ff="Inter|SemiBold" fontSize={3}>
+                  <Trans i18nKey="manager.deviceStorage.freeSpace">
+                    <ByteSize value={distribution.freeSpaceBytes} deviceModel={state.deviceModel} />
+                    {" free"}
+                  </Trans>
+                </Text>
+              </FreeInfo>
+            </>
+          )}
         </div>
       </Card>
     </div>

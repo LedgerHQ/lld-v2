@@ -5,7 +5,7 @@ import { Trans } from "react-i18next";
 import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
 import type { ListAppsResult, Exec } from "@ledgerhq/live-common/lib/apps/types";
 import type { Device } from "~/renderer/reducers/devices";
-import { getActionPlan, useAppsRunner } from "@ledgerhq/live-common/lib/apps";
+import { getActionPlan, useAppsRunner, isIncompleteState } from "@ledgerhq/live-common/lib/apps";
 import { useSortedFilteredApps } from "@ledgerhq/live-common/lib/apps/filtering";
 import Placeholder from "./Placeholder";
 import Button from "~/renderer/components/Button";
@@ -120,6 +120,7 @@ const AppsList = ({ deviceInfo, result, exec }: Props) => {
       installed={state.installed.find(ins => ins.name === app.name)}
       dispatch={dispatch}
       installedAvailable={state.installedAvailable}
+      forceUninstall={isIncompleteState(state)}
       appStoreView={appStoreView}
       onlyUpdate={onlyUpdate}
       deviceModel={state.deviceModel}
@@ -137,18 +138,21 @@ const AppsList = ({ deviceInfo, result, exec }: Props) => {
           dispatch={dispatch}
         />
       </Box>
-      <Tabs>
-        <Tab active={!onDeviceTab} onClick={() => setActiveTab(0)}>
-          <Text ff="Inter|Bold" fontSize={6}>
-            <Trans i18nKey="manager.tabs.appCatalog" />
-          </Text>
-        </Tab>
-        <Tab active={onDeviceTab} onClick={() => setActiveTab(1)}>
-          <Text ff="Inter|Bold" fontSize={6}>
-            <Trans i18nKey="manager.tabs.appsOnDevice" />
-          </Text>
-        </Tab>
-      </Tabs>
+
+      {isIncompleteState(state) ? null : (
+        <Tabs>
+          <Tab active={!onDeviceTab} onClick={() => setActiveTab(0)}>
+            <Text ff="Inter|Bold" fontSize={6}>
+              <Trans i18nKey="manager.tabs.appCatalog" />
+            </Text>
+          </Tab>
+          <Tab active={onDeviceTab} onClick={() => setActiveTab(1)}>
+            <Text ff="Inter|Bold" fontSize={6}>
+              <Trans i18nKey="manager.tabs.appsOnDevice" />
+            </Text>
+          </Tab>
+        </Tabs>
+      )}
 
       {onDeviceTab && updatableAppList.length ? (
         <Card mb={20}>
