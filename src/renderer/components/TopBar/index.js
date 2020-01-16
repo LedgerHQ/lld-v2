@@ -105,17 +105,17 @@ const TopBar = () => {
                 </Box>
               </>
             )}
-            <Tooltip content={t("settings.title")} placement="bottom">
-              <ItemContainer data-e2e="setting_button" isInteractive onClick={navigateToSettings}>
-                <IconSettings size={16} />
+            <Tooltip content={t("settings.discreet")} placement="bottom">
+              <ItemContainer data-e2e="discreet_button" isInteractive onClick={handleDiscreet}>
+                {discreetMode ? <IconEyeOff size={16} /> : <IconEye size={16} />}
               </ItemContainer>
             </Tooltip>
             <Box justifyContent="center">
               <Bar />
             </Box>
-            <Tooltip content={t("settings.discreet")} placement="bottom">
-              <ItemContainer data-e2e="discreet_button" isInteractive onClick={handleDiscreet}>
-                {discreetMode ? <IconEyeOff size={16} /> : <IconEye size={16} />}
+            <Tooltip content={t("settings.title")} placement="bottom">
+              <ItemContainer data-e2e="setting_button" isInteractive onClick={navigateToSettings}>
+                <IconSettings size={16} />
               </ItemContainer>
             </Tooltip>
             {hasPassword && (
