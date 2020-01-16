@@ -5,7 +5,7 @@ import { withTranslation } from "react-i18next";
 import styled from "styled-components";
 import { repairChoices } from "@ledgerhq/live-common/lib/hw/firmwareUpdate-repair";
 import { MCUNotGenuineToDashboard } from "@ledgerhq/errors";
-import type { T } from "~/types/common";
+import type { TFunction } from "react-i18next";
 import TrackPage from "~/renderer/analytics/TrackPage";
 import { track } from "~/renderer/analytics/segment";
 import Button from "~/renderer/components/Button";
@@ -66,7 +66,7 @@ const ChoiceLocal = ({ selected, choice, onSelect }: ChoiceProps) => (
 
 const Choice = React.memo(ChoiceLocal);
 
-const DisclaimerStep = ({ desc }: { desc?: string }) => (
+const DisclaimerStep = ({ desc }: { desc?: React$Node }) => (
   <Box>
     {desc ? (
       <Box ff="Inter" color="palette.text.shade80" fontSize={4} textAlign="center" mb={2}>
@@ -82,7 +82,7 @@ const FlashStep = ({
   isAlreadyBootloader,
 }: {
   progress: number,
-  t: *,
+  t: TFunction,
   isAlreadyBootloader?: boolean,
 }) =>
   progress === 0 && !isAlreadyBootloader ? (
@@ -139,22 +139,22 @@ const ErrorStep = ({ error }: { error: Error }) => (
 );
 
 type Props = {
-  isOpened: boolean,
-  isDanger: boolean,
-  title: string,
-  subTitle?: string,
-  desc: string,
+  isOpened?: boolean,
+  isDanger?: boolean,
+  title: React$Node,
+  subTitle?: React$Node,
+  desc: React$Node,
   renderIcon?: Function,
   confirmText?: string,
   cancelText?: string,
   onReject: Function,
   repair: (?string) => *,
-  t: T,
+  t: TFunction,
   isLoading?: boolean,
   analyticsName: string,
   cancellable?: boolean,
   progress: number,
-  error?: Error,
+  error?: ?Error,
   isAlreadyBootloader?: boolean,
 };
 
@@ -190,7 +190,7 @@ class RepairModal extends PureComponent<Props, *> {
     const { selectedOption } = this.state;
     const onClose = !cancellable && isLoading ? undefined : onReject;
     const disableRepair =
-      isLoading || !selectedOption || (error && error instanceof MCUNotGenuineToDashboard);
+      isLoading || !selectedOption || !!(error && error instanceof MCUNotGenuineToDashboard);
 
     return (
       <Modal

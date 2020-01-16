@@ -25,7 +25,7 @@ export const useDebounced = <T>(value: T, delay: number = 0, options: DebounceOp
         debouncedCallback.cancel();
       };
     }
-  }, [value]);
+  }, [debouncedCallback, value]);
 
   return current;
 };

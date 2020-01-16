@@ -16,7 +16,7 @@ import Text from "~/renderer/components/Text";
 import CurrencyBadge from "~/renderer/components/CurrencyBadge";
 import CurrencyDownStatusAlert from "~/renderer/components/CurrencyDownStatusAlert";
 import InfoCircle from "~/renderer/icons/InfoCircle";
-import type { StepProps } from "../index";
+import type { StepProps } from "..";
 
 const TokenTipsContainer = styled(Box)`
   background: ${colors.pillActiveBackground};

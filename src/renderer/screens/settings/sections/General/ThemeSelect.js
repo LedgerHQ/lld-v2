@@ -32,7 +32,7 @@ const ThemeSelect = () => {
         value: key,
         label: t(themeLabels[key]),
       })),
-    [],
+    [t],
   );
 
   const currentTheme = options.find(option => option.value === theme);

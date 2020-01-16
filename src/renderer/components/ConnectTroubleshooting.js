@@ -11,7 +11,7 @@ type Props = {
   onRepair?: boolean => void,
 };
 
-const ConnectTroubleshooting = ({ appearsAfterDelay = 20000, onRepair }: Props) => {
+const ConnectTroubleshooting = ({ appearsAfterDelay = 25000, onRepair }: Props) => {
   const [visible, setVisible] = useState(false);
   useEffect(() => {
     const timeout = setTimeout(() => setVisible(true), appearsAfterDelay);

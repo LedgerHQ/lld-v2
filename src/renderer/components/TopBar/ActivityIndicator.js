@@ -1,9 +1,10 @@
 // @flow
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { withTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 import type { AsyncState } from "~/renderer/reducers/bridgeSync";
 import { track } from "~/renderer/analytics/segment";
 import { globalSyncStateSelector } from "~/renderer/reducers/bridgeSync";
@@ -29,7 +30,7 @@ type Props = {
   isPending: boolean,
   isError: boolean,
   isUpToDate: boolean,
-  t: *,
+  t: TFunction,
   cvPoll: *,
   setSyncBehavior: *,
 };
@@ -90,7 +91,7 @@ class ActivityIndicatorInner extends PureComponent<Props, { lastClickTime: numbe
           {isRotating ? (
             t("common.sync.syncing")
           ) : isError ? (
-            <Fragment>
+            <>
               <Box>{t("common.sync.error")}</Box>
               <Box
                 ml={2}
@@ -99,7 +100,7 @@ class ActivityIndicatorInner extends PureComponent<Props, { lastClickTime: numbe
               >
                 {t("common.sync.refresh")}
               </Box>
-            </Fragment>
+            </>
           ) : isUpToDate ? (
             t("common.sync.upToDate")
           ) : (
@@ -135,7 +136,7 @@ const ActivityIndicator = ({
 }: {
   globalSyncState: AsyncState,
   isUpToDate: boolean,
-  t: *,
+  t: TFunction,
 }) => (
   <BridgeSyncConsumer>
     {setSyncBehavior => (

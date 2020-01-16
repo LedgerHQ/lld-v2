@@ -3,10 +3,10 @@
 import React, { PureComponent } from "react";
 import { compose } from "redux";
 import { withTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import type { DeviceModelId } from "@ledgerhq/devices";
-import type { T } from "~/types/common";
 import type { OnboardingState } from "~/renderer/reducers/onboarding";
 import type { SettingsState } from "~/renderer/reducers/settings";
 import { getCurrentDevice } from "~/renderer/reducers/devices";
@@ -31,8 +31,8 @@ import InitStep from "./steps/Init";
 import NoDeviceStep from "./steps/NoDevice";
 import OnboardingBreadcrumb from "./OnboardingBreadcrumb";
 import SelectDevice from "./steps/SelectDevice";
-import SelectPIN from "./steps/SelectPIN/index";
-import WriteSeed from "./steps/WriteSeed/index";
+import SelectPIN from "./steps/SelectPIN";
+import WriteSeed from "./steps/WriteSeed";
 import SetPassword from "./steps/SetPassword";
 import Analytics from "./steps/Analytics";
 import Finish from "./steps/Finish";
@@ -66,10 +66,11 @@ const mapDispatchToProps = {
   unlock,
   openModal,
   relaunchOnboarding,
+  updateGenuineCheck,
 };
 
 type Props = {
-  t: T,
+  t: TFunction,
   hasCompletedOnboarding: boolean,
   onboardingRelaunched: boolean,
   saveSettings: Function,
@@ -82,10 +83,11 @@ type Props = {
   unlock: Function,
   openModal: string => void,
   relaunchOnboarding: boolean => void,
+  updateGenuineCheck: (*) => void,
 };
 
 export type StepProps = {
-  t: T,
+  t: TFunction,
   onboarding: OnboardingState,
   settings: SettingsState,
   prevStep: Function,
@@ -149,6 +151,7 @@ class OnboardingC extends PureComponent<Props> {
       settings,
       t,
       onboardingRelaunched,
+      updateGenuineCheck,
     } = this.props;
 
     const StepComponent = STEPS[onboarding.stepName];

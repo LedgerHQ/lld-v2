@@ -47,11 +47,14 @@ const LanguageSelect = () => {
     [language, languages, useSystem],
   );
 
-  const handleChangeLanguage = useCallback(({ value: languageKey }: ChangeLangArgs) => {
-    i18n.changeLanguage(languageKey);
-    moment.locale(languageKey);
-    dispatch(setLanguage(languageKey));
-  }, []);
+  const handleChangeLanguage = useCallback(
+    ({ value: languageKey }: ChangeLangArgs) => {
+      i18n.changeLanguage(languageKey);
+      moment.locale(languageKey);
+      dispatch(setLanguage(languageKey));
+    },
+    [dispatch, i18n],
+  );
 
   return (
     <>

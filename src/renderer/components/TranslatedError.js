@@ -6,12 +6,13 @@
 
 import React, { PureComponent } from "react";
 import { withTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 import logger from "~/logger";
 
 type Props = {
   error: ?Error,
-  t: *,
-  field: "title" | "description",
+  t: TFunction,
+  field: "title" | "description" | "list",
 };
 
 class TranslatedError extends PureComponent<Props> {

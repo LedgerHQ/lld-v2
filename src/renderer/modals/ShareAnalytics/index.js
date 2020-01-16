@@ -1,10 +1,10 @@
 // @flow
 
-import React, { Fragment, PureComponent } from "react";
+import React, { PureComponent } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import type { T } from "~/types/common";
+import type { TFunction } from "react-i18next";
 import { closeModal } from "~/renderer/actions/modals";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import Modal, { ModalBody } from "~/renderer/components/Modal";
@@ -13,7 +13,7 @@ import Box from "~/renderer/components/Box";
 import Button from "~/renderer/components/Button";
 
 type Props = {
-  t: T,
+  t: TFunction,
   closeModal: string => void,
 };
 const mapDispatchToProps = {
@@ -68,7 +68,7 @@ class ShareAnalyticsC extends PureComponent<Props, *> {
           onClose={this.onClose}
           title={t("onboarding.analytics.shareAnalytics.title")}
           render={() => (
-            <Fragment>
+            <>
               <InlineDesc>
                 <Trans i18nKey="onboarding.analytics.shareAnalytics.desc" />
               </InlineDesc>
@@ -79,14 +79,14 @@ class ShareAnalyticsC extends PureComponent<Props, *> {
                   ))}
                 </Ul>
               </Box>
-            </Fragment>
+            </>
           )}
           renderFooter={() => (
-            <Fragment>
+            <>
               <Button onClick={this.onClose} primary data-e2e="modal_buttonClose_shareAnalytics">
                 <Trans i18nKey="common.close" />
               </Button>
-            </Fragment>
+            </>
           )}
         />
       </Modal>

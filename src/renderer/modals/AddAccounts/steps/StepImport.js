@@ -26,7 +26,7 @@ import Text from "~/renderer/components/Text";
 import DebugAppInfosForCurrency from "~/renderer/components/DebugAppInfosForCurrency";
 import IconExclamationCircleThin from "~/renderer/icons/ExclamationCircleThin";
 
-import type { StepProps } from "../index";
+import type { StepProps } from "..";
 
 // $FlowFixMe
 const remapTransportError = (err: mixed, appName: string): Error => {
@@ -92,6 +92,7 @@ const SectionAccounts = ({ defaultSelected, ...rest }: *) => {
     if (defaultSelected && rest.onSelectAll) {
       rest.onSelectAll(rest.accounts);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return <AccountsList {...rest} />;
 };

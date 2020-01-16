@@ -2,20 +2,20 @@
 
 import React from "react";
 import { Trans, withTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 import Text from "~/renderer/components/Text";
 import Box from "~/renderer/components/Box";
 import IconChevronRight from "~/renderer/icons/ChevronRight";
 import { getDeviceModel } from "@ledgerhq/devices";
 import InvertableImg from "~/renderer/components/InvertableImg";
-import { DisclaimerBox } from "~/renderer/screens/onboarding/steps/SelectPIN/index";
+import { DisclaimerBox } from "~/renderer/screens/onboarding/steps/SelectPIN";
 import OptionRow, { IconOptionRow } from "~/renderer/components/OptionRow";
 import { Inner } from "~/renderer/screens/onboarding/sharedComponents";
 import RestoreBlue from "~/renderer/images/select-pin-blue-onb.svg";
 import { restoreConfiguration } from "@ledgerhq/live-common/lib/deviceWordings";
-import type { T } from "~/types/common";
 
 type Props = {
-  t: T,
+  t: TFunction,
 };
 
 const SelectPINrestoreBlue = ({ t }: Props) => {

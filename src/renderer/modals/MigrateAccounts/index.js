@@ -2,14 +2,14 @@
 
 import React, { PureComponent } from "react";
 import logger from "~/logger";
-
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/data/cryptocurrencies";
 import { compose } from "redux";
 import { connect } from "react-redux";
+import type { TFunction } from "react-i18next";
 
 import Modal from "~/renderer/components/Modal";
 import Stepper from "~/renderer/components/Stepper";
-import type { Step, StepProps as DefaultStepProps } from "~/renderer/components/Stepper";
+import type { Step } from "~/renderer/components/Stepper";
 
 import StepOverview, {
   StepOverviewFooter,
@@ -30,8 +30,45 @@ import { closeModal } from "~/renderer/actions/modals";
 import type { Account, CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 import type { Device } from "~/renderer/reducers/devices";
 
-const createSteps = () => {
-  const onBack = ({ transitionTo }: StepProps) => {
+type ScanStatus = "idle" | "scanning" | "error" | "finished" | "finished-empty";
+export type StepProps = {
+  t: TFunction,
+  transitionTo: string => void,
+  starredAccountIds: string[],
+  replaceAccounts: (Account[]) => void,
+  replaceStarAccountId: ({ oldId: string, newId: string }) => void,
+  currencyIds: string[],
+  migratableAccounts: Account[],
+  migratedAccounts: { [key: string]: Account[] },
+  err: ?Error,
+  accounts: Account[],
+  totalMigratableAccounts: number,
+  currency: ?CryptoCurrency,
+  setScanStatus: (ScanStatus, ?Error) => string,
+  addMigratedAccount: (CryptoCurrency, Account) => void,
+  device: ?Device,
+  flushMigratedAccounts: () => void,
+  moveToNextCurrency: (?boolean) => void,
+  getNextCurrency: () => CryptoCurrency,
+  setAppOpened: (isAppOpened: boolean) => void,
+  scanStatus: ScanStatus,
+  isAppOpened: boolean,
+  onCloseModal: () => void,
+  hideLoopNotice: boolean,
+};
+type St = Step<"overview" | "device" | "currency", StepProps>;
+
+type State = {
+  stepId: string,
+  isAppOpened: boolean,
+  currency: ?CryptoCurrency,
+  scanStatus: ScanStatus,
+  err: ?Error,
+  migratedAccounts: { [key: string]: Account[] },
+};
+
+const createSteps = (): St[] => {
+  const onBack = ({ transitionTo }) => {
     transitionTo("overview");
   };
   return [
@@ -55,39 +92,6 @@ const createSteps = () => {
   ];
 };
 
-type ScanStatus = "idle" | "scanning" | "error" | "finished" | "finished-empty";
-export type StepProps = DefaultStepProps & {
-  starredAccountIds: string[],
-  replaceStarAccountId: ({ oldId: string, newId: string }) => void,
-  currencyIds: string[],
-  migratableAccounts: Account[],
-  migratedAccounts: { [key: string]: Account[] },
-  err: ?Error,
-  accounts: Account[],
-  totalMigratableAccounts: number,
-  currency: ?CryptoCurrency,
-  setScanStatus: (ScanStatus, ?Error) => string,
-  addMigratedAccount: (CryptoCurrency, Account) => void,
-  device: ?Device,
-  flushMigratedAccounts: () => void,
-  moveToNextCurrency: (?boolean) => void,
-  getNextCurrency: () => CryptoCurrency,
-  setAppOpened: (isAppOpened: boolean) => void,
-  scanStatus: ScanStatus,
-  isAppOpened: boolean,
-  onCloseModal: () => void,
-  hideLoopNotice: boolean,
-};
-
-type State = {
-  stepId: string,
-  isAppOpened: boolean,
-  currency: ?CryptoCurrency,
-  scanStatus: ScanStatus,
-  err: ?Error,
-  migratedAccounts: { [key: string]: Account[] },
-};
-
 const INITIAL_STATE = {
   stepId: "overview",
   currency: null,
@@ -106,7 +110,7 @@ class MigrateAccounts extends PureComponent<*, State> {
   hideLoopNotice = true;
   STEPS = createSteps();
 
-  handleStepChange = (step: Step) => this.setState({ stepId: step.id, isAppOpened: false });
+  handleStepChange = (step: St) => this.setState({ stepId: step.id, isAppOpened: false });
   handleSetAppOpened = (isAppOpened: boolean) => this.setState({ isAppOpened });
   handleSetScanStatus = (scanStatus: ScanStatus, err: ?Error = null) => {
     if (err) {

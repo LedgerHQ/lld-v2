@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment, PureComponent } from "react";
+import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import { BigNumber } from "bignumber.js";
 import { formatShort } from "@ledgerhq/live-common/lib/currencies";
@@ -58,7 +58,7 @@ class BalanceSummary extends PureComponent<Props> {
     ];
     if (displayCountervalue) data.reverse();
     return (
-      <Fragment>
+      <>
         <FormattedVal fontSize={5} color="palette.text.shade100" showCode {...data[0]} />
         {countervalueAvailable ? (
           <FormattedVal fontSize={4} color="warmGrey" showCode {...data[1]} />
@@ -66,7 +66,7 @@ class BalanceSummary extends PureComponent<Props> {
         <Box ff="Inter|Regular" color="palette.text.shade60" fontSize={3} mt={2}>
           {moment(d.date).format("LL")}
         </Box>
-      </Fragment>
+      </>
     );
   };
 

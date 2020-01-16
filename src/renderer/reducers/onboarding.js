@@ -22,11 +22,7 @@ export type OnboardingState = {
   stepName: string, // TODO: specify that the string comes from Steps type
   steps: Step[],
   genuine: {
-    pinStepPass: boolean,
-    recoveryStepPass: boolean,
-    isGenuineFail: boolean,
     isDeviceGenuine: boolean,
-    genuineCheckUnavailable: ?Error,
     displayErrorScreen: boolean,
   },
   deviceModelId: ?DeviceModelId,
@@ -38,11 +34,7 @@ const initialState: OnboardingState = {
   stepIndex: 0,
   stepName: SKIP_ONBOARDING ? "analytics" : "start",
   genuine: {
-    pinStepPass: false,
-    recoveryStepPass: false,
-    isGenuineFail: false,
     isDeviceGenuine: false,
-    genuineCheckUnavailable: null,
     displayErrorScreen: false,
   },
   deviceModelId: null,

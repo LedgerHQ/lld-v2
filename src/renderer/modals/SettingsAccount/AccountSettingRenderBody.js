@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import get from "lodash/get";
 import { setDataModal } from "~/renderer/actions/modals";
 import { removeAccount, updateAccount } from "~/renderer/actions/accounts";
@@ -23,7 +23,7 @@ import { connect } from "react-redux";
 import { withTranslation } from "react-i18next";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import type { Account, Unit } from "@ledgerhq/live-common/lib/types";
-import type { T } from "~/types/common";
+import type { TFunction } from "react-i18next";
 
 type State = {
   accountName: ?string,
@@ -38,7 +38,7 @@ type Props = {
   setDataModal: Function,
   updateAccount: Function,
   removeAccount: Function,
-  t: T,
+  t: TFunction,
   onClose: () => void,
   data: any,
 };
@@ -162,7 +162,7 @@ class AccountSettingRenderBody extends PureComponent<Props, State> {
         onClose={onClose}
         title={t("account.settings.title")}
         render={() => (
-          <Fragment>
+          <>
             <TrackPage category="Modal" name="AccountSettings" />
             <Container>
               <Box>
@@ -216,10 +216,10 @@ class AccountSettingRenderBody extends PureComponent<Props, State> {
               desc={t("settings.removeAccountModal.desc")}
             />
             <Space of={20} />
-          </Fragment>
+          </>
         )}
         renderFooter={() => (
-          <Fragment>
+          <>
             <Button
               event="OpenAccountDelete"
               danger
@@ -231,7 +231,7 @@ class AccountSettingRenderBody extends PureComponent<Props, State> {
             <Button event="DoneEditingAccount" ml="auto" onClick={onSubmit} primary>
               {t("common.apply")}
             </Button>
-          </Fragment>
+          </>
         )}
       />
     );
@@ -250,7 +250,7 @@ const AdvancedLogsContainer: ThemedComponent<{}> = styled.div`
   white-space: pre-wrap;
   word-wrap: break-word;
   overflow: auto;
-  user-select: auto;
+  user-select: text;
 `;
 
 const ConnectedAccountSettingRenderBody: React$ComponentType<{}> = compose(

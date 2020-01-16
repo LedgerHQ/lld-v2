@@ -4,10 +4,10 @@ import React from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { withTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 import { Redirect } from "react-router";
 import type { Currency, AccountLike, Account } from "@ledgerhq/live-common/lib/types";
 import { getCurrencyColor } from "~/renderer/getCurrencyColor";
-import type { T } from "~/types/common";
 import { accountSelector } from "~/renderer/reducers/accounts";
 import {
   isAccountEmpty,
@@ -67,7 +67,7 @@ const mapDispatchToProps = {
 
 type Props = {
   counterValue: Currency,
-  t: T,
+  t: TFunction,
   account?: AccountLike,
   parentAccount?: Account,
   selectedTimeRange: TimeRange,

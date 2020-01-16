@@ -3,10 +3,10 @@
 import React, { PureComponent } from "react";
 import { getAccountCurrency, getAccountUnit } from "@ledgerhq/live-common/lib/account";
 import { getCurrencyColor } from "~/renderer/getCurrencyColor";
+import type { TFunction } from "react-i18next";
 import type { PortfolioRange } from "@ledgerhq/live-common/lib/types";
 import { compose } from "redux";
 import { withTranslation } from "react-i18next";
-import type { T } from "~/types/common";
 import AccountDistribution from "~/renderer/components/AccountDistribution";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -35,7 +35,7 @@ type Props = {
     url: string,
   },
   push: Function,
-  t: T,
+  t: TFunction,
   accounts: Account[],
   allAccounts: Account[],
   counterValue: Currency,

@@ -3,7 +3,7 @@
 import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import { withTranslation } from "react-i18next";
-import type { T } from "~/types/common";
+import type { TFunction } from "react-i18next";
 import logger from "~/logger";
 import { softReset } from "~/renderer/reset";
 import { cleanAccountsCache } from "~/renderer/actions/accounts";
@@ -17,7 +17,7 @@ const mapDispatchToProps = {
 };
 
 type Props = {
-  t: T,
+  t: TFunction,
   cleanAccountsCache: () => *,
 };
 

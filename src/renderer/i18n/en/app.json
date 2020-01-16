@@ -251,6 +251,7 @@
     "paybis": "Paybis.com is one of the most trusted cryptocurrency brokers worldwide since 2014, customer satisfaction - 4.7/5 via Trustpilot. Visa/Master cards, Bank Transfers, Skrill/Neteller accepted. 24/7 online customer support.",
     "shapeshift": "ShapeShift is an online marketplace where users can buy and sell digital assets. It is a fast and secure way for the world to buy and sell digital assets, with no lengthy signup process, no counterparty risk, and no friction.",
     "simplex": "Simplex is a EU licensed financial institution, providing a fraudless credit card payment solution.",
+    "swft": "SWFT Blockchain is a worldwide cross-blockchain transfer protocol and payment network, enabling simpler, faster and safer swaps between over 200 cryptocurrencies and free crypto payments to anyone anywhere",
     "taxtoken": "Automated cryptocurrency tax and cost basis software for US citizens.",
     "thorswap": "ThorSwap is an instant, safe and fair crypto asset market powered by decentralized atomic swap technologies. It is the most convenient way to start trading, no registration or KYC for small amount transactions.",
     "bitpanda": "Bitpanda is Europe’s leading retail broker for buying and selling Bitcoin, Ethereum, IOTA and many more. Deposit money using your credit card, SOFORT-Transfer, NETELLER, and other options.",
@@ -404,6 +405,7 @@
       "allowPermission": "{{wording}} on your device",
       "loading": "Loading...",
       "connectAndUnlockDevice": "Plug your device and enter your PIN code",
+      "unlockDevice": "Enter your PIN code",
       "quitApp": "Please quit application on your device"
     },
     "loading": "Loading",
@@ -1115,13 +1117,11 @@
       "errorPage": {
         "title": {
           "pinFailed": "Didn't choose your own PIN code?",
-          "recoveryPhraseFailed": "Didn't save your recovery phrase by yourself?",
-          "isGenuineFail": "Oops, your device does not seem genuine..."
+          "recoveryPhraseFailed": "Didn't save your recovery phrase by yourself?"
         },
         "desc": {
           "pinFailed": "Never use a device supplied with a PIN code. Please contact us when in doubt.",
-          "recoveryPhraseFailed": "Only save a recovery phrase that was displayed on your device and to you alone. Please contact us when in doubt.",
-          "isGenuineFail": "Your device did not pass the authenticity test required to connect to Ledger’s secure server. Please contact Ledger Support to get assistance."
+          "recoveryPhraseFailed": "Only save a recovery phrase that was displayed on your device and to you alone. Please contact us when in doubt."
         }
       }
     },
@@ -1259,6 +1259,10 @@
       "title": "Firmware or app update required",
       "description": "Please use the Manager to uninstall all apps and check if a firmware update is available before reinstalling them"
     },
+    "FirmwareNotRecognized": {
+      "title": "Firmware is not recognized",
+      "description": "Please contact Ledger Support"
+    },
     "HardResetFail": {
       "title": "Oops, could not reset",
       "description": "Please try again or contact us when in doubt"
@@ -1381,11 +1385,11 @@
       "description": "Please navigate back to Dashboard on your device"
     },
     "WebsocketConnectionError": {
-      "title": "Sorry, try again (websocket error)",
+      "title": "Sorry, try again (connection error)",
       "description": null
     },
     "WebsocketConnectionFailed": {
-      "title": "Sorry, try again (websocket failed)",
+      "title": "Sorry, try again (connection closed)",
       "description": null
     },
     "WrongDeviceForAccount": {

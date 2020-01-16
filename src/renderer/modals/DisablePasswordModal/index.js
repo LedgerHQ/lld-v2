@@ -64,7 +64,7 @@ const DisablePasswordModal = () => {
 
       handleChangePassword("");
     },
-    [currentPassword],
+    [currentPassword, handleChangePassword],
   );
 
   const handleInputChange = useCallback(

@@ -1,9 +1,10 @@
 // @flow
 
-import React, { Fragment, PureComponent } from "react";
+import React, { PureComponent } from "react";
 import styled from "styled-components";
 import { remote } from "electron";
 import { withTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 import logger from "~/logger";
 import { hardReset } from "~/renderer/reset";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
@@ -15,7 +16,7 @@ import ConfirmModal from "~/renderer/modals/ConfirmModal";
 import IconTriangleWarning from "~/renderer/icons/TriangleWarning";
 
 type Props = {
-  t: *,
+  t: TFunction,
 };
 
 type State = {
@@ -51,7 +52,7 @@ class ResetButton extends PureComponent<Props, State> {
     const { opened, pending, fallbackOpened } = this.state;
 
     return (
-      <Fragment>
+      <>
         <Button small danger onClick={this.open} event="HardResetIntent">
           {t("common.reset")}
         </Button>
@@ -79,7 +80,7 @@ class ResetButton extends PureComponent<Props, State> {
         </ConfirmModal>
 
         <ResetFallbackModal isOpened={fallbackOpened} onClose={this.closeFallback} />
-      </Fragment>
+      </>
     );
   }
 }

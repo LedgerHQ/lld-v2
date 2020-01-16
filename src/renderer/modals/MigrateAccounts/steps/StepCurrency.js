@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment, PureComponent } from "react";
+import React, { PureComponent } from "react";
 import styled from "styled-components";
 import { filter, map, reduce } from "rxjs/operators";
 import { findAccountMigration, migrateAccounts } from "@ledgerhq/live-common/lib/account";
@@ -27,8 +27,6 @@ import Button from "~/renderer/components/Button";
 import { urls } from "~/config/urls";
 
 import type { StepProps } from "~/renderer/modals/MigrateAccounts";
-
-type Props = StepProps & { replaceAccounts: (Account[]) => void };
 
 const MigrationError = ({ error }: { error: Error }) => (
   <Box style={{ height: 200 }} px={5} justifyContent="center">
@@ -75,7 +73,7 @@ const Exclamation = styled.div`
   justify-content: center;
 `;
 
-class StepCurrency extends PureComponent<Props> {
+class StepCurrency extends PureComponent<StepProps> {
   componentDidMount() {
     this.props.setScanStatus("scanning");
     this.startScanAccountsDevice();
@@ -160,7 +158,7 @@ class StepCurrency extends PureComponent<Props> {
     }
 
     return (
-      <Fragment>
+      <>
         <TrackPage category="MigrateAccounts" name="Step3" />
         <Box alignItems="center" pt={pending ? 30 : 0} pb={pending ? 40 : 0}>
           {scanStatus === "finished-empty" ? (
@@ -198,7 +196,7 @@ class StepCurrency extends PureComponent<Props> {
             />
           </Text>
         </Box>
-      </Fragment>
+      </>
     );
   }
 }
@@ -214,10 +212,10 @@ export const StepCurrencyFooter = ({
 }: StepProps) => {
   if (scanStatus === "error") {
     return (
-      <Fragment>
+      <>
         <ExternalLinkButton mr={2} label={<Trans i18nKey="common.getSupport" />} url={urls.faq} />
         <RetryButton primary onClick={() => transitionTo("device")} />
-      </Fragment>
+      </>
     );
   }
   if (!["finished", "finished-empty"].includes(scanStatus) || !currency) return null;

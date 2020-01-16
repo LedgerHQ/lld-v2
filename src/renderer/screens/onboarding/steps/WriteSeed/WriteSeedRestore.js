@@ -1,11 +1,11 @@
 // @flow
 
-import React, { Fragment, PureComponent } from "react";
+import React, { PureComponent } from "react";
+import type { TFunction } from "react-i18next";
 import { seedWord1 } from "@ledgerhq/live-common/lib/deviceWordings";
 import OptionRow, { IconOptionRow } from "~/renderer/components/OptionRow";
 import Text from "~/renderer/components/Text";
 import { Trans, withTranslation } from "react-i18next";
-import type { T } from "~/types/common";
 import IconChevronRight from "~/renderer/icons/ChevronRight";
 import Box from "~/renderer/components/Box";
 import {
@@ -19,7 +19,7 @@ import WriteSeedOnb from "~/renderer/images/write-seed-onb.svg";
 import type { OnboardingState } from "~/renderer/reducers/onboarding";
 
 type Props = {
-  t: T,
+  t: TFunction,
   onboarding: OnboardingState,
 };
 
@@ -110,7 +110,7 @@ class WriteSeedRestore extends PureComponent<Props, *> {
     ];
 
     return (
-      <Fragment>
+      <>
         <Box mb={3}>
           <Title>{t("onboarding.writeSeed.restore.title")}</Title>
           <Description>{t("onboarding.writeSeed.restore.desc")}</Description>
@@ -136,7 +136,7 @@ class WriteSeedRestore extends PureComponent<Props, *> {
           </Inner>
           <DisclaimerBox mt={6} disclaimerNotes={disclaimerNotes} color="palette.text.shade80" />
         </Box>
-      </Fragment>
+      </>
     );
   }
 }

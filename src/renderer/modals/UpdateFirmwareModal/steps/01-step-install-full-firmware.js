@@ -151,6 +151,7 @@ const StepFullFirmwareInstall = ({ firmware, deviceModelId, transitionTo, setErr
     return () => {
       if (sub) sub.unsubscribe();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

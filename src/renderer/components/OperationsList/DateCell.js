@@ -3,7 +3,7 @@
 import React, { PureComponent } from "react";
 import styled from "styled-components";
 import type { Operation } from "@ledgerhq/live-common/lib/types";
-import type { T } from "~/types/common";
+import type { TFunction } from "react-i18next";
 import Box from "~/renderer/components/Box";
 import OperationDate from "./OperationDate";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
@@ -16,7 +16,7 @@ const Cell: ThemedComponent<{}> = styled(Box).attrs(() => ({
 `;
 
 type Props = {
-  t: T,
+  t: TFunction,
   operation: Operation,
   text?: string,
   compact?: boolean,

@@ -1,38 +1,23 @@
 // @flow
 
 import React, { PureComponent } from "react";
-import { withTranslation } from "react-i18next";
+import { Trans } from "react-i18next";
 import { getDeviceModel } from "@ledgerhq/devices";
 import type { DeviceInfo, FirmwareUpdateContext } from "@ledgerhq/live-common/lib/types/manager";
-import type { T } from "~/types/common";
 import { command } from "~/renderer/commands";
 import type { Device } from "~/renderer/reducers/devices";
 import DisclaimerModal from "~/renderer/modals/DisclaimerModal";
 import UpdateModal from "~/renderer/modals/UpdateFirmwareModal";
 import type { StepId } from "~/renderer/modals/UpdateFirmwareModal";
-import Tooltip from "~/renderer/components/Tooltip";
-import Box, { Card } from "~/renderer/components/Box";
+import lte from "semver/functions/lte";
 import Text from "~/renderer/components/Text";
-import NanoS from "~/renderer/icons/device/NanoS";
-import NanoX from "~/renderer/icons/device/NanoX";
-import Blue from "~/renderer/icons/device/Blue";
-import CheckFull from "~/renderer/icons/CheckFull";
+import getCleanVersion from "~/renderer/screens/manager/FirmwareUpdate/getCleanVersion";
+import IconInfoCircle from "~/renderer/icons/InfoCircle";
+import Box, { Card } from "~/renderer/components/Box";
 import UpdateFirmwareButton from "./UpdateFirmwareButton";
 import type { ModalStatus } from "./types";
 
-const Icon = ({ type }: { type: string }) => {
-  switch (type) {
-    case "blue":
-      return <Blue size={30} />;
-    case "nanoX":
-      return <NanoX size={30} />;
-    default:
-      return <NanoS size={30} />;
-  }
-};
-
 type Props = {
-  t: T,
   deviceInfo: DeviceInfo,
   device: Device,
 };
@@ -98,40 +83,37 @@ class FirmwareUpdate extends PureComponent<Props, State> {
   handleDisclaimerNext = () => this.setState({ modal: "install" });
 
   render() {
-    const { deviceInfo, t, device } = this.props;
+    const { deviceInfo, device } = this.props;
     const { firmware, modal, stepId, ready, error } = this.state;
+
+    if (!firmware) return null;
 
     const deviceSpecs = getDeviceModel(device.modelId);
 
     return (
       <Card p={4}>
-        <Box horizontal alignItems="center" flow={2}>
-          <Box color="palette.text.shade100">
-            <Icon type={deviceSpecs.id} />
-          </Box>
-          <Box>
+        <Box horizontal alignItems="center" justifyContent="space-between">
+          <Text ff="Inter|SemiBold" fontSize={4} color="palette.text.shade100">
+            <Trans
+              i18nKey="manager.firmware.latest"
+              values={{ version: getCleanVersion(firmware.final.name) }}
+            />
+          </Text>
+          {lte(deviceInfo.version, "1.4.2") && (
             <Box horizontal alignItems="center">
-              <Text ff="Inter|SemiBold" fontSize={4} color="palette.text.shade100">
-                {deviceSpecs.productName}
+              <IconInfoCircle size={12} style={{ marginRight: 6 }} />
+              <Text ff="Inter" fontSize={3} color="palette.text.shade60">
+                <Trans i18nKey="manager.firmware.removeApps" />
               </Text>
-              <Box color="wallet" ml={2}>
-                <Tooltip content={t("manager.yourDeviceIsGenuine")}>
-                  <CheckFull size={13} color="palette.primary.main" />
-                </Tooltip>
-              </Box>
             </Box>
-            <Text ff="Inter|SemiBold" fontSize={2}>
-              {t("manager.firmware.installed", {
-                version: deviceInfo.version,
-              })}
-            </Text>
-          </Box>
+          )}
           <UpdateFirmwareButton
             deviceInfo={deviceInfo}
             firmware={firmware}
             onClick={this.handleDisclaimerModal}
           />
         </Box>
+
         {ready ? (
           <>
             <DisclaimerModal
@@ -156,4 +138,4 @@ class FirmwareUpdate extends PureComponent<Props, State> {
   }
 }
 
-export default withTranslation()(FirmwareUpdate);
+export default FirmwareUpdate;

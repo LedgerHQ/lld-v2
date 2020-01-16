@@ -8,6 +8,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - name: check if current commit is on tag
+        run: |
+          git describe --exact-match &>/dev/null \
+            && echo "You are on a tag. Exiting." \
+            && exit 1 \
+            || true
       - name: set git user
         run: |
           git config user.email "team-live@ledger.fr"
@@ -33,7 +39,7 @@ jobs:
           tags: false
       - name: push tag
         run: |
-          curl -s -X POST https://api.github.com/repos/LedgerHQ/${{ steps.variables.outputs.repo }}/git/refs \
+          curl -s -X POST https://api.github.com/repos/LedgerHQ/${{ steps.config.outputs.repo }}/git/refs \
           -H "Authorization: token ${{ secrets.ACCESS_TOKEN_VAL }}" \
           -d @- << EOF
           {

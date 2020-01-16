@@ -3,6 +3,7 @@ import React, { useCallback } from "react";
 import invariant from "invariant";
 import { BigNumber } from "bignumber.js";
 import { Trans, withTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 import type { Account, Transaction } from "@ledgerhq/live-common/lib/types";
 import { getAccountBridge } from "@ledgerhq/live-common/lib/bridge";
 import Box from "~/renderer/components/Box";
@@ -13,7 +14,7 @@ type Props = {
   onChange: Transaction => void,
   transaction: Transaction,
   account: Account,
-  t: *,
+  t: TFunction,
 };
 
 const uint32maxPlus1 = BigNumber(2).pow(32);

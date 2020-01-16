@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment, useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
 import Button from "~/renderer/components/Button";
@@ -53,41 +53,44 @@ const RepairDeviceButton = ({ onRepair, buttonProps }: Props) => {
     setProgress(0);
   }, [sub, timeout, onRepair, setOpened, setIsLoading, setError, setProgress]);
 
-  const repair = useCallback((version = null) => {
-    if (isLoading) return;
-    if (onRepair) {
-      onRepair(true);
-    }
+  const repair = useCallback(
+    (version = null) => {
+      if (isLoading) return;
+      if (onRepair) {
+        onRepair(true);
+      }
 
-    timeout.current = setTimeout(() => setIsLoading(true), 500);
-    sub.current = command("firmwareRepair")({ version }).subscribe({
-      next: ({ progress }) => {
-        setIsLoading(isLoading);
-        setProgress(progress);
-      },
-      error: error => {
-        logger.critical(error);
-        if (timeout.current) clearTimeout(timeout.current);
-        setError(error);
-        setIsLoading(false);
-        setProgress(0);
-      },
-      complete: () => {
-        if (timeout) clearTimeout(timeout.current);
-        setOpened(false);
-        setIsLoading(false);
-        setProgress(0);
-        history.push("manager");
+      timeout.current = setTimeout(() => setIsLoading(true), 500);
+      sub.current = command("firmwareRepair")({ version }).subscribe({
+        next: ({ progress }) => {
+          setIsLoading(isLoading);
+          setProgress(progress);
+        },
+        error: error => {
+          logger.critical(error);
+          if (timeout.current) clearTimeout(timeout.current);
+          setError(error);
+          setIsLoading(false);
+          setProgress(0);
+        },
+        complete: () => {
+          if (timeout) clearTimeout(timeout.current);
+          setOpened(false);
+          setIsLoading(false);
+          setProgress(0);
+          history.push("manager");
 
-        if (onRepair) {
-          onRepair(false);
-        }
-      },
-    });
-  }, []);
+          if (onRepair) {
+            onRepair(false);
+          }
+        },
+      });
+    },
+    [history, isLoading, onRepair],
+  );
 
   return (
-    <Fragment>
+    <>
       <Button {...buttonProps} primary onClick={open} event="RepairDeviceButton">
         {t("settings.repairDevice.button")}
       </Button>
@@ -104,7 +107,7 @@ const RepairDeviceButton = ({ onRepair, buttonProps }: Props) => {
         progress={progress}
         error={error}
       />
-    </Fragment>
+    </>
   );
 };
 

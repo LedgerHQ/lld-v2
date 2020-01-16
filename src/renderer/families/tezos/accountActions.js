@@ -32,7 +32,7 @@ const SendAction = ({ account, parentAccount, onClick }: Props) => {
     } else {
       onClick();
     }
-  }, [sendShouldWarnDelegation, parentAccount, account, openModal, onClick]);
+  }, [sendShouldWarnDelegation, dispatch, parentAccount, account, onClick]);
 
   return (
     <SendActionDefault onClick={onClickDecorated} account={account} parentAccount={parentAccount} />
@@ -56,7 +56,7 @@ const ReceiveAction = ({ account, parentAccount, onClick }: Props) => {
     } else {
       onClick();
     }
-  }, [receiveShouldWarnDelegation, parentAccount, account, openModal, onClick]);
+  }, [receiveShouldWarnDelegation, dispatch, parentAccount, account, onClick]);
 
   return (
     <ReceiveActionDefault

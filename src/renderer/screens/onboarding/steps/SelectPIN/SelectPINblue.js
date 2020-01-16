@@ -1,6 +1,7 @@
 // @flow
 import React, { PureComponent } from "react";
 import { Trans, withTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 import Text from "~/renderer/components/Text";
 import Box from "~/renderer/components/Box";
 import IconChevronRight from "~/renderer/icons/ChevronRight";
@@ -9,12 +10,11 @@ import InvertableImg from "~/renderer/components/InvertableImg";
 import OptionRow, { IconOptionRow } from "~/renderer/components/OptionRow";
 import { Inner } from "~/renderer/screens/onboarding/sharedComponents";
 import SelectPinBlue from "~/renderer/images/select-pin-blue-onb.svg";
-import { DisclaimerBox } from "~/renderer/screens/onboarding/steps/SelectPIN/index";
-import type { T } from "~/types/common";
+import { DisclaimerBox } from "~/renderer/screens/onboarding/steps/SelectPIN";
 import { configureAsNewDevice } from "@ledgerhq/live-common/lib/deviceWordings";
 
 type Props = {
-  t: T,
+  t: TFunction,
 };
 
 class SelectPIN extends PureComponent<Props, *> {

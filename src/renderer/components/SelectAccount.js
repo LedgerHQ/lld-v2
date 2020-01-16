@@ -7,6 +7,7 @@ import {
   getAccountName,
   listSubAccounts,
 } from "@ledgerhq/live-common/lib/account";
+import type { TFunction } from "react-i18next";
 import type { AccountLike, Account, TokenAccount } from "@ledgerhq/live-common/lib/types";
 import styled from "styled-components";
 import React, { useCallback, useState } from "react";
@@ -14,10 +15,7 @@ import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { createFilter } from "react-select";
 import { createStructuredSelector } from "reselect";
-import type { T } from "~/types/common";
-
 import { accountsSelector } from "~/renderer/reducers/accounts";
-
 import Box from "~/renderer/components/Box";
 import FormattedVal from "~/renderer/components/FormattedVal";
 import Select from "~/renderer/components/Select";
@@ -140,7 +138,7 @@ const RawSelectAccount = ({
   filter,
   t,
   ...props
-}: Props & { t: T }) => {
+}: Props & { t: TFunction }) => {
   const [searchInputValue, setSearchInputValue] = useState("");
 
   const filtered: Account[] = filter ? accounts.filter(filter) : accounts;

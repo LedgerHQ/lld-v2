@@ -5,6 +5,7 @@ import { BigNumber } from "bignumber.js";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { withTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 import type {
   Currency,
   ValueChange,
@@ -12,7 +13,6 @@ import type {
   TokenCurrency,
   Unit,
 } from "@ledgerhq/live-common/lib/types";
-import type { T } from "~/types/common";
 
 import { setSelectedTimeRange, setCountervalueFirst } from "~/renderer/actions/settings";
 import type { TimeRange } from "~/renderer/reducers/settings";
@@ -42,7 +42,7 @@ type OwnProps = {
 
 type Props = {
   ...OwnProps,
-  t: T,
+  t: TFunction,
   setSelectedTimeRange: TimeRange => *,
   setCountervalueFirst: boolean => void,
 };
@@ -87,6 +87,7 @@ const mapDispatchToProps = {
 
 class AssetBalanceSummaryHeader extends PureComponent<Props> {
   handleChangeSelectedTime = item => {
+    // $FlowFixMe
     this.props.setSelectedTimeRange(item.key);
   };
 

@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import { getDeviceModel } from "@ledgerhq/devices";
 import { saveSettings } from "~/renderer/actions/settings";
@@ -105,7 +105,7 @@ class SetPassword extends PureComponent<Props, State> {
           deviceType={getDeviceModel(onboarding.deviceModelId || "nanoS").productName}
         />
         <StepContainerInner>
-          <Fragment>
+          <>
             <Box alignItems="center">
               <Title>{t("onboarding.setPassword.title")}</Title>
               <Description style={{ maxWidth: 620 }}>
@@ -126,7 +126,7 @@ class SetPassword extends PureComponent<Props, State> {
 
               <DisclaimerBox mt={7} disclaimerNotes={disclaimerNotes} />
             </Box>
-          </Fragment>
+          </>
         </StepContainerInner>
 
         <OnboardingFooterWrapper>

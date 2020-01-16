@@ -13,42 +13,63 @@ import type { DeviceModelId } from "@ledgerhq/devices";
 import type { Device } from "~/renderer/reducers/devices";
 import Animation from "~/renderer/animations";
 import TranslatedError from "~/renderer/components/TranslatedError";
-import Spinner from "~/renderer/components/Spinner";
+import BigSpinner from "~/renderer/components/BigSpinner";
 import AutoRepair from "~/renderer/components/AutoRepair";
 import Button from "~/renderer/components/Button";
 import ConnectTroubleshooting from "~/renderer/components/ConnectTroubleshooting";
-import Box from "~/renderer/components/Box";
 import Text from "~/renderer/components/Text";
 import useTheme from "~/renderer/hooks/useTheme";
 import { useManagerConnect } from "./logic";
 
 const animations: { [k: DeviceModelId]: * } = {
   nanoX: {
-    allowManager: {
-      light: require("~/renderer/animations/nanoX/5AllowManager/light.json"),
-      dark: require("~/renderer/animations/nanoX/5AllowManager/dark.json"),
-    },
     plugAndPinCode: {
       light: require("~/renderer/animations/nanoX/1PlugAndPinCode/light.json"),
       dark: require("~/renderer/animations/nanoX/1PlugAndPinCode/dark.json"),
+    },
+    enterPinCode: {
+      light: require("~/renderer/animations/nanoX/3EnterPinCode/light.json"),
+      dark: require("~/renderer/animations/nanoX/3EnterPinCode/dark.json"),
     },
     quitApp: {
       light: require("~/renderer/animations/nanoX/4QuitApp/light.json"),
       dark: require("~/renderer/animations/nanoX/4QuitApp/dark.json"),
     },
+    allowManager: {
+      light: require("~/renderer/animations/nanoX/5AllowManager/light.json"),
+      dark: require("~/renderer/animations/nanoX/5AllowManager/dark.json"),
+    },
   },
   nanoS: {
-    allowManager: {
-      light: require("~/renderer/animations/nanoS/5AllowManager/light.json"),
-      dark: require("~/renderer/animations/nanoS/5AllowManager/dark.json"),
-    },
     plugAndPinCode: {
       light: require("~/renderer/animations/nanoS/1PlugAndPinCode/light.json"),
       dark: require("~/renderer/animations/nanoS/1PlugAndPinCode/dark.json"),
     },
+    enterPinCode: {
+      light: require("~/renderer/animations/nanoS/3EnterPinCode/light.json"),
+      dark: require("~/renderer/animations/nanoS/3EnterPinCode/dark.json"),
+    },
     quitApp: {
       light: require("~/renderer/animations/nanoS/4QuitApp/light.json"),
       dark: require("~/renderer/animations/nanoS/4QuitApp/dark.json"),
+    },
+    allowManager: {
+      light: require("~/renderer/animations/nanoS/5AllowManager/light.json"),
+      dark: require("~/renderer/animations/nanoS/5AllowManager/dark.json"),
+    },
+  },
+  blue: {
+    plugAndPinCode: {
+      light: require("~/renderer/animations/blue/1PlugAndPinCode/data.json"),
+    },
+    enterPinCode: {
+      light: require("~/renderer/animations/blue/3EnterPinCode/data.json"),
+    },
+    quitApp: {
+      light: require("~/renderer/animations/blue/4QuitApp/data.json"),
+    },
+    allowManager: {
+      light: require("~/renderer/animations/blue/5AllowManager/data.json"),
     },
   },
 };
@@ -65,8 +86,9 @@ export const getDeviceAnimation = (
 };
 
 type OwnProps = {
+  edges?: number,
   overridesPreferredDeviceModel?: DeviceModelId,
-  Success?: React$ComponentType<{
+  Success: React$ComponentType<{
     device: Device,
     deviceInfo: DeviceInfo,
     result: ?ListAppsResult,
@@ -81,8 +103,11 @@ type Props = OwnProps & {
 
 const AnimationWrapper = styled.div`
   width: 600px;
-  height: 200px;
+  height: ${p => (p.modelId === "blue" ? "300px" : "200px")};
   align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Wrapper = styled.div`
@@ -100,12 +125,21 @@ const Title = styled(Text).attrs({
   fontSize: 5,
 })``;
 
+const Header = styled.div`
+  min-height: ${p => p.edges || 0}px;
+`;
+
+const Footer = styled.div`
+  min-height: ${p => p.edges || 0}px;
+`;
+
 const ManagerConnect = ({
   reduxDevice,
   Success,
   overridesPreferredDeviceModel,
   preferredDeviceModel,
   dispatch,
+  edges,
 }: Props) => {
   const [
     {
@@ -129,7 +163,7 @@ const ManagerConnect = ({
     if (modelId !== preferredDeviceModel) {
       dispatch(setPreferredDeviceModel(modelId));
     }
-  }, [modelId]);
+  }, [dispatch, modelId, preferredDeviceModel]);
 
   if (repairModalOpened && repairModalOpened.auto) {
     return <AutoRepair onDone={closeRepairModal} />;
@@ -138,12 +172,15 @@ const ManagerConnect = ({
   if (inApp) {
     return (
       <Wrapper>
-        <AnimationWrapper>
+        <Header edges={edges} />
+        <AnimationWrapper modelId={modelId}>
           <Animation animation={getDeviceAnimation(modelId, type, "quitApp")} />
         </AnimationWrapper>
-        <Title>
-          <Trans i18nKey="manager.connect.quitApp" />
-        </Title>
+        <Footer edges={edges}>
+          <Title>
+            <Trans i18nKey="manager.connect.quitApp" />
+          </Title>
+        </Footer>
       </Wrapper>
     );
   }
@@ -151,15 +188,18 @@ const ManagerConnect = ({
   if (allowManagerRequestedWording) {
     return (
       <Wrapper>
-        <AnimationWrapper>
+        <Header edges={edges} />
+        <AnimationWrapper modelId={modelId}>
           <Animation animation={getDeviceAnimation(modelId, type, "allowManager")} />
         </AnimationWrapper>
-        <Title>
-          <Trans
-            i18nKey="manager.connect.allowPermission"
-            values={{ wording: allowManagerRequestedWording }}
-          />
-        </Title>
+        <Footer edges={edges}>
+          <Title>
+            <Trans
+              i18nKey="manager.connect.allowPermission"
+              values={{ wording: allowManagerRequestedWording }}
+            />
+          </Title>
+        </Footer>
       </Wrapper>
     );
   }
@@ -180,18 +220,28 @@ const ManagerConnect = ({
   if ((!isLoading && !device) || unresponsive) {
     return (
       <Wrapper>
-        <div style={{ height: 120 }} />
-        <AnimationWrapper>
-          <Animation animation={getDeviceAnimation(modelId, type, "plugAndPinCode")} />
+        <Header edges={edges} />
+        <AnimationWrapper modelId={modelId}>
+          <Animation
+            animation={getDeviceAnimation(
+              modelId,
+              type,
+              unresponsive ? "enterPinCode" : "plugAndPinCode",
+            )}
+          />
         </AnimationWrapper>
-        <Title>
-          <Trans i18nKey="manager.connect.connectAndUnlockDevice" />
-        </Title>
-        <div style={{ height: 120 }}>
-          {!device ? (
-            <ConnectTroubleshooting appearsAfterDelay={20000} onRepair={onRepairModal} />
-          ) : null}
-        </div>
+        <Footer edges={edges}>
+          <Title>
+            <Trans
+              i18nKey={
+                unresponsive
+                  ? "manager.connect.unlockDevice"
+                  : "manager.connect.connectAndUnlockDevice"
+              }
+            />
+          </Title>
+          {!device ? <ConnectTroubleshooting onRepair={onRepairModal} /> : null}
+        </Footer>
       </Wrapper>
     );
   }
@@ -199,12 +249,15 @@ const ManagerConnect = ({
   if (isLoading) {
     return (
       <Wrapper>
-        <Box horizontal style={{ height: 200 }} alignItems="center">
-          <Spinner size={50} />
-        </Box>
-        <Title>
-          <Trans i18nKey="manager.connect.loading" />
-        </Title>
+        <Header edges={edges} />
+        <AnimationWrapper modelId={modelId}>
+          <BigSpinner size={50} />
+        </AnimationWrapper>
+        <Footer edges={edges}>
+          <Title>
+            <Trans i18nKey="manager.connect.loading" />
+          </Title>
+        </Footer>
       </Wrapper>
     );
   }
