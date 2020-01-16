@@ -748,6 +748,7 @@
   },
   "settings": {
     "title": "Settings",
+    "discreet": "Toggle discreet mode",
     "tabs": {
       "display": "General",
       "cryptoAssets": "Crypto assets",

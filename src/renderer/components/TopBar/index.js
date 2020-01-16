@@ -9,7 +9,7 @@ import styled from "styled-components";
 import { lock } from "~/renderer/actions/application";
 import { openModal } from "~/renderer/actions/modals";
 
-import { hasPasswordSelector } from "~/renderer/reducers/settings";
+import { discreetModeSelector, hasPasswordSelector } from "~/renderer/reducers/settings";
 import { hasAccountsSelector } from "~/renderer/reducers/accounts";
 
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
@@ -21,11 +21,14 @@ import Tooltip from "~/renderer/components/Tooltip";
 import Breadcrumb from "~/renderer/components/Breadcrumb";
 
 import IconLock from "~/renderer/icons/Lock";
+import IconEye from "~/renderer/icons/Eye";
+import IconEyeOff from "~/renderer/icons/EyeOff";
 import IconSettings from "~/renderer/icons/Settings";
 
 // TODO: ActivityIndicator
 import ActivityIndicator from "./ActivityIndicator";
 import ItemContainer from "./ItemContainer";
+import { setDiscreetMode } from "~/renderer/actions/settings";
 
 const Container: ThemedComponent<{}> = styled(Box).attrs(() => ({
   px: 6,
@@ -65,9 +68,13 @@ const TopBar = () => {
   const location = useLocation();
   const hasPassword = useSelector(hasPasswordSelector);
   const hasAccounts = useSelector(hasAccountsSelector);
+  const discreetMode = useSelector(discreetModeSelector);
 
   const handleLock = useCallback(() => dispatch(lock()), [dispatch]);
-
+  const handleDiscreet = useCallback(() => dispatch(setDiscreetMode(!discreetMode)), [
+    discreetMode,
+    dispatch,
+  ]);
   const navigateToSettings = useCallback(() => {
     const url = "/settings";
 
@@ -101,6 +108,14 @@ const TopBar = () => {
             <Tooltip content={t("settings.title")} placement="bottom">
               <ItemContainer data-e2e="setting_button" isInteractive onClick={navigateToSettings}>
                 <IconSettings size={16} />
+              </ItemContainer>
+            </Tooltip>
+            <Box justifyContent="center">
+              <Bar />
+            </Box>
+            <Tooltip content={t("settings.discreet")} placement="bottom">
+              <ItemContainer data-e2e="discreet_button" isInteractive onClick={handleDiscreet}>
+                {discreetMode ? <IconEyeOff size={16} /> : <IconEye size={16} />}
               </ItemContainer>
             </Tooltip>
             {hasPassword && (
