@@ -20,17 +20,17 @@ const cleaningTasks = new Listr(
           });
         }),
     },
-    {
-      title: "Cleaning node_modules",
-      task: () =>
-        new Promise((resolve, reject) => {
-          const nodeModulesDir = path.resolve(__dirname, "..", "node_modules");
-          rimraf(nodeModulesDir, error => {
-            if (error) return reject(error);
-            resolve();
-          });
-        }),
-    },
+    // {
+    //   title: "Cleaning node_modules",
+    //   task: () =>
+    //     new Promise((resolve, reject) => {
+    //       const nodeModulesDir = path.resolve(__dirname, "..", "node_modules");
+    //       rimraf(nodeModulesDir, error => {
+    //         if (error) return reject(error);
+    //         resolve();
+    //       });
+    //     }),
+    // },
   ],
   { concurrent: true, collapse: false },
 );
