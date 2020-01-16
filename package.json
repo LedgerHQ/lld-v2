@@ -31,7 +31,7 @@
   "dependencies": {
     "@hot-loader/react-dom": "^16.11.0",
     "@ledgerhq/devices": "^5.5.0",
-    "@ledgerhq/electron-updater": "^3.3.1",
+    "@ledgerhq/electron-updater": "^4.2.0",
     "@ledgerhq/errors": "^5.5.0",
     "@ledgerhq/hw-transport": "^5.5.0",
     "@ledgerhq/hw-transport-http": "^5.5.0",
