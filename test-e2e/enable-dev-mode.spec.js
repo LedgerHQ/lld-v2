@@ -1,10 +1,10 @@
-import { waitForDisappear, waitForExpectedText } from "./helpers";
-import { applicationProxy } from "./applicationProxy";
+import { waitForExpectedText } from "./helpers.js";
+import { applicationProxy, getScreenshotPath } from "./applicationProxy";
+import * as selector from "./selectors.js";
+import * as step from "./scenarios.js";
+import { toMatchImageSnapshot } from "jest-image-snapshot";
 
-import * as selector from "./selectors";
-
-console.log("process.env.NODE_ENV");
-console.log(process.env.NODE_ENV);
+expect.extend({ toMatchImageSnapshot });
 
 let app;
 
@@ -25,30 +25,48 @@ describe(
     }, TIMEOUT);
 
     test(
-      "Launch app check release note",
+      "App start",
       async () => {
-        const title = await app.client.getTitle();
-        expect(title).toEqual("Ledger Live");
-        await app.client.waitUntilWindowLoaded();
-        await waitForDisappear(app, "#preload");
-        // Check Release note
-        await waitForExpectedText(app, selector.modal_title, "Release notes");
-        await app.client.click(selector.button_closeReleaseNote);
+        await step.applicationStart(app);
       },
       TIMEOUT,
     );
 
     test(
+      "Terms of use modal should be displayed",
+      async () => {
+        await step.termsOfUse(app);
+      },
+      TIMEOUT,
+    );
+
+    // test(
+    //   'Release Note should be displayed',
+    //   async () => {
+    //     await step.releaseNote(app)
+    //   },
+    //   TIMEOUT,
+    // )
+
+    test(
       "Go to Experimental Settings and enable developer mode",
       async () => {
-        await app.client.click(selector.button_settings);
-        await waitForExpectedText(app, selector.settings_title, "Settings");
-        await waitForExpectedText(app, selector.settingsSection_title, "General");
-        // Go to Experimental
-        await app.client.click("[data-e2e=tabs_experimental]");
+        await step.dashboard(app);
+        let image = await app.client.saveScreenshot(getScreenshotPath("dashboard"));
+        expect(image).toMatchImageSnapshot({
+          failureThreshold: 0.05,
+          failureThresholdType: "percent",
+        });
+        await step.generalSettings(app);
+        await app.client.click(selector.tab_experimental);
         const section_title = await app.client.getText(selector.settingsSection_title);
         expect(section_title).toEqual("Experimental features");
-        await app.client.click("[data-e2e=MANAGER_DEV_MODE_button]");
+        image = await app.client.saveScreenshot(getScreenshotPath("experimentals"));
+        expect(image).toMatchImageSnapshot({
+          failureThreshold: 0.02,
+          failureThresholdType: "percent",
+        });
+        await app.client.click(selector.button_devmode);
       },
       TIMEOUT,
     );
@@ -58,8 +76,18 @@ describe(
       async () => {
         await app.client.click(selector.sidebar_accounts);
         await waitForExpectedText(app, selector.accounts_title, "Accounts");
+        let image = await app.client.saveScreenshot(getScreenshotPath("accounts"));
+        expect(image).toMatchImageSnapshot({
+          failureThreshold: 0.02,
+          failureThresholdType: "percent",
+        });
         await app.client.click(selector.button_addAccount);
         await waitForExpectedText(app, selector.modal_title, "Add accounts");
+        image = await app.client.saveScreenshot(getScreenshotPath("addAccount_Modal"));
+        expect(image).toMatchImageSnapshot({
+          failureThreshold: 0.02,
+          failureThresholdType: "percent",
+        });
       },
       TIMEOUT,
     );
@@ -71,6 +99,44 @@ describe(
         await app.client.keys("Enter");
         const currency = await app.client.getText(selector.currencybadge);
         expect(currency).toEqual("Bitcoin Testnet");
+        const image = await app.client.saveScreenshot(getScreenshotPath("account"));
+        expect(image).toMatchImageSnapshot({
+          failureThreshold: 0.02,
+          failureThresholdType: "percent",
+        });
+      },
+      TIMEOUT,
+    );
+
+    test(
+      "Disable developer mode",
+      async () => {
+        await app.client.click(selector.button_close);
+        await waitForExpectedText(app, selector.accounts_title, "Accounts");
+        await app.client.click(selector.flag_experimental);
+        await waitForExpectedText(app, selector.settingsSection_title, "Experimental features");
+        await app.client.click(selector.button_devmode);
+        await app.client.click(selector.sidebar_portfolio);
+        await waitForExpectedText(
+          app,
+          selector.portfolio_assetDistribution_tile,
+          "Asset allocation (",
+        );
+        expect(selector.flag_experimental).toBeNull;
+      },
+      TIMEOUT,
+    );
+
+    test(
+      "Testnet currencies should not be available",
+      async () => {
+        await app.client.click(selector.sidebar_accounts);
+        await waitForExpectedText(app, selector.accounts_title, "Accounts");
+        await app.client.click(selector.button_addAccount);
+        await waitForExpectedText(app, selector.modal_title, "Add accounts");
+        await app.client.setValue(".select__input input", "Bitcoin testnet");
+        await app.client.keys("Enter");
+        expect(selector.currencybadge).toBeNull;
       },
       TIMEOUT,
     );

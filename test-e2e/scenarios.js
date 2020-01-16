@@ -1,5 +1,5 @@
 import { waitForDisappear, waitForExpectedText } from "./helpers.js";
-import { getScreenshotPath } from "./config/applicationProxy.js";
+import { getScreenshotPath } from "./applicationProxy.js";
 import * as selector from "./selectors.js";
 
 import { toMatchImageSnapshot } from "jest-image-snapshot";

@@ -1,9 +1,9 @@
 import os from "os";
 import fs from "fs";
 import path from "path";
-import appVersion from "../package.json";
 import rimraf from "rimraf";
 import { Application } from "spectron";
+const { version } = require(`${process.cwd()}/package.json`);
 
 export function getConfigPath() {
   const platform = os.platform();
@@ -18,6 +18,11 @@ export function getConfigPath() {
   return userDataPath;
 }
 
+export function getScreenshotPath(name) {
+  const screenshotPath = path.resolve(__dirname, "../data/screenshots");
+  return `${screenshotPath}/${name}.png`;
+}
+
 function getAppPath() {
   const platform = os.platform();
   let appPath;
@@ -26,7 +31,7 @@ function getAppPath() {
   } else if (platform === "win32") {
     appPath = ".\\dist\\win-unpacked\\Ledger Live.exe";
   } else {
-    appPath = `./dist/ledger-live-desktop-${appVersion.version}-linux-x86_64.AppImage`;
+    appPath = `./dist/ledger-live-desktop-${version}-linux-x86_64.AppImage`;
   }
   return appPath;
 }
