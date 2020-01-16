@@ -9,7 +9,11 @@ import { createStructuredSelector } from "reselect";
 import type { Unit } from "@ledgerhq/live-common/lib/types";
 import { formatCurrencyUnit } from "@ledgerhq/live-common/lib/currencies";
 import { DISABLE_TICKER_ANIMATION } from "~/config/constants";
-import { marketIndicatorSelector, localeSelector } from "~/renderer/reducers/settings";
+import {
+  marketIndicatorSelector,
+  localeSelector,
+  discreetModeSelector,
+} from "~/renderer/reducers/settings";
 import { getMarketColor } from "~/renderer/styles/helpers";
 import Box from "~/renderer/components/Box";
 import FlipTicker from "~/renderer/components/FlipTicker";
@@ -59,11 +63,13 @@ type OwnProps = {
 
 const mapStateToProps = createStructuredSelector({
   marketIndicator: marketIndicatorSelector,
+  discreet: discreetModeSelector,
   locale: localeSelector,
 });
 
 type Props = OwnProps & {
   marketIndicator: string,
+  discreet: boolean,
   locale: string,
 };
 
@@ -83,6 +89,7 @@ function FormattedVal(props: Props) {
     subMagnitude,
     prefix,
     suffix,
+    discreet,
     ...p
   } = props;
   let { val } = props;
@@ -112,6 +119,7 @@ function FormattedVal(props: Props) {
       showCode,
       locale,
       subMagnitude,
+      discreet,
     });
   }
 

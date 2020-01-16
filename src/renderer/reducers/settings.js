@@ -91,6 +91,7 @@ export type SettingsState = {
   showAccountsHelperBanner: boolean,
   hideEmptyTokenAccounts: boolean,
   sidebarCollapsed: boolean,
+  discreetMode: boolean,
 };
 
 const defaultsForCurrency: Currency => CurrencySettings = crypto => {
@@ -126,6 +127,7 @@ const INITIAL_STATE: SettingsState = {
   showAccountsHelperBanner: true,
   hideEmptyTokenAccounts: getEnv("HIDE_EMPTY_TOKEN_ACCOUNTS"),
   sidebarCollapsed: false,
+  discreetMode: false,
 };
 
 const pairHash = (from, to) => `${from.ticker}_${to.ticker}`;
@@ -204,6 +206,8 @@ export const storeSelector = (state: State): SettingsState => state.settings;
 export const settingsExportSelector = storeSelector;
 
 export const hasPasswordSelector = (state: State): boolean => state.settings.hasPassword === true;
+
+export const discreetModeSelector = (state: State): boolean => state.settings.discreetMode === true;
 
 export const getCounterValueCode = (state: State) => state.settings.counterValue;
 
