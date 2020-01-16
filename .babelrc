@@ -1,0 +1,32 @@
+// This file is only used by Jest
+// The app relies on main.webpack.config.js and renderer.webpack.config.js
+{
+  "presets": [
+    [
+      "@babel/preset-env", {
+        "targets": {
+          "electron": "6.1.7",
+          "node": "current"
+        },
+        "modules": false
+      }
+    ],
+    "@babel/preset-react",
+    "@babel/preset-flow"
+  ],
+
+  "env": {
+    "test": {
+      "plugins": [
+        [
+          "module-resolver", {
+            "alias": {
+              "^~/(.+)": "./src/\\1"
+            }
+          }
+        ],
+        "@babel/plugin-transform-modules-commonjs"
+      ]
+    }
+  }
+}
