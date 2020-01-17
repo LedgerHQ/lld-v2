@@ -34,7 +34,7 @@ const defaultWindowOptions = {
   },
 };
 
-export async function createMainWindow() {
+export async function createMainWindow(settings: {}) {
   // TODO renderer should provide the saved window rectangle
   const width = DEFAULT_WINDOW_WIDTH;
   const height = DEFAULT_WINDOW_HEIGHT;
@@ -64,10 +64,12 @@ export async function createMainWindow() {
 
   mainWindow.name = "MainWindow";
 
+  const serializedSettings = JSON.stringify(settings);
+
   if (__DEV__) {
-    mainWindow.loadURL(INDEX_URL);
+    mainWindow.loadURL(`${INDEX_URL}?settings=${serializedSettings}`);
   } else {
-    mainWindow.loadURL(`file://${__dirname}/index.html`);
+    mainWindow.loadURL(`file://${__dirname}/index.html?settings=${serializedSettings}`);
   }
 
   if (__DEV__ || DEV_TOOLS) {

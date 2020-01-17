@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import { useSpring, animated, interpolate } from "react-spring";
 
@@ -33,8 +33,13 @@ type TooltipProps = {
 };
 
 const Tooltip = ({ tooltip, renderTooltip, color, data }: TooltipProps) => {
+  const wasVisible = useRef(false);
   const theme = useTheme("colors.palette");
-  const { x, y } = useSpring({ x: tooltip.caretX, y: tooltip.caretY });
+  const { x, y } = useSpring({
+    to: { x: tooltip.caretX, y: tooltip.caretY },
+    reset: !wasVisible.current,
+  });
+  wasVisible.current = !!tooltip.opacity;
 
   return (
     <>

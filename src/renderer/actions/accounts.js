@@ -1,8 +1,7 @@
 // @flow
 
 import type { Account } from "@ledgerhq/live-common/lib/types";
-
-import db from "~/helpers/db";
+import { getKey } from "~/renderer/storage";
 
 export const replaceAccounts = (payload: Account[]) => ({
   type: "DB:REPLACE_ACCOUNTS",
@@ -19,8 +18,13 @@ export const removeAccount = (payload: Account) => ({
   payload,
 });
 
+export const setAccounts = (payload: Account[]) => ({
+  type: "SET_ACCOUNTS",
+  payload,
+});
+
 export const fetchAccounts = () => async (dispatch: *) => {
-  const accounts = await db.getKey("app", "accounts", []);
+  const accounts = await getKey("app", "accounts", []);
   return dispatch({
     type: "SET_ACCOUNTS",
     payload: accounts,

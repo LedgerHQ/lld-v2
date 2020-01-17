@@ -4,7 +4,7 @@ import React, { useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { PasswordIncorrectError } from "@ledgerhq/errors";
 import { useTranslation } from "react-i18next";
-import db from "~/helpers/db";
+import { setEncryptionKey, removeEncryptionKey, isEncryptionKeyCorrect } from "~/renderer/storage";
 import { saveSettings } from "~/renderer/actions/settings";
 import { closeModal } from "~/renderer/actions/modals";
 import Box from "~/renderer/components/Box";
@@ -34,10 +34,10 @@ const DisablePasswordModal = () => {
     async (password: ?string) => {
       if (password) {
         dispatch(saveSettings({ hasPassword: true }));
-        await db.setEncryptionKey("app", "accounts", password);
+        await setEncryptionKey("app", "accounts", password);
       } else {
         dispatch(saveSettings({ hasPassword: false }));
-        await db.removeEncryptionKey("app", "accounts");
+        await removeEncryptionKey("app", "accounts");
       }
     },
     [dispatch],
@@ -52,12 +52,12 @@ const DisablePasswordModal = () => {
   );
 
   const disablePassword = useCallback(
-    (e: SyntheticEvent<HTMLFormElement>) => {
+    async (e: SyntheticEvent<HTMLFormElement>) => {
       if (e) {
         e.preventDefault();
       }
 
-      if (!db.isEncryptionKeyCorrect("app", "accounts", currentPassword)) {
+      if (!(await isEncryptionKeyCorrect("app", "accounts", currentPassword))) {
         setIncorrectPassword(new PasswordIncorrectError());
         return;
       }

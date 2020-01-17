@@ -4,7 +4,7 @@ import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import { getDeviceModel } from "@ledgerhq/devices";
 import { saveSettings } from "~/renderer/actions/settings";
-import db from "~/helpers/db";
+import { setEncryptionKey } from "~/renderer/storage";
 import IconChevronRight from "~/renderer/icons/ChevronRight";
 import {
   Description,
@@ -55,7 +55,7 @@ class SetPassword extends PureComponent<Props, State> {
     const { newPassword } = this.state;
     const { nextStep, saveSettings } = this.props;
 
-    await db.setEncryptionKey("app", "accounts", newPassword);
+    await setEncryptionKey("app", "accounts", newPassword);
     saveSettings({ hasPassword: true });
     this.handleReset();
     nextStep();

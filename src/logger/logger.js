@@ -164,7 +164,7 @@ export default {
   onDB: (way: "read" | "write" | "clear", name: string) => {
     const msg = `📁  ${way} ${name}`;
     if (logDb) {
-      logger.log("debug", msg, { type: "DbService.js" });
+      logger.log("debug", msg, { type: "db" });
     }
   },
 

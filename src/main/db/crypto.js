@@ -2,37 +2,11 @@
 
 import crypto from "crypto";
 const ENCRYPTION_ALGORITHM = "aes-256-cbc";
-
-export const checkHashedData = (data: string, hashedData: string) => {
-  const initializationVector = hashedData.slice(0, 16);
-
-  const derivedData = crypto.pbkdf2Sync(
-    data,
-    initializationVector.toString(),
-    10000,
-    32,
-    "sha512",
-  );
-
-  return derivedData === hashedData.slice(17)
-};
-
-export const hashData = (data: string) => {
-  const initializationVector = crypto.randomBytes(16);
-  const derivedData = crypto.pbkdf2Sync(
-    data,
-    initializationVector.toString(),
-    10000,
-    32,
-    "sha512",
-  );
-
-  return `${initializationVector}:${hashedData}`;
-};
+const IV_LENGTH = 16;
 
 export const encryptData = (data: string, encryptionKey: string) => {
   // in any case, we save new data using an initialization vector
-  const initializationVector = crypto.randomBytes(16);
+  const initializationVector = crypto.randomBytes(IV_LENGTH);
   const password = crypto.pbkdf2Sync(
     encryptionKey,
     initializationVector.toString(),
@@ -44,15 +18,17 @@ export const encryptData = (data: string, encryptionKey: string) => {
   return Buffer.concat([
     initializationVector,
     Buffer.from(":"),
-    cipher.update(Buffer.from(data)),
+    cipher.update(data, "utf8"),
     cipher.final(),
-  ]);
+  ]).toString("base64");
 };
 
-export const decryptData = (data: string, encryptionKey: string) => {
+export const decryptData = (raw: string, encryptionKey: string) => {
+  const data = Buffer.from(raw, "base64");
+
   // We check if the data include an initialization vector
-  if (data.slice(16, 17).toString() === ":") {
-    const initializationVector = data.slice(0, 16);
+  if (data.slice(IV_LENGTH, IV_LENGTH + 1).toString() === ":") {
+    const initializationVector = data.slice(0, IV_LENGTH);
     const password = crypto.pbkdf2Sync(
       encryptionKey,
       initializationVector.toString(),
@@ -61,10 +37,12 @@ export const decryptData = (data: string, encryptionKey: string) => {
       "sha512",
     );
     const decipher = crypto.createDecipheriv(ENCRYPTION_ALGORITHM, password, initializationVector);
-    return Buffer.concat([decipher.update(data.slice(17)), decipher.final()]);
+    return Buffer.concat([decipher.update(data.slice(IV_LENGTH + 1)), decipher.final()]).toString(
+      "utf8",
+    );
   }
   // if not, then we fallback to the deprecated API
   // eslint-disable-next-line node/no-deprecated-api
   const decipher = crypto.createDecipher(ENCRYPTION_ALGORITHM, encryptionKey);
-  return Buffer.concat([decipher.update(data), decipher.final()]);
+  return Buffer.concat([decipher.update(data), decipher.final()]).toString("utf8");
 };

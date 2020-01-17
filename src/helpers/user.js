@@ -2,16 +2,16 @@
 
 import uuid from "uuid/v4";
 
-import db from "./db";
+import { setKey, getKey } from "~/renderer/storage";
 
 // a user is an anonymous way to identify a same instance of the app
 
 // only used by analytics. DEPRECATED (will will later switch to localStorage)
 export default async () => {
-  let user = await db.getKey("app", "user");
+  let user = await getKey("app", "user");
   if (!user) {
     user = { id: uuid() };
-    db.setKey("app", "user", user);
+    setKey("app", "user", user);
   }
   return user;
 };

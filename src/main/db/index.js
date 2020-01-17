@@ -1,28 +1,22 @@
 // @flow
 
 import path from "path";
-import crypto from "crypto";
 import cloneDeep from "lodash/cloneDeep";
-import writeFileAtomicModule from "write-file-atomic";
 import get from "lodash/get";
 import set from "lodash/set";
 import { NoDBPathGiven, DBWrongPassword } from "@ledgerhq/errors";
 import {} from "@ledgerhq/live-common/lib/promise";
+import { encryptData, decryptData } from "~/main/db/crypto";
+import { readFile, writeFile } from "~/main/db/fsHelper";
 
 import logger from "~/logger";
-import { promisify, debounce } from "~/helpers/promise";
-import { fsReadFile, fsUnlink } from "~/helpers/fs";
-
-const ALGORITHM_NONCE_SIZE = 12;
+import { debounce } from "~/helpers/promise";
+import { fsUnlink } from "~/helpers/fs";
 
 type Transform = {
   get: any => any,
   set: any => any,
 };
-
-const writeFileAtomic = promisify(writeFileAtomicModule);
-
-const ALGORITHM = "aes-256-cbc";
 
 let DBPath = null;
 let memoryNamespaces = {};
@@ -58,8 +52,8 @@ async function load(ns: string): Promise<mixed> {
   try {
     if (!DBPath) throw new NoDBPathGiven();
     const filePath = path.resolve(DBPath, `${ns}.json`);
-    const fileContent = await fsReadFile(filePath);
-    const { data } = JSON.parse(fileContent);
+    const fileContent = await readFile(filePath);
+    const { data } = JSON.parse(fileContent.toString());
     memoryNamespaces[ns] = data;
 
     // transform fields
@@ -107,12 +101,8 @@ async function setEncryptionKey(ns: string, keyPath: string, encryptionKey: stri
     return save(ns);
   }
 
-  const nonce = crypto.randomBytes(ALGORITHM_NONCE_SIZE);
-
   try {
-    const decipher = crypto.createDecipheriv(ALGORITHM, encryptionKey, nonce);
-    const raw = decipher.update(val, "base64", "utf8") + decipher.final("utf8");
-    let decrypted = JSON.parse(raw);
+    let decrypted = JSON.parse(decryptData(val, encryptionKey));
 
     // handle the case when we just migrated from the previous storage
     // which stored the data in binary with a `data` key
@@ -220,20 +210,18 @@ async function saveToDisk(ns: string) {
     for (const keyPath in encryptionKeys[ns]) {
       if (encryptionKeys[ns].hasOwnProperty(keyPath)) {
         const encryptionKey = encryptionKeys[ns][keyPath];
-        const nonce = crypto.randomBytes(ALGORITHM_NONCE_SIZE);
         if (!encryptionKey) continue; // eslint-disable-line no-continue
         const val = get(clone, keyPath);
         if (!val) continue; // eslint-disable-line no-continue
-        const cipher = crypto.createCipheriv(ALGORITHM, encryptionKey, nonce);
-        const encrypted =
-          cipher.update(JSON.stringify(val), "utf8", "base64") + cipher.final("base64");
+        // eslint-disable-next-line node/no-deprecated-api
+        const encrypted = encryptData(JSON.stringify(val), encryptionKey);
         set(clone, keyPath, encrypted);
       }
     }
   }
 
   const fileContent = JSON.stringify({ data: clone });
-  await writeFileAtomic(path.resolve(DBPath, `${ns}.json`), fileContent);
+  await writeFile(path.resolve(DBPath, `${ns}.json`), fileContent);
 }
 
 async function cleanCache() {
