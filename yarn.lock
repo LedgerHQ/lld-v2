@@ -4628,10 +4628,10 @@ electron-builder@^21.2.0:
     update-notifier "^3.0.1"
     yargs "^13.3.0"
 
-electron-chromedriver@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/electron-chromedriver/-/electron-chromedriver-6.0.0.tgz#a91b940c83f1c42ced52c9ef0605d8721613a8a2"
-  integrity sha512-UIhRl0sN5flfUjqActXsFrZQU1NmBObvlxzPnyeud8vhR67TllXCoqfvhQJmIrJAJJK+5M1DFhJ5iTGT++dvkg==
+electron-chromedriver@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/electron-chromedriver/-/electron-chromedriver-7.0.0.tgz#204e1bfcdf2dfd56e5a3b8e6f37d19b1433a7937"
+  integrity sha512-7qymT0fn3VTit0peym1iz4Y+fTwq9EPsv1V9Qh+vQdoVqP/4SM9lOHrsBeuFN1JJADZLu7R119ZvMkP6EnLYhw==
   dependencies:
     electron-download "^4.1.1"
     extract-zip "^1.6.7"
@@ -10086,7 +10086,7 @@ read-pkg@^3.0.0:
     normalize-package-data "^2.3.2"
     path-type "^3.0.0"
 
-"readable-stream@1 || 2", readable-stream@^2.0.0, readable-stream@^2.0.1, readable-stream@^2.0.2, readable-stream@^2.0.5, readable-stream@^2.0.6, readable-stream@^2.1.5, readable-stream@^2.2.2, readable-stream@^2.3.0, readable-stream@^2.3.3, readable-stream@^2.3.5, readable-stream@^2.3.6, readable-stream@~2.3.6:
+"readable-stream@1 || 2", readable-stream@^2.0.0, readable-stream@^2.0.2, readable-stream@^2.0.5, readable-stream@^2.0.6, readable-stream@^2.1.5, readable-stream@^2.2.2, readable-stream@^2.3.0, readable-stream@^2.3.3, readable-stream@^2.3.5, readable-stream@^2.3.6, readable-stream@~2.3.6:
   version "2.3.6"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.3.6.tgz#b11c27d88b8ff1fbe070643cf94b0c79ae1b0aaf"
   integrity sha512-tQtKA9WIAhBF3+VLAseyMqZeBjW0AHJoxOtYqSUZNJxauErmLbVm2FW1y+J/YA9dUrAC39ITejlZWhVIwawkKw==
@@ -10998,11 +10998,6 @@ slash@^2.0.0:
   resolved "https://registry.yarnpkg.com/slash/-/slash-2.0.0.tgz#de552851a1759df3a8f206535442f5ec4ddeab44"
   integrity sha512-ZYKh3Wh2z1PpEXWr0MpSBZ0V6mZHAQfYevttO11c51CaWjGTaadiKZ+wVt1PbMlDV5qhMFslpZCemhwOK7C89A==
 
-slash@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/slash/-/slash-3.0.0.tgz#6539be870c165adbd5240220dbe361f1bc4d4634"
-  integrity sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==
-
 sleep-promise@^8.0.1:
   version "8.0.1"
   resolved "https://registry.yarnpkg.com/sleep-promise/-/sleep-promise-8.0.1.tgz#8d795a27ea23953df6b52b91081e5e22665993c5"
@@ -11169,13 +11164,13 @@ spdx-license-ids@^3.0.0:
   resolved "https://registry.yarnpkg.com/spdx-license-ids/-/spdx-license-ids-3.0.5.tgz#3694b5804567a458d3c8045842a6358632f62654"
   integrity sha512-J+FWzZoynJEXGphVIS+XEh3kFSjZX/1i9gFBaWQcB+/tmpe2qUsSBABpcxqxnAxFdiUFEgAX1bjYGQvIZmoz9Q==
 
-spectron@8:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/spectron/-/spectron-8.0.0.tgz#86e83c5dccb174850c052e2e718d5b1158764a52"
-  integrity sha512-MI9+lAamDnw7S0vKaxXjU3g5qaW5KANaFLc+Hgq+QmMCkQbZLt6ukFFGfalmwIuYrmq+yWQPCD4CXgt3VSHrLA==
+spectron@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/spectron/-/spectron-9.0.0.tgz#6581780027172095e168353c82ed934212a0c97f"
+  integrity sha512-aMxprQ+5/8hDl27P6FafIuuL8jAueJ7WEc6S6pEEQNU7xGCMcfj0RY6TB1i9BtkazMymIxAkmwqlK233Fbhcgw==
   dependencies:
     dev-null "^0.1.1"
-    electron-chromedriver "^6.0.0"
+    electron-chromedriver "^7.0.0"
     request "^2.87.0"
     split "^1.0.0"
     webdriverio "^4.13.0"
