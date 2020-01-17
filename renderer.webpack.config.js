@@ -11,7 +11,6 @@ const babelConfig = {
         targets: {
           electron: "7.1.9",
         },
-        modules: "commonjs",
       },
     ],
     "@babel/preset-react",
