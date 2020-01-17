@@ -20,17 +20,17 @@ const cleaningTasks = new Listr(
           });
         }),
     },
-    {
-      title: "Cleaning node_modules",
-      task: () =>
-        new Promise((resolve, reject) => {
-          const nodeModulesDir = path.resolve(__dirname, "..", "node_modules");
-          rimraf(nodeModulesDir, error => {
-            if (error) return reject(error);
-            resolve();
-          });
-        }),
-    },
+    // {
+    //   title: "Cleaning node_modules",
+    //   task: () =>
+    //     new Promise((resolve, reject) => {
+    //       const nodeModulesDir = path.resolve(__dirname, "..", "node_modules");
+    //       rimraf(nodeModulesDir, error => {
+    //         if (error) return reject(error);
+    //         resolve();
+    //       });
+    //     }),
+    // },
   ],
   { concurrent: true, collapse: false },
 );
@@ -44,6 +44,7 @@ const setupTasks = new Listr(
           const { stdout } = await execa("yarn");
           return stdout;
         } catch (error) {
+          process.stderr.write(error);
           throw new Error("Could not install node_modules");
         }
       },
@@ -55,6 +56,7 @@ const setupTasks = new Listr(
           const { stdout } = await execa("yarn", ["install-deps"]);
           return stdout;
         } catch (error) {
+          process.stderr.write(error);
           throw new Error("Could not rebuild app deps");
         }
       },
@@ -73,6 +75,7 @@ const buildTasks = (args = {}) =>
             const { stdout } = await execa("yarn", ["build"]);
             return stdout;
           } catch (error) {
+            process.stderr.write(error);
             throw new Error("Could not build the app");
           }
         },
@@ -93,6 +96,7 @@ const buildTasks = (args = {}) =>
             const { stdout } = await execa("yarn", commands);
             return stdout;
           } catch (error) {
+            process.stderr.write(error);
             throw new Error(`Could not ${args.p ? "pack" : "bundle"} the electron app`);
           }
         },
