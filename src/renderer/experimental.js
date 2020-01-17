@@ -47,12 +47,6 @@ export const experimentalFeatures: Feature[] = [
   },
   {
     type: "toggle",
-    name: "EXPERIMENTAL_USB",
-    title: "Experimental USB",
-    description: "Alternative USB implementation that might help solve USB issues.",
-  },
-  {
-    type: "toggle",
     name: "LEDGER_COUNTERVALUES_API",
     valueOn: "http://countervalue-service.dev.aws.ledger.fr",
     valueOff: "https://countervalues.api.live.ledger.com",
