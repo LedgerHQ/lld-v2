@@ -4,6 +4,7 @@
 const yargs = require("yargs");
 const execa = require("execa");
 const Listr = require("listr");
+const verboseRenderer = require("listr-verbose-renderer");
 const path = require("path");
 const rimraf = require("rimraf");
 
@@ -35,49 +36,38 @@ const cleaningTasks = new Listr(
   { concurrent: true, collapse: false },
 );
 
-const setupTasks = new Listr(
-  [
-    {
-      title: "Installing packages",
-      task: async () => {
-        try {
-          const { stdout } = await execa("yarn");
-          return stdout;
-        } catch (error) {
-          process.stderr.write(error);
-          throw new Error("Could not install node_modules");
-        }
+const setupTasks = args =>
+  new Listr(
+    [
+      {
+        title: "Installing packages",
+        task: async () => {
+          await execa("yarn", ["-s"], {
+            stdio: args.verbose ? "inherit" : "pipe",
+          });
+        },
       },
-    },
-    {
-      title: "Rebuilding app deps",
-      task: async () => {
-        try {
-          const { stdout } = await execa("yarn", ["install-deps"]);
-          return stdout;
-        } catch (error) {
-          process.stderr.write(error);
-          throw new Error("Could not rebuild app deps");
-        }
+      {
+        title: "Rebuilding app deps",
+        task: async () => {
+          await execa("yarn", ["-s", "install-deps"], {
+            stdio: args.verbose ? "inherit" : "pipe",
+          });
+        },
       },
-    },
-  ],
-  { collapse: false },
-);
+    ],
+    { collapse: false },
+  );
 
-const buildTasks = (args = {}) =>
+const buildTasks = args =>
   new Listr(
     [
       {
         title: "Compiling assets",
         task: async () => {
-          try {
-            const { stdout } = await execa("yarn", ["build"]);
-            return stdout;
-          } catch (error) {
-            process.stderr.write(error);
-            throw new Error("Could not build the app");
-          }
+          await execa("yarn", ["-s", "build"], {
+            stdio: args.verbose ? "inherit" : "pipe",
+          });
         },
       },
       {
@@ -85,47 +75,49 @@ const buildTasks = (args = {}) =>
           ? "Packing the electron application (for debug purpose)"
           : "Bundling the electron application",
         task: async () => {
-          try {
-            const commands = ["dist:internal"];
-            if (args.p) commands.push("--dir");
-            if (args.n) {
-              commands.push("--config");
-              commands.push("electron-builder-nightly.yml");
-            }
-
-            const { stdout } = await execa("yarn", commands);
-            return stdout;
-          } catch (error) {
-            process.stderr.write(error);
-            throw new Error(`Could not ${args.p ? "pack" : "bundle"} the electron app`);
+          const commands = ["-s", "dist:internal"];
+          if (args.dir) commands.push("--dir");
+          if (args.publish) commands.push("--publish", "always");
+          if (args.n) {
+            commands.push("--config");
+            commands.push("electron-builder-nightly.yml");
           }
+
+          await execa("yarn", commands, {
+            stdio: args.verbose ? "inherit" : "pipe",
+          });
         },
       },
     ],
     { collapse: false },
   );
 
-const mainTask = args => {
-  const { dirty } = args;
-  const tasks = dirty
-    ? []
-    : [
-        {
-          title: "Cleanup",
-          task: () => cleaningTasks,
-        },
-        {
-          title: "Setup",
-          task: () => setupTasks,
-        },
-      ];
+const mainTask = (args = {}) => {
+  const { dirty, verbose } = args;
 
-  tasks.push({
-    title: "Build",
-    task: () => buildTasks(args),
-  });
+  const tasks = [
+    {
+      title: "Cleanup",
+      skip: () => (dirty ? "--dirty flag passed" : false),
+      task: () => cleaningTasks,
+    },
+    {
+      title: "Setup",
+      skip: () => (dirty ? "--dirty flag passed" : false),
+      task: () => setupTasks(args),
+    },
+    {
+      title: "Build",
+      task: () => buildTasks(args),
+    },
+  ];
 
-  return new Listr(tasks, { collapse: false });
+  const options = {
+    collapse: false,
+    renderer: verbose ? verboseRenderer : undefined,
+  };
+
+  return new Listr(tasks, options);
 };
 
 yargs
@@ -135,9 +127,9 @@ yargs
     desc: "bundles the electron app",
     builder: yrgs =>
       yrgs
-        .option("p", {
-          alias: "pack",
+        .option("dir", {
           type: "boolean",
+          describe: "Build unpacked dir. Useful for tests",
         })
         .option("n", {
           alias: "nightly",
@@ -146,11 +138,22 @@ yargs
         .option("dirty", {
           type: "boolean",
           describe: "Don't clean-up and rebuild dependencies before building",
+        })
+        .option("publish", {
+          type: "boolean",
+          describe: "Publish the created artifacts on GitHub as a draft release",
+        })
+        .option("verbose", {
+          alias: "v",
+          type: "boolean",
+          describe:
+            "Do not pretty print progress (ncurses) and display output from called commands",
         }),
     handler: args => {
       mainTask(args)
         .run()
-        .catch(() => {
+        .catch(error => {
+          console.error(error);
           process.exit(-1);
         });
     },
