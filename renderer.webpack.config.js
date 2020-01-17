@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
+const babelPlugins = require("./babel.plugins");
 
 const babelConfig = {
   presets: [
@@ -8,20 +9,15 @@ const babelConfig = {
       "@babel/preset-env",
       {
         targets: {
-          electron: "7.1.3",
+          electron: "7.1.9",
         },
-        modules: "commonjs",
       },
     ],
     "@babel/preset-react",
     "@babel/preset-flow",
   ],
   plugins: [
-    "@babel/plugin-proposal-export-default-from",
-    "@babel/plugin-proposal-export-namespace-from",
-    "@babel/plugin-syntax-dynamic-import",
-    "@babel/plugin-syntax-import-meta",
-    ["@babel/plugin-proposal-class-properties", { loose: true }],
+    ...babelPlugins,
     "react-hot-loader/babel",
     [
       "babel-plugin-styled-components",
