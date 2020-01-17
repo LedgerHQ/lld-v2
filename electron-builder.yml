@@ -55,7 +55,5 @@ nsis:
 files:
   # Include files
   - .webpack/**/*
-  - node_modules/**/*
-  - package.json
   # Exclude files
   # Exclude modules
