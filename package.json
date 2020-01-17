@@ -22,7 +22,7 @@
     "dist": "node ./tools/dist.js",
     "dist:dirty": "node ./tools/dist.js --dirty",
     "dist:dir": "node ./tools/dist.js --dir",
-    "nightly": "node ./tools/dist.js -n",
+    "nightly": "node ./tools/dist.js -n -v",
     "ci": "node ./tools/ci.js",
     "test": "jest src",
     "test-e2e": "jest test-e2e"
