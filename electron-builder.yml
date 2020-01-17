@@ -11,9 +11,9 @@ protocols:
 mac:
   artifactName: ${name}-${version}-${os}.${ext}
   category: public.app-category.wallet
-  # hardenedRuntime: true
-  # entitlements: build/mac/entitlements.plist
-  # entitlementsInherit: build/mac/entitlements.plist
+  hardenedRuntime: true
+  entitlements: build/mac/entitlements.plist
+  entitlementsInherit: build/mac/entitlements.plist
   target:
     - dmg
     - zip
