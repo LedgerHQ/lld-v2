@@ -75,4 +75,7 @@ jobs:
           yarn --ignore-scripts
           yarn prepublish
       - name: test
-        run: yarn ci
+        run: |
+          yarn lint
+          yarn prettier:check
+          yarn flow
