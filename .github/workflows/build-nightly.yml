@@ -30,8 +30,8 @@ jobs:
       - name: upload macOS app
         uses: actions/upload-artifact@v1
         with:
-          name: ${{ steps.version.outputs.pkgName }}-${{ steps.version.outputs.pkgVersion }}-macos.zip
-          path: dist/${{ steps.version.outputs.pkgName }}-${{ steps.version.outputs.pkgVersion }}-mac.zip
+          name: ${{ steps.version.outputs.pkgName }}-${{ steps.version.outputs.pkgVersion }}-macos.dmg
+          path: dist/${{ steps.version.outputs.pkgName }}-${{ steps.version.outputs.pkgVersion }}-mac.dmg
   nightly-linux:
     runs-on: ubuntu-latest
     steps:
