@@ -7,6 +7,7 @@ import { listTokenTypesForCryptoCurrency } from "@ledgerhq/live-common/lib/curre
 import styled from "styled-components";
 import { Trans, withTranslation } from "react-i18next";
 import { withRouter } from "react-router-dom";
+import type { RouterHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import type { Account, AccountLike } from "@ledgerhq/live-common/lib/types/account";
@@ -33,7 +34,7 @@ type Props = {
   ...OwnProps,
   t: TFunction,
   openModal: Function,
-  router: any,
+  history: RouterHistory,
 };
 
 const Wrapper: ThemedComponent<{}> = styled.div`
@@ -80,7 +81,7 @@ const ReceiveButton = (props: { onClick: () => void }) => (
 
 class TokensList extends PureComponent<Props> {
   onAccountClick = (account: AccountLike, parentAccount: Account) => {
-    this.props.router.push(`/account/${parentAccount.id}/${account.id}`);
+    this.props.history.push(`/account/${parentAccount.id}/${account.id}`);
   };
 
   onReceiveClick = () => {
