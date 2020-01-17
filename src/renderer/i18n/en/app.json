@@ -427,7 +427,8 @@
       "capacity": "Capacity",
       "used": "Used",
       "firmware": "Firmware {{version}}",
-      "genuine": "Device is genuine"
+      "genuine": "Device is genuine",
+      "incomplete": "Some apps were not recognized by our apps catalog. Please uninstall and reinstall them."
     },
     "applist": {
       "placeholder": "There are no apps matching the search and filters selected",

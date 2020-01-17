@@ -71,6 +71,7 @@ const SuccessInstall = styled.div`
   color: ${p => p.theme.colors.positiveGreen};
   display: flex;
   flex-direction: row;
+  padding: 10px;
   > svg {
     padding-right: 5px;
   }
@@ -168,12 +169,6 @@ const Item: React$ComponentType<Props> = React.memo(
           />
         ) : (
           <AppActions>
-            {((installed || !installedAvailable) && !appStoreView && !onlyUpdate) ||
-            forceUninstall ? (
-              <Button style={{ padding: 12 }} lighterDanger onClick={onUninstall}>
-                <IconTrash color={colors.alertRed} size={14} />
-              </Button>
-            ) : null}
             {appStoreView && installed && installed.updated ? (
               <SuccessInstall>
                 <IconCheck size={16} />
@@ -182,7 +177,6 @@ const Item: React$ComponentType<Props> = React.memo(
                 </Text>
               </SuccessInstall>
             ) : null}
-
             {installed && !installed.updated ? (
               <Button
                 style={{ display: "flex" }}
@@ -217,6 +211,18 @@ const Item: React$ComponentType<Props> = React.memo(
                   </Text>
                 </Button>
               </Tooltip>
+            ) : null}
+            {((installed || !installedAvailable) && !appStoreView && !onlyUpdate) ||
+            forceUninstall ? (
+              <Button
+                style={{ padding: 12 }}
+                outline
+                outlineColor={colors.grey}
+                onClick={onUninstall}
+                icon
+              >
+                <IconTrash color={colors.grey} size={14} />
+              </Button>
             ) : null}
           </AppActions>
         )}

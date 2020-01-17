@@ -14,10 +14,13 @@ import Box from "~/renderer/components/Box";
 
 import IconTriangleWarning from "~/renderer/icons/TriangleWarning";
 import IconCheckFull from "~/renderer/icons/CheckFull";
+import IconError from "~/renderer/icons/Warning";
+
 import nanoS from "./images/nanoS.png";
 import nanoX from "./images/nanoX.png";
 import blue from "./images/blue.png";
-import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
+import { colors } from "~/renderer/styles/theme";
+import { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
 const illustrations = {
   nanoS,
@@ -172,7 +175,14 @@ const DeviceStorage = ({ state, deviceInfo }: *) => {
           </Text>
           <Separator />
           {isIncompleteState(state) ? (
-            "TODO: “Some of your apps were not recognized by our apps catalog. Please uninstall or reinstall them.”"
+            <Box horizontal alignItems="center" bg="lightRed" py={2} px={4} borderRadius={4}>
+              <Box paddingRight={2}>
+                <IconError color={colors.alertRed} bg={colors.white} />
+              </Box>
+              <Text ff="Inter|SemiBold" color="alertRed" fontSize={4}>
+                <Trans i18nKey="manager.deviceStorage.incomplete" />
+              </Text>
+            </Box>
           ) : (
             <>
               <Info>

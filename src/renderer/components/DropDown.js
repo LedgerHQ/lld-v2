@@ -26,7 +26,7 @@ const Drop: ThemedComponent<{}> = styled(Box).attrs(() => ({
   right: 0;
   top: 100%;
   z-index: 1;
-  overflow: scroll;
+  overflow: auto;
 `;
 
 export const DropDownItem: ThemedComponent<{ isHighlighted: boolean, isActive: boolean }> = styled(

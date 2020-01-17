@@ -84,7 +84,7 @@ type Props = {
 const AppsList = ({ deviceInfo, result, exec }: Props) => {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("all");
-  const [sort, setSort] = useState({ type: "name", order: "asc" });
+  const [sort, setSort] = useState({ type: "marketcap", order: "desc" });
   const [activeTab, setActiveTab] = useState(0);
   const [state, dispatch] = useAppsRunner(result, exec);
   const onUpdateAll = useCallback(() => dispatch({ type: "updateAll" }), [dispatch]);
