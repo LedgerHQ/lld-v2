@@ -5,7 +5,7 @@ import { Trans } from "react-i18next";
 import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
 import type { ListAppsResult, Exec } from "@ledgerhq/live-common/lib/apps/types";
 import type { Device } from "~/renderer/reducers/devices";
-import { getActionPlan, useAppsRunner } from "@ledgerhq/live-common/lib/apps";
+import { getActionPlan, useAppsRunner, isIncompleteState } from "@ledgerhq/live-common/lib/apps";
 import { useSortedFilteredApps } from "@ledgerhq/live-common/lib/apps/filtering";
 import Placeholder from "./Placeholder";
 import Button from "~/renderer/components/Button";
@@ -24,20 +24,43 @@ const Tabs = styled.div`
   display: flex;
   flex-direction: row;
   margin-bottom: 24px;
+  position: relative;
 `;
 
-const Tab = styled(Button)`
+// TODO rework this into a component that works with several tabs
+const Tab = styled(Button).attrs(p => ({
+  transformIndicator:
+    p.activeTab > p.tabIndex
+      ? "calc(100% + 30px)"
+      : p.activeTab < p.tabIndex
+      ? "calc(-100% - 30px)"
+      : 0,
+}))`
   padding: 0px;
-  margin-right: 30px;
+  padding-right: 30px;
   text-transform: uppercase;
   border-radius: 0;
-  border-bottom: ${p => (p.active ? `3px solid ${p.theme.colors.palette.primary.main}` : "none")};
   padding-bottom: 4px;
   color: ${p =>
     p.active ? p.theme.colors.palette.text.shade100 : p.theme.colors.palette.text.shade30};
-  &:hover {
+  &:hover, &:active, &:focus {
     background: none;
     color: ${p => p.theme.colors.palette.text.shade100};
+  }
+  position: relative;
+  &:after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 4px;
+    position: absolute;
+    bottom 0;
+    right: 30px;
+    z-index: 2;
+    background-color: ${p => p.theme.colors.palette.primary.main};
+    transform: translateX(${p => p.transformIndicator});
+    transition: transform 0.2s linear;
+    will-change: transform;
   }
 `;
 
@@ -59,7 +82,9 @@ const UpdatableHeader = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 20px;
+  padding: 10px 20px;
+  height: 48px;
+  box-sizing: content-box;
   border-bottom: 1px solid ${p => p.theme.colors.palette.text.shade10};
 `;
 
@@ -84,7 +109,7 @@ type Props = {
 const AppsList = ({ deviceInfo, result, exec }: Props) => {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("all");
-  const [sort, setSort] = useState({ type: "name", order: "asc" });
+  const [sort, setSort] = useState({ type: "marketcap", order: "desc" });
   const [activeTab, setActiveTab] = useState(0);
   const [state, dispatch] = useAppsRunner(result, exec);
   const onUpdateAll = useCallback(() => dispatch({ type: "updateAll" }), [dispatch]);
@@ -120,6 +145,7 @@ const AppsList = ({ deviceInfo, result, exec }: Props) => {
       installed={state.installed.find(ins => ins.name === app.name)}
       dispatch={dispatch}
       installedAvailable={state.installedAvailable}
+      forceUninstall={isIncompleteState(state)}
       appStoreView={appStoreView}
       onlyUpdate={onlyUpdate}
       deviceModel={state.deviceModel}
@@ -137,18 +163,31 @@ const AppsList = ({ deviceInfo, result, exec }: Props) => {
           dispatch={dispatch}
         />
       </Box>
-      <Tabs>
-        <Tab active={!onDeviceTab} onClick={() => setActiveTab(0)}>
-          <Text ff="Inter|Bold" fontSize={6}>
-            <Trans i18nKey="manager.tabs.appCatalog" />
-          </Text>
-        </Tab>
-        <Tab active={onDeviceTab} onClick={() => setActiveTab(1)}>
-          <Text ff="Inter|Bold" fontSize={6}>
-            <Trans i18nKey="manager.tabs.appsOnDevice" />
-          </Text>
-        </Tab>
-      </Tabs>
+
+      {isIncompleteState(state) ? null : (
+        <Tabs>
+          <Tab
+            active={!onDeviceTab}
+            tabIndex={0}
+            activeTab={activeTab}
+            onClick={() => setActiveTab(0)}
+          >
+            <Text ff="Inter|Bold" fontSize={6}>
+              <Trans i18nKey="manager.tabs.appCatalog" />
+            </Text>
+          </Tab>
+          <Tab
+            active={onDeviceTab}
+            tabIndex={1}
+            activeTab={activeTab}
+            onClick={() => setActiveTab(1)}
+          >
+            <Text ff="Inter|Bold" fontSize={6}>
+              <Trans i18nKey="manager.tabs.appsOnDevice" />
+            </Text>
+          </Tab>
+        </Tabs>
+      )}
 
       {onDeviceTab && updatableAppList.length ? (
         <Card mb={20}>

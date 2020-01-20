@@ -13,7 +13,7 @@ import lte from "semver/functions/lte";
 import Text from "~/renderer/components/Text";
 import getCleanVersion from "~/renderer/screens/manager/FirmwareUpdate/getCleanVersion";
 import IconInfoCircle from "~/renderer/icons/InfoCircle";
-import Box, { Card } from "~/renderer/components/Box";
+import Box from "~/renderer/components/Box";
 import UpdateFirmwareButton from "./UpdateFirmwareButton";
 import type { ModalStatus } from "./types";
 
@@ -91,28 +91,34 @@ class FirmwareUpdate extends PureComponent<Props, State> {
     const deviceSpecs = getDeviceModel(device.modelId);
 
     return (
-      <Card p={4}>
-        <Box horizontal alignItems="center" justifyContent="space-between">
-          <Text ff="Inter|SemiBold" fontSize={4} color="palette.text.shade100">
-            <Trans
-              i18nKey="manager.firmware.latest"
-              values={{ version: getCleanVersion(firmware.final.name) }}
-            />
-          </Text>
-          {lte(deviceInfo.version, "1.4.2") && (
-            <Box horizontal alignItems="center">
-              <IconInfoCircle size={12} style={{ marginRight: 6 }} />
-              <Text ff="Inter" fontSize={3} color="palette.text.shade60">
-                <Trans i18nKey="manager.firmware.removeApps" />
-              </Text>
-            </Box>
-          )}
-          <UpdateFirmwareButton
-            deviceInfo={deviceInfo}
-            firmware={firmware}
-            onClick={this.handleDisclaimerModal}
+      <Box
+        mt={4}
+        py={2}
+        px={4}
+        bg="blueTransparentBackground"
+        horizontal
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <Text ff="Inter|SemiBold" fontSize={4} color="palette.primary.main">
+          <Trans
+            i18nKey="manager.firmware.latest"
+            values={{ version: getCleanVersion(firmware.final.name) }}
           />
-        </Box>
+        </Text>
+        {lte(deviceInfo.version, "1.4.2") && (
+          <Box horizontal alignItems="center" color="palette.primary.main">
+            <IconInfoCircle size={12} />
+            <Text style={{ marginLeft: 6 }} ff="Inter" fontSize={3}>
+              <Trans i18nKey="manager.firmware.removeApps" />
+            </Text>
+          </Box>
+        )}
+        <UpdateFirmwareButton
+          deviceInfo={deviceInfo}
+          firmware={firmware}
+          onClick={this.handleDisclaimerModal}
+        />
 
         {ready ? (
           <>
@@ -133,7 +139,7 @@ class FirmwareUpdate extends PureComponent<Props, State> {
             />
           </>
         ) : null}
-      </Card>
+      </Box>
     );
   }
 }

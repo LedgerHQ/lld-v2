@@ -1,7 +1,6 @@
 // @flow
 import React, { useCallback, useMemo } from "react";
 import {
-  formatSize,
   isOutOfMemoryState,
   predictOptimisticState,
   reducer,
@@ -12,6 +11,7 @@ import styled from "styled-components";
 import { Trans } from "react-i18next";
 import manager from "@ledgerhq/live-common/lib/manager";
 
+import ByteSize from "~/renderer/components/ByteSize";
 import Text from "~/renderer/components/Text";
 import Box from "~/renderer/components/Box";
 import Tooltip from "~/renderer/components/Tooltip";
@@ -35,12 +35,6 @@ const AppRow = styled.div`
   }
   padding: 20px;
   font-size: 12px;
-
-  & > * {
-    &:first-of-type {
-      width: 300px;
-    }
-  }
 `;
 
 const AppName = styled.div`
@@ -52,13 +46,14 @@ const AppName = styled.div`
 `;
 
 const AppSize = styled.div`
-  padding-left: 80px;
-  flex: 1;
+  flex: 0 0 100px;
+  text-align: center;
   color: ${p => p.theme.colors.palette.text.shade40};
 `;
 
 const AppActions = styled.div`
   display: flex;
+  flex: 1;
   min-width: 150px;
   justify-content: flex-end;
   flex-direction: row;
@@ -71,13 +66,15 @@ const SuccessInstall = styled.div`
   color: ${p => p.theme.colors.positiveGreen};
   display: flex;
   flex-direction: row;
+  padding: 10px 20px;
   > svg {
     padding-right: 5px;
   }
 `;
 
 const LiveCompatible = styled.div`
-  flex: 1;
+  width: 100px;
+  text-align: center;
   & > * > * {
     align-items: center;
     justify-content: center;
@@ -105,6 +102,7 @@ const Item: React$ComponentType<Props> = React.memo(
     appStoreView,
     onlyUpdate,
     deviceModel,
+    forceUninstall,
   }: Props) => {
     const { name } = app;
     const onInstall = useCallback(() => dispatch({ type: "install", name }), [dispatch, name]);
@@ -120,34 +118,48 @@ const Item: React$ComponentType<Props> = React.memo(
 
     return (
       <AppRow>
-        <Box flex horizontal>
+        <Box flex="1" horizontal>
           <img alt="" src={manager.getIconUrl(app.icon)} width={40} height={40} />
           <AppName>
             <Text ff="Inter|Bold" color="palette.text.shade100" fontSize={3}>{`${app.name}${
               app.currencyId ? ` (${getCryptoCurrencyById(app.currencyId).ticker})` : ""
             }`}</Text>
-            <Text ff="Inter|Regular" color="palette.text.shade60" fontSize={2}>{`Version ${
-              app.version
-            }${installed && !installed.updated ? " (NEW)" : ""}`}</Text>
+            <Text ff="Inter|Regular" color="palette.text.shade50" fontSize={3}>
+              <Trans
+                i18nKey={
+                  installed && !installed.updated
+                    ? "manager.applist.item.versionNew"
+                    : "manager.applist.item.version"
+                }
+                values={{ version: app.version }}
+              />
+            </Text>
           </AppName>
         </Box>
         <AppSize>
-          {formatSize(
-            ((installed && installed.blocks) || 0) * deviceModel.deviceSize || app.bytes || 0,
-          )}
+          <ByteSize
+            value={
+              ((installed && installed.blocks) || 0) * deviceModel.deviceSize || app.bytes || 0
+            }
+            deviceModel={deviceModel}
+          />
         </AppSize>
-        <LiveCompatible>
-          {isLiveSupported ? (
-            <Tooltip content={<Trans i18nKey="manager.applist.item.supported" />}>
-              <IconLoader size={16} />
-            </Tooltip>
-          ) : null}
-        </LiveCompatible>
+        <Box horizontal alignContent="center" justifyContent="center">
+          <LiveCompatible>
+            {isLiveSupported ? (
+              <Tooltip content={<Trans i18nKey="manager.applist.item.supported" />}>
+                <IconLoader size={16} />
+              </Tooltip>
+            ) : null}
+          </LiveCompatible>
+        </Box>
         {error ? (
-          <Button danger title={String(error)}>
-            <IconError size={14} />
-            <Trans i18nKey="manager.applist.item.error" />
-          </Button>
+          <Box flex="1">
+            <Button danger title={String(error)}>
+              <IconError size={14} />
+              <Trans i18nKey="manager.applist.item.error" />
+            </Button>
+          </Box>
         ) : progress || scheduled ? (
           <Progress
             onClick={
@@ -157,11 +169,6 @@ const Item: React$ComponentType<Props> = React.memo(
           />
         ) : (
           <AppActions>
-            {(installed || !installedAvailable) && !appStoreView && !onlyUpdate ? (
-              <Button style={{ padding: 12 }} lighterDanger onClick={onUninstall}>
-                <IconTrash color={colors.alertRed} size={14} />
-              </Button>
-            ) : null}
             {appStoreView && installed && installed.updated ? (
               <SuccessInstall>
                 <IconCheck size={16} />
@@ -170,7 +177,6 @@ const Item: React$ComponentType<Props> = React.memo(
                 </Text>
               </SuccessInstall>
             ) : null}
-
             {installed && !installed.updated ? (
               <Button
                 style={{ display: "flex" }}
@@ -205,6 +211,18 @@ const Item: React$ComponentType<Props> = React.memo(
                   </Text>
                 </Button>
               </Tooltip>
+            ) : null}
+            {((installed || !installedAvailable) && !appStoreView && !onlyUpdate) ||
+            forceUninstall ? (
+              <Button
+                style={{ padding: 12 }}
+                outline
+                outlineColor={colors.grey}
+                onClick={onUninstall}
+                icon
+              >
+                <IconTrash color={colors.grey} size={14} />
+              </Button>
             ) : null}
           </AppActions>
         )}
