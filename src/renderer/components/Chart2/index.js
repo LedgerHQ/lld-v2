@@ -173,7 +173,7 @@ const Chart = ({ height, data, color, renderTickY, renderTooltip, valueKey = "va
         options: generateOptions,
       });
     }
-  }, [data, generateOptions, generatedData, valueKey]);
+  }, [generateOptions, generatedData]);
 
   return (
     <ChartContainer height={height}>
