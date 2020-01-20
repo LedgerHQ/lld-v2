@@ -65,7 +65,7 @@ const addExtraPollingHooks = (schedulePoll, cancelPoll) => {
 };
 
 implementCountervalues({
-  log: (...args) => logger.log("CounterValues:", ...args),
+  log: logger.countervalues,
   getAPIBaseURL: () => getEnv("LEDGER_COUNTERVALUES_API"),
   storeSelector: state => state.countervalues,
   pairsSelector,

@@ -114,6 +114,7 @@ const logWS = !process.env.NO_DEBUG_WS;
 const logNetwork = !process.env.NO_DEBUG_NETWORK;
 const logAnalytics = !process.env.NO_DEBUG_ANALYTICS;
 const logApdu = !process.env.NO_DEBUG_DEVICE;
+const logCountervalues = !process.env.NO_DEBUG_COUNTERVALUES;
 
 const blacklistTooVerboseCommandInput = [
   "CurrencyScanAccountsOnDevice",
@@ -311,6 +312,12 @@ export default {
       message,
       data: properties,
     });
+  },
+
+  countervalues: (...args: any) => {
+    if (logCountervalues) {
+      logger.log("debug", "Countervalues:", ...args);
+    }
   },
 
   // General functions in case the hooks don't apply

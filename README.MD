@@ -68,6 +68,7 @@ NO_DEBUG_NETWORK=1
 NO_DEBUG_ANALYTICS=1
 NO_DEBUG_WS=1
 NO_DEBUG_DEVICE=1
+NO_DEBUG_COUNTERVALUES=1
 ```
 
 other envs can be seen in (live-common:src/env.js)[https://github.com/LedgerHQ/ledger-live-common/blob/master/src/env.js)
