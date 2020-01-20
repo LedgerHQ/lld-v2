@@ -13,6 +13,7 @@ import Chart from "~/renderer/components/Chart2";
 import Box, { Card } from "~/renderer/components/Box";
 import FormattedVal from "~/renderer/components/FormattedVal";
 import PlaceholderChart from "~/renderer/components/PlaceholderChart";
+import { discreetModeSelector } from "~/renderer/reducers/settings";
 
 type OwnProps = {
   counterValue: Currency,
@@ -24,6 +25,7 @@ type OwnProps = {
 
 type Props = {
   ...OwnProps,
+  discreetMode: boolean,
   portfolio: Portfolio,
 };
 
@@ -49,7 +51,7 @@ class PortfolioBalanceSummary extends PureComponent<Props> {
   renderTooltip = (d: any) => <Tooltip d={d} counterValue={this.props.counterValue} />;
 
   render() {
-    const { portfolio, range, chartColor, chartId, Header } = this.props;
+    const { portfolio, range, chartColor, chartId, Header, discreetMode } = this.props;
     return (
       <Card p={0} py={5}>
         {Header ? (
@@ -74,7 +76,7 @@ class PortfolioBalanceSummary extends PureComponent<Props> {
               data={portfolio.balanceHistory}
               height={250}
               tickXScale={range}
-              renderTickY={this.renderTickY}
+              renderTickY={discreetMode ? () => "" : this.renderTickY}
               isInteractive
               renderTooltip={this.renderTooltip}
             />
@@ -94,6 +96,7 @@ class PortfolioBalanceSummary extends PureComponent<Props> {
 const ConnectedBalanceSummary: React$ComponentType<OwnProps> = connect(
   createStructuredSelector({
     portfolio: portfolioSelector,
+    discreetMode: discreetModeSelector,
   }),
 )(PortfolioBalanceSummary);
 
