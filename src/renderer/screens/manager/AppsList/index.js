@@ -1,5 +1,5 @@
 // @flow
-import React, { useCallback, useState, useRef } from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import { Trans } from "react-i18next";
 import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
@@ -107,7 +107,6 @@ type Props = {
 };
 
 const AppsList = ({ deviceInfo, result, exec }: Props) => {
-  const tabRefs = useRef(Array(2).fill(null));
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("all");
   const [sort, setSort] = useState({ type: "marketcap", order: "desc" });
@@ -134,8 +133,6 @@ const AppsList = ({ deviceInfo, result, exec }: Props) => {
   );
 
   const displayedAppList = onDeviceTab ? installedAppList : appList;
-
-  console.log(tabRefs && tabRefs.current[0]);
 
   const mapApp = (app, appStoreView, onlyUpdate) => (
     <Item
@@ -173,7 +170,6 @@ const AppsList = ({ deviceInfo, result, exec }: Props) => {
             active={!onDeviceTab}
             tabIndex={0}
             activeTab={activeTab}
-            tabs={2}
             onClick={() => setActiveTab(0)}
           >
             <Text ff="Inter|Bold" fontSize={6}>
@@ -184,7 +180,6 @@ const AppsList = ({ deviceInfo, result, exec }: Props) => {
             active={onDeviceTab}
             tabIndex={1}
             activeTab={activeTab}
-            tabs={2}
             onClick={() => setActiveTab(1)}
           >
             <Text ff="Inter|Bold" fontSize={6}>
