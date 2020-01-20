@@ -19,6 +19,7 @@ import FormattedVal from "~/renderer/components/FormattedVal";
 import { createStructuredSelector } from "reselect";
 import { currencyPortfolioSelector } from "~/renderer/actions/portfolio";
 import AssetBalanceSummaryHeader from "./AssetBalanceSummaryHeader";
+import { discreetModeSelector } from "~/renderer/reducers/settings";
 
 type OwnProps = {
   counterValue: Currency,
@@ -33,10 +34,12 @@ type OwnProps = {
 type Props = {
   ...OwnProps,
   portfolio: *,
+  discreetMode: boolean,
 };
 
 const mapStateToProps = createStructuredSelector({
   portfolio: currencyPortfolioSelector,
+  discreetMode: discreetModeSelector,
 });
 
 class BalanceSummary extends PureComponent<Props> {
@@ -51,6 +54,7 @@ class BalanceSummary extends PureComponent<Props> {
       portfolio: { history, countervalueAvailable },
       countervalueFirst,
     } = this.props;
+
     const displayCountervalue = countervalueFirst && history.countervalueAvailable;
     const data = [
       { val: d.value, unit },
@@ -84,6 +88,7 @@ class BalanceSummary extends PureComponent<Props> {
       counterValue,
       currency,
       unit,
+      discreetMode,
     } = this.props;
     const displayCountervalue = countervalueFirst && portfolio.countervalueAvailable;
     return (
@@ -112,7 +117,11 @@ class BalanceSummary extends PureComponent<Props> {
             valueKey={displayCountervalue ? "countervalue" : "value"}
             mapValue={displayCountervalue ? this.mapValueCounterValue : this.mapValueCryptoValue}
             renderTickY={
-              displayCountervalue ? this.renderTickYCounterValue : this.renderTickYCryptoValue
+              discreetMode
+                ? () => ""
+                : displayCountervalue
+                ? this.renderTickYCounterValue
+                : this.renderTickYCryptoValue
             }
             isInteractive
             renderTooltip={this.renderTooltip}
