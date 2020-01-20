@@ -7,7 +7,8 @@ import Text from "~/renderer/components/Text";
 import IconCrossCircle from "~/renderer/icons/CrossCircle";
 
 const Holder = styled.div`
-  min-width: 150px;
+  min-width: 100px;
+  width: 100%;
   height: 5px;
   background: ${p => p.theme.colors.palette.text.shade20};
   position: relative;
@@ -19,6 +20,7 @@ const Bar = styled.div`
   height: 100%;
   border-radius: 5px;
   width: ${p => `${(p.value * 100).toFixed(2)}%`};
+  max-width: 100%;
 `;
 const Cancel = styled.div`
   align-items: center;
@@ -30,29 +32,38 @@ const Cancel = styled.div`
 `;
 
 const Progress = ({ onClick, progress }: { onClick: () => void, progress: * }) => (
-  <div style={{ textAlign: "right" }}>
-    <Box horizontal alignItems="center" justifyContent="flex-end">
-      <Text ff="Inter|SemiBold" fontSize={3} color="palette.primary.main" mb={5}>
-        <Trans
-          i18nKey={
-            progress && progress.appOp
-              ? progress.appOp.type === "install"
-                ? "manager.applist.item.installing"
-                : "manager.applist.item.uninstalling"
-              : "manager.applist.item.scheduled"
-          }
-        />
-      </Text>
-      {!progress ? (
-        <Cancel onClick={onClick}>
-          <IconCrossCircle size={20} />
-        </Cancel>
-      ) : null}
+  <Box flex="1" horizontal justifyContent="flex-end" overflow="hidden">
+    <Box flex="0 0 auto" vertical alignItems="center" justifyContent="center">
+      <Box
+        flex="0 0 auto"
+        horizontal
+        alignItems="center"
+        justifyContent="center"
+        py={1}
+        maxWidth="100%"
+      >
+        <Text ff="Inter|SemiBold" fontSize={3} color="palette.primary.main">
+          <Trans
+            i18nKey={
+              progress && progress.appOp
+                ? progress.appOp.type === "install"
+                  ? "manager.applist.item.installing"
+                  : "manager.applist.item.uninstalling"
+                : "manager.applist.item.scheduled"
+            }
+          />
+        </Text>
+        {!progress ? (
+          <Cancel onClick={onClick}>
+            <IconCrossCircle size={20} />
+          </Cancel>
+        ) : null}
+      </Box>
+      <Holder>
+        <Bar value={progress ? progress.progress : 0} />
+      </Holder>
     </Box>
-    <Holder>
-      <Bar value={progress ? progress.progress : 0} />
-    </Holder>
-  </div>
+  </Box>
 );
 
 export default Progress;

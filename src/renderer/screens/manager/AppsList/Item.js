@@ -35,12 +35,6 @@ const AppRow = styled.div`
   }
   padding: 20px;
   font-size: 12px;
-
-  & > * {
-    &:first-of-type {
-      width: 300px;
-    }
-  }
 `;
 
 const AppName = styled.div`
@@ -52,13 +46,14 @@ const AppName = styled.div`
 `;
 
 const AppSize = styled.div`
-  padding-left: 80px;
-  flex: 1;
+  flex: 0 0 100px;
+  text-align: center;
   color: ${p => p.theme.colors.palette.text.shade40};
 `;
 
 const AppActions = styled.div`
   display: flex;
+  flex: 1;
   min-width: 150px;
   justify-content: flex-end;
   flex-direction: row;
@@ -71,14 +66,15 @@ const SuccessInstall = styled.div`
   color: ${p => p.theme.colors.positiveGreen};
   display: flex;
   flex-direction: row;
-  padding: 10px;
+  padding: 10px 20px;
   > svg {
     padding-right: 5px;
   }
 `;
 
 const LiveCompatible = styled.div`
-  flex: 1;
+  width: 100px;
+  text-align: center;
   & > * > * {
     align-items: center;
     justify-content: center;
@@ -122,7 +118,7 @@ const Item: React$ComponentType<Props> = React.memo(
 
     return (
       <AppRow>
-        <Box flex horizontal>
+        <Box flex="1" horizontal>
           <img alt="" src={manager.getIconUrl(app.icon)} width={40} height={40} />
           <AppName>
             <Text ff="Inter|Bold" color="palette.text.shade100" fontSize={3}>{`${app.name}${
@@ -148,18 +144,22 @@ const Item: React$ComponentType<Props> = React.memo(
             deviceModel={deviceModel}
           />
         </AppSize>
-        <LiveCompatible>
-          {isLiveSupported ? (
-            <Tooltip content={<Trans i18nKey="manager.applist.item.supported" />}>
-              <IconLoader size={16} />
-            </Tooltip>
-          ) : null}
-        </LiveCompatible>
+        <Box horizontal alignContent="center" justifyContent="center">
+          <LiveCompatible>
+            {isLiveSupported ? (
+              <Tooltip content={<Trans i18nKey="manager.applist.item.supported" />}>
+                <IconLoader size={16} />
+              </Tooltip>
+            ) : null}
+          </LiveCompatible>
+        </Box>
         {error ? (
-          <Button danger title={String(error)}>
-            <IconError size={14} />
-            <Trans i18nKey="manager.applist.item.error" />
-          </Button>
+          <Box flex="1">
+            <Button danger title={String(error)}>
+              <IconError size={14} />
+              <Trans i18nKey="manager.applist.item.error" />
+            </Button>
+          </Box>
         ) : progress || scheduled ? (
           <Progress
             onClick={

@@ -132,11 +132,11 @@ const TooltipContent = ({
 
 export const StorageBar = ({ distribution, deviceModel }: { distribution: *, deviceModel: * }) => (
   <StorageBarWrapper>
-    {distribution.apps.map(({ name, currency, bytes, blocks }) => {
+    {distribution.apps.map(({ name, currency, bytes, blocks }, index) => {
       const color = currency ? currency.color : "black";
       return (
         <StorageBarItem
-          key={name}
+          key={`${name}-${index}`}
           style={{ background: color }}
           ratio={blocks / (distribution.totalBlocks - distribution.osBlocks)}
         >
@@ -151,6 +151,8 @@ export const StorageBar = ({ distribution, deviceModel }: { distribution: *, dev
 
 const DeviceStorage = ({ state, deviceInfo }: *) => {
   const distribution = distribute(state);
+  const isIncomplete = isIncompleteState(state);
+  const shouldWarn = distribution.shouldWarnMemory || isIncomplete;
 
   return (
     <div>
@@ -174,55 +176,48 @@ const DeviceStorage = ({ state, deviceInfo }: *) => {
             />
           </Text>
           <Separator />
-          {isIncompleteState(state) ? (
-            <Box horizontal alignItems="center" bg="lightRed" py={2} px={4} borderRadius={4}>
-              <Box paddingRight={2}>
-                <IconError color={colors.alertRed} bg={colors.white} />
-              </Box>
-              <Text ff="Inter|SemiBold" color="alertRed" fontSize={4}>
-                <Trans i18nKey="manager.deviceStorage.incomplete" />
+          <Info>
+            <div>
+              <Text fontSize={4}>
+                <Trans i18nKey="manager.deviceStorage.used" />
               </Text>
-            </Box>
-          ) : (
-            <>
-              <Info>
-                <div>
-                  <Text fontSize={4}>
-                    <Trans i18nKey="manager.deviceStorage.used" />
-                  </Text>
-                  <Text color="palette.text.shade100" ff="Inter|Bold" fontSize={4}>
-                    <ByteSize deviceModel={state.deviceModel} value={distribution.totalAppsBytes} />
-                  </Text>
-                </div>
-                <div>
-                  <Text fontSize={4}>
-                    <Trans i18nKey="manager.deviceStorage.capacity" />
-                  </Text>
-                  <Text color="palette.text.shade100" ff="Inter|Bold" fontSize={4}>
-                    <ByteSize deviceModel={state.deviceModel} value={distribution.appsSpaceBytes} />
-                  </Text>
-                </div>
-                <div>
-                  <Text fontSize={4}>
-                    <Trans i18nKey="manager.deviceStorage.installed" />
-                  </Text>
-                  <Text color="palette.text.shade100" ff="Inter|Bold" fontSize={4}>
-                    {distribution.apps.length}
-                  </Text>
-                </div>
-              </Info>
-              <StorageBar distribution={distribution} deviceModel={state.deviceModel} />
-              <FreeInfo danger={distribution.shouldWarnMemory}>
-                {distribution.shouldWarnMemory ? <IconTriangleWarning /> : ""}{" "}
-                <Text ff="Inter|SemiBold" fontSize={3}>
+              <Text color="palette.text.shade100" ff="Inter|Bold" fontSize={4}>
+                <ByteSize deviceModel={state.deviceModel} value={distribution.totalAppsBytes} />
+              </Text>
+            </div>
+            <div>
+              <Text fontSize={4}>
+                <Trans i18nKey="manager.deviceStorage.capacity" />
+              </Text>
+              <Text color="palette.text.shade100" ff="Inter|Bold" fontSize={4}>
+                <ByteSize deviceModel={state.deviceModel} value={distribution.appsSpaceBytes} />
+              </Text>
+            </div>
+            <div>
+              <Text fontSize={4}>
+                <Trans i18nKey="manager.deviceStorage.installed" />
+              </Text>
+              <Text color="palette.text.shade100" ff="Inter|Bold" fontSize={4}>
+                {distribution.apps.length}
+              </Text>
+            </div>
+          </Info>
+          <StorageBar distribution={distribution} deviceModel={state.deviceModel} />
+          <FreeInfo danger={shouldWarn}>
+            {shouldWarn ? <IconTriangleWarning /> : ""}{" "}
+            <Box paddingLeft={1}>
+              <Text ff="Inter|SemiBold" fontSize={3}>
+                {isIncomplete ? (
+                  <Trans i18nKey="manager.deviceStorage.incomplete" />
+                ) : (
                   <Trans i18nKey="manager.deviceStorage.freeSpace">
                     <ByteSize value={distribution.freeSpaceBytes} deviceModel={state.deviceModel} />
                     {" free"}
                   </Trans>
-                </Text>
-              </FreeInfo>
-            </>
-          )}
+                )}
+              </Text>
+            </Box>
+          </FreeInfo>
         </div>
       </Card>
     </div>

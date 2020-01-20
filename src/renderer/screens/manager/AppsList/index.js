@@ -1,5 +1,5 @@
 // @flow
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useRef } from "react";
 import styled from "styled-components";
 import { Trans } from "react-i18next";
 import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
@@ -24,20 +24,43 @@ const Tabs = styled.div`
   display: flex;
   flex-direction: row;
   margin-bottom: 24px;
+  position: relative;
 `;
 
-const Tab = styled(Button)`
+// TODO rework this into a component that works with several tabs
+const Tab = styled(Button).attrs(p => ({
+  transformIndicator:
+    p.activeTab > p.tabIndex
+      ? "calc(100% + 30px)"
+      : p.activeTab < p.tabIndex
+      ? "calc(-100% - 30px)"
+      : 0,
+}))`
   padding: 0px;
-  margin-right: 30px;
+  padding-right: 30px;
   text-transform: uppercase;
   border-radius: 0;
-  border-bottom: ${p => (p.active ? `3px solid ${p.theme.colors.palette.primary.main}` : "none")};
   padding-bottom: 4px;
   color: ${p =>
     p.active ? p.theme.colors.palette.text.shade100 : p.theme.colors.palette.text.shade30};
-  &:hover {
+  &:hover, &:active, &:focus {
     background: none;
     color: ${p => p.theme.colors.palette.text.shade100};
+  }
+  position: relative;
+  &:after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 4px;
+    position: absolute;
+    bottom 0;
+    right: 30px;
+    z-index: 2;
+    background-color: ${p => p.theme.colors.palette.primary.main};
+    transform: translateX(${p => p.transformIndicator});
+    transition: transform 0.2s linear;
+    will-change: transform;
   }
 `;
 
@@ -59,7 +82,9 @@ const UpdatableHeader = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 20px;
+  padding: 10px 20px;
+  height: 48px;
+  box-sizing: content-box;
   border-bottom: 1px solid ${p => p.theme.colors.palette.text.shade10};
 `;
 
@@ -82,6 +107,7 @@ type Props = {
 };
 
 const AppsList = ({ deviceInfo, result, exec }: Props) => {
+  const tabRefs = useRef(Array(2).fill(null));
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("all");
   const [sort, setSort] = useState({ type: "marketcap", order: "desc" });
@@ -108,6 +134,8 @@ const AppsList = ({ deviceInfo, result, exec }: Props) => {
   );
 
   const displayedAppList = onDeviceTab ? installedAppList : appList;
+
+  console.log(tabRefs && tabRefs.current[0]);
 
   const mapApp = (app, appStoreView, onlyUpdate) => (
     <Item
@@ -141,12 +169,24 @@ const AppsList = ({ deviceInfo, result, exec }: Props) => {
 
       {isIncompleteState(state) ? null : (
         <Tabs>
-          <Tab active={!onDeviceTab} onClick={() => setActiveTab(0)}>
+          <Tab
+            active={!onDeviceTab}
+            tabIndex={0}
+            activeTab={activeTab}
+            tabs={2}
+            onClick={() => setActiveTab(0)}
+          >
             <Text ff="Inter|Bold" fontSize={6}>
               <Trans i18nKey="manager.tabs.appCatalog" />
             </Text>
           </Tab>
-          <Tab active={onDeviceTab} onClick={() => setActiveTab(1)}>
+          <Tab
+            active={onDeviceTab}
+            tabIndex={1}
+            activeTab={activeTab}
+            tabs={2}
+            onClick={() => setActiveTab(1)}
+          >
             <Text ff="Inter|Bold" fontSize={6}>
               <Trans i18nKey="manager.tabs.appsOnDevice" />
             </Text>
