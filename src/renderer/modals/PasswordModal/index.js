@@ -4,7 +4,6 @@ import React, { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { PasswordIncorrectError } from "@ledgerhq/errors";
-import db from "~/helpers/db";
 import { saveSettings } from "~/renderer/actions/settings";
 import { hasPasswordSelector } from "~/renderer/reducers/settings";
 import { closeModal } from "~/renderer/actions/modals";
@@ -12,6 +11,7 @@ import Box from "~/renderer/components/Box";
 import Button from "~/renderer/components/Button";
 import Modal, { ModalBody } from "~/renderer/components/Modal";
 import PasswordForm from "./PasswordForm";
+import { setEncryptionKey, removeEncryptionKey, isEncryptionKeyCorrect } from "~/renderer/storage";
 
 type MaybePasswordIncorrectError = ?PasswordIncorrectError;
 
@@ -33,10 +33,10 @@ const PasswordModal = () => {
     async (password: ?string) => {
       if (password) {
         dispatch(saveSettings({ hasPassword: true }));
-        await db.setEncryptionKey("app", "accounts", password);
+        await setEncryptionKey("app", "accounts", password);
       } else {
         dispatch(saveSettings({ hasPassword: false }));
-        await db.removeEncryptionKey("app", "accounts");
+        await removeEncryptionKey("app", "accounts");
       }
     },
     [dispatch],
@@ -55,7 +55,7 @@ const PasswordModal = () => {
   );
 
   const handleSave = useCallback(
-    (e: SyntheticEvent<HTMLFormElement>) => {
+    async (e: SyntheticEvent<HTMLFormElement>) => {
       if (e) {
         e.preventDefault();
       }
@@ -65,7 +65,7 @@ const PasswordModal = () => {
       }
 
       if (hasPassword) {
-        if (!db.isEncryptionKeyCorrect("app", "accounts", currentPassword)) {
+        if (!(await isEncryptionKeyCorrect("app", "accounts", currentPassword))) {
           setIncorrectPassword(new PasswordIncorrectError());
           return;
         }

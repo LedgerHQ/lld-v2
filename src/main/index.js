@@ -4,8 +4,11 @@ import { app, Menu, ipcMain } from "electron";
 import menu from "./menu";
 import { createMainWindow, getMainWindow } from "./window-lifecycle";
 import "./internal-lifecycle";
+import resolveUserDataDirectory from "~/helpers/resolveUserDataDirectory";
+import db from "./db";
 
 const gotLock = app.requestSingleInstanceLock();
+const userDataDirectory = resolveUserDataDirectory();
 
 if (!gotLock) {
   app.quit();
@@ -41,6 +44,44 @@ app.on("ready", async () => {
   if (__DEV__) {
     await installExtensions();
   }
+
+  db.init(userDataDirectory);
+
+  ipcMain.handle("getKey", (event, { ns, keyPath, defaultValue }) => {
+    return db.getKey(ns, keyPath, defaultValue);
+  });
+
+  ipcMain.handle("setKey", (event, { ns, keyPath, value }) => {
+    return db.setKey(ns, keyPath, value);
+  });
+
+  ipcMain.handle("hasEncryptionKey", (event, { ns, keyPath }) => {
+    return db.hasEncryptionKey(ns, keyPath);
+  });
+
+  ipcMain.handle("setEncryptionKey", (event, { ns, keyPath, encryptionKey }) => {
+    return db.setEncryptionKey(ns, keyPath, encryptionKey);
+  });
+
+  ipcMain.handle("removeEncryptionKey", (event, { ns, keyPath }) => {
+    return db.removeEncryptionKey(ns, keyPath);
+  });
+
+  ipcMain.handle("isEncryptionKeyCorrect", (event, { ns, keyPath, encryptionKey }) => {
+    return db.isEncryptionKeyCorrect(ns, keyPath, encryptionKey);
+  });
+
+  ipcMain.handle("hasBeenDecrypted", (event, { ns, keyPath }) => {
+    return db.hasBeenDecrypted(ns, keyPath);
+  });
+
+  ipcMain.handle("resetAll", () => {
+    return db.resetAll();
+  });
+
+  ipcMain.handle("cleanCache", () => {
+    return db.cleanCache();
+  });
 
   Menu.setApplicationMenu(menu);
 

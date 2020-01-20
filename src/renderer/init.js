@@ -9,6 +9,7 @@ import { checkLibs } from "@ledgerhq/live-common/lib/sanityChecks";
 import { remote, webFrame } from "electron";
 import { render } from "react-dom";
 import moment from "moment";
+import { getKey } from "~/renderer/storage";
 
 import "~/renderer/styles/global";
 import "~/renderer/live-common-setup";
@@ -20,15 +21,13 @@ import LoggerTransport from "~/logger/logger-transport-renderer";
 import { DEBUG_TICK_REDUX } from "~/config/constants";
 import { enableGlobalTab, disableGlobalTab, isGlobalTabEnabled } from "~/config/global-tab";
 import sentry from "~/sentry/browser";
-import resolveUserDataDirectory from "~/helpers/resolveUserDataDirectory";
-import db from "~/helpers/db";
 import { setEnvOnAllThreads } from "~/helpers/env";
 import { command } from "~/renderer/commands";
 import Countervalues from "~/renderer/countervalues";
 import dbMiddleware from "~/renderer/middlewares/db";
 import createStore from "~/renderer/createStore";
 import events from "~/renderer/events";
-import { fetchAccounts } from "~/renderer/actions/accounts";
+import { setAccounts } from "~/renderer/actions/accounts";
 import { fetchSettings } from "~/renderer/actions/settings";
 import { lock } from "~/renderer/actions/application";
 
@@ -37,7 +36,6 @@ import {
   sentryLogsSelector,
   hideEmptyTokenAccountsSelector,
 } from "~/renderer/reducers/settings";
-import { decodeAccountsModel, encodeAccountsModel } from "~/renderer/reducers/accounts";
 
 import ReactRoot from "~/renderer/ReactRoot";
 import AppError from "~/renderer/AppError";
@@ -45,11 +43,8 @@ import AppError from "~/renderer/AppError";
 logger.add(new LoggerTransport());
 
 const rootNode = document.getElementById("react-root");
-const userDataDirectory = resolveUserDataDirectory();
 
 const TAB_KEY = 9;
-
-db.init(userDataDirectory);
 
 async function init() {
   checkLibs({
@@ -60,17 +55,13 @@ async function init() {
     connect,
   });
 
-  db.init(userDataDirectory);
-  db.registerTransform("app", "accounts", {
-    get: decodeAccountsModel,
-    set: encodeAccountsModel,
-  });
   const store = createStore({ dbMiddleware });
 
-  const settings = await db.getKey("app", "settings");
-  store.dispatch(fetchSettings(settings));
+  const initialSettings = await getKey("app", "settings", {});
 
-  const countervaluesData = await db.getKey("app", "countervalues");
+  store.dispatch(fetchSettings(initialSettings));
+
+  const countervaluesData = await getKey("app", "countervalues");
   if (countervaluesData) {
     store.dispatch(Countervalues.importAction(countervaluesData));
   }
@@ -87,11 +78,11 @@ async function init() {
 
   const isMainWindow = remote.getCurrentWindow().name === "MainWindow";
 
-  const isAccountsDecrypted = await db.hasBeenDecrypted("app", "accounts");
-  if (!isAccountsDecrypted) {
+  if (initialSettings.hasPassword) {
     store.dispatch(lock());
   } else {
-    await store.dispatch(fetchAccounts());
+    const accounts = await getKey("app", "accounts", []);
+    await store.dispatch(setAccounts(accounts));
   }
 
   if (DEBUG_TICK_REDUX) {
@@ -157,7 +148,6 @@ async function init() {
   // expose stuff in Windows for DEBUG purpose
   window.ledger = {
     store,
-    db,
   };
 }
 
