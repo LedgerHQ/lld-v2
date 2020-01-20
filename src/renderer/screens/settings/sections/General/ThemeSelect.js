@@ -4,11 +4,12 @@ import React, { useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { setTheme } from "~/renderer/actions/settings";
-import { themeSelector } from "~/renderer/reducers/settings";
+import { userThemeSelector } from "~/renderer/reducers/settings";
 import Select from "~/renderer/components/Select";
 import Track from "~/renderer/analytics/Track";
 
 const themeLabels = {
+  system: "theme.system",
   light: "theme.light",
   dusk: "theme.dusk",
   dark: "theme.dark",
@@ -16,7 +17,7 @@ const themeLabels = {
 
 const ThemeSelect = () => {
   const dispatch = useDispatch();
-  const theme = useSelector(themeSelector);
+  const theme = useSelector(userThemeSelector);
   const { t } = useTranslation();
 
   const handleChangeTheme = useCallback(

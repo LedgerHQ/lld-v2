@@ -4,9 +4,12 @@ import { handleActions } from "redux-actions";
 
 export type ApplicationState = {
   isLocked?: boolean,
+  osDarkMode?: boolean,
 };
 
-const state: ApplicationState = {};
+const state: ApplicationState = {
+  osDarkMode: window.matchMedia("(prefers-color-scheme: dark)").matches,
+};
 
 const handlers = {
   APPLICATION_SET_DATA: (state, { payload }: { payload: ApplicationState }) => ({
@@ -20,6 +23,8 @@ const handlers = {
 // Selectors
 
 export const isLocked = (state: Object) => state.application.isLocked === true;
+
+export const osDarkModeSelector = (state: Object) => state.application.osDarkMode;
 
 // Exporting reducer
 

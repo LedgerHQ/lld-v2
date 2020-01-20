@@ -228,7 +228,7 @@ export const developerModeSelector = (state: State): boolean => state.settings.d
 
 export const lastUsedVersionSelector = (state: State): string => state.settings.lastUsedVersion;
 
-export const themeSelector = (state: State): ?string => state.settings.theme;
+export const userThemeSelector = (state: State): ?string => state.settings.theme;
 
 export const langAndRegionSelector = (
   state: State,
