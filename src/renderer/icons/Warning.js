@@ -8,7 +8,7 @@ const Warning = ({
   bg = "white",
 }: {
   size: number,
-  color: String,
+  color: string,
   bg: string,
 }) => (
   <svg

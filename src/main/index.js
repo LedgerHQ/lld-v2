@@ -6,6 +6,7 @@ import { createMainWindow, getMainWindow } from "./window-lifecycle";
 import "./internal-lifecycle";
 import resolveUserDataDirectory from "~/helpers/resolveUserDataDirectory";
 import db from "./db";
+import debounce from "lodash/debounce";
 
 const gotLock = app.requestSingleInstanceLock();
 const userDataDirectory = resolveUserDataDirectory();
@@ -85,9 +86,27 @@ app.on("ready", async () => {
 
   Menu.setApplicationMenu(menu);
 
-  const w = await createMainWindow();
+  const windowParams = await db.getKey("windowParams", "MainWindow", {});
 
-  await clearSessionCache(w.webContents.session);
+  const window = await createMainWindow(windowParams);
+
+  window.on(
+    "resize",
+    debounce(() => {
+      const [width, height] = window.getSize();
+      db.setKey("windowParams", `${window.name}.dimensions`, { width, height });
+    }, 300),
+  );
+
+  window.on(
+    "move",
+    debounce(() => {
+      const [x, y] = window.getPosition();
+      db.setKey("windowParams", `${window.name}.positions`, { x, y });
+    }, 300),
+  );
+
+  await clearSessionCache(window.webContents.session);
 });
 
 ipcMain.on("ready-to-show", () => {
