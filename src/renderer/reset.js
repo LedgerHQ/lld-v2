@@ -7,7 +7,7 @@ import rimraf from "rimraf";
 
 import resolveUserDataDirectory from "~/helpers/resolveUserDataDirectory";
 import { delay } from "~/helpers/promise";
-import db from "~/helpers/db";
+import { resetAll, cleanCache } from "~/renderer/storage";
 import { disable as disableDBMiddleware } from "./middlewares/db";
 import { clearBridgeCache } from "./bridge/cache";
 
@@ -57,7 +57,7 @@ export async function hardReset() {
   clearBridgeCache();
   log("clear-cache", "hardReset()");
   disableDBMiddleware();
-  db.resetAll();
+  resetAll();
   window.localStorage.clear();
   await delay(500);
   await resetLibcore();
@@ -71,8 +71,8 @@ export async function softReset({ cleanAccountsCache }: *) {
   log("clear-cache", "cleanAccountsCache()");
   cleanAccountsCache();
   await delay(500);
-  log("clear-cache", "db.cleanCache()");
-  await db.cleanCache();
+  log("clear-cache", "cleanCache()");
+  await cleanCache();
   await resetLibcore();
   log("clear-cache", "reload()");
   reload();

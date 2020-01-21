@@ -1,12 +1,12 @@
 // @flow
 import { ipcRenderer } from "electron";
 import debug from "debug";
-import db from "~/helpers/db";
 import { CHECK_UPDATE_DELAY, DISABLE_ACTIVITY_INDICATORS } from "../config/constants";
 import { killInternalProcess } from "./reset";
 import { lock } from "./actions/application";
 import { onSetDeviceBusy } from "~/renderer/components/DeviceBusyIndicator";
 import { onSetLibcoreBusy } from "~/renderer/components/LibcoreBusyIndicator";
+import { hasEncryptionKey } from "~/renderer/storage";
 
 const d = {
   sync: debug("lwd:sync"),
@@ -24,8 +24,8 @@ export default ({ store }: { store: Object }) => {
   // Ensure all sub-processes are killed before creating new ones (dev mode...)
   killInternalProcess();
 
-  ipcRenderer.on("lock", () => {
-    if (db.hasEncryptionKey("app", "accounts")) {
+  ipcRenderer.on("lock", async () => {
+    if (await hasEncryptionKey("app", "accounts")) {
       store.dispatch(lock());
     }
   });

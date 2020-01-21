@@ -5,10 +5,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { PasswordIncorrectError } from "@ledgerhq/errors";
+import { setEncryptionKey, isEncryptionKeyCorrect, hasBeenDecrypted } from "~/renderer/storage";
 
 import IconTriangleWarning from "~/renderer/icons/TriangleWarning";
 
-import db from "~/helpers/db";
 import { hardReset } from "~/renderer/reset";
 
 import { fetchAccounts } from "~/renderer/actions/accounts";
@@ -82,18 +82,21 @@ const IsUnlocked = ({ children }: Props) => {
     async (e: SyntheticEvent<HTMLFormElement>) => {
       e.preventDefault();
 
-      const isAccountDecrypted = await db.hasBeenDecrypted("app", "accounts");
+      const isAccountDecrypted = await hasBeenDecrypted("app", "accounts");
       try {
         if (!isAccountDecrypted) {
-          await db.setEncryptionKey("app", "accounts", inputValue.password);
+          await setEncryptionKey("app", "accounts", inputValue.password);
           await dispatch(fetchAccounts());
-        } else if (!db.isEncryptionKeyCorrect("app", "accounts", inputValue.password)) {
+        } else if (!(await isEncryptionKeyCorrect("app", "accounts", inputValue.password))) {
           throw new PasswordIncorrectError();
         }
         dispatch(unlock());
       } catch (error) {
         setIncorrectPassword(new PasswordIncorrectError());
       }
+      setInputValue({
+        password: "",
+      });
     },
     [inputValue, dispatch],
   );
