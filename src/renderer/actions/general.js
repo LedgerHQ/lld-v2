@@ -101,5 +101,5 @@ export const refreshAccountsOrdering = () => (dispatch: *, getState: *) => {
 export const themeSelector: OutputSelector<State, void, string> = createSelector(
   osDarkModeSelector,
   userThemeSelector,
-  (osDark, theme) => (theme !== "system" ? theme || "light" : osDark ? "dark" : "light"),
+  (osDark, theme) => theme || (osDark ? "dark" : "light"),
 );

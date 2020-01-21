@@ -9,7 +9,6 @@ import Select from "~/renderer/components/Select";
 import Track from "~/renderer/analytics/Track";
 
 const themeLabels = {
-  system: "theme.system",
   light: "theme.light",
   dusk: "theme.dusk",
   dark: "theme.dark",
@@ -29,10 +28,12 @@ const ThemeSelect = () => {
 
   const options = useMemo(
     () =>
-      Object.keys(themeLabels).map(key => ({
-        value: key,
-        label: t(themeLabels[key]),
-      })),
+      [{ value: null, label: t("theme.system") }].concat(
+        Object.keys(themeLabels).map(key => ({
+          value: key,
+          label: t(themeLabels[key]),
+        })),
+      ),
     [t],
   );
 
