@@ -15,7 +15,10 @@ setEnv("DEVICE_CANCEL_APDU_FLUSH_MECHANISM", false);
 
 setWebSocketImplementation(WebSocket);
 setNetwork(network);
-listenLogs(({ id, date, ...log }) => logger.debug(log));
+listenLogs(({ id, date, ...log }) => {
+  if (log.type === "hid-frame") return;
+  logger.debug(log);
+});
 websocketLogs.subscribe(({ type, message, ...rest }) => {
   const obj = rest;
   if (message) obj.msg = message;

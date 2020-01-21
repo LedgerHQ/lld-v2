@@ -3,7 +3,7 @@ import Transport from "winston-transport";
 export default class MainTransport extends Transport {
   logs = [];
   capacity = 3000;
-  blacklist = ["hid-frame"];
+  blacklist = [];
 
   log(info, callback) {
     setImmediate(() => {
