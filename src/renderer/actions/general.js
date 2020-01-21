@@ -17,9 +17,11 @@ import {
   exchangeSettingsForPairSelector,
   getOrderAccounts,
   counterValueCurrencySelector,
+  userThemeSelector,
 } from "./../reducers/settings";
 import { accountsSelector, activeAccountsSelector } from "./../reducers/accounts";
 import type { State } from "./../reducers";
+import { osDarkModeSelector } from "~/renderer/reducers/application";
 
 export const calculateCountervalueSelector = (state: State) => {
   const counterValueCurrency = counterValueCurrencySelector(state);
@@ -95,3 +97,9 @@ export const refreshAccountsOrdering = () => (dispatch: *, getState: *) => {
     payload: nestedSortAccountsSelector(getState()),
   });
 };
+
+export const themeSelector: OutputSelector<State, void, string> = createSelector(
+  osDarkModeSelector,
+  userThemeSelector,
+  (osDark, theme) => theme || (osDark ? "dark" : "light"),
+);

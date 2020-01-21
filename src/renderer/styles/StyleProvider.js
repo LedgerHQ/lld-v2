@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { ThemeProvider } from "styled-components";
 import { GlobalStyle } from "~/renderer/styles/global";
 import type { StyledComponent } from "styled-components";
-import { themeSelector } from "~/renderer/reducers/settings";
+import { themeSelector } from "~/renderer/actions/general";
 import defaultTheme from "./theme";
 import palettes from "./palettes";
 import type { Theme } from "./theme";

@@ -29,7 +29,7 @@ import createStore from "~/renderer/createStore";
 import events from "~/renderer/events";
 import { setAccounts } from "~/renderer/actions/accounts";
 import { fetchSettings } from "~/renderer/actions/settings";
-import { lock } from "~/renderer/actions/application";
+import { lock, setOSDarkMode } from "~/renderer/actions/application";
 
 import {
   languageSelector,
@@ -93,6 +93,10 @@ async function init() {
 
   if (isMainWindow) {
     webFrame.setVisualZoomLevelLimits(1, 1);
+
+    const matcher = window.matchMedia("(prefers-color-scheme: dark)");
+    const updateOSTheme = () => store.dispatch(setOSDarkMode(matcher.matches));
+    matcher.addListener(updateOSTheme);
 
     events({ store });
 
