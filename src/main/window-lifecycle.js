@@ -34,14 +34,17 @@ const defaultWindowOptions = {
   },
 };
 
-export async function createMainWindow() {
+export async function createMainWindow({ dimensions, positions }: any) {
+  console.log(dimensions, positions);
   // TODO renderer should provide the saved window rectangle
-  const width = DEFAULT_WINDOW_WIDTH;
-  const height = DEFAULT_WINDOW_HEIGHT;
+  const width = dimensions ? dimensions.width : DEFAULT_WINDOW_WIDTH;
+  const height = dimensions ? dimensions.height : DEFAULT_WINDOW_HEIGHT;
+  const windowPosition = positions || getWindowPosition(width, height);
 
   const windowOptions = {
     ...defaultWindowOptions,
-    ...getWindowPosition(width, height),
+    x: windowPosition.x,
+    y: windowPosition.y,
     /* eslint-disable indent */
     ...(process.platform === "darwin"
       ? {

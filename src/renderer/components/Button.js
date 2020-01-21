@@ -302,7 +302,7 @@ export const Base: ThemedComponent<*> = styled.button.attrs(p => ({
 
 export type Props = {
   children?: any,
-  icon?: string,
+  icon?: boolean,
   primary?: boolean,
   inverted?: boolean, // only used with primary for now
   lighterPrimary?: boolean,
