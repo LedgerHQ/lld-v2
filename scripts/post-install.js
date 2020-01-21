@@ -3,6 +3,8 @@ const hasha = require("hasha");
 const execa = require("execa");
 const fs = require("fs");
 
+console.log("running");
+
 const rebuildDeps = async (folder, file) => {
   await execa("yarn", ["install-deps"], {
     // env: { DEBUG: "electron-builder" },

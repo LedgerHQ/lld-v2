@@ -2,3 +2,4 @@
 flow-defs
 flow-typed
 src/renderer/generated
+!.github

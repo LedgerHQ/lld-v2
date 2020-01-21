@@ -21,17 +21,6 @@ const cleaningTasks = new Listr(
           });
         }),
     },
-    // {
-    //   title: "Cleaning node_modules",
-    //   task: () =>
-    //     new Promise((resolve, reject) => {
-    //       const nodeModulesDir = path.resolve(__dirname, "..", "node_modules");
-    //       rimraf(nodeModulesDir, error => {
-    //         if (error) return reject(error);
-    //         resolve();
-    //       });
-    //     }),
-    // },
   ],
   { concurrent: true, collapse: false },
 );
@@ -42,15 +31,7 @@ const setupTasks = args =>
       {
         title: "Installing packages",
         task: async () => {
-          await execa("yarn", ["-s"], {
-            stdio: args.verbose ? "inherit" : "pipe",
-          });
-        },
-      },
-      {
-        title: "Rebuilding app deps",
-        task: async () => {
-          await execa("yarn", ["-s", "install-deps"], {
+          await execa("yarn", ["-s", "--frozen-lockfile"], {
             stdio: args.verbose ? "inherit" : "pipe",
           });
         },
@@ -65,7 +46,7 @@ const buildTasks = args =>
       {
         title: "Compiling assets",
         task: async () => {
-          await execa("yarn", ["-s", "build"], {
+          await execa("yarn", ["-s", "--frozen-lockfile", "build"], {
             stdio: args.verbose ? "inherit" : "pipe",
           });
         },
@@ -75,7 +56,7 @@ const buildTasks = args =>
           ? "Packing the electron application (for debug purpose)"
           : "Bundling the electron application",
         task: async () => {
-          const commands = ["-s", "dist:internal"];
+          const commands = ["-s", "--frozen-lockfile", "dist:internal"];
           if (args.dir) commands.push("--dir");
           if (args.publish) commands.push("--publish", "always");
           if (args.n) {

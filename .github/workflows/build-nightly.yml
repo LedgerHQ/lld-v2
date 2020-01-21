@@ -22,7 +22,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - name: install dependencies
-        run: yarn --ignore-scripts
+        run: yarn --ignore-scripts --frozen-lockfile
       - name: build the app
         run: yarn nightly
       - uses: "./.github/actions/get-package-infos"
@@ -30,8 +30,8 @@ jobs:
       - name: upload macOS app
         uses: actions/upload-artifact@v1
         with:
-          name: ${{ steps.version.outputs.pkgName }}-${{ steps.version.outputs.pkgVersion }}-macos.dmg
-          path: dist/${{ steps.version.outputs.pkgName }}-${{ steps.version.outputs.pkgVersion }}-mac.dmg
+          name: ${{ steps.version.outputs.name }}-${{ steps.version.outputs.version }}-macos.dmg
+          path: dist/${{ steps.version.outputs.name }}-${{ steps.version.outputs.version }}-mac.dmg
   nightly-linux:
     runs-on: ubuntu-latest
     steps:
@@ -51,7 +51,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - name: install dependencies
-        run: yarn --ignore-scripts
+        run: yarn --ignore-scripts --frozen-lockfile
       - name: build the app
         run: yarn nightly
       - uses: "./.github/actions/get-package-infos"
@@ -59,8 +59,8 @@ jobs:
       - name: upload linux app
         uses: actions/upload-artifact@v1
         with:
-          name: ${{ steps.version.outputs.pkgName }}-${{ steps.version.outputs.pkgVersion }}-linux.AppImage
-          path: dist/${{ steps.version.outputs.pkgName }}-${{ steps.version.outputs.pkgVersion }}-linux-x86_64.AppImage
+          name: ${{ steps.version.outputs.name }}-${{ steps.version.outputs.version }}-linux.AppImage
+          path: dist/${{ steps.version.outputs.name }}-${{ steps.version.outputs.version }}-linux-x86_64.AppImage
   nightly-windows:
     runs-on: windows-latest
     steps:
@@ -81,12 +81,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - name: install dependencies
-        run: yarn --ignore-scripts
+        run: yarn --ignore-scripts --frozen-lockfile
       - name: clean up
         run: npx rimraf ./dist
       - name: install and rebuild
         run: |
-          yarn
+          yarn --frozen-lockfile
           yarn install-deps
       - name: build
         run: |
@@ -102,5 +102,5 @@ jobs:
       - name: upload windows
         uses: actions/upload-artifact@v1
         with:
-          name: ${{ steps.version.outputs.pkgName }}-${{ steps.version.outputs.pkgVersion }}-win.exe
-          path: dist/${{ steps.version.outputs.pkgName }}-${{ steps.version.outputs.pkgVersion }}-win.exe
+          name: ${{ steps.version.outputs.name }}-${{ steps.version.outputs.version }}-win.exe
+          path: dist/${{ steps.version.outputs.name }}-${{ steps.version.outputs.version }}-win.exe
