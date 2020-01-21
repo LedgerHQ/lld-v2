@@ -219,7 +219,6 @@ const Item: React$ComponentType<Props> = React.memo(
                 outline
                 outlineColor={colors.grey}
                 onClick={onUninstall}
-                icon
               >
                 <IconTrash color={colors.grey} size={14} />
               </Button>
