@@ -407,7 +407,7 @@
     "connect": {
       "allowPermission": "{{wording}} on your device",
       "loading": "Loading...",
-      "connectAndUnlockDevice": "Plug your device and enter your PIN code",
+      "connectAndUnlockDevice": "Connect your device and enter your PIN code",
       "unlockDevice": "Enter your PIN code",
       "quitApp": "Please quit application on your device"
     },
@@ -438,7 +438,7 @@
         "all": "All",
         "supported": "Live Supported",
         "installed": "Installed",
-        "notInstalled": "Not Installed"
+        "not_installed": "Not Installed"
       },
       "sort": {
         "title": "Sort",

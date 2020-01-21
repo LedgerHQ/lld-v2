@@ -60,7 +60,7 @@ const ToolTip = ({
   content,
   delay,
   enabled,
-  placement,
+  placement = "bottom",
 }: Props) => {
   const colors = useTheme("colors");
 

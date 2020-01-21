@@ -15,54 +15,11 @@ import Box from "~/renderer/components/Box";
 import Input from "~/renderer/components/Input";
 import IconLoader from "~/renderer/icons/Loader";
 import IconSearch from "~/renderer/icons/Search";
+import TabBar from "~/renderer/components/TabBar";
 import Item from "./Item";
 import DeviceStorage from "../DeviceStorage";
 import Filter from "./Filter";
 import Sort from "./Sort";
-
-const Tabs = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 24px;
-  position: relative;
-`;
-
-// TODO rework this into a component that works with several tabs
-const Tab = styled(Button).attrs(p => ({
-  transformIndicator:
-    p.activeTab > p.tabIndex
-      ? "calc(100% + 30px)"
-      : p.activeTab < p.tabIndex
-      ? "calc(-100% - 30px)"
-      : 0,
-}))`
-  padding: 0px;
-  padding-right: 30px;
-  text-transform: uppercase;
-  border-radius: 0;
-  padding-bottom: 4px;
-  color: ${p =>
-    p.active ? p.theme.colors.palette.text.shade100 : p.theme.colors.palette.text.shade30};
-  &:hover, &:active, &:focus {
-    background: none;
-    color: ${p => p.theme.colors.palette.text.shade100};
-  }
-  position: relative;
-  &:after {
-    content: "";
-    display: block;
-    width: 100%;
-    height: 4px;
-    position: absolute;
-    bottom 0;
-    right: 30px;
-    z-index: 2;
-    background-color: ${p => p.theme.colors.palette.primary.main};
-    transform: translateX(${p => p.transformIndicator});
-    transition: transform 0.2s linear;
-    will-change: transform;
-  }
-`;
 
 const FilterHeader = styled.div`
   display: flex;
@@ -108,7 +65,7 @@ type Props = {
 
 const AppsList = ({ deviceInfo, result, exec }: Props) => {
   const [query, setQuery] = useState("");
-  const [filter, setFilter] = useState("all");
+  const [filters, setFilters] = useState([]);
   const [sort, setSort] = useState({ type: "marketcap", order: "desc" });
   const [activeTab, setActiveTab] = useState(0);
   const [state, dispatch] = useAppsRunner(result, exec);
@@ -119,7 +76,7 @@ const AppsList = ({ deviceInfo, result, exec }: Props) => {
   const { currentProgress, currentError } = state;
   const plan = getActionPlan(state);
 
-  const appList = useSortedFilteredApps(apps, { query, installedApps, type: [] }, sort);
+  const appList = useSortedFilteredApps(apps, { query, installedApps, type: filters }, sort);
   const installedAppList = useSortedFilteredApps(
     apps,
     { query, installedApps, type: ["installed"] },
@@ -164,31 +121,6 @@ const AppsList = ({ deviceInfo, result, exec }: Props) => {
         />
       </Box>
 
-      {isIncompleteState(state) ? null : (
-        <Tabs>
-          <Tab
-            active={!onDeviceTab}
-            tabIndex={0}
-            activeTab={activeTab}
-            onClick={() => setActiveTab(0)}
-          >
-            <Text ff="Inter|Bold" fontSize={6}>
-              <Trans i18nKey="manager.tabs.appCatalog" />
-            </Text>
-          </Tab>
-          <Tab
-            active={onDeviceTab}
-            tabIndex={1}
-            activeTab={activeTab}
-            onClick={() => setActiveTab(1)}
-          >
-            <Text ff="Inter|Bold" fontSize={6}>
-              <Trans i18nKey="manager.tabs.appsOnDevice" />
-            </Text>
-          </Tab>
-        </Tabs>
-      )}
-
       {onDeviceTab && updatableAppList.length ? (
         <Card mb={20}>
           <UpdatableHeader>
@@ -210,6 +142,13 @@ const AppsList = ({ deviceInfo, result, exec }: Props) => {
         </Card>
       ) : null}
 
+      {isIncompleteState(state) ? null : (
+        <TabBar
+          tabs={["manager.tabs.appCatalog", "manager.tabs.appsOnDevice"]}
+          onIndexChange={setActiveTab}
+        />
+      )}
+
       <Card>
         <FilterHeader>
           <Input
@@ -221,7 +160,7 @@ const AppsList = ({ deviceInfo, result, exec }: Props) => {
           <Box mr={3}>
             <Sort onSortChange={setSort} sort={sort} />
           </Box>
-          {!onDeviceTab ? <Filter onFilterChange={setFilter} filter={filter} /> : null}
+          {!onDeviceTab ? <Filter onFiltersChange={setFilters} filters={filters} /> : null}
         </FilterHeader>
         {displayedAppList.length ? (
           displayedAppList.map(app => mapApp(app, !onDeviceTab))
