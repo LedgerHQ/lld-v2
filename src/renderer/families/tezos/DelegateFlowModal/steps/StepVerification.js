@@ -1,44 +1,15 @@
 // @flow
-
-import React, { useEffect, useCallback } from "react";
+import React from "react";
 import TrackPage from "~/renderer/analytics/TrackPage";
-import TransactionConfirm from "~/renderer/components/TransactionConfirm";
+import StepVerificationGeneric from "~/renderer/components/StepVerificationGeneric";
 
 import type { StepProps } from "../types";
 
-const StepVerification = ({
-  signTransaction,
-  transitionTo,
-  device,
-  account,
-  parentAccount,
-  transaction,
-  status,
-}: StepProps) => {
-  const handleSignTransaction = useCallback(async () => {
-    signTransaction({ transitionTo });
-  }, [signTransaction, transitionTo]);
-
-  // didMount
-  // this was done only on mount on v1, so I removed the
-  // dependencies to simulate that (val)
-  useEffect(() => {
-    handleSignTransaction();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  if (!account || !device || !transaction) return null;
-  return (
-    <>
-      <TrackPage category="Send Flow" name="Step Verification" />
-      <TransactionConfirm
-        device={device}
-        account={account}
-        parentAccount={parentAccount}
-        transaction={transaction}
-        status={status}
-      />
-    </>
-  );
-};
+const StepVerification = (props: StepProps) => (
+  <>
+    <TrackPage category="Delegation Flow" name="Step Verification" />
+    <StepVerificationGeneric {...props} />
+  </>
+);
 
 export default StepVerification;

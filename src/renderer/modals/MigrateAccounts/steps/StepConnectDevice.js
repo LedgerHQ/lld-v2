@@ -7,10 +7,9 @@ import TrackPage from "~/renderer/analytics/TrackPage";
 import { CurrencyCircleIcon } from "~/renderer/components/CurrencyBadge";
 import Box from "~/renderer/components/Box";
 import ConnectDevice from "~/renderer/modals/ConnectDevice";
-import Button from "~/renderer/components/Button";
 import type { StepProps } from "~/renderer/modals/MigrateAccounts";
 
-const StepConnectDevice = ({ t, currency, device, setAppOpened }: StepProps) => {
+const StepConnectDevice = ({ t, currency, device, transitionTo }: StepProps) => {
   invariant(currency, "No crypto asset given");
 
   const currencyName = `${currency.name} (${currency.ticker})`;
@@ -39,18 +38,12 @@ const StepConnectDevice = ({ t, currency, device, setAppOpened }: StepProps) => 
         currency={currency}
         onStatusChange={(deviceStatus, appStatus) => {
           if (appStatus === "success") {
-            setAppOpened(true);
+            transitionTo("currency");
           }
         }}
       />
     </>
   );
 };
-
-export const StepConnectDeviceFooter = ({ t, transitionTo, isAppOpened }: StepProps) => (
-  <Button primary disabled={!isAppOpened} onClick={() => transitionTo("currency")}>
-    {t("common.continue")}
-  </Button>
-);
 
 export default StepConnectDevice;

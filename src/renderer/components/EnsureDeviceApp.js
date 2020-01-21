@@ -18,6 +18,7 @@ import { createCancelablePolling } from "~/helpers/promise";
 import { command } from "~/renderer/commands";
 import DeviceInteraction from "~/renderer/components/DeviceInteraction";
 import Text from "~/renderer/components/Text";
+import AppConnect from "~/renderer/components/AppConnect";
 import IconUsb from "~/renderer/icons/Usb";
 import { getCurrentDevice } from "~/renderer/reducers/devices";
 import type { Device } from "~/renderer/reducers/devices";
@@ -33,6 +34,7 @@ type OwnProps = {
   account?: ?Account,
   currency?: ?CryptoCurrency,
   isToken?: boolean,
+  onSuccess?: ({ device: Device }) => void,
 };
 
 type Props = OwnProps & {
@@ -138,6 +140,11 @@ async function getAddressFromAccountOrCurrency(device, account, currency) {
   return address;
 }
 
-const m: React$ComponentType<OwnProps> = connect(mapStateToProps)(EnsureDeviceApp);
+const Legacy: React$ComponentType<OwnProps> = connect(mapStateToProps)(EnsureDeviceApp);
 
-export default m;
+const EXPERIMENTAL = true;
+
+const EnsureDeviceAppDispatch = ({ isToken, ...props }: OwnProps) =>
+  EXPERIMENTAL ? <AppConnect {...props} /> : <Legacy {...props} isToken={isToken} />;
+
+export default EnsureDeviceAppDispatch;

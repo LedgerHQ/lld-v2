@@ -12,7 +12,7 @@ import { CurrencyCircleIcon } from "~/renderer/components/CurrencyBadge";
 import ParentCryptoCurrencyIcon from "~/renderer/components/ParentCryptoCurrencyIcon";
 import type { StepProps } from "..";
 
-const StepConnectDevice = ({ currency, device, setAppOpened }: StepProps) => {
+const StepConnectDevice = ({ currency, device, transitionTo }: StepProps) => {
   invariant(currency, "No crypto asset given");
   const { t } = useTranslation();
 
@@ -54,7 +54,7 @@ const StepConnectDevice = ({ currency, device, setAppOpened }: StepProps) => {
         currency={currency.type === "TokenCurrency" ? currency.parentCurrency : currency}
         onStatusChange={(deviceStatus, appStatus) => {
           if (appStatus === "success") {
-            setAppOpened(true);
+            transitionTo("import");
           }
         }}
       />

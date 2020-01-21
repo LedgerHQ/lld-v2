@@ -13,6 +13,7 @@ import { getMainAccount, addPendingOperation } from "@ledgerhq/live-common/lib/a
 import useBridgeTransaction from "@ledgerhq/live-common/lib/bridge/useBridgeTransaction";
 import { UserRefusedOnDevice } from "@ledgerhq/errors";
 import logger from "~/logger";
+import { useThrottledCallback } from "~/renderer/hooks/useDebounce";
 import { updateAccountWithUpdater } from "~/renderer/actions/accounts";
 import Track from "~/renderer/analytics/Track";
 import { useSignTransactionCallback } from "~/renderer/hooks/useSignTransaction";
@@ -225,6 +226,9 @@ const Body = ({ onChangeStepId, onClose, stepId, params }: Props) => {
     [account, parentAccount, dispatch],
   );
 
+  const [lastSignOperationEvent, setSignOperationEvent] = useState(null);
+  const onSignOperationEvent = useThrottledCallback(setSignOperationEvent, 100);
+
   const handleSignTransaction = useSignTransactionCallback({
     context: "Delegate",
     device,
@@ -234,6 +238,7 @@ const Body = ({ onChangeStepId, onClose, stepId, params }: Props) => {
     transaction,
     handleTransactionError,
     setSigned,
+    onSignOperationEvent,
   });
 
   const handleStepChange = useCallback(e => onChangeStepId(e.id), [onChangeStepId]);
@@ -291,6 +296,7 @@ const Body = ({ onChangeStepId, onClose, stepId, params }: Props) => {
     onRetry: handleRetry,
     signTransaction: handleSignTransaction,
     onStepChange: handleStepChange,
+    lastSignOperationEvent,
   };
 
   if (!status) return null;

@@ -25,7 +25,7 @@ import type { Device } from "~/renderer/reducers/devices";
 
 import StepRecipient, { StepRecipientFooter } from "./steps/StepRecipient";
 import StepAmount, { StepAmountFooter } from "./steps/StepAmount";
-import StepConnectDevice, { StepConnectDeviceFooter } from "./steps/StepConnectDevice";
+import StepConnectDevice from "./steps/StepConnectDevice";
 import StepVerification from "./steps/StepVerification";
 import StepSummary, { StepSummaryFooter } from "./steps/StepSummary";
 import StepConfirmation, { StepConfirmationFooter } from "./steps/StepConfirmation";
@@ -88,7 +88,6 @@ const createSteps = (): St[] => [
     id: "device",
     label: <Trans i18nKey="send.steps.device.title" />,
     component: StepConnectDevice,
-    footer: StepConnectDeviceFooter,
     onBack: ({ transitionTo }) => transitionTo("summary"),
   },
   {

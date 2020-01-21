@@ -14,9 +14,21 @@ import type {
   Transaction,
 } from "@ledgerhq/live-common/lib/types";
 import { getAccountBridge } from "@ledgerhq/live-common/lib/bridge";
+import { delay } from "@ledgerhq/live-common/lib/promise";
 import { getEnv } from "@ledgerhq/live-common/lib/env";
 import type { Device } from "~/renderer/reducers/devices";
 import { track } from "~/renderer/analytics/segment";
+
+// TODO move in live-common/lib/promise
+function execAndWaitAtLeast<A>(ms: number, cb: () => Promise<A>) {
+  const startTime = Date.now();
+  const p = cb();
+  return p.then(r => {
+    const remaining = ms - (Date.now() - startTime);
+    if (remaining <= 0) return r;
+    return delay(remaining).then(() => r);
+  });
+}
 
 type SignTransactionArgs = {
   context: string,
@@ -85,12 +97,14 @@ export const useSignTransactionCallback = ({
                   of(e),
                   // TODO the broadcast part should be split OUT of the hook
                   // into a second hook
-                  bridge
-                    .broadcast({
-                      account: mainAccount,
-                      signedOperation: e.signedOperation,
-                    })
-                    .then(operation => ({ type: "broadcasted", operation })),
+                  execAndWaitAtLeast(3000, () =>
+                    bridge
+                      .broadcast({
+                        account: mainAccount,
+                        signedOperation: e.signedOperation,
+                      })
+                      .then(operation => ({ type: "broadcasted", operation })),
+                  ),
                 ),
           ),
         )

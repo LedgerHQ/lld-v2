@@ -14,9 +14,7 @@ import type { Step } from "~/renderer/components/Stepper";
 import StepOverview, {
   StepOverviewFooter,
 } from "~/renderer/modals/MigrateAccounts/steps/StepOverview";
-import StepConnectDevice, {
-  StepConnectDeviceFooter,
-} from "~/renderer/modals/MigrateAccounts/steps/StepConnectDevice";
+import StepConnectDevice from "~/renderer/modals/MigrateAccounts/steps/StepConnectDevice";
 import StepCurrency, {
   StepCurrencyFooter,
 } from "~/renderer/modals/MigrateAccounts/steps/StepCurrency";
@@ -81,7 +79,6 @@ const createSteps = (): St[] => {
     {
       id: "device",
       component: StepConnectDevice,
-      footer: StepConnectDeviceFooter,
       onBack,
     },
     {

@@ -6,6 +6,7 @@ import type {
   Transaction,
   TransactionStatus,
   Operation,
+  SignOperationEvent,
 } from "@ledgerhq/live-common/lib/types";
 import type { Device } from "~/renderer/reducers/devices";
 import type { TFunction } from "react-i18next";
@@ -36,4 +37,5 @@ export type StepProps = {
   signTransaction: ({ transitionTo: string => void }) => void,
   isRandomChoice: boolean,
   openedWithAccount: boolean,
+  lastSignOperationEvent: ?SignOperationEvent,
 };

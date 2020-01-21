@@ -403,6 +403,9 @@
   "operationList": {
     "noMoreOperations": "That's all"
   },
+  "appconnect": {
+    "allowPermission": "Run the {{wording}} app on your device"
+  },
   "manager": {
     "connect": {
       "allowPermission": "{{wording}} on your device",
@@ -622,8 +625,8 @@
       "verification": {
         "title": "Verification",
         "streaming": {
-          "accurate": "Signing transaction ({{index}} of {{total}})",
-          "inaccurate": "Signing transaction..."
+          "accurate": "Loading... ({{percentage}})",
+          "inaccurate": "Loading..."
         }
       },
       "confirmation": {
