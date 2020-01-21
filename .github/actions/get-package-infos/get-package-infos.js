@@ -1,11 +1,13 @@
 const core = require("@actions/core");
-const path = require("path");
-const fs = require("fs");
+const semver = require("semver");
 const pkg = require("../../../package.json");
 
-try {
-  core.setOutput("pkgVersion", pkg.version);
-  core.setOutput("pkgName", pkg.name);
-} catch (error) {
-  core.setFailed(error.message);
+async function main() {
+  const { version } = semver.coerce(pkg.version);
+
+  core.setOutput("version", pkg.version);
+  core.setOutput("clean", version);
+  core.setOutput("name", pkg.name);
 }
+
+main().catch(err => core.setFailed(err.message));

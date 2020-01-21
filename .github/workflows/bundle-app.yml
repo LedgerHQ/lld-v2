@@ -9,6 +9,10 @@ jobs:
       - uses: actions/setup-node@master
         with:
           node-version: 12.x
+      - name: set git user
+        run: |
+          git config user.email "team-live@ledger.fr"
+          git config user.name "Team Live"
       - name: get yarn cache
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -19,16 +23,23 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - name: install dependencies
-        run: yarn --ignore-scripts
+        run: yarn --ignore-scripts --frozen-lockfile
+      - uses: "./.github/actions/get-package-infos"
+        id: version
+      - uses: "./.github/actions/get-pr-number"
+        id: pr
+      - name: make local version
+        run: yarn version --new-version=${{ steps.version.outputs.clean }}-pr.${{ steps.pr.outputs.pr }}
       - name: build the app
         run: yarn nightly
       - uses: "./.github/actions/get-package-infos"
-        id: version
+        id: post-version
       - name: upload macOS app
         uses: actions/upload-artifact@v1
         with:
-          name: ${{ steps.version.outputs.pkgName }}-${{ steps.version.outputs.pkgVersion }}-mac.dmg
-          path: dist/${{ steps.version.outputs.pkgName }}-${{ steps.version.outputs.pkgVersion }}-mac.dmg
+          name: ${{ steps.version.outputs.version }}-mac.dmg
+          path: dist/${{ steps.post-version.outputs.name }}-${{ steps.post-version.outputs.version }}-mac.dmg
+
   bundle-linux:
     runs-on: ubuntu-latest
     steps:
@@ -36,6 +47,10 @@ jobs:
       - uses: actions/setup-node@master
         with:
           node-version: 12.x
+      - name: set git user
+        run: |
+          git config user.email "team-live@ledger.fr"
+          git config user.name "Team Live"
       - name: install linux dependencies
         run: sudo apt-get install libudev-dev libusb-1.0-0-dev
       - name: get yarn cache
@@ -48,16 +63,23 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - name: install dependencies
-        run: yarn --ignore-scripts
+        run: yarn --ignore-scripts --frozen-lockfile
+      - uses: "./.github/actions/get-package-infos"
+        id: version
+      - uses: "./.github/actions/get-pr-number"
+        id: pr
+      - name: make local version
+        run: yarn version --new-version=${{ steps.version.outputs.clean }}-pr.${{ steps.pr.outputs.pr }}
       - name: build the app
         run: yarn nightly
       - uses: "./.github/actions/get-package-infos"
-        id: version
+        id: post-version
       - name: upload linux app
         uses: actions/upload-artifact@v1
         with:
-          name: ${{ steps.version.outputs.pkgName }}-${{ steps.version.outputs.pkgVersion }}-linux-x86_64.AppImage
-          path: dist/${{ steps.version.outputs.pkgName }}-${{ steps.version.outputs.pkgVersion }}-linux-x86_64.AppImage
+          name: ${{ steps.post-version.outputs.version }}-linux-x86_64.AppImage
+          path: dist/${{ steps.post-version.outputs.name }}-${{ steps.post-version.outputs.version }}-linux-x86_64.AppImage
+
   bundle-windows:
     runs-on: windows-latest
     steps:
@@ -68,6 +90,10 @@ jobs:
       - uses: actions/setup-python@v1
         with:
           python-version: "2.7.x"
+      - name: set git user
+        run: |
+          git config user.email "team-live@ledger.fr"
+          git config user.name "Team Live"
       - name: get yarn cache
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -78,13 +104,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - name: install dependencies
-        run: yarn --ignore-scripts
+        run: yarn --ignore-scripts --frozen-lockfile
+      - uses: "./.github/actions/get-package-infos"
+        id: version
+      - uses: "./.github/actions/get-pr-number"
+        id: pr
+      - name: make local version
+        run: yarn version --new-version=${{ steps.version.outputs.clean }}-pr.${{ steps.pr.outputs.pr }}
       - name: clean up
         run: npx rimraf ./dist
       - name: install and rebuild
-        run: |
-          yarn
-          yarn install-deps
+        run: yarn --frozen-lockfile
       - name: build
         run: |
           set NODE_ENV=production
@@ -95,9 +125,9 @@ jobs:
           set NODE_ENV=production
           npx electron-builder --config electron-builder-nightly.yml
       - uses: "./.github/actions/get-package-infos"
-        id: version
+        id: post-version
       - name: upload windows
         uses: actions/upload-artifact@v1
         with:
-          name: ${{ steps.version.outputs.pkgName }}-${{ steps.version.outputs.pkgVersion }}-win.exe
-          path: dist/${{ steps.version.outputs.pkgName }}-${{ steps.version.outputs.pkgVersion }}-win.exe
+          name: ${{ steps.post-version.outputs.version }}-win.exe
+          path: dist/${{ steps.post-version.outputs.name }}-${{ steps.post-version.outputs.version }}-win.exe

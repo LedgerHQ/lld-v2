@@ -25,7 +25,7 @@ jobs:
         # however since we skip with --ignore-scripts to avoid rebuilding libcore twice
         # we need to run yarn prepublish
         run: |
-          yarn --ignore-scripts
+          yarn --ignore-scripts --frozen-lockfile
           yarn prepublish
       - name: test
         run: yarn ci
