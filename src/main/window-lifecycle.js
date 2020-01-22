@@ -35,7 +35,6 @@ const defaultWindowOptions = {
 };
 
 export async function createMainWindow({ dimensions, positions }: any) {
-  console.log(dimensions, positions);
   // TODO renderer should provide the saved window rectangle
   const width = dimensions ? dimensions.width : DEFAULT_WINDOW_WIDTH;
   const height = dimensions ? dimensions.height : DEFAULT_WINDOW_HEIGHT;
