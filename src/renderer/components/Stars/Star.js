@@ -40,7 +40,7 @@ const StarIcon: ThemedComponent<{
   showAnimation?: boolean,
 }> = styled.div.attrs(p => ({
   style: {
-    backgroundPosition: p.showAnimation ? "right" : "left",
+    backgroundPosition: p.filled ? "right" : "left",
     animation: p.showAnimation ? "star-burst .8s steps(29) 1" : "none",
   },
 }))`
@@ -48,7 +48,6 @@ const StarIcon: ThemedComponent<{
     height: 50px;
     width: 50px;
     background-image: url("${p => (p.yellow ? starAnim2 : starAnim)}");
-    background-position: ${p => (p.filled ? "right" : "left")};
     background-repeat: no-repeat;
     background-size: 3000%;
     animation: none;
