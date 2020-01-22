@@ -2,7 +2,7 @@
 import React, { useCallback, useMemo } from "react";
 import Box from "~/renderer/components/Box";
 import { accountsSelector } from "~/renderer/reducers/accounts";
-import BalanceSummary from "~/renderer/components/BalanceSummary";
+import BalanceSummary from "./GlobalSummary";
 import { colors } from "~/renderer/styles/theme";
 
 import {
@@ -18,7 +18,6 @@ import RefreshAccountsOrdering from "~/renderer/components/RefreshAccountsOrderi
 // import StickyBackToTop from "~/renderer/components/StickyBackToTop";
 import OperationsList from "~/renderer/components/OperationsList";
 import AssetDistribution from "~/renderer/components/AssetDistribution";
-import BalanceInfos from "~/renderer/components/BalanceInfos";
 import DelegationBanner from "~/renderer/families/tezos/Delegation/DelegationBanner";
 import MigrationBanner from "~/renderer/modals/MigrateAccounts/Banner";
 import { saveSettings } from "~/renderer/actions/settings";
@@ -67,21 +66,6 @@ const DashboardPage = ({ saveSettings }: Props) => {
     [saveSettings],
   );
 
-  const Header = useCallback(
-    ({ portfolio }) => (
-      <BalanceInfos
-        t={t}
-        unit={counterValue.units[0]}
-        isAvailable={portfolio.balanceAvailable}
-        since={selectedTimeRange}
-        valueChange={portfolio.countervalueChange}
-        totalBalance={portfolio.balanceHistory[portfolio.balanceHistory.length - 1].value}
-        handleChangeSelectedTime={handleChangeSelectedTime}
-      />
-    ),
-    [t, counterValue.units, selectedTimeRange, handleChangeSelectedTime],
-  );
-
   return (
     <>
       <TopBannerContainer>
@@ -102,12 +86,12 @@ const DashboardPage = ({ saveSettings }: Props) => {
         {totalAccounts > 0 ? (
           <>
             <BalanceSummary
+              t={t}
               counterValue={counterValue}
               chartId="dashboard-chart"
               chartColor={colors.wallet}
               accounts={accounts}
               range={selectedTimeRange}
-              Header={Header}
               handleChangeSelectedTime={handleChangeSelectedTime}
               selectedTimeRange={selectedTimeRange}
             />
