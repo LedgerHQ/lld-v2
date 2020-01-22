@@ -1,12 +1,12 @@
 // @flow
-
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import styled from "styled-components";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import { Trans } from "react-i18next";
 import { Base } from "~/renderer/components/Button";
 import Text from "~/renderer/components/Text";
 
-const Tabs = styled.div`
+const Tabs: ThemedComponent<*> = styled.div`
   display: flex;
   flex-direction: row;
   position: relative;
@@ -52,11 +52,7 @@ const TabBar = ({ tabs, onIndexChange, defaultIndex = 0 }: Props) => {
   const [currentRef, setCurrentRef] = useState({});
 
   useEffect(() => {
-    const { clientWidth, offsetLeft } = tabRefs.current[index] || {};
-    setCurrentRef({
-      clientWidth,
-      offsetLeft,
-    });
+    setCurrentRef(() => tabRefs.current[index]);
   }, [setCurrentRef, index]);
 
   const updateIndex = useCallback(

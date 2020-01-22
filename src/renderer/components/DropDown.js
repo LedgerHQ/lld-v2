@@ -76,7 +76,7 @@ type Props = {
   renderItem: Object => any,
   value?: DropDownItemType | null,
   shrink?: string,
-  multiple?: boolean,
+  multiple: boolean,
 };
 
 class DropDown extends PureComponent<Props> {
@@ -152,7 +152,10 @@ class DropDown extends PureComponent<Props> {
               {renderItem({
                 item,
                 isHighlighted: highlightedIndex === i,
-                isActive: multiple ? selectedItem.includes(key) : item === selectedItem,
+                isActive:
+                  multiple && Array.isArray(selectedItem)
+                    ? selectedItem.includes(key)
+                    : item === selectedItem,
               })}
             </Box>
           );
