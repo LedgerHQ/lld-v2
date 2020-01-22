@@ -28,7 +28,7 @@ const defaultWindowOptions = {
   backgroundColor: "#fff",
   webPreferences: {
     blinkFeatures: "OverlayScrollbars",
-    devTools: __DEV__,
+    devTools: __DEV__ || DEV_TOOLS,
     experimentalFeatures: true,
     nodeIntegration: true,
   },
