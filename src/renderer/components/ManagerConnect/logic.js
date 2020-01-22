@@ -1,8 +1,7 @@
 // @flow
 import { ReplaySubject, concat, of, empty, interval } from "rxjs";
-import { scan, debounce, debounceTime, catchError, switchMap, tap } from "rxjs/operators";
+import { scan, debounce, debounceTime, catchError, switchMap } from "rxjs/operators";
 import { useEffect, useCallback, useState } from "react";
-import { log } from "@ledgerhq/logs";
 import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
 import type { ListAppsResult } from "@ledgerhq/live-common/lib/apps/types";
 import manager from "@ledgerhq/live-common/lib/manager";
@@ -161,7 +160,6 @@ export const useManagerConnect = (device: ?Device): [State, Cbs] => {
         debounceTime(1000),
         // each time there is a device change, we pipe to the command
         switchMap(connectManager),
-        tap(e => log("manager-connect-event", e.type, e)),
         // tap(e => console.log("connectManager event", e)),
         // we gather all events with a reducer into the UI state
         scan(reducer, getInitialState()),
