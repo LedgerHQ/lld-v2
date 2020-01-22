@@ -70,24 +70,16 @@ const StorageBarWrapper: ThemedComponent<{}> = styled.div`
 `;
 
 const StorageBarItem: ThemedComponent<{ ratio: number }> = styled.div.attrs(props => ({
-  width: `${(props.ratio * 100).toFixed(3)}%`,
+  style: { width: `${(props.ratio * 1e2).toFixed(3)}%` },
 }))`
   display: flex;
-  width: ${p => p.width};
-  background-clip: content-box !important;
-  & > * {
-    width: 100%;
-    height: 100%;
-  }
+  width: 0;
+  background-color: ${p => p.color};
   position: relative;
-  &::after {
-    content: " ";
-    width: 1px;
-    height: 100%;
-    position: absolute;
-    right: 0;
-    background: ${p => p.theme.colors.palette.text.shade10};
-  }
+  border-right: 3px solid ${p => p.theme.colors.palette.background.paper};
+  transform-origin: left;
+  transition: all 0.4s ease-in;
+  animation: ${p => p.theme.animations.fadeInGrowX};
 `;
 
 const FreeInfo = styled.div`
@@ -134,8 +126,8 @@ export const StorageBar = ({ distribution, deviceModel }: { distribution: *, dev
       const color = currency ? currency.color : "black";
       return (
         <StorageBarItem
-          key={`${name}-${index}`}
-          style={{ background: color }}
+          key={`${name}`}
+          color={color}
           ratio={blocks / (distribution.totalBlocks - distribution.osBlocks)}
         >
           <Tooltip

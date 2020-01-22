@@ -42,6 +42,10 @@ export const DropDownItem: ThemedComponent<{ isHighlighted: boolean, isActive: b
 }))`
   height: 48px;
   white-space: nowrap;
+  cursor: pointer;
+  &:hover {
+    background-color: ${p => p.theme.colors.palette.background.default};
+  }
 `;
 
 export const Wrapper: ThemedComponent<{
@@ -72,6 +76,7 @@ type Props = {
   renderItem: Object => any,
   value?: DropDownItemType | null,
   shrink?: string,
+  multiple: boolean,
 };
 
 class DropDown extends PureComponent<Props> {
@@ -95,6 +100,7 @@ class DropDown extends PureComponent<Props> {
         {item.label}
       </DropDownItem>
     ),
+    multiple: false,
   };
 
   handleStateChange = (state: Object, changes: Object) => {
@@ -130,7 +136,8 @@ class DropDown extends PureComponent<Props> {
 
   renderItems = (
     items: Array<DropDownItemType>,
-    selectedItem: ?DropDownItemType,
+    selectedItem: ?DropDownItemType | Array<DropDownItemType>,
+    multiple: boolean,
     downshiftProps: Object,
   ) => {
     const { offsetTop, offsetRight, renderItem, border } = this.props;
@@ -145,7 +152,10 @@ class DropDown extends PureComponent<Props> {
               {renderItem({
                 item,
                 isHighlighted: highlightedIndex === i,
-                isActive: item === selectedItem,
+                isActive:
+                  multiple && Array.isArray(selectedItem)
+                    ? selectedItem.includes(key)
+                    : item === selectedItem,
               })}
             </Box>
           );
@@ -155,7 +165,7 @@ class DropDown extends PureComponent<Props> {
   };
 
   render() {
-    const { children, items, value, onChange, shrink, ...props } = this.props;
+    const { children, items, value, onChange, shrink, multiple, ...props } = this.props;
     return (
       <Downshift
         onChange={onChange}
@@ -181,7 +191,7 @@ class DropDown extends PureComponent<Props> {
             <Trigger {...getToggleButtonProps()} {...props} tabIndex={0}>
               {children}
             </Trigger>
-            {isOpen && this.renderItems(items, selectedItem, downshiftProps)}
+            {isOpen && this.renderItems(items, selectedItem, multiple, downshiftProps)}
           </Wrapper>
         )}
       </Downshift>

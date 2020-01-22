@@ -35,6 +35,7 @@ const AppRow = styled.div`
   }
   padding: 20px;
   font-size: 12px;
+  animation: ${p => p.theme.animations.fadeIn};
 `;
 
 const AppName = styled.div`

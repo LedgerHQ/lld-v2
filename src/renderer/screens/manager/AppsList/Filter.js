@@ -9,33 +9,38 @@ import Box from "~/renderer/components/Box";
 import BoldToggle from "~/renderer/components/BoldToggle";
 import Text from "~/renderer/components/Text";
 
-const Filter = ({ onFilterChange, filter }: *) => {
+const Filter = ({ onFiltersChange, filters, t }: *) => {
   const onFilterChangeWrapper = useCallback(
     ({ selectedItem: item }) => {
-      if (!item) {
-        return;
+      if (!item) return;
+      const newFilters = [...filters];
+      const i = newFilters.indexOf(item.key);
+      if (i >= 0) {
+        newFilters.splice(i, 1);
+      } else {
+        newFilters.push(item.key);
       }
-      onFilterChange(item.key);
+      onFiltersChange(newFilters);
     },
-    [onFilterChange],
+    [filters, onFiltersChange],
   );
 
   const filterItems = [
-    {
-      key: "all",
-      label: <Trans i18nKey="manager.applist.filter.all" />,
-    },
-    {
-      key: "installed",
-      label: <Trans i18nKey="manager.applist.filter.installed" />,
-    },
+    // {
+    //   key: "all",
+    //   label: <Trans i18nKey="manager.applist.filter.all" />,
+    // },
+    // {
+    //   key: "installed",
+    //   label: <Trans i18nKey="manager.applist.filter.installed" />,
+    // },
     {
       key: "not_installed",
-      label: <Trans i18nKey="manager.applist.filter.notInstalled" />,
+      label: t("manager.applist.filter.not_installed"),
     },
     {
       key: "supported",
-      label: <Trans i18nKey="manager.applist.filter.supported" />,
+      label: t("manager.applist.filter.supported"),
     },
   ];
 
@@ -65,14 +70,17 @@ const Filter = ({ onFilterChange, filter }: *) => {
       items={filterItems}
       renderItem={renderItem}
       onStateChange={onFilterChangeWrapper}
-      value={filterItems.find(item => item.key === filter)}
+      value={filters}
+      multiple
     >
       <Text color="palette.text.shade60" ff="Inter|SemiBold" fontSize={4}>
         <Trans i18nKey="manager.applist.filter.title" />
       </Text>
       <Box alignItems="center" color="wallet" ff="Inter|SemiBold" flow={1} fontSize={4} horizontal>
         <Text color="wallet">
-          <Trans i18nKey={`manager.applist.filter.${filter || "all"}`} />
+          {filters.length > 0
+            ? filters.map((filter, i) => t(`manager.applist.filter.${filter}`)).join(" - ")
+            : t("manager.applist.filter.all")}
         </Text>
         <IconAngleDown size={16} />
       </Box>

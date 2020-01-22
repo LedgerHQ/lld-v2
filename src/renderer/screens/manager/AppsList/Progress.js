@@ -4,24 +4,18 @@ import styled from "styled-components";
 import { Trans } from "react-i18next";
 import Box from "~/renderer/components/Box";
 import Text from "~/renderer/components/Text";
+import ProgressBar from "~/renderer/components/Progress";
 import IconCrossCircle from "~/renderer/icons/CrossCircle";
 
 const Holder = styled.div`
   min-width: 100px;
   width: 100%;
   height: 5px;
-  background: ${p => p.theme.colors.palette.text.shade20};
   position: relative;
   border-radius: 5px;
+  overflow: hidden;
 `;
-const Bar = styled.div`
-  position: absolute;
-  background: ${p => p.theme.colors.palette.primary.main};
-  height: 100%;
-  border-radius: 5px;
-  width: ${p => `${(p.value * 100).toFixed(2)}%`};
-  max-width: 100%;
-`;
+
 const Cancel = styled.div`
   align-items: center;
   justify-content: center;
@@ -42,7 +36,15 @@ const Progress = ({ onClick, progress }: { onClick: () => void, progress: * }) =
         py={1}
         maxWidth="100%"
       >
-        <Text ff="Inter|SemiBold" fontSize={3} color="palette.primary.main">
+        <Text
+          ff="Inter|SemiBold"
+          fontSize={3}
+          color={
+            progress && progress.appOp && progress.appOp.type === "uninstall"
+              ? "alertRed"
+              : "palette.primary.main"
+          }
+        >
           <Trans
             i18nKey={
               progress && progress.appOp
@@ -60,7 +62,15 @@ const Progress = ({ onClick, progress }: { onClick: () => void, progress: * }) =
         ) : null}
       </Box>
       <Holder>
-        <Bar value={progress ? progress.progress : 0} />
+        {progress && progress.appOp ? (
+          progress.appOp.type === "install" ? (
+            <ProgressBar progress={progress ? progress.progress : 0} />
+          ) : (
+            <ProgressBar infinite color="alertRed" timing={1200} />
+          )
+        ) : (
+          <ProgressBar infinite color="palette.text.shade20" timing={1200} />
+        )}
       </Holder>
     </Box>
   </Box>
