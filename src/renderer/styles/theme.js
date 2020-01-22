@@ -1,6 +1,8 @@
 // @flow
-
+import { keyframes, css } from "styled-components";
 import { WARN_LEGACY_COLORS } from "~/config/constants";
+
+import type { CSSRules } from "styled-components";
 
 export const space = [0, 5, 10, 15, 20, 30, 40, 50, 70];
 export const fontSizes = [8, 9, 10, 12, 13, 16, 18, 22, 32];
@@ -87,6 +89,47 @@ const exportedColors = WARN_LEGACY_COLORS
 
 export { exportedColors as colors };
 
+const animationLength = "0.3s";
+
+const easings = {
+  outQuadratic: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+};
+
+const fadeIn = keyframes`
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  `;
+
+const fadeOut = keyframes`
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  `;
+
+const fadeInGrowX = keyframes`
+    0% {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+    100% {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+`;
+
+const animations = {
+  fadeIn: props => css`${fadeIn} ${animationLength} ${easings.outQuadratic} forwards`,
+  fadeOut: props => css`${fadeOut} ${animationLength} ${easings.outQuadratic} forwards`,
+  fadeInGrowX: props => css`${fadeInGrowX} ${animationLength} ${easings.outQuadratic} forwards`,
+};
+
 type Font = {
   weight: number,
   style: string,
@@ -103,6 +146,7 @@ export type Theme = {
   space: number[],
   shadows: string[],
   colors: { [string]: string },
+  animations: { [string]: (props: empty) => CSSRules },
 };
 
 const theme: Theme = {
@@ -116,6 +160,7 @@ const theme: Theme = {
   space,
   shadows,
   colors,
+  animations,
 };
 
 export default theme;

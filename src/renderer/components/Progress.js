@@ -1,23 +1,20 @@
 // @flow
 import React, { Component } from "react";
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes, css } from "styled-components";
+import { color } from "styled-system";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
 import Box from "~/renderer/components/Box";
 
-const inifiteAnimation = keyframes`
+const infiniteAnimation = keyframes`
   0% {
-    left: -18%;
-    width: 20%;
+    transform: translateX(-80%) scaleX(0.2);
   }
-
   50% {
-    left: 98%;
+    transform: translateX(0%) scaleX(0.5);
   }
-
   100% {
-    left: -18%;
-    width: 20%;
+    transform: translateX(80%) scaleX(0.2);
   }
 `;
 
@@ -34,7 +31,6 @@ const fillInAnimation = keyframes`
 `;
 
 const Bar: ThemedComponent<{}> = styled(Box).attrs(() => ({
-  color: "palette.divider",
   borderRadius: "2.5px",
 }))`
   height: 5px;
@@ -42,35 +38,40 @@ const Bar: ThemedComponent<{}> = styled(Box).attrs(() => ({
   position: relative;
   background-color: currentColor;
   overflow: hidden;
+  ${color}
 `;
 
-const Progression: ThemedComponent<{ infinite?: boolean }> = styled(Bar).attrs(() => ({
-  color: "wallet",
-}))`
+const Progression: ThemedComponent<{ infinite?: boolean }> = styled(Bar).attrs(p =>
+  !isNaN(p.progress)
+    ? {
+        style: {
+          transform: `scaleX(${p.progress})`,
+        },
+        transformOrigin: "left",
+        animation: "none",
+      }
+    : {
+        transformOrigin: p.infinite ? "center" : "left",
+        animation: css`
+      ${p.timing}ms ${p.infinite ? infiniteAnimation : fillInAnimation} ${
+          p.infinite ? "infinite" : "ease-out forwards"
+        }
+    `,
+      },
+)`
   position: absolute;
   top: 0;
   left: 0;
-  ${p =>
-    p.infinite
-      ? `
-    animation: ${p.timing}ms ${
-          // $FlowFixMe
-          inifiteAnimation
-        } infinite;
-    `
-      : `
-    animation: ${p.timing}ms ${
-          // $FlowFixMe
-          fillInAnimation
-        } ease-out;
-    animation-fill-mode: forwards;
-  `};
+  transform-origin: ${p => p.transformOrigin};
+  transition: all 0.1s linear;
+  animation: ${p => p.animation};
 `;
 
 type Props = {
-  infinite: boolean,
+  infinite?: boolean,
   timing?: number,
   color?: string,
+  progress?: number,
 };
 
 type State = {};
@@ -80,14 +81,14 @@ class Progress extends Component<Props, State> {
     infinite: false,
     timing: 2500,
     color: "wallet",
+    progress: undefined,
   };
 
   render() {
-    const { infinite, color, timing } = this.props;
-    const styles = infinite ? { width: "0%" } : { width: "100%" };
+    const { infinite, color, timing, progress } = this.props;
     return (
-      <Bar>
-        <Progression infinite={infinite} color={color} style={styles} timing={timing} />
+      <Bar color="palette.divider">
+        <Progression infinite={infinite} bg={color} timing={timing} progress={progress} />
       </Bar>
     );
   }

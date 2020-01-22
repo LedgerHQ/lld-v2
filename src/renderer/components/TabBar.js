@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState, useRef, useCallback, useMemo, useEffect } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import styled from "styled-components";
 import { Trans } from "react-i18next";
 import { Base } from "~/renderer/components/Button";
@@ -9,16 +9,13 @@ import Text from "~/renderer/components/Text";
 const Tabs = styled.div`
   display: flex;
   flex-direction: row;
-  margin-bottom: 24px;
   position: relative;
 `;
 
 const Tab = styled(Base)`
-  padding: 0px;
-  padding-right: 30px;
+  padding: 0 0 4px 30px;
   text-transform: uppercase;
   border-radius: 0;
-  padding-bottom: 4px;
   color: ${p =>
     p.active ? p.theme.colors.palette.text.shade100 : p.theme.colors.palette.text.shade30};
   &:hover,
@@ -29,11 +26,16 @@ const Tab = styled(Base)`
   }
 `;
 
-const TabIndicator = styled.span`
+const TabIndicator = styled.span.attrs(({ currentRef = {} }) => ({
+  style: {
+    width: `${currentRef.clientWidth - 30}px`,
+    transform: `translateX(${currentRef.offsetLeft}px)`,
+  },
+}))`
   height: 3px;
   position: absolute;
   bottom: 0;
-  left: 0;
+  left: 30px;
   background-color: ${p => p.theme.colors.palette.primary.main};
   transition: all 0.3s ease-in-out;
 `;
@@ -47,10 +49,14 @@ type Props = {
 const TabBar = ({ tabs, onIndexChange, defaultIndex = 0 }: Props) => {
   const tabRefs = useRef([]);
   const [index, setIndex] = useState(defaultIndex);
-  const [currentRef, setCurrentRef] = useState(false);
+  const [currentRef, setCurrentRef] = useState({});
 
   useEffect(() => {
-    setCurrentRef(tabRefs.current[index]);
+    const { clientWidth, offsetLeft } = tabRefs.current[index] || {};
+    setCurrentRef({
+      clientWidth,
+      offsetLeft,
+    });
   }, [setCurrentRef, index]);
 
   const updateIndex = useCallback(
@@ -64,15 +70,6 @@ const TabBar = ({ tabs, onIndexChange, defaultIndex = 0 }: Props) => {
   const setTabRef = index => ref => {
     tabRefs.current[index] = ref;
   };
-
-  const tabIndicatorStyle = useMemo(() => {
-    return currentRef
-      ? {
-          width: `${currentRef.clientWidth - 30}px`,
-          transform: `translateX(${currentRef.offsetLeft}px)`,
-        }
-      : {};
-  }, [currentRef]);
 
   return (
     <Tabs>
@@ -89,7 +86,7 @@ const TabBar = ({ tabs, onIndexChange, defaultIndex = 0 }: Props) => {
           </Text>
         </Tab>
       ))}
-      <TabIndicator style={tabIndicatorStyle} />
+      <TabIndicator currentRef={currentRef} />
     </Tabs>
   );
 };
