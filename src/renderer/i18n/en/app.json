@@ -988,13 +988,13 @@
     "init": {
       "title": "Get started with your Ledger device",
       "newDevice": {
-        "title": "Initialize as new device"
+        "title": "Set up as new device"
       },
       "restoreDevice": {
         "title": "Restore device from recovery phrase"
       },
       "initializedDevice": {
-        "title": "Use an initialized device"
+        "title": "Skip device setup"
       }
     },
     "noDevice": {
@@ -1024,10 +1024,11 @@
         "title": "Choose your PIN code",
         "instructions": {
           "nano": {
-            "step1": "Connect the {{productName}} to your computer. Press both buttons to begin.",
-            "step2": "Press the right button to select <1><0>{{configureAsNewDevice}}?</0></1>.",
-            "step3": "Press the left or right button to select a digit. Press both buttons to validate.",
-            "step4": "Select ✓ to confirm your PIN code. Select ⬅ to erase a digit."
+            "step1": "Connect the {{productName}} to your computer.",
+            "step2": "Press the left or right button to navigate through the on-screen instructions.",
+            "step3": "Press both buttons to select <1><0>{{configureAsNewDevice }}</0></1>.",
+            "step4": "Press the left or right button to select a digit. Press both buttons to validate.",
+            "step5": "Select ✓ to confirm your PIN code. Select ⬅ to erase a digit."
           },
           "nanoX": {
             "step1": "Connect the {{productName}} to your computer.",
@@ -1046,10 +1047,11 @@
         "title": "Choose your PIN code",
         "instructions": {
           "nano": {
-            "step1": "Connect the {{productName}} to your computer. Press both buttons to begin.",
-            "step2": "Press the left button to cancel <1><0>{{configureAsNewDevice}}?</0></1>. Then press the right button to select <3><0>{{restoreConfiguration}}?</0></3>.",
-            "step3": "Press the left or right button to select a digit. Press both buttons to validate.",
-            "step4": "Select ✓ to confirm your PIN code. Select ⬅ to erase a digit."
+            "step1": "Connect the {{productName}} to your computer.",
+            "step2": "Press the left or right button to navigate through the on-screen instructions.",
+            "step3": "Press both buttons to select <1><0>{{restoreConfiguration}}</0></1>.",
+            "step4": "Press the left or right button to select a digit. Press both buttons to validate.",
+            "step5": "Select ✓ to confirm your PIN code. Select ⬅ to erase a digit."
           },
           "nanoX": {
             "step1": "Connect your {{productName}} to your computer.",
@@ -1068,8 +1070,8 @@
     },
     "writeSeed": {
       "initialize": {
-        "title": "Save your recovery phrase",
-        "desc": "Your device will display a 24-word recovery phrase to back up your private keys",
+        "title": "Write down your recovery phrase",
+        "desc": "Your 24-word recovery phrase is the <1><0>only backup</0></1> of your private keys.",
         "nano": {
           "step1": "Write <1><0>{{seedWord1}}</0></1> in position 1 on a blank Recovery sheet.",
           "step2": "Press the right button to continue and write down all 24 words.",
@@ -1083,11 +1085,11 @@
       },
       "restore": {
         "title": "Enter your recovery phrase",
-        "desc": "Enter the recovery phrase saved on your Recovery sheet",
+        "desc": "Enter the recovery phrase from your Recovery phrase.",
         "nano": {
           "step1": "Choose the length of your recovery phrase.",
           "step2": "Enter the first letters of <1><0>{{seedWord1}}</0></1> until suggested words appear.",
-          "step3": "Choose <1><0>{{seedWord1}}</0></1> from the suggested words by pressing both buttons.",
+          "step3": "Choose seedWord1 from the suggested words by pressing both buttons.",
           "step4": "Repeat the process until the last word."
         },
         "blue": {
@@ -1097,10 +1099,10 @@
         }
       },
       "disclaimer": {
-        "note1": "Carefully secure your 24-word recovery phrase out of sight.",
-        "note2": "Make sure you are the sole holder of your recovery phrase.",
-        "note3": "Ledger does not keep any backup of your recovery phrase.",
-        "note4": "Never use a device supplied with a PIN code or a recovery phrase."
+        "note1": "Anyone who gets your recovery phrase can take your crypto assets.",
+        "note2": "Never use a device supplied with a PIN code or a recovery phrase.",
+        "note3": "Store your recovery phrase in a secure location, out of sight.",
+        "note4": "Ledger does not store your private keys, nor ever asks for it."
       }
     },
     "genuineCheck": {
