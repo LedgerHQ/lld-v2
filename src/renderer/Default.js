@@ -36,6 +36,7 @@ import PerfIndicator from "~/renderer/components/PerfIndicator";
 import MainSideBar from "~/renderer/components/MainSideBar";
 import TriggerAppReady from "~/renderer/components/TriggerAppReady";
 import ContextMenuWrapper from "~/renderer/components/ContextMenu/ContextMenuWrapper";
+import DebugUpdater from "~/renderer/components/Updater/DebugUpdater";
 import ModalsLayer from "./ModalsLayer";
 
 const Main: ThemedComponent<{
@@ -88,8 +89,7 @@ const Default = () => {
 
             <IsNewVersion />
 
-            {/* TODO: UpdaterContext and autoUpdate command */}
-            {/* {process.env.DEBUG_UPDATE && <DebugUpdater />} */}
+            {process.env.DEBUG_UPDATE && <DebugUpdater />}
 
             <SyncContinuouslyPendingOperations priority={20} interval={SYNC_PENDING_INTERVAL} />
             <SyncBackground />

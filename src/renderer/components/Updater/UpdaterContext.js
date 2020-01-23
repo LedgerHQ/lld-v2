@@ -1,12 +1,9 @@
 // @flow
 
+import { ipcRenderer } from "electron";
 import React, { Component } from "react";
 
-// TODO: AutoUpdate logic
-// import autoUpdate from '~/commands/autoUpdate'
-// ^these must not be a command!!!
-
-// const autoUpdate = () => ({ send: () => ({ subscribe: () => {} }) });
+import type { IpcRendererEvent } from "electron";
 
 export type UpdateStatus =
   | "idle"
@@ -45,19 +42,10 @@ class Provider extends Component<UpdaterProviderProps, UpdaterProviderState> {
   constructor() {
     super();
 
+    ipcRenderer.on("updater", this.listener);
+
     if (!__DEV__) {
-      // this.sub = autoUpdate.send({}).subscribe({
-      //   next: e => {
-      //     if (e.status === "download-progress") {
-      //       const downloadProgress =
-      //         e.payload && e.payload.percent ? e.payload.percent.toFixed(0) : 0;
-      //       this.setState({ status: e.status, downloadProgress });
-      //     } else {
-      //       this.setStatus(e.status);
-      //     }
-      //   },
-      //   error: error => this.setState({ status: "error", error }),
-      // });
+      ipcRenderer.send("updater", "init");
     }
 
     this.state = {
@@ -68,16 +56,29 @@ class Provider extends Component<UpdaterProviderProps, UpdaterProviderState> {
   }
 
   componentWillUnmount() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    ipcRenderer.removeListener("updater", this.listener);
   }
 
-  sub = null;
+  listener = (
+    e: IpcRendererEvent,
+    args: { status: UpdateStatus, payload?: { percent?: number } },
+  ) => {
+    if (args.status === "download-progress") {
+      const downloadProgress =
+        args.payload && args.payload.percent ? +args.payload.percent.toFixed(0) : 0;
+      this.setState({ status: args.status, downloadProgress });
+    } else {
+      this.setStatus(args.status);
+    }
+  };
 
-  setStatus = (status: UpdateStatus) => this.setState({ status });
+  setStatus = (status: UpdateStatus) => {
+    this.setState({ status });
+  };
+
   setDownloadProgress = (downloadProgress: number) => this.setState({ downloadProgress });
-  quitAndInstall = () => Promise.resolve();
+
+  quitAndInstall = () => ipcRenderer.send("updater", "quit-and-install");
 
   render() {
     const { status, downloadProgress, error } = this.state;
