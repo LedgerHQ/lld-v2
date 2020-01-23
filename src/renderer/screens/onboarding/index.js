@@ -42,7 +42,7 @@ const STEPS = {
   selectDevice: SelectDevice,
   selectPIN: SelectPIN,
   writeSeed: WriteSeed,
-  genuineCheck: GenuineCheck, // TODO @gre all yours
+  genuineCheck: GenuineCheck,
   setPassword: SetPassword,
   analytics: Analytics,
   finish: Finish,

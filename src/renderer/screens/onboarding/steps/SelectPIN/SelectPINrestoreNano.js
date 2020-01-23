@@ -10,11 +10,8 @@ import InvertableImg from "~/renderer/components/InvertableImg";
 import { DisclaimerBox } from "~/renderer/screens/onboarding/steps/SelectPIN";
 import OptionRow, { IconOptionRow } from "~/renderer/components/OptionRow";
 import { Inner } from "~/renderer/screens/onboarding/sharedComponents";
-import RestoreNanoS from "~/renderer/images/select-pin-blue-onb.svg";
-import {
-  configureAsNewDevice,
-  restoreConfiguration,
-} from "@ledgerhq/live-common/lib/deviceWordings";
+import RestoreNanoS from "~/renderer/images/select-pin-nano-onb.svg";
+import { restoreConfiguration } from "@ledgerhq/live-common/lib/deviceWordings";
 
 type Props = {
   t: TFunction,
@@ -33,14 +30,15 @@ class SelectPINrestoreNano extends PureComponent<Props, *> {
       {
         key: "step2",
         icon: <IconOptionRow>{"2."}</IconOptionRow>,
+        desc: t("onboarding.selectPIN.restore.instructions.nano.step2"),
+      },
+      {
+        key: "step3",
+        icon: <IconOptionRow>{"3."}</IconOptionRow>,
         desc: (
           <Box style={{ display: "block" }}>
-            <Trans i18nKey="onboarding.selectPIN.restore.instructions.nano.step2">
-              {"Press the left button to cancel"}
-              <Text ff="Inter|SemiBold" color="palette.text.shade100">
-                {configureAsNewDevice}
-              </Text>
-              {"Then press the right button to select"}
+            <Trans i18nKey="onboarding.selectPIN.restore.instructions.nano.step3">
+              {"Press the left button to select"}
               <Text ff="Inter|SemiBold" color="palette.text.shade100">
                 {restoreConfiguration}
               </Text>
@@ -49,14 +47,14 @@ class SelectPINrestoreNano extends PureComponent<Props, *> {
         ),
       },
       {
-        key: "step3",
-        icon: <IconOptionRow>{"3."}</IconOptionRow>,
-        desc: t("onboarding.selectPIN.restore.instructions.nano.step3"),
-      },
-      {
         key: "step4",
         icon: <IconOptionRow>{"4."}</IconOptionRow>,
         desc: t("onboarding.selectPIN.restore.instructions.nano.step4"),
+      },
+      {
+        key: "step5",
+        icon: <IconOptionRow>{"5."}</IconOptionRow>,
+        desc: t("onboarding.selectPIN.restore.instructions.nano.step5"),
       },
     ];
     const disclaimerNotes = [
