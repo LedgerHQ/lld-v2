@@ -104,7 +104,7 @@ class DropDown extends PureComponent<Props> {
   };
 
   handleStateChange = (state: Object, changes: Object) => {
-    const { keepOpenOnChange, onStateChange } = this.props;
+    const { keepOpenOnChange, multiple, onStateChange } = this.props;
 
     if (onStateChange) {
       onStateChange(changes);
@@ -125,7 +125,7 @@ class DropDown extends PureComponent<Props> {
       default:
         return {
           ...changes,
-          ...(keepOpenOnChange
+          ...(keepOpenOnChange || multiple
             ? {
                 isOpen: true,
               }
