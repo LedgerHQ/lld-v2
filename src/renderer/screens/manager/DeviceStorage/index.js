@@ -5,6 +5,8 @@ import { distribute, isIncompleteState } from "@ledgerhq/live-common/lib/apps";
 import styled from "styled-components";
 import { Trans } from "react-i18next";
 
+import { Transition, TransitionGroup } from "react-transition-group";
+
 import ByteSize from "~/renderer/components/ByteSize";
 import { rgba } from "~/renderer/styles/helpers";
 import Text from "~/renderer/components/Text";
@@ -69,8 +71,18 @@ const StorageBarWrapper: ThemedComponent<{}> = styled.div`
   overflow: hidden;
 `;
 
+const transitionStyles = {
+  entering: { opacity: 1 },
+  entered: { opacity: 1 },
+  exiting: { opacity: 0 },
+  exited: { opacity: 0 },
+};
+
 const StorageBarItem: ThemedComponent<{ ratio: number }> = styled.div.attrs(props => ({
-  style: { width: `${(props.ratio * 1e2).toFixed(3)}%` },
+  style: {
+    width: `${props.state === "entered" ? (props.ratio * 1e2).toFixed(3) : 0}%`,
+    ...transitionStyles[props.state],
+  },
 }))`
   display: flex;
   width: 0;
@@ -80,8 +92,9 @@ const StorageBarItem: ThemedComponent<{ ratio: number }> = styled.div.attrs(prop
   border-right: 2px solid ${p => p.theme.colors.palette.background.paper};
   box-sizing: content-box;
   transform-origin: left;
+  opacity: 0;
+  transform: scaleX(0);
   transition: all 0.4s ease-in;
-  animation: ${p => p.theme.animations.fadeInGrowX};
   & > * {
     width: 100%;
   }
@@ -134,23 +147,36 @@ export const StorageBar = ({
   deviceModel: *,
   isIncomplete: boolean,
 }) => (
-  <StorageBarWrapper>
+  <TransitionGroup component={StorageBarWrapper}>
     {!isIncomplete &&
       distribution.apps.map(({ name, currency, bytes, blocks }, index) => {
         const color = currency ? currency.color : "black";
         return (
-          <StorageBarItem
+          <Transition
+            in={false}
+            timeout={{
+              appear: 0,
+              enter: 400,
+              exit: 800, // leaves extra time for the animation to end before unmount
+            }}
+            unmountOnExit
             key={`${name}`}
-            color={color}
-            ratio={blocks / (distribution.totalBlocks - distribution.osBlocks)}
           >
-            <Tooltip
-              content={<TooltipContent name={name} bytes={bytes} deviceModel={deviceModel} />}
-            />
-          </StorageBarItem>
+            {state => (
+              <StorageBarItem
+                state={state}
+                color={color}
+                ratio={blocks / (distribution.totalBlocks - distribution.osBlocks)}
+              >
+                <Tooltip
+                  content={<TooltipContent name={name} bytes={bytes} deviceModel={deviceModel} />}
+                />
+              </StorageBarItem>
+            )}
+          </Transition>
         );
       })}
-  </StorageBarWrapper>
+  </TransitionGroup>
 );
 
 const DeviceStorage = ({ state, deviceInfo }: *) => {

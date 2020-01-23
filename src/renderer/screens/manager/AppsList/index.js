@@ -92,7 +92,7 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
   const [state, dispatch] = useAppsRunner(result, exec);
   const onUpdateAll = useCallback(() => dispatch({ type: "updateAll" }), [dispatch]);
 
-  const { apps, installed: installedApps } = state;
+  const { apps, appByName, installed: installedApps, installQueue } = state;
   const onDeviceTab = activeTab === 1;
   const { currentProgress, currentError } = state;
   const plan = getActionPlan(state);
@@ -110,7 +110,9 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
     { type: "marketcap", order: "desc" },
   );
 
-  const displayedAppList = onDeviceTab ? installedAppList : appList;
+  const appsInstalling = installQueue.map(name => appByName[name]);
+
+  const displayedAppList = onDeviceTab ? [...appsInstalling, ...installedAppList] : appList;
 
   const mapApp = (app, appStoreView, onlyUpdate, showActions) => (
     <Item
@@ -142,28 +144,30 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
           dispatch={dispatch}
         />
       </Box>
-      <CollapsibleCard
-        mb={20}
-        header={
-          <UpdatableHeader>
-            <Text ff="Inter|SemiBold" fontSize={4} color="palette.primary.main">
-              <Trans i18nKey="manager.applist.updatable.title" />
-            </Text>
-            <Badge ff="Inter|Bold" fontSize={3} color="palette.text.shade100">
-              {updatableAppList.length}
-            </Badge>
-            <Box flex={1} />
-            <Button style={{ display: "flex" }} primary onClick={onUpdateAll} fontSize={3}>
-              <IconLoader size={14} />
-              <Text style={{ marginLeft: 8 }}>
-                <Trans i18nKey="manager.applist.item.updateAll" />
+      {updatableAppList.length > 0 && (
+        <CollapsibleCard
+          mb={20}
+          header={
+            <UpdatableHeader>
+              <Text ff="Inter|SemiBold" fontSize={4} color="palette.primary.main">
+                <Trans i18nKey="manager.applist.updatable.title" />
               </Text>
-            </Button>
-          </UpdatableHeader>
-        }
-      >
-        {updatableAppList.map(app => mapApp(app, false, true, false))}
-      </CollapsibleCard>
+              <Badge ff="Inter|Bold" fontSize={3} color="palette.text.shade100">
+                {updatableAppList.length}
+              </Badge>
+              <Box flex={1} />
+              <Button style={{ display: "flex" }} primary onClick={onUpdateAll} fontSize={3}>
+                <IconLoader size={14} />
+                <Text style={{ marginLeft: 8 }}>
+                  <Trans i18nKey="manager.applist.item.updateAll" />
+                </Text>
+              </Button>
+            </UpdatableHeader>
+          }
+        >
+          {updatableAppList.map(app => mapApp(app, false, true, false))}
+        </CollapsibleCard>
+      )}
 
       {isIncompleteState(state) ? null : (
         <StickyTabBar>

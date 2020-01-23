@@ -47,6 +47,7 @@ const ChildrenContainer = styled.div.attrs(p => ({
   width: auto;
   &::-webkit-scrollbar {
     width: 0px;
+    height: 0px;
   }
 `;
 

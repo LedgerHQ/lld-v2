@@ -30,22 +30,26 @@ import ActivityIndicator from "./ActivityIndicator";
 import ItemContainer from "./ItemContainer";
 import { setDiscreetMode } from "~/renderer/actions/settings";
 
-const Container: ThemedComponent<{}> = styled(Box).attrs(() => ({
-  px: 6,
-}))`
+const Container: ThemedComponent<{}> = styled(Box).attrs(() => ({}))`
   height: ${p => p.theme.sizes.topBarHeight}px;
-  position: absolute;
+  position: sticky;
   left: 0;
   right: 0;
   top: 0;
   z-index: 20;
+  padding-bottom: ${p => p.theme.space[6]};
+  box-sizing: content-box;
+  background-color: transparent;
 `;
 const Inner = styled(Box).attrs(() => ({
   horizontal: true,
   grow: true,
   flow: 4,
   alignItems: "center",
-}))``;
+  px: 6,
+}))`
+  height: 100%;
+`;
 
 const Bar = styled.div`
   margin-left: 5px;
@@ -58,6 +62,9 @@ const Bar = styled.div`
 export const SeparatorBar: ThemedComponent<{}> = styled.div`
   height: 1px;
   border-bottom: 1px solid ${p => p.theme.colors.palette.divider};
+  width: calc(100% - ${p => p.theme.space[6] * 2}px);
+  left: ${p => p.theme.space[6]};
+  position: relative;
 `;
 
 const TopBar = () => {
@@ -91,8 +98,8 @@ const TopBar = () => {
   }, [history, location, dispatch]);
 
   return (
-    <Container bg="palette.background.default" color="palette.text.shade80">
-      <Inner>
+    <Container color="palette.text.shade80">
+      <Inner bg="palette.background.default">
         <Box grow horizontal justifyContent="space-between">
           <Breadcrumb />
           <Box horizontal>

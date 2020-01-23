@@ -8,8 +8,7 @@ import ProgressBar from "~/renderer/components/Progress";
 import IconCrossCircle from "~/renderer/icons/CrossCircle";
 
 const Holder = styled.div`
-  min-width: 100px;
-  width: 100%;
+  width: 100px;
   height: 5px;
   position: relative;
   border-radius: 5px;
@@ -27,7 +26,7 @@ const Cancel = styled.div`
 
 const Progress = ({ onClick, progress }: { onClick: () => void, progress: * }) => (
   <Box flex="1" horizontal justifyContent="flex-end" overflow="hidden">
-    <Box flex="0 0 auto" vertical alignItems="center" justifyContent="center">
+    <Box flex="0 0 auto" vertical alignItems="flex-end" justifyContent="center">
       <Box
         flex="0 0 auto"
         horizontal
@@ -36,15 +35,7 @@ const Progress = ({ onClick, progress }: { onClick: () => void, progress: * }) =
         py={1}
         maxWidth="100%"
       >
-        <Text
-          ff="Inter|SemiBold"
-          fontSize={3}
-          color={
-            progress && progress.appOp && progress.appOp.type === "uninstall"
-              ? "alertRed"
-              : "palette.primary.main"
-          }
-        >
+        <Text ff="Inter|SemiBold" fontSize={3} color="palette.primary.main">
           <Trans
             i18nKey={
               progress && progress.appOp
@@ -66,7 +57,7 @@ const Progress = ({ onClick, progress }: { onClick: () => void, progress: * }) =
           progress.appOp.type === "install" ? (
             <ProgressBar progress={progress ? progress.progress : 0} />
           ) : (
-            <ProgressBar infinite color="alertRed" timing={1200} />
+            <ProgressBar infinite timing={1200} />
           )
         ) : (
           <ProgressBar infinite color="palette.text.shade20" timing={1200} />

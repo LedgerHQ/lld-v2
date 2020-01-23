@@ -2,9 +2,6 @@
 
 import React, { useMemo } from "react";
 
-// DIRTY HACK, THERE IS PROBABLY A BETTER WAY TO DO THIS
-import measureScrollbar from "~/renderer/measureScrollbar";
-
 import Box from "~/renderer/components/Box";
 
 type Props = {
@@ -16,8 +13,6 @@ type Props = {
 // $FlowFixMe
 export const GrowScrollContext = React.createContext();
 
-const scrollbarWidth = measureScrollbar();
-
 const GrowScroll = (
   { children, full = false, maxHeight, ...props }: Props,
   ref: React$ElementRef<any>,
@@ -26,9 +21,6 @@ const GrowScroll = (
 
   const scrollContainerStyles = useMemo(
     () => ({
-      overflowY: "scroll",
-      marginRight: `-${80 + scrollbarWidth}px`,
-      paddingRight: `80px`,
       display: "flex",
       flexDirection: "column",
       ...(maxHeight
@@ -48,7 +40,6 @@ const GrowScroll = (
 
   const rootStyles = useMemo(
     () => ({
-      overflow: "hidden",
       ...(full
         ? {
             top: 0,
