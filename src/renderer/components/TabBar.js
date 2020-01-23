@@ -7,17 +7,18 @@ import { Base } from "~/renderer/components/Button";
 import Text from "~/renderer/components/Text";
 
 const Tabs: ThemedComponent<*> = styled.div`
+  height: ${p => p.theme.sizes.topBarHeight}px;
   display: flex;
   flex-direction: row;
   position: relative;
+  align-items: flex-end;
 `;
 
 const Tab = styled(Base)`
-  padding: 0 0 4px 30px;
-  text-transform: uppercase;
+  padding: 0 0 4px 16px;
   border-radius: 0;
   color: ${p =>
-    p.active ? p.theme.colors.palette.text.shade100 : p.theme.colors.palette.text.shade30};
+    p.active ? p.theme.colors.palette.text.shade100 : p.theme.colors.palette.text.shade50};
   &:hover,
   &:active,
   &:focus {
@@ -28,14 +29,14 @@ const Tab = styled(Base)`
 
 const TabIndicator = styled.span.attrs(({ currentRef = {} }) => ({
   style: {
-    width: `${currentRef.clientWidth - 30}px`,
+    width: `${currentRef.clientWidth - 16}px`,
     transform: `translateX(${currentRef.offsetLeft}px)`,
   },
 }))`
   height: 3px;
   position: absolute;
   bottom: 0;
-  left: 30px;
+  left: 16px;
   background-color: ${p => p.theme.colors.palette.primary.main};
   transition: all 0.3s ease-in-out;
 `;
@@ -77,7 +78,7 @@ const TabBar = ({ tabs, onIndexChange, defaultIndex = 0 }: Props) => {
           tabIndex={i}
           onClick={() => updateIndex(i)}
         >
-          <Text ff="Inter|Bold" fontSize={6}>
+          <Text fontSize={5}>
             <Trans i18nKey={tab} />
           </Text>
         </Tab>

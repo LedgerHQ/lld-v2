@@ -6,24 +6,25 @@ import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import Text from "~/renderer/components/Text";
 import Box from "./Box";
 
-const RawCard: ThemedComponent<{
+export type RawCardProps = {
   bg?: string,
   color?: string,
-}> = styled(Box).attrs(p => ({
+};
+
+export const RawCard: ThemedComponent<RawCardProps> = styled(Box).attrs(p => ({
   bg: p.bg || "palette.background.paper",
   boxShadow: 0,
   borderRadius: 1,
   color: p.color || "inherit",
 }))``;
 
-type Props = {
-  bg?: string,
-  color?: string,
+export type CardProps = {
+  ...RawCardProps,
   title?: any,
   children?: React$Node,
 };
 
-const Card = ({ title, ...props }: Props) => {
+const Card = ({ title, ...props }: CardProps) => {
   if (title) {
     return (
       <Box flow={4} grow>

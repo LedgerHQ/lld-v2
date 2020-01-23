@@ -30,9 +30,7 @@ const AppRow = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  &:not(:last-child) {
-    border-bottom: 1px solid ${p => p.theme.colors.palette.text.shade10};
-  }
+  border-top: 1px solid ${p => p.theme.colors.palette.text.shade10};
   padding: 20px;
   font-size: 12px;
   animation: ${p => p.theme.animations.fadeIn};
@@ -47,7 +45,7 @@ const AppName = styled.div`
 `;
 
 const AppSize = styled.div`
-  flex: 0 0 100px;
+  flex: 0.5;
   text-align: center;
   color: ${p => p.theme.colors.palette.text.shade40};
 `;
@@ -71,6 +69,10 @@ const SuccessInstall = styled.div`
   > svg {
     padding-right: 5px;
   }
+`;
+
+const SuccessUpdate = styled(SuccessInstall)`
+  color: ${p => p.theme.colors.palette.primary.main};
 `;
 
 const LiveCompatible = styled.div`
@@ -104,6 +106,7 @@ const Item: React$ComponentType<Props> = React.memo(
     onlyUpdate,
     deviceModel,
     forceUninstall,
+    showActions = true,
   }: Props) => {
     const { name } = app;
     const onInstall = useCallback(() => dispatch({ type: "install", name }), [dispatch, name]);
@@ -145,7 +148,7 @@ const Item: React$ComponentType<Props> = React.memo(
             deviceModel={deviceModel}
           />
         </AppSize>
-        <Box horizontal alignContent="center" justifyContent="center">
+        <Box flex="0.5" horizontal alignContent="center" justifyContent="center">
           <LiveCompatible>
             {isLiveSupported ? (
               <Tooltip content={<Trans i18nKey="manager.applist.item.supported" />}>
@@ -170,60 +173,51 @@ const Item: React$ComponentType<Props> = React.memo(
           />
         ) : (
           <AppActions>
-            {appStoreView && installed && installed.updated ? (
-              <SuccessInstall>
-                <IconCheck size={16} />
-                <Text ff="Inter|SemiBold" fontSize={4}>
-                  <Trans i18nKey="manager.applist.item.installed" />
-                </Text>
-              </SuccessInstall>
-            ) : null}
-            {installed && !installed.updated ? (
-              <Button
-                style={{ display: "flex" }}
-                disabled={notEnoughMemoryToInstall}
-                lighterPrimary={onlyUpdate || undefined}
-                primary={!onlyUpdate || undefined}
-                onClick={notEnoughMemoryToInstall ? null : onInstall}
-                fontSize={3}
-              >
-                <IconLoader size={14} />
-                <Text style={{ marginLeft: 8 }}>
-                  <Trans i18nKey="manager.applist.item.update" />
-                </Text>
-              </Button>
-            ) : !installed ? (
-              <Tooltip
-                content={
-                  notEnoughMemoryToInstall ? (
-                    <Trans i18nKey="manager.applist.item.notEnoughSpace" />
-                  ) : null
-                }
-              >
-                <Button
-                  style={{ display: "flex" }}
-                  lighterPrimary
-                  disabled={notEnoughMemoryToInstall}
-                  onClick={notEnoughMemoryToInstall ? null : onInstall}
-                >
-                  <IconArrowDown size={14} />
-                  <Text style={{ marginLeft: 8 }}>
-                    <Trans i18nKey="manager.applist.item.install" />
-                  </Text>
-                </Button>
-              </Tooltip>
-            ) : null}
-            {((installed || !installedAvailable) && !appStoreView && !onlyUpdate) ||
-            forceUninstall ? (
-              <Button
-                style={{ padding: 12 }}
-                outline
-                outlineColor={colors.grey}
-                onClick={onUninstall}
-              >
-                <IconTrash color={colors.grey} size={14} />
-              </Button>
-            ) : null}
+            {showActions && (
+              <>
+                {appStoreView && installed && installed.updated ? (
+                  <SuccessInstall>
+                    <IconCheck size={16} />
+                    <Text ff="Inter|SemiBold" fontSize={4}>
+                      <Trans i18nKey="manager.applist.item.installed" />
+                    </Text>
+                  </SuccessInstall>
+                ) : null}
+                {installed && !installed.updated ? (
+                  <SuccessUpdate>
+                    <Text ff="Inter|SemiBold" fontSize={4}>
+                      <Trans i18nKey="manager.applist.item.update" />
+                    </Text>
+                  </SuccessUpdate>
+                ) : !installed ? (
+                  <Tooltip
+                    content={
+                      notEnoughMemoryToInstall ? (
+                        <Trans i18nKey="manager.applist.item.notEnoughSpace" />
+                      ) : null
+                    }
+                  >
+                    <Button
+                      style={{ display: "flex" }}
+                      lighterPrimary
+                      disabled={notEnoughMemoryToInstall}
+                      onClick={notEnoughMemoryToInstall ? null : onInstall}
+                    >
+                      <IconArrowDown size={14} />
+                      <Text style={{ marginLeft: 8 }}>
+                        <Trans i18nKey="manager.applist.item.install" />
+                      </Text>
+                    </Button>
+                  </Tooltip>
+                ) : null}
+                {((installed || !installedAvailable) && !appStoreView && !onlyUpdate) ||
+                forceUninstall ? (
+                  <Button style={{ padding: 12 }} onClick={onUninstall}>
+                    <IconTrash color={colors.grey} size={14} />
+                  </Button>
+                ) : null}
+              </>
+            )}
           </AppActions>
         )}
       </AppRow>

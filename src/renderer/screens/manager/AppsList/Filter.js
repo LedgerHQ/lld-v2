@@ -1,7 +1,7 @@
 // @flow
 
-import React, { useCallback } from "react";
-import { Trans, withTranslation } from "react-i18next";
+import React, { useCallback, Fragment } from "react";
+import { Trans } from "react-i18next";
 
 import IconAngleDown from "~/renderer/icons/AngleDown";
 import DropDown, { DropDownItem } from "~/renderer/components/DropDown";
@@ -9,7 +9,7 @@ import Box from "~/renderer/components/Box";
 import BoldToggle from "~/renderer/components/BoldToggle";
 import Text from "~/renderer/components/Text";
 
-const Filter = ({ onFiltersChange, filters, t }: *) => {
+const Filter = ({ onFiltersChange, filters }: *) => {
   const onFilterChangeWrapper = useCallback(
     ({ selectedItem: item }) => {
       if (!item) return;
@@ -36,11 +36,11 @@ const Filter = ({ onFiltersChange, filters, t }: *) => {
     // },
     {
       key: "not_installed",
-      label: t("manager.applist.filter.not_installed"),
+      label: <Trans i18nKey="manager.applist.filter.not_installed" />,
     },
     {
       key: "supported",
-      label: t("manager.applist.filter.supported"),
+      label: <Trans i18nKey="manager.applist.filter.supported" />,
     },
   ];
 
@@ -78,9 +78,16 @@ const Filter = ({ onFiltersChange, filters, t }: *) => {
       </Text>
       <Box alignItems="center" color="wallet" ff="Inter|SemiBold" flow={1} fontSize={4} horizontal>
         <Text color="wallet">
-          {filters.length > 0
-            ? filters.map((filter, i) => t(`manager.applist.filter.${filter}`)).join(" - ")
-            : t("manager.applist.filter.all")}
+          {filters.length > 0 ? (
+            filters.map((filter, i) => (
+              <Fragment key={i}>
+                {i > 0 && " + "}
+                <Trans i18nKey={`manager.applist.filter.${filter}`} />
+              </Fragment>
+            ))
+          ) : (
+            <Trans i18nKey="manager.applist.filter.all" />
+          )}
         </Text>
         <IconAngleDown size={16} />
       </Box>
@@ -88,4 +95,4 @@ const Filter = ({ onFiltersChange, filters, t }: *) => {
   );
 };
 
-export default withTranslation()(Filter);
+export default Filter;

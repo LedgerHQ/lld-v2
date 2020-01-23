@@ -92,24 +92,27 @@ class FirmwareUpdate extends PureComponent<Props, State> {
 
     return (
       <Box
-        mt={4}
         py={2}
         px={4}
         bg="blueTransparentBackground"
         horizontal
         alignItems="center"
         justifyContent="space-between"
+        borderRadius={1}
       >
-        <Text ff="Inter|SemiBold" fontSize={4} color="palette.primary.main">
-          <Trans
-            i18nKey="manager.firmware.latest"
-            values={{ version: getCleanVersion(firmware.final.name) }}
-          />
-        </Text>
+        <Box flex="1">
+          <Text ff="Inter|SemiBold" fontSize={5} color="palette.primary.main">
+            <Trans
+              i18nKey="manager.firmware.latest"
+              values={{ version: getCleanVersion(firmware.final.name) }}
+            />
+          </Text>
+        </Box>
+
         {lte(deviceInfo.version, "1.4.2") && (
-          <Box horizontal alignItems="center" color="palette.primary.main">
+          <Box px={4} horizontal alignItems="center" color="palette.primary.main">
             <IconInfoCircle size={12} />
-            <Text style={{ marginLeft: 6 }} ff="Inter" fontSize={3}>
+            <Text style={{ marginLeft: 6 }} ff="Inter" fontSize={4}>
               <Trans i18nKey="manager.firmware.removeApps" />
             </Text>
           </Box>
