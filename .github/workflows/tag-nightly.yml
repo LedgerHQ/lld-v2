@@ -36,7 +36,7 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          tags: false
+          tags: true
       - name: push tag
         run: |
           curl -s -X POST https://api.github.com/repos/LedgerHQ/${{ steps.config.outputs.repo }}/git/refs \
