@@ -47,7 +47,14 @@ const Main: ThemedComponent<{
   px: 6,
 }))`
   outline: none;
-  padding-top: ${p => p.theme.sizes.topBarHeight + p.theme.space[6]}px;
+`;
+
+const ScrollZone = styled(Box)`
+  overflow: auto;
+  &::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+  }
 `;
 
 const reloadApp = event => {
@@ -98,13 +105,12 @@ const Default = () => {
 
             <Box grow horizontal bg="palette.background.paper">
               <MainSideBar />
-              <Box
+              <ScrollZone
                 className="main-container"
                 shrink
                 grow
                 bg="palette.background.default"
                 color="palette.text.shade60"
-                overflow="visible"
                 relative
               >
                 <HSMStatusBanner />
@@ -122,7 +128,7 @@ const Default = () => {
                     <Route path="/asset/:assetId+" component={Asset} />
                   </Switch>
                 </Main>
-              </Box>
+              </ScrollZone>
             </Box>
 
             <LibcoreBusyIndicator />

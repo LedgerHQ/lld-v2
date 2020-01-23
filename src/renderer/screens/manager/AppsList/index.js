@@ -1,7 +1,8 @@
 // @flow
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
-import { Trans } from "react-i18next";
+import { Trans, withTranslation } from "react-i18next";
+import type { TFunction } from "react-i18next";
 import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
 import type { ListAppsResult, Exec } from "@ledgerhq/live-common/lib/apps/types";
 import type { Device } from "~/renderer/reducers/devices";
@@ -11,6 +12,7 @@ import Placeholder from "./Placeholder";
 import Button from "~/renderer/components/Button";
 import Text from "~/renderer/components/Text";
 import Card from "~/renderer/components/Box/Card";
+import CollapsibleCard from "~/renderer/components/CollapsibleCard";
 import Box from "~/renderer/components/Box";
 import Input from "~/renderer/components/Input";
 import IconLoader from "~/renderer/icons/Loader";
@@ -21,12 +23,31 @@ import DeviceStorage from "../DeviceStorage";
 import Filter from "./Filter";
 import Sort from "./Sort";
 
+// sticky top bar with extra width to cover card boxshadow underneath
+const StickyTabBar = styled.div`
+  position: sticky;
+  background-color: ${p => p.theme.colors.palette.background.default};
+  top: ${p => p.theme.sizes.topBarHeight}px;
+  left: 0;
+  right: 0;
+  padding: 16px 16px 0 16px;
+  margin-left: -16px;
+  width: calc(100% + 32px);
+  z-index: 1;
+`;
+
 const FilterHeader = styled.div`
   display: flex;
   flex-direction: row;
   padding: 10px 20px;
   align-items: center;
   border-bottom: 1px solid ${p => p.theme.colors.palette.text.shade10};
+  background-color: ${p => p.theme.colors.palette.background.paper};
+  position: sticky;
+  top: ${p => p.theme.sizes.topBarHeight * 2 + 16}px;
+  left: 0;
+  right: 0;
+  z-index: 1;
   & > * {
     &:first-of-type {
       flex: 1;
@@ -39,10 +60,9 @@ const UpdatableHeader = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 10px 20px;
+  padding: 10px 20px 10px 0px;
   height: 48px;
   box-sizing: content-box;
-  border-bottom: 1px solid ${p => p.theme.colors.palette.text.shade10};
 `;
 
 const Badge = styled(Text)`
@@ -61,9 +81,10 @@ type Props = {
   deviceInfo: DeviceInfo,
   result: ListAppsResult,
   exec: Exec,
+  t: TFunction,
 };
 
-const AppsList = ({ deviceInfo, result, exec }: Props) => {
+const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
   const [query, setQuery] = useState("");
   const [filters, setFilters] = useState([]);
   const [sort, setSort] = useState({ type: "marketcap", order: "desc" });
@@ -71,7 +92,7 @@ const AppsList = ({ deviceInfo, result, exec }: Props) => {
   const [state, dispatch] = useAppsRunner(result, exec);
   const onUpdateAll = useCallback(() => dispatch({ type: "updateAll" }), [dispatch]);
 
-  const { apps, installed: installedApps } = state;
+  const { apps, appByName, installed: installedApps, installQueue } = state;
   const onDeviceTab = activeTab === 1;
   const { currentProgress, currentError } = state;
   const plan = getActionPlan(state);
@@ -84,14 +105,16 @@ const AppsList = ({ deviceInfo, result, exec }: Props) => {
   );
 
   const updatableAppList = useSortedFilteredApps(
-    installedAppList,
+    apps,
     { installedApps, type: ["updatable"] },
-    sort,
+    { type: "marketcap", order: "desc" },
   );
 
-  const displayedAppList = onDeviceTab ? installedAppList : appList;
+  const appsInstalling = installQueue.map(name => appByName[name]);
 
-  const mapApp = (app, appStoreView, onlyUpdate) => (
+  const displayedAppList = onDeviceTab ? [...appsInstalling, ...installedAppList] : appList;
+
+  const mapApp = (app, appStoreView, onlyUpdate, showActions) => (
     <Item
       state={state}
       key={app.name}
@@ -106,6 +129,7 @@ const AppsList = ({ deviceInfo, result, exec }: Props) => {
       appStoreView={appStoreView}
       onlyUpdate={onlyUpdate}
       deviceModel={state.deviceModel}
+      showActions={showActions}
     />
   );
 
@@ -120,33 +144,38 @@ const AppsList = ({ deviceInfo, result, exec }: Props) => {
           dispatch={dispatch}
         />
       </Box>
-
-      {onDeviceTab && updatableAppList.length ? (
-        <Card mb={20}>
-          <UpdatableHeader>
-            <Text ff="Inter|SemiBold" fontSize={4} color="palette.primary.main">
-              <Trans i18nKey="manager.applist.updatable.title" />
-            </Text>
-            <Badge ff="Inter|Bold" fontSize={3} color="palette.text.shade100">
-              {updatableAppList.length}
-            </Badge>
-            <Box flex={1} />
-            <Button style={{ display: "flex" }} primary onClick={onUpdateAll} fontSize={3}>
-              <IconLoader size={14} />
-              <Text style={{ marginLeft: 8 }}>
-                <Trans i18nKey="manager.applist.item.updateAll" />
+      {updatableAppList.length > 0 && (
+        <CollapsibleCard
+          mb={20}
+          header={
+            <UpdatableHeader>
+              <Text ff="Inter|SemiBold" fontSize={4} color="palette.primary.main">
+                <Trans i18nKey="manager.applist.updatable.title" />
               </Text>
-            </Button>
-          </UpdatableHeader>
-          <Box>{updatableAppList.map(app => mapApp(app, false, true))}</Box>
-        </Card>
-      ) : null}
+              <Badge ff="Inter|Bold" fontSize={3} color="palette.text.shade100">
+                {updatableAppList.length}
+              </Badge>
+              <Box flex={1} />
+              <Button style={{ display: "flex" }} primary onClick={onUpdateAll} fontSize={3}>
+                <IconLoader size={14} />
+                <Text style={{ marginLeft: 8 }}>
+                  <Trans i18nKey="manager.applist.item.updateAll" />
+                </Text>
+              </Button>
+            </UpdatableHeader>
+          }
+        >
+          {updatableAppList.map(app => mapApp(app, false, true, false))}
+        </CollapsibleCard>
+      )}
 
       {isIncompleteState(state) ? null : (
-        <TabBar
-          tabs={["manager.tabs.appCatalog", "manager.tabs.appsOnDevice"]}
-          onIndexChange={setActiveTab}
-        />
+        <StickyTabBar>
+          <TabBar
+            tabs={["manager.tabs.appCatalog", "manager.tabs.appsOnDevice"]}
+            onIndexChange={setActiveTab}
+          />
+        </StickyTabBar>
       )}
 
       <Card>
@@ -155,12 +184,14 @@ const AppsList = ({ deviceInfo, result, exec }: Props) => {
             containerProps={{ noBoxShadow: true }}
             renderLeft={<IconSearch size={16} />}
             onChange={setQuery}
-            placeholder="Search app or version number"
+            placeholder={t(
+              onDeviceTab ? "manager.tabs.appCatalogSearch" : "manager.tabs.appOnDeviceSearch",
+            )}
           />
-          <Box mr={3}>
+          {!onDeviceTab ? <Filter onFiltersChange={setFilters} filters={filters} /> : null}
+          <Box ml={3}>
             <Sort onSortChange={setSort} sort={sort} />
           </Box>
-          {!onDeviceTab ? <Filter onFiltersChange={setFilters} filters={filters} /> : null}
         </FilterHeader>
         {displayedAppList.length ? (
           displayedAppList.map(app => mapApp(app, !onDeviceTab))
@@ -172,4 +203,4 @@ const AppsList = ({ deviceInfo, result, exec }: Props) => {
   );
 };
 
-export default AppsList;
+export default withTranslation()(AppsList);

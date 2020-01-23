@@ -419,7 +419,9 @@
     },
     "tabs": {
       "appCatalog": "App Catalog",
-      "appsOnDevice": "Apps Installed"
+      "appCatalogSearch": "Search app in catalog...",
+      "appsOnDevice": "Apps Installed",
+      "appOnDeviceSearch": "Search installed apps..."
     },
     "deviceStorage": {
       "freeSpace": "<0>{{space}}</0> free",
@@ -434,7 +436,7 @@
       "placeholder": "There are no apps matching the search and filters selected",
       "placeholderInstalled": "There are no installed apps matching the search and filters selected",
       "filter": {
-        "title": "Filter",
+        "title": "Show",
         "all": "All",
         "supported": "Live Supported",
         "installed": "Installed",
@@ -457,7 +459,7 @@
         "uninstalling": "Uninstalling...",
         "scheduled": "Scheduled",
         "cancel": "Cancel",
-        "update": "Update",
+        "update": "Update available",
         "updateAll": "Update All",
         "install": "Install",
         "installed": "Installed",

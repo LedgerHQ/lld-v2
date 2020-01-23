@@ -40,7 +40,7 @@ export const DropDownItem: ThemedComponent<{ isHighlighted: boolean, isActive: b
   color: p.isHighlighted || p.isActive ? "palette.text.shade100" : "palette.text.shade80",
   bg: p.isActive ? "palette.background.default" : "",
 }))`
-  height: 48px;
+  height: 40px;
   white-space: nowrap;
   cursor: pointer;
   &:hover {
@@ -104,7 +104,7 @@ class DropDown extends PureComponent<Props> {
   };
 
   handleStateChange = (state: Object, changes: Object) => {
-    const { keepOpenOnChange, onStateChange } = this.props;
+    const { keepOpenOnChange, multiple, onStateChange } = this.props;
 
     if (onStateChange) {
       onStateChange(changes);
@@ -125,7 +125,7 @@ class DropDown extends PureComponent<Props> {
       default:
         return {
           ...changes,
-          ...(keepOpenOnChange
+          ...(keepOpenOnChange || multiple
             ? {
                 isOpen: true,
               }
@@ -148,7 +148,7 @@ class DropDown extends PureComponent<Props> {
         {items.map((item, i) => {
           const { key, ...props } = item;
           return (
-            <Box key={key} {...getItemProps({ item })} {...props}>
+            <Box mt={i > 0 ? 1 : 0} key={key} {...getItemProps({ item })} {...props}>
               {renderItem({
                 item,
                 isHighlighted: highlightedIndex === i,

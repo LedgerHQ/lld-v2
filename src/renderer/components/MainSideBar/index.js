@@ -107,10 +107,10 @@ const Separator = styled(Box).attrs(() => ({
 `;
 
 const sideBarTransitionStyles = {
-  entering: { width: MAIN_SIDEBAR_WIDTH },
-  entered: { width: MAIN_SIDEBAR_WIDTH },
-  exiting: { width: collapsedWidth },
-  exited: { width: collapsedWidth },
+  entering: { flexBasis: MAIN_SIDEBAR_WIDTH },
+  entered: { flexBasis: MAIN_SIDEBAR_WIDTH },
+  exiting: { flexBasis: collapsedWidth },
+  exited: { flexBasis: collapsedWidth },
 };
 
 const enableTransitions = () =>
@@ -127,9 +127,11 @@ const sideBarTransitionSpeed = 500;
 const SideBar = styled(Box).attrs(() => ({
   relative: true,
 }))`
+  flex: 0 0 auto;
+  width: auto;
   background-color: ${p => p.theme.colors.palette.background.paper};
-  transition: width ${sideBarTransitionSpeed}ms;
-  will-change: width;
+  transition: flex ${sideBarTransitionSpeed}ms;
+  will-change: flex;
   transform: translate3d(0, 0, 10);
 
   & > ${Collapser} {
