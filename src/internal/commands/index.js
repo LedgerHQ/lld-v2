@@ -6,7 +6,6 @@ import firmwareRepair from "./firmwareRepair";
 import flushDevice from "./flushDevice";
 import getAddress from "./getAddress";
 import getDeviceInfo from "./getDeviceInfo";
-import getIsGenuine from "./getIsGenuine";
 import getLatestFirmwareForDevice from "./getLatestFirmwareForDevice";
 import libcoreGetVersion from "./libcoreGetVersion";
 import libcoreReset from "./libcoreReset";
@@ -30,7 +29,6 @@ export const commandsById = {
   flushDevice,
   getAddress,
   getDeviceInfo,
-  getIsGenuine,
   getLatestFirmwareForDevice,
   libcoreGetVersion,
   libcoreReset,
