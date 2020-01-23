@@ -95,7 +95,7 @@ const AccountCrumb = () => {
 
   const openActiveAccount = useCallback(
     (e: SyntheticEvent<HTMLButtonElement>) => {
-      e.preventDefault();
+      e.stopPropagation();
       if (parentId) {
         if (id) {
           history.push(`/account/${parentId}/${id}`);
