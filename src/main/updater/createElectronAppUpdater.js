@@ -3,10 +3,10 @@
 import crypto from "crypto";
 import path from "path";
 import fs from "fs";
+import { UpdateFetchFileFail } from "@ledgerhq/errors";
 
 import network from "~/network";
 import { fsReadFile } from "~/helpers/fs";
-import { UpdateFetchFileFail } from "./errors";
 import createAppUpdater from "./createAppUpdater";
 
 import pubKey from "./ledger-pubkey";

@@ -2,7 +2,7 @@ import path from "path";
 import crypto from "crypto";
 
 import { fsReadFile } from "../../helpers/fs";
-import { UpdateIncorrectHash, UpdateIncorrectSig } from "./errors";
+import { UpdateIncorrectHash, UpdateIncorrectSig } from "@ledgerhq/errors";
 import createMockAppUpdater from "./createMockAppUpdater";
 import { sha512sumPath, readUpdateInfos } from "./createElectronAppUpdater";
 import * as sslHelper from "./sslHelper";
@@ -85,7 +85,7 @@ async function verifyMockFolder(folderName, pubKeyName, pubKeys = []) {
   const computedHash = await sha512sumPath(path.resolve(mock, filename));
   const hashFile = await fsReadFile(path.resolve(mock, `${filename}.sha512sum`), "ascii");
   const signature = await fsReadFile(path.resolve(mock, `${filename}.sha512sum.sig`));
-  const pubKey = await fsReadFile(path.resolve(base, pubKeyName));
+  const pubKey = await fsReadFile(path.resolve(base, pubKeyName), "ascii");
   const updater = await createMockAppUpdater({
     filename,
     computedHash,

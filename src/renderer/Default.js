@@ -89,7 +89,6 @@ const Default = () => {
 
             <IsNewVersion />
 
-            {/* TODO: UpdaterContext and autoUpdate command */}
             {process.env.DEBUG_UPDATE && <DebugUpdater />}
 
             <SyncContinuouslyPendingOperations priority={20} interval={SYNC_PENDING_INTERVAL} />

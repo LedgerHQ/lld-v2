@@ -1,6 +1,6 @@
 // @flow
 
-import { UpdateIncorrectHash, UpdateIncorrectSig } from "./errors";
+import { UpdateIncorrectHash, UpdateIncorrectSig } from "@ledgerhq/errors";
 import * as sslHelper from "./sslHelper";
 
 type Opts = {
@@ -28,11 +28,12 @@ export default function createAppUpdater(opts: Opts): { verify: () => Promise<vo
   // - compare hash with update hash
   // throw if any step fail.
   async function verify() {
-    const [hashFile, hashFileSignature] = await Promise.all([
+    const [hashFile, hashFileSignature, key] = await Promise.all([
       getHashFile(),
       getHashFileSignature(),
+      getNextKey(),
     ]);
-    await verifyHashFileSignature(hashFile, hashFileSignature, await getNextKey());
+    await verifyHashFileSignature(hashFile, hashFileSignature, key);
     await compareHash(hashFile);
   }
 

@@ -1,5 +1,8 @@
 // @flow
 import crypto from "crypto";
+import secp256k1 from "secp256k1";
+import keyto from "@trust/keyto";
+import { UpdateIncorrectSig } from "@ledgerhq/errors";
 
 export async function getFingerprint(pubKey: string) {
   const hash = crypto.createHash("sha256");
@@ -12,16 +15,33 @@ export async function getFingerprint(pubKey: string) {
 }
 
 export async function verify(msgContent: string, sigContent: Buffer, pubKeyContent: string) {
-  if (!sigContent) {
-    throw new Error("No signature found");
-  }
+  try {
+    // Since Electron replaced OpenSSL with BoringSSL, we lost native support for secp256k1 curve
+    // We instead rely on bitcoin-core secp256k1 lib which expects values in slightly different format
 
-  const verify = crypto.createVerify("sha256");
-  verify.update(msgContent);
-  const verified = verify.verify(pubKeyContent, sigContent);
+    // Let's hash the content to be verified
+    const hash = crypto.createHash("sha256");
+    hash.update(msgContent);
+    const message = hash.digest();
 
-  if (!verified) {
-    throw new Error("Signature check failed");
+    // Convert signature for secp256k1 lib compat
+    const signature = secp256k1.signatureNormalize(secp256k1.signatureImport(sigContent));
+
+    // Convert public key
+    // Parse pem key to JWK
+    const jwk = keyto.from(pubKeyContent, "pem");
+    // Transform parsed key to Bitcoin format
+    const blk = jwk.toString("blk", "public");
+    // Convert string to Buffer
+    const publicKey = Buffer.from(blk, "hex");
+
+    const verified = secp256k1.ecdsaVerify(signature, message, publicKey);
+
+    if (!verified) {
+      throw new UpdateIncorrectSig();
+    }
+  } catch (e) {
+    throw new UpdateIncorrectSig();
   }
 }
 
