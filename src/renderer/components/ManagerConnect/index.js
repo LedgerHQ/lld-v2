@@ -131,6 +131,14 @@ const Header = styled.div`
 
 const Footer = styled.div`
   min-height: ${p => p.edges || 0}px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin-bottom: 40px;
+`;
+
+const TroobleshootingWrapper = styled.div`
+  margin-top: auto;
 `;
 
 const ManagerConnect = ({
@@ -231,7 +239,11 @@ const ManagerConnect = ({
               }
             />
           </Title>
-          {!device ? <ConnectTroubleshooting onRepair={onRepairModal} /> : null}
+          {!device ? (
+            <TroobleshootingWrapper>
+              <ConnectTroubleshooting onRepair={onRepairModal} />
+            </TroobleshootingWrapper>
+          ) : null}
         </Footer>
       </Wrapper>
     );
