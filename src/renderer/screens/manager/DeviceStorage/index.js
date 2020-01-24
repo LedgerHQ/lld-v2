@@ -139,13 +139,13 @@ const TooltipContent = ({
   bytes: number,
   deviceModel: *,
 }) => (
-    <TooltipContentWrapper>
-      <Text>{name}</Text>
-      <Text>
-        <ByteSize value={bytes} deviceModel={deviceModel} />
-      </Text>
-    </TooltipContentWrapper>
-  );
+  <TooltipContentWrapper>
+    <Text>{name}</Text>
+    <Text>
+      <ByteSize value={bytes} deviceModel={deviceModel} />
+    </Text>
+  </TooltipContentWrapper>
+);
 
 export const StorageBar = ({
   distribution,
@@ -156,27 +156,27 @@ export const StorageBar = ({
   deviceModel: *,
   isIncomplete: boolean,
 }) => (
-    <TransitionGroup component={StorageBarWrapper}>
-      <StorageBarGraph>
-        {!isIncomplete &&
-          distribution.apps.map(({ name, currency, bytes, blocks }, index) => (
-            <Transition in={true} timeout={200} mountOnEnter key={`${name}`}>
-              {state => (
-                <StorageBarItem
-                  state={state}
-                  color={currency && currency.color}
-                  ratio={blocks / (distribution.totalBlocks - distribution.osBlocks)}
-                >
-                  <Tooltip
-                    content={<TooltipContent name={name} bytes={bytes} deviceModel={deviceModel} />}
-                  />
-                </StorageBarItem>
-              )}
-            </Transition>
-          ))}
-      </StorageBarGraph>
-    </TransitionGroup>
-  );
+  <TransitionGroup component={StorageBarWrapper}>
+    <StorageBarGraph>
+      {!isIncomplete &&
+        distribution.apps.map(({ name, currency, bytes, blocks }, index) => (
+          <Transition in={true} timeout={200} mountOnEnter key={`${name}`}>
+            {state => (
+              <StorageBarItem
+                state={state}
+                color={currency && currency.color}
+                ratio={blocks / (distribution.totalBlocks - distribution.osBlocks)}
+              >
+                <Tooltip
+                  content={<TooltipContent name={name} bytes={bytes} deviceModel={deviceModel} />}
+                />
+              </StorageBarItem>
+            )}
+          </Transition>
+        ))}
+    </StorageBarGraph>
+  </TransitionGroup>
+);
 
 const DeviceStorage = ({ state, deviceInfo }: *) => {
   const distribution = distribute(state);
@@ -243,11 +243,11 @@ const DeviceStorage = ({ state, deviceInfo }: *) => {
                 {isIncomplete ? (
                   <Trans i18nKey="manager.deviceStorage.incomplete" />
                 ) : (
-                    <Trans i18nKey="manager.deviceStorage.freeSpace">
-                      <ByteSize value={distribution.freeSpaceBytes} deviceModel={state.deviceModel} />
-                      {" free"}
-                    </Trans>
-                  )}
+                  <Trans i18nKey="manager.deviceStorage.freeSpace">
+                    <ByteSize value={distribution.freeSpaceBytes} deviceModel={state.deviceModel} />
+                    {" free"}
+                  </Trans>
+                )}
               </Text>
             </Box>
           </FreeInfo>
