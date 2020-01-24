@@ -86,7 +86,6 @@ export const getDeviceAnimation = (
 };
 
 type OwnProps = {
-  edges?: number,
   overridesPreferredDeviceModel?: DeviceModelId,
   Success: React$ComponentType<{
     device: Device,
@@ -116,6 +115,7 @@ const Wrapper = styled.div`
   flex: 1;
   align-items: center;
   justify-content: center;
+  padding-bottom: ${p => p.theme.space[6] + p.theme.sizes.topBarHeight};
 `;
 
 const Title = styled(Text).attrs({
@@ -126,11 +126,21 @@ const Title = styled(Text).attrs({
 })``;
 
 const Header = styled.div`
-  min-height: ${p => p.edges || 0}px;
+  display: flex;
+  flex: 1 0 0%;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-content: center;
+  align-items: center;
 `;
 
 const Footer = styled.div`
-  min-height: ${p => p.edges || 0}px;
+  display: flex;
+  flex: 1 0 0%;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-content: center;
+  align-items: center;
 `;
 
 const ManagerConnect = ({
@@ -139,7 +149,6 @@ const ManagerConnect = ({
   overridesPreferredDeviceModel,
   preferredDeviceModel,
   dispatch,
-  edges,
 }: Props) => {
   const [
     {
@@ -172,11 +181,11 @@ const ManagerConnect = ({
   if (inApp) {
     return (
       <Wrapper>
-        <Header edges={edges} />
+        <Header />
         <AnimationWrapper modelId={modelId}>
           <Animation animation={getDeviceAnimation(modelId, type, "quitApp")} />
         </AnimationWrapper>
-        <Footer edges={edges}>
+        <Footer>
           <Title>
             <Trans i18nKey="manager.connect.quitApp" />
           </Title>
@@ -188,11 +197,11 @@ const ManagerConnect = ({
   if (allowManagerRequestedWording) {
     return (
       <Wrapper>
-        <Header edges={edges} />
+        <Header />
         <AnimationWrapper modelId={modelId}>
           <Animation animation={getDeviceAnimation(modelId, type, "allowManager")} />
         </AnimationWrapper>
-        <Footer edges={edges}>
+        <Footer>
           <Title>
             <Trans
               i18nKey="manager.connect.allowPermission"
@@ -220,7 +229,7 @@ const ManagerConnect = ({
   if ((!isLoading && !device) || unresponsive) {
     return (
       <Wrapper>
-        <Header edges={edges} />
+        <Header />
         <AnimationWrapper modelId={modelId}>
           <Animation
             animation={getDeviceAnimation(
@@ -230,7 +239,7 @@ const ManagerConnect = ({
             )}
           />
         </AnimationWrapper>
-        <Footer edges={edges}>
+        <Footer>
           <Title>
             <Trans
               i18nKey={
@@ -249,11 +258,11 @@ const ManagerConnect = ({
   if (isLoading) {
     return (
       <Wrapper>
-        <Header edges={edges} />
+        <Header />
         <AnimationWrapper modelId={modelId}>
           <BigSpinner size={50} />
         </AnimationWrapper>
-        <Footer edges={edges}>
+        <Footer>
           <Title>
             <Trans i18nKey="manager.connect.loading" />
           </Title>
