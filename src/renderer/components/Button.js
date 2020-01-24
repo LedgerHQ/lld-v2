@@ -309,6 +309,8 @@ export type Props = {
   danger?: boolean,
   lighterDanger?: boolean,
   disabled?: boolean,
+  outline?: boolean,
+  outlineGrey?: boolean,
   onClick?: Function,
   small?: boolean,
   isLoading?: boolean,
