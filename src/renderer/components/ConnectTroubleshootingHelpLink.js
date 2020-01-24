@@ -5,9 +5,7 @@ import { useTranslation } from "react-i18next";
 import { urls } from "~/config/urls";
 import { openURL } from "~/renderer/linking";
 import { colors } from "~/renderer/styles/theme";
-import Button from "~/renderer/components/Button";
 import Box from "~/renderer/components/Box";
-import IconHelp from "~/renderer/icons/Help";
 import LinkWithExternalIcon from "~/renderer/components/LinkWithExternalIcon";
 
 const ConnectTroubleshootingHelpButton = () => {
