@@ -5,9 +5,9 @@ import { Trans } from "react-i18next";
 import { getDeviceModel } from "@ledgerhq/devices";
 
 import { urls } from "~/config/urls";
-import LedgerBlue from "~/renderer/images/ledger-blue-onb.svg";
-import LedgerNanoS from "~/renderer/images/ledger-nano-s-onb.svg";
-import LedgerNanoX from "~/renderer/images/ledger-nano-x-onb.svg";
+import LedgerBlue from "~/renderer/images/ledger-blue-error-onb.svg";
+import LedgerNanoS from "~/renderer/images/ledger-nano-s-error-onb.svg";
+import LedgerNanoX from "~/renderer/images/ledger-nano-x-error-onb.svg";
 import type { OnboardingState } from "~/renderer/reducers/onboarding";
 import InvertableImg from "~/renderer/components/InvertableImg";
 import Box from "~/renderer/components/Box";
@@ -75,7 +75,7 @@ class GenuineCheckErrorPage extends PureComponent<Props, *> {
             </Description>
           </Fragment>
         )}
-        <Box mt={5} mr={7}>
+        <Box mt={5} mr={onboarding.deviceModelId === "blue" ? 0 : 7}>
           <Img type={onboarding.deviceModelId || "nanoS"} />
         </Box>
       </Fragment>
