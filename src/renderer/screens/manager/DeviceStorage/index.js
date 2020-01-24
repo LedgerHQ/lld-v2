@@ -62,8 +62,6 @@ const Info = styled.div`
 `;
 
 const StorageBarWrapper: ThemedComponent<{}> = styled.div`
-  display: flex;
-  flex-direction: row;
   width: 100%;
   border-radius: 3px;
   height: 23px;
@@ -71,29 +69,35 @@ const StorageBarWrapper: ThemedComponent<{}> = styled.div`
   overflow: hidden;
 `;
 
+const StorageBarGraph = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-origin: left;
+  animation: ${p => p.theme.animations.fadeInGrowX};
+`;
+
 const transitionStyles = {
-  entering: { opacity: 1 },
-  entered: { opacity: 1 },
-  exiting: { opacity: 0 },
-  exited: { opacity: 0 },
+  entering: flexBasis => ({ opacity: 1, flexBasis }),
+  entered: flexBasis => ({ opacity: 1, flexBasis, minWidth: 4 }),
+  exiting: () => ({ opacity: 0, flexBasis: 0 }),
+  exited: () => ({ opacity: 0, flexBasis: 0 }),
 };
 
 const StorageBarItem: ThemedComponent<{ ratio: number }> = styled.div.attrs(props => ({
   style: {
-    width: `${props.state === "entered" ? (props.ratio * 1e2).toFixed(3) : 0}%`,
-    ...transitionStyles[props.state],
+    ...transitionStyles[props.state](`${(props.ratio * 1e2).toFixed(3)}%`),
   },
 }))`
-  display: flex;
-  width: 0;
-  min-width: 4px;
+  flex: 0 0 0;
   background-color: ${p => p.color};
   position: relative;
   border-right: 2px solid ${p => p.theme.colors.palette.background.paper};
   box-sizing: content-box;
   transform-origin: left;
   opacity: 0;
-  transform: scaleX(0);
   transition: all 0.4s ease-in;
   & > * {
     width: 100%;
@@ -148,34 +152,27 @@ export const StorageBar = ({
   isIncomplete: boolean,
 }) => (
   <TransitionGroup component={StorageBarWrapper}>
-    {!isIncomplete &&
-      distribution.apps.map(({ name, currency, bytes, blocks }, index) => {
-        const color = currency ? currency.color : "black";
-        return (
-          <Transition
-            in={false}
-            timeout={{
-              appear: 0,
-              enter: 400,
-              exit: 800, // leaves extra time for the animation to end before unmount
-            }}
-            unmountOnExit
-            key={`${name}`}
-          >
-            {state => (
-              <StorageBarItem
-                state={state}
-                color={color}
-                ratio={blocks / (distribution.totalBlocks - distribution.osBlocks)}
-              >
-                <Tooltip
-                  content={<TooltipContent name={name} bytes={bytes} deviceModel={deviceModel} />}
-                />
-              </StorageBarItem>
-            )}
-          </Transition>
-        );
-      })}
+    <StorageBarGraph>
+      {!isIncomplete &&
+        distribution.apps.map(({ name, currency, bytes, blocks }, index) => {
+          const color = currency ? currency.color : "black";
+          return (
+            <Transition in={true} timeout={400} mountOnEnter key={`${name}`}>
+              {state => (
+                <StorageBarItem
+                  state={state}
+                  color={color}
+                  ratio={blocks / (distribution.totalBlocks - distribution.osBlocks)}
+                >
+                  <Tooltip
+                    content={<TooltipContent name={name} bytes={bytes} deviceModel={deviceModel} />}
+                  />
+                </StorageBarItem>
+              )}
+            </Transition>
+          );
+        })}
+    </StorageBarGraph>
   </TransitionGroup>
 );
 
