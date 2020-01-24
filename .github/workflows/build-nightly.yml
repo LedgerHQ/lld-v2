@@ -1,8 +1,5 @@
 name: nightly build
 on:
-  create:
-    tags:
-      - "*nightly*"
   push:
     tags:
       - "*nightly*"
