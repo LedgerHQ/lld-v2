@@ -20,7 +20,8 @@ const Base: ThemedComponent<{
   background-color: ${p =>
     p.isChecked ? p.theme.colors.wallet : p.theme.colors.palette.background.paper};
   border: 1px solid
-    ${p => (p.isChecked ? p.theme.colors.palette.primary.main : p.theme.colors.palette.divider)};
+    ${p =>
+      p.isChecked ? p.theme.colors.palette.primary.main : p.theme.colors.palette.text.shade60};
   color: ${p =>
     p.isChecked
       ? p.theme.colors.palette.primary.contrastText

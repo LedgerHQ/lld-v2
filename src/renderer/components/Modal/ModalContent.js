@@ -16,6 +16,10 @@ const ContentScrollableContainer = styled.div`
   overflow: ${p => (p.noScroll ? "visible" : "auto")};
   position: relative;
   flex: 0 auto;
+  &::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+  }
 `;
 
 const ContentScrollableContainerGradient = styled.div.attrs(p => ({
