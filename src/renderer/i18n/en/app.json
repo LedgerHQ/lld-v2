@@ -1073,7 +1073,7 @@
     "writeSeed": {
       "initialize": {
         "title": "Write down your recovery phrase",
-        "desc": "Your 24-word recovery phrase is the <1><0>only backup</0></1> of your private keys.",
+        "desc": "Your 24-word recovery phrase is the <1>only backup</1> of your private keys.",
         "nano": {
           "step1": "Write <1><0>{{seedWord1}}</0></1> in position 1 on a blank Recovery sheet.",
           "step2": "Press the right button to continue and write down all 24 words.",
@@ -1091,7 +1091,7 @@
         "nano": {
           "step1": "Choose the length of your recovery phrase.",
           "step2": "Enter the first letters of <1><0>{{seedWord1}}</0></1> until suggested words appear.",
-          "step3": "Choose seedWord1 from the suggested words by pressing both buttons.",
+          "step3": "Choose <1><0>{{seedWord1}}</0></1> from the suggested words by pressing both buttons.",
           "step4": "Repeat the process until the last word."
         },
         "blue": {

@@ -83,7 +83,15 @@ class WriteSeedBlue extends PureComponent<Props, *> {
       <>
         <Box mb={3}>
           <Title>{t("onboarding.writeSeed.initialize.title")}</Title>
-          <Description>{t("onboarding.writeSeed.initialize.desc")}</Description>
+          <Description>
+            <Trans i18nKey="onboarding.writeSeed.initialize.desc" parent="div">
+              {"Your 24-word recovery phrase is the"}
+              <Text ff="Inter|SemiBold" color="palette.text.shade100">
+                {"only backup"}
+              </Text>
+              {"of your private keys."}
+            </Trans>
+          </Description>
         </Box>
         <Box alignItems="center">
           <Inner style={{ width: 760 }}>

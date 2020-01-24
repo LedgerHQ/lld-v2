@@ -29,7 +29,7 @@ const WriteSeed = (props: StepProps) => {
         <Box grow alignItems="center">
           {onboarding.flowType === "restoreDevice" ? (
             <WriteSeedRestore onboarding={onboarding} />
-          ) : onboarding.deviceModelId === "nanoS" ? (
+          ) : onboarding.deviceModelId !== "blue" ? (
             <WriteSeedNano />
           ) : (
             <WriteSeedBlue />
