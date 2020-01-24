@@ -1,13 +1,15 @@
 // @flow
 import { app, BrowserWindow } from "electron";
 import { autoUpdater } from "@ledgerhq/electron-updater";
-
-import { UPDATE_CHECK_FEED, UPDATE_CHECK_IGNORE } from "~/config/constants";
 import logger from "~/logger";
 import { getMainWindow } from "~/main/window-lifecycle";
 import type { UpdateStatus } from "~/renderer/components/Updater/UpdaterContext";
 
 import createElectronAppUpdater from "./createElectronAppUpdater";
+
+const UPDATE_CHECK_IGNORE = Boolean(process.env.UPDATE_CHECK_IGNORE);
+const UPDATE_CHECK_FEED =
+  process.env.UPDATE_CHECK_FEED || "http://resources.live.ledger.app/public_resources/signatures";
 
 const sendStatus = (status: UpdateStatus, payload?: *) => {
   const win = getMainWindow();
