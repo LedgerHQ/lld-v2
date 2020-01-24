@@ -5,8 +5,7 @@ protocols:
   schemes:
     - ledgerhq
 
-# afterSign: scripts/notarize-app.js
-# afterAllArtifactBuild: scripts/notarize-dmg.js
+afterSign: scripts/notarize.js
 
 mac:
   artifactName: ${name}-${version}-${os}.${ext}
