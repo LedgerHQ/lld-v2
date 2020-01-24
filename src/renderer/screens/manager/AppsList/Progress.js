@@ -55,7 +55,7 @@ const Progress = ({ onClick, progress }: { onClick: () => void, progress: * }) =
       <Holder>
         {progress && progress.appOp ? (
           progress.appOp.type === "install" ? (
-            <ProgressBar progress={progress ? progress.progress : 0} />
+            <ProgressBar infinite timing={1200} progress={progress ? progress.progress : 0} />
           ) : (
             <ProgressBar infinite timing={1200} />
           )

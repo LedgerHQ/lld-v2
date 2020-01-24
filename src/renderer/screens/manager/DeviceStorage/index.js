@@ -81,7 +81,7 @@ const StorageBarGraph = styled.div`
 
 const transitionStyles = {
   entering: flexBasis => ({ opacity: 1, flexBasis }),
-  entered: flexBasis => ({ opacity: 1, flexBasis, minWidth: 4 }),
+  entered: flexBasis => ({ opacity: 1, flexBasis }),
   exiting: () => ({ opacity: 0, flexBasis: 0 }),
   exited: () => ({ opacity: 0, flexBasis: 0 }),
 };
@@ -89,18 +89,23 @@ const transitionStyles = {
 const StorageBarItem: ThemedComponent<{ ratio: number }> = styled.div.attrs(props => ({
   style: {
     ...transitionStyles[props.state](`${(props.ratio * 1e2).toFixed(3)}%`),
+    backgroundColor: props.color,
   },
 }))`
+  display: flex;
   flex: 0 0 0;
-  background-color: ${p => p.color};
+  background-color: black;
   position: relative;
-  border-right: 2px solid ${p => p.theme.colors.palette.background.paper};
-  box-sizing: content-box;
+  border-right: 1px solid ${p => p.theme.colors.palette.background.paper};
+  box-sizing: border-box;
   transform-origin: left;
   opacity: 0;
   transition: all 0.4s ease-in;
   & > * {
     width: 100%;
+  }
+  &:hover {
+    flex-grow: 0.03;
   }
 `;
 
@@ -154,24 +159,21 @@ export const StorageBar = ({
   <TransitionGroup component={StorageBarWrapper}>
     <StorageBarGraph>
       {!isIncomplete &&
-        distribution.apps.map(({ name, currency, bytes, blocks }, index) => {
-          const color = currency ? currency.color : "black";
-          return (
-            <Transition in={true} timeout={400} mountOnEnter key={`${name}`}>
-              {state => (
-                <StorageBarItem
-                  state={state}
-                  color={color}
-                  ratio={blocks / (distribution.totalBlocks - distribution.osBlocks)}
-                >
-                  <Tooltip
-                    content={<TooltipContent name={name} bytes={bytes} deviceModel={deviceModel} />}
-                  />
-                </StorageBarItem>
-              )}
-            </Transition>
-          );
-        })}
+        distribution.apps.map(({ name, currency, bytes, blocks }, index) => (
+          <Transition in={true} timeout={200} mountOnEnter key={`${name}`}>
+            {state => (
+              <StorageBarItem
+                state={state}
+                color={currency && currency.color}
+                ratio={blocks / (distribution.totalBlocks - distribution.osBlocks)}
+              >
+                <Tooltip
+                  content={<TooltipContent name={name} bytes={bytes} deviceModel={deviceModel} />}
+                />
+              </StorageBarItem>
+            )}
+          </Transition>
+        ))}
     </StorageBarGraph>
   </TransitionGroup>
 );
