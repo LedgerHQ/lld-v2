@@ -45,6 +45,7 @@ type Props = {|
   small?: boolean,
   hookToShortcut?: boolean,
   title?: string,
+  withoutAppData?: boolean,
 |};
 
 const ExportLogsBtn = ({ hookToShortcut, primary = true, small = true, title, ...rest }: Props) => {

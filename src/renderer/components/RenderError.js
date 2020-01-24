@@ -135,6 +135,7 @@ class RenderError extends PureComponent<
           <Button small primary onClick={this.handleRestart}>
             {t("crash.restart")}
           </Button>
+          {/* FIXME: What is this ? It was not used in ExportLogsButton */}
           <ExportLogsButton withoutAppData={withoutAppData} />
           <ExternalLinkButton small primary label={t("crash.support")} url={urls.contactSupport} />
           <Button small primary onClick={this.github}>
