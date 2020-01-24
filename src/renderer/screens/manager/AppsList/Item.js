@@ -194,9 +194,7 @@ const Item: React$ComponentType<Props> = React.memo(
                     content={
                       notEnoughMemoryToInstall ? (
                         <Trans i18nKey="manager.applist.item.notEnoughSpace" />
-                      ) : (
-                        ""
-                      )
+                      ) : null
                     }
                   >
                     <Button

@@ -107,15 +107,13 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
 
   return (
     <Box>
-      <Box mb={50}>
-        <DeviceStorage
-          state={state}
-          deviceInfo={deviceInfo}
-          installedApps={installedApps}
-          plan={plan}
-          dispatch={dispatch}
-        />
-      </Box>
+      <DeviceStorage
+        state={state}
+        deviceInfo={deviceInfo}
+        installedApps={installedApps}
+        plan={plan}
+        dispatch={dispatch}
+      />
       <UpdateAllApps state={state} dispatch={dispatch} isIncomplete={isIncomplete} plan={plan} />
       {isIncomplete ? null : (
         <StickyTabBar>

@@ -145,7 +145,7 @@ const UpdateAllApps = ({ state, dispatch, plan, isIncomplete }: Props) => {
   return (
     <FadeInOutBox in={visible}>
       <CollapsibleCard
-        mb={20}
+        mt={20}
         header={<UpdatableHeader>{visible && updateHeader}</UpdatableHeader>}
       >
         {appsToShow.map(app => (

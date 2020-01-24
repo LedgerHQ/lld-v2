@@ -160,7 +160,7 @@ export const StorageBar = ({
     <StorageBarGraph>
       {!isIncomplete &&
         distribution.apps.map(({ name, currency, bytes, blocks }, index) => (
-          <Transition in={true} timeout={200} mountOnEnter key={`${name}`}>
+          <Transition in timeout={200} mountOnEnter key={`${name}`}>
             {state => (
               <StorageBarItem
                 state={state}

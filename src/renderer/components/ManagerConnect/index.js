@@ -115,7 +115,6 @@ const Wrapper = styled.div`
   flex: 1;
   align-items: center;
   justify-content: center;
-  padding-bottom: ${p => p.theme.space[6] + p.theme.sizes.topBarHeight};
 `;
 
 const Title = styled(Text).attrs({

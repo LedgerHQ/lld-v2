@@ -25,7 +25,7 @@ const Dashboard = ({ device, deviceInfo, result }: Props) => {
   );
 
   return (
-    <Box flow={4} pb={8} selectable>
+    <Box flow={4} selectable>
       <TrackPage
         category="Manager"
         name="Dashboard"

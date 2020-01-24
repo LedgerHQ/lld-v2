@@ -37,7 +37,6 @@ const Container: ThemedComponent<{}> = styled(Box).attrs(() => ({}))`
   right: 0;
   top: 0;
   z-index: 20;
-  padding-bottom: ${p => p.theme.space[6]};
   box-sizing: content-box;
   background-color: transparent;
 `;
