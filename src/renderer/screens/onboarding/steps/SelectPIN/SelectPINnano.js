@@ -50,7 +50,7 @@ const SelectPINnano = ({ t }: Props) => {
       desc: t("onboarding.selectPIN.initialize.instructions.nano.step4"),
     },
     {
-      key: "step4",
+      key: "step5",
       icon: <IconOptionRow>{"5."}</IconOptionRow>,
       desc: t("onboarding.selectPIN.initialize.instructions.nano.step5"),
     },
