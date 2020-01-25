@@ -1,17 +1,12 @@
 import Transport from "winston-transport";
 
 export default class InternalTransport extends Transport {
-  log(info, callback) {
+  log(log, callback) {
     setImmediate(() => {
-      this.emit("logged", info);
+      this.emit("logged", log);
     });
 
-    try {
-      process.send({
-        type: "log",
-        log: info,
-      });
-    } catch (e) {}
+    console.log(JSON.stringify({ type: "log", log }));
 
     callback();
   }
