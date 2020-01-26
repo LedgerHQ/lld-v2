@@ -13,6 +13,7 @@ class Electron {
     if (!this.instance) {
       this.instance = execa(this.electronPath, [this.bundlePath]);
       this.instance.stdout.pipe(process.stdout);
+      this.instance.stderr.pipe(process.stderr);
     }
   }
 

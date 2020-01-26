@@ -64,6 +64,7 @@ const spawnCoreProcess = () => {
 
   cluster.setupMaster({
     exec: `${__dirname}/main.bundle.js`,
+    execArgv: (process.env.LEDGER_INTERNAL_ARGS || "").split(/[ ]+/).filter(Boolean),
     silent: true,
   });
 
@@ -82,11 +83,13 @@ const spawnCoreProcess = () => {
             return;
           }
         } catch (e) {}
-        logger.debug("internal: " + msg);
+        logger.debug("I: " + msg);
       }),
   );
   worker.process.stderr.on("data", data => {
-    logger.error("internal error: " + String(data).trim());
+    const msg = String(data).trim();
+    if (__DEV__) console.error("I.e: " + msg);
+    logger.error("I.e: " + String(data).trim());
   });
 
   worker.on("message", handleGlobalInternalMessage);
