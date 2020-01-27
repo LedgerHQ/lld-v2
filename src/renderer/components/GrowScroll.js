@@ -23,6 +23,7 @@ const GrowScroll = (
     () => ({
       display: "flex",
       flexDirection: "column",
+      overflow: "scroll",
       ...(maxHeight
         ? {
             maxHeight,

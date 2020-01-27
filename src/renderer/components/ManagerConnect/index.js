@@ -12,7 +12,6 @@ import { preferredDeviceModelSelector } from "~/renderer/reducers/settings";
 import type { DeviceModelId } from "@ledgerhq/devices";
 import type { Device } from "~/renderer/reducers/devices";
 import Animation from "~/renderer/animations";
-import TranslatedError from "~/renderer/components/TranslatedError";
 import BigSpinner from "~/renderer/components/BigSpinner";
 import AutoRepair from "~/renderer/components/AutoRepair";
 import Button from "~/renderer/components/Button";
@@ -20,6 +19,7 @@ import ConnectTroubleshooting from "~/renderer/components/ConnectTroubleshooting
 import Text from "~/renderer/components/Text";
 import useTheme from "~/renderer/hooks/useTheme";
 import { useManagerConnect } from "./logic";
+import ErrorDisplay from "../ErrorDisplay";
 
 const animations: { [k: DeviceModelId]: * } = {
   nanoX: {
@@ -142,9 +142,12 @@ const Footer = styled.div`
   align-items: center;
 `;
 
+const TroobleshootingWrapper = styled.div`
+  margin-top: auto;
+`;
+
 const ManagerConnect = ({
   reduxDevice,
-  Success,
   overridesPreferredDeviceModel,
   preferredDeviceModel,
   dispatch,
@@ -213,16 +216,7 @@ const ManagerConnect = ({
   }
 
   if (!isLoading && error) {
-    return (
-      <Wrapper>
-        <Title>
-          <TranslatedError error={error} />
-        </Title>
-        <Button mt={2} primary onClick={onRetry}>
-          <Trans i18nKey="common.retry" />
-        </Button>
-      </Wrapper>
-    );
+    return <ErrorDisplay error={error} onRetry={onRetry} withExportLogs />;
   }
 
   if ((!isLoading && !device) || unresponsive) {
@@ -248,7 +242,11 @@ const ManagerConnect = ({
               }
             />
           </Title>
-          {!device ? <ConnectTroubleshooting onRepair={onRepairModal} /> : null}
+          {!device ? (
+            <TroobleshootingWrapper>
+              <ConnectTroubleshooting onRepair={onRepairModal} />
+            </TroobleshootingWrapper>
+          ) : null}
         </Footer>
       </Wrapper>
     );

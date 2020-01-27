@@ -3,7 +3,7 @@ import fs from "fs";
 import moment from "moment";
 import { ipcRenderer, webFrame, remote } from "electron";
 import React, { useState, useCallback } from "react";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { getAllEnvs } from "@ledgerhq/live-common/lib/env";
 import KeyHandler from "react-key-handler";
 import logger from "~/logger";
@@ -25,11 +25,31 @@ const writeToFile = (file, data) =>
     });
   });
 
-type Props = {
-  hookToShortcut?: boolean,
-};
+type RestProps = {|
+  icon?: boolean,
+  inverted?: boolean, // only used with primary for now
+  lighterPrimary?: boolean,
+  danger?: boolean,
+  lighterDanger?: boolean,
+  disabled?: boolean,
+  isLoading?: boolean,
+  event?: string,
+  eventProperties?: Object,
+  outline?: boolean,
+  outlineGrey?: boolean,
+|};
 
-const ExportLogsBtn = ({ hookToShortcut }: Props) => {
+type Props = {|
+  ...RestProps,
+  primary?: boolean,
+  small?: boolean,
+  hookToShortcut?: boolean,
+  title?: string,
+  withoutAppData?: boolean,
+|};
+
+const ExportLogsBtn = ({ hookToShortcut, primary = true, small = true, title, ...rest }: Props) => {
+  const { t } = useTranslation();
   const [exporting, setExporting] = useState(false);
 
   const exportLogs = useCallback(async () => {
@@ -88,11 +108,13 @@ const ExportLogsBtn = ({ hookToShortcut }: Props) => {
     [handleExportLogs],
   );
 
+  const text = title || t("settings.exportLogs.btn");
+
   return hookToShortcut ? (
     <KeyHandler keyValue="e" onKeyHandle={onKeyHandle} />
   ) : (
-    <Button small primary event="ExportLogs" onClick={handleExportLogs}>
-      <Trans i18nKey="settings.exportLogs.btn" />
+    <Button small={small} primary={primary} event="ExportLogs" onClick={handleExportLogs} {...rest}>
+      {text}
     </Button>
   );
 };
