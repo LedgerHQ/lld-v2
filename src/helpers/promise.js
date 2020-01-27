@@ -1,6 +1,8 @@
 // @flow
 // small utilities for Promises
 
+// TODO DROP THIS. move to live-common
+
 import { TimeoutTagged } from "@ledgerhq/errors";
 import { genericCanRetryOnError } from "@ledgerhq/live-common/lib/hw/deviceAccess";
 
@@ -83,37 +85,3 @@ export const timeoutTagged = <T>(tag: string, delay: number, promise: Promise<T>
       },
     );
   });
-
-export const promisify = (fn: any) => (...args: any): Promise<any> =>
-  new Promise((resolve, reject) =>
-    fn(...args, (err: Error, res: any) => {
-      if (err) return reject(err);
-      return resolve(res);
-    }),
-  );
-
-export const debounce = (fn: any => any, ms: number) => {
-  let timeout;
-  let resolveRefs = [];
-  let rejectRefs = [];
-  return (...args: any) => {
-    const promise: Promise<any> = new Promise((resolve, reject) => {
-      resolveRefs.push(resolve);
-      rejectRefs.push(reject);
-    });
-    if (timeout) {
-      clearTimeout(timeout);
-    }
-    timeout = setTimeout(async () => {
-      try {
-        const res = await fn(...args);
-        resolveRefs.forEach(r => r(res));
-      } catch (err) {
-        rejectRefs.forEach(r => r(err));
-      }
-      resolveRefs = [];
-      rejectRefs = [];
-    }, ms);
-    return promise;
-  };
-};
