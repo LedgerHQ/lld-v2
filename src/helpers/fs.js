@@ -2,7 +2,13 @@
 
 import fs from "fs";
 
-import { promisify } from "./promise";
+const promisify = (fn: any) => (...args: any): Promise<any> =>
+  new Promise((resolve, reject) =>
+    fn(...args, (err: Error, res: any) => {
+      if (err) return reject(err);
+      return resolve(res);
+    }),
+  );
 
 export const fsReadFile = promisify(fs.readFile);
 export const fsReaddir = promisify(fs.readdir);
