@@ -5,7 +5,7 @@ import React, { useEffect, useRef } from "react";
 import { Route, Switch, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
-import { SYNC_PENDING_INTERVAL } from "~/config/constants";
+import { getEnv } from "@ledgerhq/live-common/lib/env";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import Track from "~/renderer/analytics/Track";
 import Dashboard from "~/renderer/screens/dashboard";
@@ -98,7 +98,10 @@ const Default = () => {
 
             {process.env.DEBUG_UPDATE && <DebugUpdater />}
 
-            <SyncContinuouslyPendingOperations priority={20} interval={SYNC_PENDING_INTERVAL} />
+            <SyncContinuouslyPendingOperations
+              priority={20}
+              interval={getEnv("SYNC_PENDING_INTERVAL")}
+            />
             <SyncBackground />
 
             <div id="sticky-back-to-top-root" />

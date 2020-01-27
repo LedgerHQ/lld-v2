@@ -4,10 +4,7 @@ import { retry } from "@ledgerhq/live-common/lib/promise";
 import logger from "./logger";
 import anonymizer from "./logger/anonymizer";
 import { NetworkDown, LedgerAPI5xx, LedgerAPI4xx } from "@ledgerhq/errors";
-
-// TODO env in live-common
-const GET_CALLS_RETRY = 2;
-const GET_CALLS_TIMEOUT = 30 * 1000;
+import { getEnv } from "@ledgerhq/live-common/lib/env";
 
 const makeError = (msg, status, url, method) => {
   const obj = {
@@ -88,11 +85,11 @@ let implementation = (arg: Object) => {
   let promise;
   if (arg.method === "GET") {
     if (!("timeout" in arg)) {
-      arg.timeout = GET_CALLS_TIMEOUT;
+      arg.timeout = getEnv("GET_CALLS_TIMEOUT");
     }
     // $FlowFixMe
     promise = retry(() => axios(arg), {
-      maxRetry: GET_CALLS_RETRY,
+      maxRetry: getEnv("GET_CALLS_RETRY"),
     });
   } else {
     // $FlowFixMe

@@ -1,14 +1,20 @@
 // @flow
 import "./setup";
 import { BrowserWindow, screen } from "electron";
-import {
-  MIN_HEIGHT,
-  MIN_WIDTH,
-  DEFAULT_WINDOW_WIDTH,
-  DEFAULT_WINDOW_HEIGHT,
-  DEV_TOOLS,
-} from "./../config/constants";
 import { terminate } from "./terminator";
+
+const intFromEnv = (key: string, def: number): number => {
+  const v = process.env[key];
+  if (!isNaN(v)) return parseInt(v, 10);
+  return def;
+};
+
+export const DEFAULT_WINDOW_WIDTH = intFromEnv("LEDGER_DEFAULT_WINDOW_WIDTH", 1024);
+export const DEFAULT_WINDOW_HEIGHT = intFromEnv("LEDGER_DEFAULT_WINDOW_HEIGHT", 768);
+export const MIN_WIDTH = intFromEnv("LEDGER_MIN_WIDTH", 1024);
+export const MIN_HEIGHT = intFromEnv("LEDGER_MIN_HEIGHT", 700);
+
+const { DEV_TOOLS } = process.env;
 
 let mainWindow = null;
 

@@ -2,8 +2,7 @@
 
 import type { DeviceModelId } from "@ledgerhq/devices";
 import { handleActions } from "redux-actions";
-
-import { SKIP_ONBOARDING } from "~/config/constants";
+import { getEnv } from "@ledgerhq/live-common/lib/env";
 import type { State } from ".";
 
 type Step = {
@@ -32,7 +31,7 @@ export type OnboardingState = {
 
 const initialState: OnboardingState = {
   stepIndex: 0,
-  stepName: SKIP_ONBOARDING ? "analytics" : "start",
+  stepName: getEnv("SKIP_ONBOARDING") ? "analytics" : "start",
   genuine: {
     isDeviceGenuine: false,
     displayErrorScreen: false,

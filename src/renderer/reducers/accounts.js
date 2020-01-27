@@ -11,11 +11,8 @@ import {
   getAccountCurrency,
 } from "@ledgerhq/live-common/lib/account";
 import { getEnv } from "@ledgerhq/live-common/lib/env";
-
 import logger from "./../../logger/logger";
 import accountModel from "./../../helpers/accountModel";
-import { OUTDATED_CONSIDERED_DELAY, DEBUG_SYNC } from "./../../config/constants";
-
 import { currenciesStatusSelector, currencyDownStatusLocal } from "./currenciesStatus";
 import { starredAccountIdsSelector } from "./settings";
 import type { State } from ".";
@@ -86,10 +83,8 @@ export const isUpToDateSelector: OutputSelector<State, void, boolean> = createSe
       const { blockAvgTime } = a.currency;
       if (!blockAvgTime) return true;
       const outdated =
-        Date.now() - (lastSyncDate || 0) > blockAvgTime * 1000 + OUTDATED_CONSIDERED_DELAY;
-      if (outdated && DEBUG_SYNC) {
-        logger.log("account not up to date", a);
-      }
+        Date.now() - (lastSyncDate || 0) >
+        blockAvgTime * 1000 + getEnv("SYNC_OUTDATED_CONSIDERED_DELAY");
       return !outdated;
     }),
 );
@@ -185,10 +180,8 @@ const isUpToDateAccount = (a: ?Account) => {
   const { blockAvgTime } = a.currency;
   if (!blockAvgTime) return true;
   const outdated =
-    Date.now() - (lastSyncDate || 0) > blockAvgTime * 1000 + OUTDATED_CONSIDERED_DELAY;
-  if (outdated && DEBUG_SYNC) {
-    logger.log("account not up to date", a);
-  }
+    Date.now() - (lastSyncDate || 0) >
+    blockAvgTime * 1000 + getEnv("SYNC_OUTDATED_CONSIDERED_DELAY");
   return !outdated;
 };
 

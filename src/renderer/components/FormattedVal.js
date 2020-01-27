@@ -8,7 +8,6 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import type { Unit } from "@ledgerhq/live-common/lib/types";
 import { formatCurrencyUnit } from "@ledgerhq/live-common/lib/currencies";
-import { DISABLE_TICKER_ANIMATION } from "~/config/constants";
 import {
   marketIndicatorSelector,
   localeSelector,
@@ -126,7 +125,7 @@ function FormattedVal(props: Props) {
   if (prefix) text = prefix + text;
   if (suffix) text += suffix;
 
-  if (animateTicker && !DISABLE_TICKER_ANIMATION) {
+  if (animateTicker) {
     text = <FlipTicker value={text} />;
   } else if (ellipsis) {
     text = <Ellipsis>{text}</Ellipsis>;
