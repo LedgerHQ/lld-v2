@@ -2,13 +2,17 @@
 
 import "../env";
 import { ipcMain } from "electron";
-import logger from "../logger";
+import logger, { enableDebugLogger } from "../logger";
 import LoggerTransport from "../logger/logger-transport-main";
 import contextMenu from "electron-context-menu";
 import updater from "./updater";
 
 const loggerTransport = new LoggerTransport();
 logger.add(loggerTransport);
+
+if (process.env.DEV_TOOLS) {
+  enableDebugLogger();
+}
 
 ipcMain.on("log", (e, { log }) => {
   logger.onLog(log);

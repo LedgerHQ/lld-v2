@@ -15,6 +15,7 @@ class Electron {
       if (args.length) console.log("electron starts with", args);
       this.instance = execa(this.electronPath, [this.bundlePath, ...args]);
       this.instance.stdout.pipe(process.stdout);
+      this.instance.stderr.pipe(process.stderr);
     }
   }
 
