@@ -147,6 +147,7 @@ const TroobleshootingWrapper = styled.div`
 `;
 
 const ManagerConnect = ({
+  Success,
   reduxDevice,
   overridesPreferredDeviceModel,
   preferredDeviceModel,
