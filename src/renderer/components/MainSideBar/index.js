@@ -6,8 +6,6 @@ import { Link, useHistory, useLocation } from "react-router-dom";
 import { Transition } from "react-transition-group";
 import styled from "styled-components";
 
-import { MAIN_SIDEBAR_WIDTH } from "~/config/constants";
-
 import { accountsSelector, starredAccountsSelector } from "~/renderer/reducers/accounts";
 import { sidebarCollapsedSelector } from "~/renderer/reducers/settings";
 
@@ -35,6 +33,8 @@ import Stars from "~/renderer/components/Stars";
 
 import TopGradient from "./TopGradient";
 import Hide from "./Hide";
+
+const MAIN_SIDEBAR_WIDTH = 230;
 
 const TagText = styled.div`
   margin-left: 8px;

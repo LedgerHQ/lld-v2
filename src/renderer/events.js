@@ -1,14 +1,16 @@
 // @flow
 import { ipcRenderer } from "electron";
 import debug from "debug";
-import { CHECK_UPDATE_DELAY, DISABLE_ACTIVITY_INDICATORS } from "../config/constants";
 import { killInternalProcess } from "./reset";
 import { lock } from "./actions/application";
 import { onSetDeviceBusy } from "~/renderer/components/DeviceBusyIndicator";
 import { onSetLibcoreBusy } from "~/renderer/components/LibcoreBusyIndicator";
 import { hasEncryptionKey } from "~/renderer/storage";
 
+const CHECK_UPDATE_DELAY = 5000;
+
 const d = {
+  // FIXME we should not use debug library. we have our own log() for this!
   sync: debug("lwd:sync"),
   update: debug("lwd:update"),
 };
@@ -30,15 +32,13 @@ export default ({ store }: { store: Object }) => {
     }
   });
 
-  if (!DISABLE_ACTIVITY_INDICATORS) {
-    ipcRenderer.on("setLibcoreBusy", (event: any, { busy }) => {
-      onSetLibcoreBusy(busy);
-    });
+  ipcRenderer.on("setLibcoreBusy", (event: any, { busy }) => {
+    onSetLibcoreBusy(busy);
+  });
 
-    ipcRenderer.on("setDeviceBusy", (event: any, { busy }) => {
-      onSetDeviceBusy(busy);
-    });
-  }
+  ipcRenderer.on("setDeviceBusy", (event: any, { busy }) => {
+    onSetDeviceBusy(busy);
+  });
 };
 
 export function checkUpdates() {

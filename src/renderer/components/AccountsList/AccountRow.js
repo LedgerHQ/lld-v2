@@ -3,7 +3,7 @@
 import React, { PureComponent } from "react";
 import styled from "styled-components";
 import type { Account } from "@ledgerhq/live-common/lib/types";
-import { MAX_ACCOUNT_NAME_SIZE } from "~/config/constants";
+import { getEnv } from "@ledgerhq/live-common/lib/env";
 import { darken } from "~/renderer/styles/helpers";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import Box, { Tabbable } from "~/renderer/components/Box";
@@ -106,7 +106,7 @@ export default class AccountRow extends PureComponent<Props> {
                 onFocus={this.onFocus}
                 onBlur={this.onBlur}
                 onKeyPress={this.handleKeyPress}
-                maxLength={MAX_ACCOUNT_NAME_SIZE}
+                maxLength={getEnv("MAX_ACCOUNT_NAME_SIZE")}
                 editInPlace
                 autoFocus={autoFocusInput}
               />

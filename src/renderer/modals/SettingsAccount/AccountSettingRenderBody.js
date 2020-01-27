@@ -6,7 +6,7 @@ import { setDataModal } from "~/renderer/actions/modals";
 import { removeAccount, updateAccount } from "~/renderer/actions/accounts";
 import { validateNameEdition } from "@ledgerhq/live-common/lib/account";
 import { AccountNameRequiredError } from "@ledgerhq/errors";
-import { MAX_ACCOUNT_NAME_SIZE } from "~/config/constants";
+import { getEnv } from "@ledgerhq/live-common/lib/env";
 import styled from "styled-components";
 import ModalBody from "~/renderer/components/Modal/ModalBody";
 import TrackPage from "~/renderer/analytics/TrackPage";
@@ -174,7 +174,7 @@ class AccountSettingRenderBody extends PureComponent<Props, State> {
                   autoFocus
                   containerProps={{ style: { width: 230 } }}
                   value={account.name}
-                  maxLength={MAX_ACCOUNT_NAME_SIZE}
+                  maxLength={getEnv("MAX_ACCOUNT_NAME_SIZE")}
                   onChange={this.handleChangeName}
                   onEnter={onSubmit}
                   onFocus={e => this.handleFocus(e, "accountName")}

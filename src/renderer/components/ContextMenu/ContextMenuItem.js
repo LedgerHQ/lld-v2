@@ -4,7 +4,8 @@ import React, { PureComponent } from "react";
 import invariant from "invariant";
 import { withContextMenuContext } from "./ContextMenuWrapper";
 import type { ContextMenuItemType } from "./ContextMenuWrapper";
-import { DISABLE_CONTEXT_MENU } from "~/config/constants";
+
+const DISABLE_CONTEXT_MENU = Boolean(process.env.DISABLE_CONTEXT_MENU);
 
 type Props = {
   children?: React$Node,
