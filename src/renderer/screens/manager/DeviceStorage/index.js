@@ -1,11 +1,14 @@
 // @flow
 
-import React from "react";
+import React, { memo } from "react";
 import { distribute, isIncompleteState } from "@ledgerhq/live-common/lib/apps";
 import styled from "styled-components";
 import { Trans } from "react-i18next";
-
 import { Transition, TransitionGroup } from "react-transition-group";
+
+import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
+import type { State } from "@ledgerhq/live-common/lib/apps/types";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
 import ByteSize from "~/renderer/components/ByteSize";
 import { rgba } from "~/renderer/styles/helpers";
@@ -20,7 +23,8 @@ import IconCheckFull from "~/renderer/icons/CheckFull";
 import nanoS from "./images/nanoS.png";
 import nanoX from "./images/nanoX.png";
 import blue from "./images/blue.png";
-import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
+
+import isEqual from "lodash/isEqual";
 
 const illustrations = {
   nanoS,
@@ -178,7 +182,12 @@ export const StorageBar = ({
   </TransitionGroup>
 );
 
-const DeviceStorage = ({ state, deviceInfo }: *) => {
+type Props = {
+  state: State,
+  deviceInfo: DeviceInfo,
+};
+
+const DeviceStorage = ({ state, deviceInfo }: Props) => {
   const distribution = distribute(state);
   const isIncomplete = isIncompleteState(state);
   const shouldWarn = distribution.shouldWarnMemory || isIncomplete;
@@ -257,4 +266,4 @@ const DeviceStorage = ({ state, deviceInfo }: *) => {
   );
 };
 
-export default DeviceStorage;
+export default memo<Props>(DeviceStorage, isEqual);
