@@ -88,6 +88,12 @@ const Chart = ({ height, data, color, valueKey = "value" }: Props) => {
       tooltips: {
         enabled: false,
       },
+      layout: {
+        padding: {
+          top: 4,
+          bottom: 4,
+        },
+      },
       animation: {
         duration: 0,
       },
@@ -121,8 +127,7 @@ const Chart = ({ height, data, color, valueKey = "value" }: Props) => {
               zeroLineColor: theme.text.shade10,
             },
             ticks: {
-              min: min * 0.8,
-              maxTicksLimit: 4,
+              beginAtZero: true,
             },
           },
         ],
@@ -148,9 +153,7 @@ const Chart = ({ height, data, color, valueKey = "value" }: Props) => {
   return (
     <canvas
       ref={canvasRef}
-      height={height}
       style={{
-        width: "100%",
         height,
       }}
     />
