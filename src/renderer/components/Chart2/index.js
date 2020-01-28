@@ -165,7 +165,7 @@ const Chart = ({ height, data, color, renderTickY, renderTooltip, valueKey = "va
     if (chartRef.current) {
       chartRef.current.data = generatedData;
       chartRef.current.options = generateOptions;
-      chartRef.current.update(500);
+      chartRef.current.update(0);
     } else {
       chartRef.current = new ChartJs(canvasRef.current, {
         type: "line",
