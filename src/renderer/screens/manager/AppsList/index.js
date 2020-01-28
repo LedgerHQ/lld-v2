@@ -23,6 +23,9 @@ import DeviceStorage from "../DeviceStorage";
 import Filter from "./Filter";
 import Sort from "./Sort";
 
+import NavigationGuard from "~/renderer/components/NavigationGuard";
+import Quit from "~/renderer/icons/Quit";
+
 // sticky top bar with extra width to cover card boxshadow underneath
 const StickyTabBar = styled.div`
   position: sticky;
@@ -76,6 +79,19 @@ const Badge = styled(Text)`
   margin-left: 10px;
 `;
 
+const QuitIconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  width: ${p => p.theme.space[8]}px;
+  height: ${p => p.theme.space[8]}px;
+  color: ${p => p.theme.colors.palette.primary.main};
+  background-color: ${p => p.theme.colors.palette.action.hover};
+  border-radius: 100%;
+  margin-top: -${p => p.theme.space[6]}px;
+`;
+
 type Props = {
   device: Device,
   deviceInfo: DeviceInfo,
@@ -92,7 +108,7 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
   const [state, dispatch] = useAppsRunner(result, exec);
   const onUpdateAll = useCallback(() => dispatch({ type: "updateAll" }), [dispatch]);
 
-  const { apps, appByName, installed: installedApps, installQueue } = state;
+  const { apps, appByName, installed: installedApps, installQueue, uninstallQueue } = state;
   const onDeviceTab = activeTab === 1;
   const { currentProgress, currentError } = state;
   const plan = getActionPlan(state);
@@ -133,8 +149,24 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
     />
   );
 
+  const installState =
+    installQueue.length > 0 ? (uninstallQueue.length > 0 ? "update" : "install") : "uninstall";
+
   return (
     <Box>
+      <NavigationGuard
+        analyticsName="ManagerGuardModal"
+        when={installQueue.length > 0 || uninstallQueue.length > 0}
+        title={t(`errors.ManagerQuitPage.${installState}.title`)}
+        renderIcon={() => (
+          <QuitIconWrapper>
+            <Quit size={30} />
+          </QuitIconWrapper>
+        )}
+        desc={t(`errors.ManagerQuitPage.${installState}.description`)}
+        confirmText={t(`errors.ManagerQuitPage.quit`)}
+        cancelText={t(`errors.ManagerQuitPage.${installState}.stay`)}
+      />
       <Box mb={50}>
         <DeviceStorage
           state={state}

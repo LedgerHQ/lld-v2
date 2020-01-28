@@ -1,8 +1,8 @@
 // @flow
 
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { createSelector, createStructuredSelector } from "reselect";
 import styled from "styled-components";
 
@@ -15,6 +15,7 @@ import UpdateBanner from "~/renderer/components/Updater/Banner";
 import { TopBannerContainer } from "~/renderer/screens/dashboard";
 import { flattenSortAccountsEnforceHideEmptyTokenSelector } from "~/renderer/actions/general";
 import { setAccountsViewMode, setSelectedTimeRange } from "~/renderer/actions/settings";
+import { openModal } from "~/renderer/actions/modals";
 import { accountsSelector } from "~/renderer/reducers/accounts";
 import { accountsViewModeSelector, selectedTimeRangeSelector } from "~/renderer/reducers/settings";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
@@ -30,6 +31,7 @@ type Props = {
   mode: *,
   setAccountsViewMode: (*) => void,
   setSelectedTimeRange: PortfolioRange => void,
+  openModal: string => void,
 };
 
 const accountsOrFlattenAccountsSelector = createSelector(
@@ -48,6 +50,7 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = {
   setAccountsViewMode,
   setSelectedTimeRange,
+  openModal,
 };
 
 export const GenericBox: ThemedComponent<{}> = styled(Box)`
@@ -65,8 +68,20 @@ export const GenericBox: ThemedComponent<{}> = styled(Box)`
   box-shadow: 0 4px 8px 0 #00000007;
 `;
 
-const AccountsPage = (props: Props) => {
+const AccountsPage = ({
+  accounts,
+  mode,
+  setAccountsViewMode,
+  setSelectedTimeRange,
+  range,
+  openModal,
+}: Props) => {
   const history = useHistory();
+  /** work arround to trigger showing modal when navigation comes from Manager view */
+  const { showModal } = useParams();
+  useEffect(() => {
+    if (showModal) openModal(showModal);
+  }, []);
 
   const onAccountClick = useCallback(
     (account: Account | TokenAccount, parentAccount: ?Account) =>
@@ -75,8 +90,6 @@ const AccountsPage = (props: Props) => {
         : history.push(`/account/${account.id}`),
     [history],
   );
-
-  const { accounts, mode, setAccountsViewMode, setSelectedTimeRange, range } = props;
 
   if (accounts.length === 0) {
     return (

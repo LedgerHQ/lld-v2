@@ -210,19 +210,24 @@ const MainSideBar = () => {
     push("/partners");
   }, [push]);
 
-  const maybeRedirectToAccounts = useCallback(() => {
-    return location.pathname === "/manager" && push("/accounts");
-  }, [location.pathname, push]);
+  /** from manager redirect with params having which modal to open */
+  const maybeRedirectToAccounts = useCallback(
+    showModal => {
+      return location.pathname === "/manager" && push(`/accounts/${showModal}`);
+    },
+    [location.pathname, push],
+  );
 
   const handleOpenSendModal = useCallback(() => {
-    maybeRedirectToAccounts();
-    dispatch(openModal("MODAL_SEND"));
-  }, [dispatch, maybeRedirectToAccounts]);
+    maybeRedirectToAccounts("MODAL_SEND");
+    /** Do not open modal directly if we're coming from manager */
+    if (location.pathname !== "/manager") dispatch(openModal("MODAL_SEND"));
+  }, [dispatch, location.pathname, maybeRedirectToAccounts]);
 
   const handleOpenReceiveModal = useCallback(() => {
-    maybeRedirectToAccounts();
-    dispatch(openModal("MODAL_RECEIVE"));
-  }, [dispatch, maybeRedirectToAccounts]);
+    maybeRedirectToAccounts("MODAL_RECEIVE");
+    if (location.pathname !== "/manager") dispatch(openModal("MODAL_RECEIVE"));
+  }, [dispatch, location.pathname, maybeRedirectToAccounts]);
 
   return (
     <Transition
