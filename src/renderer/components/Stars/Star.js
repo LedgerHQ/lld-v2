@@ -1,7 +1,7 @@
 // @flow
 
-import React, { useCallback, useState } from "react";
-import styled from "styled-components";
+import React, { useCallback } from "react";
+import styled, { keyframes } from "styled-components";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { toggleStarAction } from "~/renderer/actions/settings";
@@ -11,6 +11,16 @@ import starAnim from "~/renderer/images/starAnim.png";
 import starAnim2 from "~/renderer/images/starAnim2.png";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import { refreshAccountsOrdering } from "~/renderer/actions/general";
+import { Transition } from "react-transition-group";
+
+const starBust = keyframes`
+  from {
+    background-position: left;
+  }
+  to {
+    background-position: right;
+  }
+`;
 
 const ButtonWrapper: ThemedComponent<{ filled?: boolean }> = styled.div`
   height: 34px;
@@ -34,19 +44,26 @@ const FloatingWrapper: ThemedComponent<{}> = styled.div``;
 const StarWrapper: ThemedComponent<{}> = styled.div`
   margin: -17px;
 `;
+
+const startBurstTiming = 800;
+
 const StarIcon: ThemedComponent<{
   filled?: boolean,
   yellow?: boolean,
-}> = styled.div.attrs(p => ({
-  style: {
-    backgroundPosition: p.filled ? "right" : "left",
-    backgroundImage: `url("${p.yellow ? starAnim2 : starAnim}")`,
-    height: "50px",
-    width: "50px",
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "3000%",
-  },
-}))`
+}> = styled.div`
+  &.entering {
+    animation: ${starBust} ${startBurstTiming}ms steps(29) 1;  
+  }
+  
+  &.entered {
+    background-position: right;
+  }
+
+  height: 50px;
+  width: 50px;
+  background-image: url("${p => (p.yellow ? starAnim2 : starAnim)}");
+  background-repeat: no-repeat;
+  background-size: 3000%;
   &:hover {
     ${p => (!p.filled ? `background-position: -50px;` : "")}
   }
@@ -80,26 +97,22 @@ const Star = ({
   yellow,
   refreshAccountsOrdering,
 }: Props) => {
-  const [showAnimation, setShowAnimation] = useState(false);
   const toggleStar = useCallback(
     e => {
       e.stopPropagation();
-      setShowAnimation(!isAccountStared);
       toggleStarAction(accountId);
       refreshAccountsOrdering();
     },
-    [isAccountStared, toggleStarAction, accountId, refreshAccountsOrdering],
+    [toggleStarAction, accountId, refreshAccountsOrdering],
   );
   const MaybeButtonWrapper = yellow ? ButtonWrapper : FloatingWrapper;
 
   return (
     <MaybeButtonWrapper filled={isAccountStared}>
       <StarWrapper onClick={toggleStar}>
-        <StarIcon
-          yellow={yellow}
-          filled={isAccountStared}
-          className={showAnimation ? "star" : ""}
-        />
+        <Transition in={isAccountStared} timeout={isAccountStared ? startBurstTiming : 0}>
+          {className => <StarIcon yellow={yellow} filled={isAccountStared} className={className} />}
+        </Transition>
       </StarWrapper>
     </MaybeButtonWrapper>
   );
