@@ -49,3 +49,16 @@ body {
   font-weight: 900;
   font-style: normal;
 }
+
+@keyframes star-burst {
+  from {
+    background-position: left;
+  }
+  to {
+    background-position: right;
+  }
+}
+
+.star{
+  animation: star-burst .8s steps(29) 1;
+}

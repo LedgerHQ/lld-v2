@@ -10,6 +10,7 @@ import { rgba } from "~/renderer/styles/helpers";
 import starAnim from "~/renderer/images/starAnim.png";
 import starAnim2 from "~/renderer/images/starAnim2.png";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
+import { refreshAccountsOrdering } from "~/renderer/actions/general";
 
 const ButtonWrapper: ThemedComponent<{ filled?: boolean }> = styled.div`
   height: 34px;
@@ -33,37 +34,21 @@ const FloatingWrapper: ThemedComponent<{}> = styled.div``;
 const StarWrapper: ThemedComponent<{}> = styled.div`
   margin: -17px;
 `;
-
 const StarIcon: ThemedComponent<{
   filled?: boolean,
   yellow?: boolean,
-  showAnimation?: boolean,
 }> = styled.div.attrs(p => ({
   style: {
     backgroundPosition: p.filled ? "right" : "left",
-    animation: p.showAnimation ? "star-burst .8s steps(29) 1" : "none",
+    backgroundImage: `url("${p.yellow ? starAnim2 : starAnim}")`,
+    height: "50px",
+    width: "50px",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "3000%",
   },
 }))`
-  & {
-    height: 50px;
-    width: 50px;
-    background-image: url("${p => (p.yellow ? starAnim2 : starAnim)}");
-    background-repeat: no-repeat;
-    background-size: 3000%;
-    animation: none;
-  }
-
   &:hover {
     ${p => (!p.filled ? `background-position: -50px;` : "")}
-  }
-
-  @keyframes star-burst {
-    from {
-      background-position: left;
-    }
-    to {
-      background-position: right;
-    }
   }
 `;
 
@@ -73,6 +58,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = {
   toggleStarAction,
+  refreshAccountsOrdering,
 };
 
 type OwnProps = {
@@ -84,24 +70,36 @@ type Props = {
   ...OwnProps,
   isAccountStared: boolean,
   toggleStarAction: Function,
+  refreshAccountsOrdering: Function,
 };
 
-const Star = ({ accountId, isAccountStared, toggleStarAction, yellow }: Props) => {
+const Star = ({
+  accountId,
+  isAccountStared,
+  toggleStarAction,
+  yellow,
+  refreshAccountsOrdering,
+}: Props) => {
   const [showAnimation, setShowAnimation] = useState(false);
   const toggleStar = useCallback(
     e => {
       e.stopPropagation();
       setShowAnimation(!isAccountStared);
       toggleStarAction(accountId);
+      refreshAccountsOrdering();
     },
-    [accountId, toggleStarAction, isAccountStared],
+    [isAccountStared, toggleStarAction, accountId, refreshAccountsOrdering],
   );
   const MaybeButtonWrapper = yellow ? ButtonWrapper : FloatingWrapper;
 
   return (
     <MaybeButtonWrapper filled={isAccountStared}>
       <StarWrapper onClick={toggleStar}>
-        <StarIcon yellow={yellow} filled={isAccountStared} showAnimation={showAnimation} />
+        <StarIcon
+          yellow={yellow}
+          filled={isAccountStared}
+          className={showAnimation ? "star" : ""}
+        />
       </StarWrapper>
     </MaybeButtonWrapper>
   );
