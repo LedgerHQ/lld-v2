@@ -213,7 +213,6 @@ const MainSideBar = () => {
     push("/partners");
   }, [push]);
 
-  /** from manager redirect with params having which modal to open */
   const maybeRedirectToAccounts = useCallback(() => {
     return location.pathname === "/manager" && push("/accounts");
   }, [location.pathname, push]);
