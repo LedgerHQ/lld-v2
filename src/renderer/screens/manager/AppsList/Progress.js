@@ -31,11 +31,11 @@ type Props = {
   name: string,
   dispatch: Action => void,
   scheduled: AppOp,
-  currentProgress: { appOp: AppOp, progress: number },
+  currentProgress?: { appOp: AppOp, progress: number },
 };
 
 const Progress = ({ name, dispatch, scheduled, currentProgress }: Props) => {
-  const { progress, appOp } = currentProgress;
+  const { progress, appOp } = currentProgress || {};
 
   const onInstall = useCallback(() => dispatch({ type: "install", name }), [dispatch, name]);
   const onUninstall = useCallback(() => dispatch({ type: "uninstall", name }), [dispatch, name]);

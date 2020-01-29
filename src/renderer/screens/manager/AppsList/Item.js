@@ -19,8 +19,6 @@ import Tooltip from "~/renderer/components/Tooltip";
 import IconLoader from "~/renderer/icons/Loader";
 import AppActions from "./AppActions";
 
-import isEqual from "lodash/isEqual";
-
 const AppRow = styled.div`
   display: flex;
   flex-direction: row;
@@ -66,7 +64,6 @@ const Item: React$ComponentType<Props> = React.memo(
   ({
     state,
     app,
-    plan,
     dispatch,
     appStoreView,
     onlyUpdate,
@@ -140,4 +137,22 @@ const Item: React$ComponentType<Props> = React.memo(
   },
 );
 
-export default memo<Props>(Item, isEqual);
+export default memo<Props>(
+  Item,
+  (
+    {
+      state: { installQueue: _installQueue, uninstallQueue: _uninstallQueue },
+      scheduled: _scheduled,
+      progress: _progress,
+    },
+    { state: { installQueue, uninstallQueue }, scheduled, progress },
+  ) => {
+    /** compare _prev to next props that if different should trigger a rerender */
+    return (
+      progress === _progress &&
+      scheduled === _scheduled &&
+      installQueue.length === _installQueue.length &&
+      uninstallQueue.length === _uninstallQueue.length
+    );
+  },
+);

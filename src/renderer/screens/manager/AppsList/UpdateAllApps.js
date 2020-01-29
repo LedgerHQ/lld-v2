@@ -144,7 +144,7 @@ const UpdateAllApps = ({ state, dispatch, plan, isIncomplete, progress }: Props)
         onlyUpdate={true}
         showActions={false}
         scheduled={plan.find(a => a.name === app.name)}
-        progress={get(progress, ["appOp", "name"]) === app.name ? progress : {}}
+        progress={get(progress, ["appOp", "name"]) === app.name ? progress : null}
       />
     ),
     [state, dispatch, isIncomplete, plan, progress],

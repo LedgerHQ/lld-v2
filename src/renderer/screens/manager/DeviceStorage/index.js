@@ -24,8 +24,6 @@ import nanoS from "./images/nanoS.png";
 import nanoX from "./images/nanoX.png";
 import blue from "./images/blue.png";
 
-import isEqual from "lodash/isEqual";
-
 const illustrations = {
   nanoS,
   nanoX,
@@ -266,4 +264,4 @@ const DeviceStorage = ({ state, deviceInfo }: Props) => {
   );
 };
 
-export default memo<Props>(DeviceStorage, isEqual);
+export default memo<Props>(DeviceStorage);

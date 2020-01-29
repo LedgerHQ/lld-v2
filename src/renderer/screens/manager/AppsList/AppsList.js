@@ -94,7 +94,7 @@ const AppsList = ({ deviceInfo, state, dispatch, plan, isIncomplete, progress = 
         onlyUpdate={onlyUpdate}
         showActions={showActions}
         scheduled={plan.find(a => a.name === app.name)}
-        progress={get(progress, ["appOp", "name"]) === app.name ? progress : {}}
+        progress={get(progress, ["appOp", "name"]) === app.name ? progress : null}
       />
     ),
     [state, dispatch, isIncomplete, plan, progress],

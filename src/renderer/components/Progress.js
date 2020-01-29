@@ -63,8 +63,8 @@ const Progression: ThemedComponent<{ infinite?: boolean }> = styled(Bar).attrs(p
   top: 0;
   left: 0;
   transform-origin: ${p => p.transformOrigin};
-  transition: all 0.1s linear;
   animation: ${p => p.animation};
+  will-change: transform;
 `;
 
 type Props = {

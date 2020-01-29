@@ -15,8 +15,6 @@ import IconCheck from "~/renderer/icons/Check";
 import IconTrash from "~/renderer/icons/Trash";
 import IconArrowDown from "~/renderer/icons/ArrowDown";
 
-import isEqual from "lodash/isEqual";
-
 const AppActionsWrapper = styled.div`
   display: flex;
   flex: 1;
@@ -129,4 +127,4 @@ const AppActions: React$ComponentType<Props> = React.memo(
   },
 );
 
-export default memo<Props>(AppActions, isEqual);
+export default memo<Props>(AppActions);
