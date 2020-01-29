@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, memo, useCallback } from "react";
+import React, { useState, memo, useCallback, useMemo } from "react";
 import styled from "styled-components";
 import type { TFunction } from "react-i18next";
 import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
@@ -78,9 +78,16 @@ const AppsList = ({ deviceInfo, state, dispatch, plan, isIncomplete, progress = 
     sort,
   );
 
-  const appsInstalling = installQueue.map(name => appByName[name]);
+  /** combined installed apps and installQueue apps with removed duplicates */
+  const combinedInstalledApps = useMemo(
+    () =>
+      [...installQueue.map(name => appByName[name]), ...installedAppList].filter(
+        ({ name }, i, arr) => arr.findIndex(a => a.name === name) === i,
+      ),
+    [appByName, installQueue, installedAppList],
+  );
 
-  const displayedAppList = onDeviceTab ? [...appsInstalling, ...installedAppList] : appList;
+  const displayedAppList = onDeviceTab ? combinedInstalledApps : appList;
 
   const mapApp = useCallback(
     (app, appStoreView, onlyUpdate, showActions) => (
