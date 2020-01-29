@@ -26,7 +26,7 @@ const Body = ({ account, range }: Props) => {
   const { history, countervalueAvailable, countervalueChange } = useSelector(state =>
     balanceHistoryWithCountervalueSelector(state, { account, range }),
   );
-  const bgColor = useTheme("theme.colors.palette.background.paper");
+  const bgColor = useTheme("colors.palette.background.paper");
   const currency = getAccountCurrency(account);
 
   return (
