@@ -476,6 +476,17 @@
     "intallEthApp": "Install Ethereum app",
     "apps": {
       "install": "Install",
+      "dependencyInstall": {
+        "title": "{{dependency}} app is required",
+        "description": "The {{app}} app will also be installed because the {{dependency}} app needs it.",
+        "confirm": "Install apps"
+      },
+      "dependencyUninstall": {
+        "title": "Other apps need the {{app}} app",
+        "showAll": "Show apps to uninstall",
+        "description": "Apps on your device that are dependent on the {{app}} app will be uninstalled too.",
+        "confirm": "Uninstall {{app}} and other apps"
+      },
       "all": "App catalog",
       "installing": "Installing {{app}}...",
       "uninstalling": "Uninstalling {{app}}...",

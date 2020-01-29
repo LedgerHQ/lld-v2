@@ -1,5 +1,5 @@
 // @flow
-import React, { memo } from "react";
+import React, { memo, useCallback, useState } from "react";
 import { withTranslation } from "react-i18next";
 import type { TFunction } from "react-i18next";
 import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
@@ -13,6 +13,10 @@ import AppList from "./AppsList";
 import DeviceStorage from "../DeviceStorage/index";
 import UpdateAllApps from "./UpdateAllApps";
 
+import AppsListContext from "./AppsListContext";
+import AppDepsInstallModal from "./AppDepsInstallModal";
+import AppDepsUnInstallModal from "./AppDepsUnInstallModal";
+
 type Props = {
   device: Device,
   deviceInfo: DeviceInfo,
@@ -23,10 +27,20 @@ type Props = {
 
 const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
   const [state, dispatch] = useAppsRunner(result, exec);
+  const [appInstallDep, setAppInstallDep] = useState(undefined);
+  const [appUninstallDep, setAppUninstallDep] = useState(undefined);
   const filteredState = omit(state, "currentProgress");
   const progress = state.currentProgress;
   const plan = getActionPlan(filteredState) || [];
   const isIncomplete = isIncompleteState(filteredState);
+
+  const onCloseDepsInstallModal = useCallback(() => setAppInstallDep(undefined), [
+    setAppInstallDep,
+  ]);
+
+  const onCloseDepsUninstallModal = useCallback(() => setAppUninstallDep(undefined), [
+    setAppUninstallDep,
+  ]);
 
   return (
     <>
@@ -38,14 +52,29 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
         plan={plan}
         progress={progress}
       />
-      <AppList
-        deviceInfo={deviceInfo}
-        state={filteredState}
+      <AppsListContext.Provider value={{ setAppInstallDep, setAppUninstallDep }}>
+        <AppList
+          deviceInfo={deviceInfo}
+          state={filteredState}
+          dispatch={dispatch}
+          plan={plan}
+          isIncomplete={isIncomplete}
+          progress={progress}
+          t={t}
+        />
+      </AppsListContext.Provider>
+      <AppDepsInstallModal
+        app={appInstallDep}
+        appList={filteredState.apps}
         dispatch={dispatch}
-        plan={plan}
-        isIncomplete={isIncomplete}
-        progress={progress}
-        t={t}
+        onClose={onCloseDepsInstallModal}
+      />
+      <AppDepsUnInstallModal
+        app={appUninstallDep}
+        appList={filteredState.apps}
+        installed={filteredState.installed}
+        dispatch={dispatch}
+        onClose={onCloseDepsUninstallModal}
       />
     </>
   );

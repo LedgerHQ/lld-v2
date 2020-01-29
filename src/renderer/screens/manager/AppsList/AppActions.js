@@ -1,5 +1,5 @@
 // @flow
-import React, { useCallback, useMemo, memo } from "react";
+import React, { useCallback, useMemo, memo, useContext } from "react";
 
 import styled from "styled-components";
 import { Trans } from "react-i18next";
@@ -14,6 +14,8 @@ import { colors } from "~/renderer/styles/theme";
 import IconCheck from "~/renderer/icons/Check";
 import IconTrash from "~/renderer/icons/Trash";
 import IconArrowDown from "~/renderer/icons/ArrowDown";
+
+import AppsListContext from "./AppsListContext";
 
 const AppActionsWrapper = styled.div`
   display: flex;
@@ -56,10 +58,32 @@ const AppActions: React$ComponentType<Props> = React.memo(
     showActions = true,
     progress,
   }: Props) => {
-    const { name } = app;
-    const { installed, installedAvailable, installQueue, uninstallQueue } = state;
-    const onInstall = useCallback(() => dispatch({ type: "install", name }), [dispatch, name]);
-    const onUninstall = useCallback(() => dispatch({ type: "uninstall", name }), [dispatch, name]);
+    const { name, dependencies } = app;
+    const { apps, installed, installedAvailable, installQueue, uninstallQueue } = state;
+    const { setAppInstallDep, setAppUninstallDep } = useContext(AppsListContext);
+
+    const needsInstallDeps = useMemo(
+      () => dependencies && dependencies.some(dep => installed.every(app => app.name !== dep)),
+      [dependencies, installed],
+    );
+
+    const needsUninstallDeps = useMemo(
+      () =>
+        apps
+          .filter(a => installed.some(i => i.name === a.name))
+          .some(({ dependencies }) => dependencies.includes(name)),
+      [apps, installed, name],
+    );
+
+    const onInstall = useCallback(() => {
+      if (needsInstallDeps) setAppInstallDep(app);
+      else dispatch({ type: "install", name });
+    }, [app, dispatch, name, needsInstallDeps, setAppInstallDep]);
+
+    const onUninstall = useCallback(() => {
+      if (needsUninstallDeps) setAppUninstallDep(app);
+      else dispatch({ type: "uninstall", name });
+    }, [app, dispatch, name, needsUninstallDeps, setAppUninstallDep]);
 
     const isInstalled = useMemo(() => installed.find(i => i.name === name), [installed, name]);
 
