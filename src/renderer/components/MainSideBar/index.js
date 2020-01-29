@@ -8,6 +8,7 @@ import styled from "styled-components";
 
 import { accountsSelector, starredAccountsSelector } from "~/renderer/reducers/accounts";
 import { sidebarCollapsedSelector } from "~/renderer/reducers/settings";
+import { isNavigationLocked } from "~/renderer/reducers/application";
 
 import { openModal } from "~/renderer/actions/modals";
 import { setSidebarCollapsed } from "~/renderer/actions/settings";
@@ -177,6 +178,8 @@ const MainSideBar = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
+  /** redux navigation locked state */
+  const navigationLocked = useSelector(isNavigationLocked);
   const collapsed = useSelector(sidebarCollapsedSelector);
   const noAccounts = useSelector(accountsSelector).length === 0;
   const hasStarredAccounts = useSelector(starredAccountsSelector).length > 0;
@@ -211,23 +214,19 @@ const MainSideBar = () => {
   }, [push]);
 
   /** from manager redirect with params having which modal to open */
-  const maybeRedirectToAccounts = useCallback(
-    showModal => {
-      return location.pathname === "/manager" && push(`/accounts/${showModal}`);
-    },
-    [location.pathname, push],
-  );
+  const maybeRedirectToAccounts = useCallback(() => {
+    return location.pathname === "/manager" && push("/accounts");
+  }, [location.pathname, push]);
 
   const handleOpenSendModal = useCallback(() => {
-    maybeRedirectToAccounts("MODAL_SEND");
-    /** Do not open modal directly if we're coming from manager */
-    if (location.pathname !== "/manager") dispatch(openModal("MODAL_SEND"));
-  }, [dispatch, location.pathname, maybeRedirectToAccounts]);
+    maybeRedirectToAccounts();
+    dispatch(openModal("MODAL_SEND"));
+  }, [dispatch, maybeRedirectToAccounts]);
 
   const handleOpenReceiveModal = useCallback(() => {
-    maybeRedirectToAccounts("MODAL_RECEIVE");
-    if (location.pathname !== "/manager") dispatch(openModal("MODAL_RECEIVE"));
-  }, [dispatch, location.pathname, maybeRedirectToAccounts]);
+    maybeRedirectToAccounts();
+    dispatch(openModal("MODAL_RECEIVE"));
+  }, [dispatch, maybeRedirectToAccounts]);
 
   return (
     <Transition
@@ -272,7 +271,7 @@ const MainSideBar = () => {
                 icon={IconSend}
                 iconActiveColor="wallet"
                 onClick={handleOpenSendModal}
-                disabled={noAccounts}
+                disabled={noAccounts || navigationLocked}
                 collapsed={secondAnim}
               />
               <SideBarListItem
@@ -280,7 +279,7 @@ const MainSideBar = () => {
                 icon={IconReceive}
                 iconActiveColor="wallet"
                 onClick={handleOpenReceiveModal}
-                disabled={noAccounts}
+                disabled={noAccounts || navigationLocked}
                 collapsed={secondAnim}
               />
               <SideBarListItem

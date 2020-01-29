@@ -1,56 +1,83 @@
 // @flow
 import React, { useState, useCallback, memo, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Prompt, useHistory } from "react-router-dom";
 import ConfirmModal from "~/renderer/modals/ConfirmModal";
 
+import { setNavigationLock } from "~/renderer/actions/application";
+
 type Props = {
+  /** set to tru if navigation should be locked */
   when: boolean,
+  /** just lock navigation without prompt modal */
+  noModal?: boolean,
+  /** callback function on location to filter out block navigation according to this param */
   shouldBlockNavigation?: *,
-  analyticsName: string,
-  title: string,
+  /** confirm modal analytics name */
+  analyticsName?: string,
 };
 
 const NavigationGuard = ({
   when,
+  noModal,
   shouldBlockNavigation = () => true,
-  analyticsName,
-  title,
+  analyticsName = "NavigationGuard",
   ...confirmModalProps
 }: Props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [lastLocation, setLastLocation] = useState(null);
   const [confirmedNavigation, setConfirmedNavigation] = useState(false);
   const history = useHistory();
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    /** Set redux navigation lock status */
+    dispatch(setNavigationLock(when));
+    return () => {
+      /** Reset redux navigation lock status */
+      dispatch(setNavigationLock(false));
+    };
+  }, [when]);
+
+  /** show modal if needed and location to go to on confirm */
   const showModal = useCallback(
     location => {
-      setModalVisible(true);
+      setModalVisible(!noModal);
       setLastLocation(location);
     },
-    [setModalVisible, setLastLocation],
+    [setModalVisible, setLastLocation, noModal],
   );
 
+  /** close modal on cancel */
   const closeModal = useCallback(() => {
     setModalVisible(false);
   }, [setModalVisible]);
 
+  /** handles blocked location update */
   const handleBlockedNavigation = useCallback(
     nextLocation => {
       if (!confirmedNavigation && shouldBlockNavigation(nextLocation)) {
+        /** if navigation is locked show modal */
         showModal(nextLocation);
         return false;
       }
-
+      /** or proceed navigation */
+      dispatch(setNavigationLock(false));
       return true;
     },
-    [confirmedNavigation, shouldBlockNavigation, showModal],
+    [confirmedNavigation, dispatch, shouldBlockNavigation, showModal],
   );
 
+  /** on confirm closes modal and toggles confirmation redirect */
   const handleConfirmNavigationClick = useCallback(() => {
+    dispatch(setNavigationLock(false));
     setModalVisible(false);
-    if (lastLocation) setConfirmedNavigation(true);
-  }, [setModalVisible, lastLocation]);
+    if (lastLocation) {
+      setConfirmedNavigation(true);
+    }
+  }, [dispatch, lastLocation]);
 
+  /** retry redirection once confirmation state changes */
   useEffect(() => {
     if (confirmedNavigation && lastLocation) history.push(lastLocation.pathname);
   }, [confirmedNavigation, lastLocation, history]);
@@ -60,9 +87,9 @@ const NavigationGuard = ({
       <Prompt when={when} message={handleBlockedNavigation} />
       <ConfirmModal
         {...confirmModalProps}
-        title={title}
         analyticsName={analyticsName}
         isOpened={modalVisible}
+        onCancel={closeModal}
         onReject={closeModal}
         onConfirm={handleConfirmNavigationClick}
       />

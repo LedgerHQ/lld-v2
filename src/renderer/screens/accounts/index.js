@@ -1,8 +1,8 @@
 // @flow
 
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { connect } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { createSelector, createStructuredSelector } from "reselect";
 import styled from "styled-components";
 
@@ -15,7 +15,6 @@ import UpdateBanner from "~/renderer/components/Updater/Banner";
 import { TopBannerContainer } from "~/renderer/screens/dashboard";
 import { flattenSortAccountsEnforceHideEmptyTokenSelector } from "~/renderer/actions/general";
 import { setAccountsViewMode, setSelectedTimeRange } from "~/renderer/actions/settings";
-import { openModal } from "~/renderer/actions/modals";
 import { accountsSelector } from "~/renderer/reducers/accounts";
 import { accountsViewModeSelector, selectedTimeRangeSelector } from "~/renderer/reducers/settings";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
@@ -50,7 +49,6 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = {
   setAccountsViewMode,
   setSelectedTimeRange,
-  openModal,
 };
 
 export const GenericBox: ThemedComponent<{}> = styled(Box)`
@@ -74,14 +72,8 @@ const AccountsPage = ({
   setAccountsViewMode,
   setSelectedTimeRange,
   range,
-  openModal,
 }: Props) => {
   const history = useHistory();
-  /** work arround to trigger showing modal when navigation comes from Manager view */
-  const { showModal } = useParams();
-  useEffect(() => {
-    if (showModal) openModal(showModal);
-  }, []);
 
   const onAccountClick = useCallback(
     (account: Account | TokenAccount, parentAccount: ?Account) =>

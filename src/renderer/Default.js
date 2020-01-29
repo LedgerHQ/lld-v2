@@ -123,7 +123,7 @@ const Default = () => {
                   <Switch>
                     <Route path="/" exact component={Dashboard} />
                     <Route path="/settings" component={Settings} />
-                    <Route path="/accounts/:showModal?" component={Accounts} />
+                    <Route path="/accounts" component={Accounts} />
                     <Route path="/manager" component={Manager} />
                     <Route path="/partners" component={Partners} />
                     <Route path="/account/:parentId/:id" component={Account} />
