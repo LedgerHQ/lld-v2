@@ -1,7 +1,10 @@
 // @flow
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import { Trans } from "react-i18next";
+
+import type { Action, AppOp } from "@ledgerhq/live-common/lib/apps/types";
+
 import Box from "~/renderer/components/Box";
 import Text from "~/renderer/components/Text";
 import ProgressBar from "~/renderer/components/Progress";
@@ -24,47 +27,68 @@ const Cancel = styled.div`
   color: ${p => p.theme.colors.palette.primary.main};
 `;
 
-const Progress = ({ onClick, progress }: { onClick: () => void, progress: * }) => (
-  <Box flex="1" horizontal justifyContent="flex-end" overflow="hidden">
-    <Box flex="0 0 auto" vertical alignItems="flex-end" justifyContent="center">
-      <Box
-        flex="0 0 auto"
-        horizontal
-        alignItems="center"
-        justifyContent="center"
-        py={1}
-        maxWidth="100%"
-      >
-        <Text ff="Inter|SemiBold" fontSize={3} color="palette.primary.main">
-          <Trans
-            i18nKey={
-              progress && progress.appOp
-                ? progress.appOp.type === "install"
-                  ? "manager.applist.item.installing"
-                  : "manager.applist.item.uninstalling"
-                : "manager.applist.item.scheduled"
-            }
-          />
-        </Text>
-        {!progress ? (
-          <Cancel onClick={onClick}>
-            <IconCrossCircle size={20} />
-          </Cancel>
-        ) : null}
-      </Box>
-      <Holder>
-        {progress && progress.appOp ? (
-          progress.appOp.type === "install" ? (
-            <ProgressBar progress={progress ? progress.progress : 0} />
+type Props = {
+  name: string,
+  dispatch: Action => void,
+  scheduled: AppOp,
+  currentProgress?: { appOp: AppOp, progress: number },
+};
+
+const Progress = ({ name, dispatch, scheduled, currentProgress }: Props) => {
+  const { progress, appOp } = currentProgress || {};
+
+  const onInstall = useCallback(() => dispatch({ type: "install", name }), [dispatch, name]);
+  const onUninstall = useCallback(() => dispatch({ type: "uninstall", name }), [dispatch, name]);
+
+  const onClick = useCallback(() => {
+    if (scheduled) {
+      if (scheduled.type === "install") onUninstall();
+      if (scheduled.type === "uninstall") onInstall();
+    }
+  }, [scheduled, onInstall, onUninstall]);
+
+  return (
+    <Box flex="1" horizontal justifyContent="flex-end" overflow="hidden">
+      <Box flex="0 0 auto" vertical alignItems="flex-end" justifyContent="center">
+        <Box
+          flex="0 0 auto"
+          horizontal
+          alignItems="center"
+          justifyContent="center"
+          py={1}
+          maxWidth="100%"
+        >
+          <Text ff="Inter|SemiBold" fontSize={3} color="palette.primary.main">
+            <Trans
+              i18nKey={
+                appOp
+                  ? appOp.type === "install"
+                    ? "manager.applist.item.installing"
+                    : "manager.applist.item.uninstalling"
+                  : "manager.applist.item.scheduled"
+              }
+            />
+          </Text>
+          {!progress ? (
+            <Cancel onClick={onClick}>
+              <IconCrossCircle size={20} />
+            </Cancel>
+          ) : null}
+        </Box>
+        <Holder>
+          {appOp ? (
+            appOp.type === "install" ? (
+              <ProgressBar infinite timing={1200} progress={progress || 0} />
+            ) : (
+              <ProgressBar infinite timing={1200} />
+            )
           ) : (
-            <ProgressBar infinite timing={1200} />
-          )
-        ) : (
-          <ProgressBar infinite color="palette.text.shade20" timing={1200} />
-        )}
-      </Holder>
+            <ProgressBar infinite color="palette.text.shade20" timing={1200} />
+          )}
+        </Holder>
+      </Box>
     </Box>
-  </Box>
-);
+  );
+};
 
 export default Progress;

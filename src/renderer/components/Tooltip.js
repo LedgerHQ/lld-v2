@@ -69,11 +69,11 @@ const ToolTip = ({
   return (
     <Tippy
       {...defaultTippyOptions}
-      content={content ? <ContentContainer bg={bg}>{content}</ContentContainer> : null}
+      content={<ContentContainer bg={bg}>{content}</ContentContainer>}
       delay={[delay, 0]}
       arrow={content ? arrow(bg) : null}
       followCursor={followCursor}
-      enabled={enabled}
+      enabled={!!content && enabled}
       placement={placement}
     >
       <ChildrenContainer>{children}</ChildrenContainer>
