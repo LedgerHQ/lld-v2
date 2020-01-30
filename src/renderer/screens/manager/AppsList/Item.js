@@ -1,5 +1,5 @@
 // @flow
-import React, { useCallback, useMemo } from "react";
+import React, { useMemo, memo } from "react";
 import {
   isOutOfMemoryState,
   predictOptimisticState,
@@ -15,16 +15,9 @@ import ByteSize from "~/renderer/components/ByteSize";
 import Text from "~/renderer/components/Text";
 import Box from "~/renderer/components/Box";
 import Tooltip from "~/renderer/components/Tooltip";
-import Button from "~/renderer/components/Button";
-import Progress from "~/renderer/screens/manager/AppsList/Progress";
-
-import { colors } from "~/renderer/styles/theme";
 
 import IconLoader from "~/renderer/icons/Loader";
-import IconError from "~/renderer/icons/Error";
-import IconTrash from "~/renderer/icons/Trash";
-import IconCheck from "~/renderer/icons/Check";
-import IconArrowDown from "~/renderer/icons/ArrowDown";
+import AppActions from "./AppActions";
 
 const AppRow = styled.div`
   display: flex;
@@ -50,31 +43,6 @@ const AppSize = styled.div`
   color: ${p => p.theme.colors.palette.text.shade40};
 `;
 
-const AppActions = styled.div`
-  display: flex;
-  flex: 1;
-  min-width: 150px;
-  justify-content: flex-end;
-  flex-direction: row;
-  > *:not(:last-child) {
-    margin-right: 10px;
-  }
-`;
-
-const SuccessInstall = styled.div`
-  color: ${p => p.theme.colors.positiveGreen};
-  display: flex;
-  flex-direction: row;
-  padding: 10px 20px;
-  > svg {
-    padding-right: 5px;
-  }
-`;
-
-const SuccessUpdate = styled(SuccessInstall)`
-  color: ${p => p.theme.colors.palette.primary.main};
-`;
-
 const LiveCompatible = styled.div`
   width: 100px;
   text-align: center;
@@ -96,21 +64,16 @@ const Item: React$ComponentType<Props> = React.memo(
   ({
     state,
     app,
-    installed,
-    installedAvailable,
-    scheduled,
     dispatch,
-    progress,
-    error,
     appStoreView,
     onlyUpdate,
-    deviceModel,
     forceUninstall,
     showActions = true,
+    scheduled,
+    progress,
   }: Props) => {
     const { name } = app;
-    const onInstall = useCallback(() => dispatch({ type: "install", name }), [dispatch, name]);
-    const onUninstall = useCallback(() => dispatch({ type: "uninstall", name }), [dispatch, name]);
+    const { installed, deviceModel } = state;
 
     const notEnoughMemoryToInstall = useMemo(
       () => isOutOfMemoryState(predictOptimisticState(reducer(state, { type: "install", name }))),
@@ -157,72 +120,39 @@ const Item: React$ComponentType<Props> = React.memo(
             ) : null}
           </LiveCompatible>
         </Box>
-        {error ? (
-          <Box flex="1">
-            <Button danger title={String(error)}>
-              <IconError size={14} />
-              <Trans i18nKey="manager.applist.item.error" />
-            </Button>
-          </Box>
-        ) : progress || scheduled ? (
-          <Progress
-            onClick={
-              (progress ? progress.appOp : scheduled).type === "install" ? onUninstall : onInstall
-            }
-            progress={progress}
-          />
-        ) : (
-          <AppActions>
-            {showActions && (
-              <>
-                {appStoreView && installed && installed.updated ? (
-                  <SuccessInstall>
-                    <IconCheck size={16} />
-                    <Text ff="Inter|SemiBold" fontSize={4}>
-                      <Trans i18nKey="manager.applist.item.installed" />
-                    </Text>
-                  </SuccessInstall>
-                ) : null}
-                {installed && !installed.updated ? (
-                  <SuccessUpdate>
-                    <Text ff="Inter|SemiBold" fontSize={4}>
-                      <Trans i18nKey="manager.applist.item.update" />
-                    </Text>
-                  </SuccessUpdate>
-                ) : !installed ? (
-                  <Tooltip
-                    content={
-                      notEnoughMemoryToInstall ? (
-                        <Trans i18nKey="manager.applist.item.notEnoughSpace" />
-                      ) : null
-                    }
-                  >
-                    <Button
-                      style={{ display: "flex" }}
-                      lighterPrimary
-                      disabled={notEnoughMemoryToInstall}
-                      onClick={notEnoughMemoryToInstall ? null : onInstall}
-                    >
-                      <IconArrowDown size={14} />
-                      <Text style={{ marginLeft: 8 }}>
-                        <Trans i18nKey="manager.applist.item.install" />
-                      </Text>
-                    </Button>
-                  </Tooltip>
-                ) : null}
-                {((installed || !installedAvailable) && !appStoreView && !onlyUpdate) ||
-                forceUninstall ? (
-                  <Button style={{ padding: 12 }} onClick={onUninstall}>
-                    <IconTrash color={colors.grey} size={14} />
-                  </Button>
-                ) : null}
-              </>
-            )}
-          </AppActions>
-        )}
+        <AppActions
+          state={state}
+          app={app}
+          scheduled={scheduled}
+          dispatch={dispatch}
+          forceUninstall={forceUninstall}
+          appStoreView={appStoreView}
+          onlyUpdate={onlyUpdate}
+          showActions={showActions}
+          notEnoughMemoryToInstall={notEnoughMemoryToInstall}
+          progress={progress}
+        />
       </AppRow>
     );
   },
 );
 
-export default Item;
+export default memo<Props>(
+  Item,
+  (
+    {
+      state: { installQueue: _installQueue, uninstallQueue: _uninstallQueue },
+      scheduled: _scheduled,
+      progress: _progress,
+    },
+    { state: { installQueue, uninstallQueue }, scheduled, progress },
+  ) => {
+    /** compare _prev to next props that if different should trigger a rerender */
+    return (
+      progress === _progress &&
+      scheduled === _scheduled &&
+      installQueue.length === _installQueue.length &&
+      uninstallQueue.length === _uninstallQueue.length
+    );
+  },
+);

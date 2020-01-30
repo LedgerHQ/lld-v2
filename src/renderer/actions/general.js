@@ -18,6 +18,7 @@ import {
   getOrderAccounts,
   counterValueCurrencySelector,
   userThemeSelector,
+  starredAccountIdsSelector,
 } from "./../reducers/settings";
 import { accountsSelector, activeAccountsSelector } from "./../reducers/accounts";
 import type { State } from "./../reducers";
@@ -50,6 +51,7 @@ export const calculateCountervalueSelector = (state: State) => {
 export const sortAccountsComparatorSelector: OutputSelector<State, void, *> = createSelector(
   getOrderAccounts,
   calculateCountervalueSelector,
+  starredAccountIdsSelector,
   sortAccountsComparatorFromOrder,
 );
 

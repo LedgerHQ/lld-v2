@@ -10,7 +10,7 @@ const template = [
     process.platform === "darwin",
     [
       {
-        label: app.getName(),
+        label: app.name,
         submenu: [
           { role: "hide" },
           { role: "hideothers" },

@@ -450,7 +450,10 @@
         "marketcap_desc": "Marketcap DESC"
       },
       "updatable": {
-        "title": "Updates available"
+        "title": "Updates available",
+        "progressTitle": "{{number}} app updates",
+        "progressWarning": "Do not quit manager during update",
+        "progress": "Updating all..."
       },
       "item": {
         "version": "Version {{version}}",

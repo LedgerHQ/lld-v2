@@ -42,7 +42,7 @@ const Bar: ThemedComponent<{}> = styled(Box).attrs(() => ({
 `;
 
 const Progression: ThemedComponent<{ infinite?: boolean }> = styled(Bar).attrs(p =>
-  !isNaN(p.progress)
+  !isNaN(p.progress) && p.progress
     ? {
         style: {
           transform: `scaleX(${p.progress})`,
@@ -63,8 +63,8 @@ const Progression: ThemedComponent<{ infinite?: boolean }> = styled(Bar).attrs(p
   top: 0;
   left: 0;
   transform-origin: ${p => p.transformOrigin};
-  transition: all 0.1s linear;
   animation: ${p => p.animation};
+  will-change: transform;
 `;
 
 type Props = {

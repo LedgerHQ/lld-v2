@@ -1,14 +1,19 @@
 // @flow
 
-import React, { useCallback } from "react";
-import { Trans, withTranslation } from "react-i18next";
+import React, { useCallback, memo } from "react";
+import { Trans } from "react-i18next";
 import DropDown, { DropDownItem } from "~/renderer/components/DropDown";
 import Box from "~/renderer/components/Box";
 import BoldToggle from "~/renderer/components/BoldToggle";
 import Text from "~/renderer/components/Text";
 import IconAngleDown from "~/renderer/icons/AngleDown";
 
-const Sort = ({ onSortChange, sort }: *) => {
+type Props = {
+  onSortChange: Function,
+  sort: { type: string, order: string },
+};
+
+const Sort = ({ onSortChange, sort }: Props) => {
   const onSortChangeWrapper = useCallback(
     ({ selectedItem: item }) => {
       if (!item) {
@@ -85,4 +90,4 @@ const Sort = ({ onSortChange, sort }: *) => {
   );
 };
 
-export default withTranslation()(Sort);
+export default memo<Props>(Sort);

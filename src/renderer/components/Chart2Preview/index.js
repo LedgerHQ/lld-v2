@@ -43,7 +43,7 @@ import type { Data } from "./types";
 
 export type Props = {
   data: Data,
-  height?: number,
+  height: number,
   color?: string,
   valueKey?: string,
 };
@@ -77,12 +77,22 @@ const Chart = ({ height, data, color, valueKey = "value" }: Props) => {
     [color, data, valueKey],
   );
 
+  const min = useMemo(() => Math.min(...generatedData.datasets[0].data.map(d => d.y)), [
+    generatedData,
+  ]);
+
   const generateOptions = useMemo(
     () => ({
       responsive: false,
       maintainAspectRatio: false,
       tooltips: {
         enabled: false,
+      },
+      layout: {
+        padding: {
+          top: 4,
+          bottom: 4,
+        },
       },
       animation: {
         duration: 0,
@@ -116,11 +126,14 @@ const Chart = ({ height, data, color, valueKey = "value" }: Props) => {
               drawBorder: false,
               zeroLineColor: theme.text.shade10,
             },
+            ticks: {
+              beginAtZero: true,
+            },
           },
         ],
       },
     }),
-    [theme],
+    [min, theme.text.shade10, theme.text.shade60],
   );
 
   useLayoutEffect(() => {
@@ -128,23 +141,19 @@ const Chart = ({ height, data, color, valueKey = "value" }: Props) => {
       chartRef.current.data = generatedData;
       chartRef.current.options = generateOptions;
       chartRef.current.update(0);
+    } else {
+      chartRef.current = new ChartJs(canvasRef.current, {
+        type: "line",
+        data: generatedData,
+        options: generateOptions,
+      });
     }
-  }, [data, generateOptions, generatedData, valueKey]);
-
-  useLayoutEffect(() => {
-    chartRef.current = new ChartJs(canvasRef.current, {
-      type: "line",
-      data: generatedData,
-      options: generateOptions,
-    });
   }, [generateOptions, generatedData]);
 
   return (
     <canvas
       ref={canvasRef}
-      height={height}
       style={{
-        width: "100%",
         height,
       }}
     />

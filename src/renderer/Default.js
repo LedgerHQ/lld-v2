@@ -43,8 +43,10 @@ const Main: ThemedComponent<{
   tabIndex?: number,
   full?: boolean,
   ref?: React$Ref<React$ElementRef<any>>,
-}> = styled(GrowScroll).attrs(() => ({
+}> = styled(GrowScroll).attrs(props => ({
+  pt: 6,
   px: 6,
+  pb: props.theme.space[6] + props.theme.sizes.topBarHeight,
 }))`
   outline: none;
 `;

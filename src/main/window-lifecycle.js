@@ -34,7 +34,7 @@ const defaultWindowOptions = {
   backgroundColor: "#fff",
   webPreferences: {
     blinkFeatures: "OverlayScrollbars",
-    devTools: __DEV__ || DEV_TOOLS,
+    devTools: DEV_TOOLS,
     experimentalFeatures: true,
     nodeIntegration: true,
   },
@@ -78,7 +78,7 @@ export async function createMainWindow({ dimensions, positions }: any) {
     mainWindow.loadURL(`file://${__dirname}/index.html`);
   }
 
-  if (__DEV__ || DEV_TOOLS) {
+  if (DEV_TOOLS) {
     mainWindow.webContents.openDevTools();
   }
 

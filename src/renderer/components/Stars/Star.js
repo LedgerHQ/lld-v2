@@ -1,7 +1,7 @@
 // @flow
 
-import React, { useCallback, useState } from "react";
-import styled from "styled-components";
+import React, { useCallback } from "react";
+import styled, { keyframes } from "styled-components";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { toggleStarAction } from "~/renderer/actions/settings";
@@ -10,6 +10,17 @@ import { rgba } from "~/renderer/styles/helpers";
 import starAnim from "~/renderer/images/starAnim.png";
 import starAnim2 from "~/renderer/images/starAnim2.png";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
+import { refreshAccountsOrdering } from "~/renderer/actions/general";
+import { Transition } from "react-transition-group";
+
+const starBust = keyframes`
+  from {
+    background-position: left;
+  }
+  to {
+    background-position: right;
+  }
+`;
 
 const ButtonWrapper: ThemedComponent<{ filled?: boolean }> = styled.div`
   height: 34px;
@@ -34,36 +45,27 @@ const StarWrapper: ThemedComponent<{}> = styled.div`
   margin: -17px;
 `;
 
+const startBurstTiming = 800;
+
 const StarIcon: ThemedComponent<{
   filled?: boolean,
   yellow?: boolean,
-  showAnimation?: boolean,
-}> = styled.div.attrs(p => ({
-  style: {
-    backgroundPosition: p.filled ? "right" : "left",
-    animation: p.showAnimation ? "star-burst .8s steps(29) 1" : "none",
-  },
-}))`
-  & {
-    height: 50px;
-    width: 50px;
-    background-image: url("${p => (p.yellow ? starAnim2 : starAnim)}");
-    background-repeat: no-repeat;
-    background-size: 3000%;
-    animation: none;
+}> = styled.div`
+  &.entering {
+    animation: ${starBust} ${startBurstTiming}ms steps(29) 1;  
+  }
+  
+  &.entered {
+    background-position: right;
   }
 
+  height: 50px;
+  width: 50px;
+  background-image: url("${p => (p.yellow ? starAnim2 : starAnim)}");
+  background-repeat: no-repeat;
+  background-size: 3000%;
   &:hover {
     ${p => (!p.filled ? `background-position: -50px;` : "")}
-  }
-
-  @keyframes star-burst {
-    from {
-      background-position: left;
-    }
-    to {
-      background-position: right;
-    }
   }
 `;
 
@@ -73,6 +75,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = {
   toggleStarAction,
+  refreshAccountsOrdering,
 };
 
 type OwnProps = {
@@ -84,24 +87,32 @@ type Props = {
   ...OwnProps,
   isAccountStared: boolean,
   toggleStarAction: Function,
+  refreshAccountsOrdering: Function,
 };
 
-const Star = ({ accountId, isAccountStared, toggleStarAction, yellow }: Props) => {
-  const [showAnimation, setShowAnimation] = useState(false);
+const Star = ({
+  accountId,
+  isAccountStared,
+  toggleStarAction,
+  yellow,
+  refreshAccountsOrdering,
+}: Props) => {
   const toggleStar = useCallback(
     e => {
       e.stopPropagation();
-      setShowAnimation(!isAccountStared);
       toggleStarAction(accountId);
+      refreshAccountsOrdering();
     },
-    [accountId, toggleStarAction, isAccountStared],
+    [toggleStarAction, accountId, refreshAccountsOrdering],
   );
   const MaybeButtonWrapper = yellow ? ButtonWrapper : FloatingWrapper;
 
   return (
     <MaybeButtonWrapper filled={isAccountStared}>
       <StarWrapper onClick={toggleStar}>
-        <StarIcon yellow={yellow} filled={isAccountStared} showAnimation={showAnimation} />
+        <Transition in={isAccountStared} timeout={isAccountStared ? startBurstTiming : 0}>
+          {className => <StarIcon yellow={yellow} filled={isAccountStared} className={className} />}
+        </Transition>
       </StarWrapper>
     </MaybeButtonWrapper>
   );
