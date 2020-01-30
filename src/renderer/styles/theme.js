@@ -1,7 +1,7 @@
 // @flow
 import { keyframes, css } from "styled-components";
 import { WARN_LEGACY_COLORS } from "~/config/constants";
-
+import { rgba } from "./helpers";
 import type { CSSRules } from "styled-components";
 
 export const space = [0, 5, 10, 15, 20, 30, 40, 50, 70];
@@ -130,6 +130,31 @@ const animations = {
   fadeInGrowX: props => css`${fadeInGrowX} ${animationLength} ${easings.outQuadratic} forwards`,
 };
 
+const overflow = {
+  x: css`
+    overflow-y: scroll;
+    overflow-x: overlay;
+    &:hover {
+      --track-color: ${p => p.theme.colors.palette.text.shade30};
+    }
+  `,
+  y: css`
+    overflow-y: scroll;
+    overflow-y: overlay;
+    &:hover {
+      --track-color: ${p => p.theme.colors.palette.text.shade30};
+    }
+  `,
+  xy: css`
+    overflow: scroll;
+    overflow: overlay;
+    &:hover {
+      --track-color: ${p => p.theme.colors.palette.text.shade30};
+    }
+  `,
+  trackSize: 8,
+};
+
 type Font = {
   weight: number,
   style: string,
@@ -161,6 +186,7 @@ const theme: Theme = {
   shadows,
   colors,
   animations,
+  overflow,
 };
 
 export default theme;

@@ -249,7 +249,7 @@ const AdvancedLogsContainer: ThemedComponent<{}> = styled.div`
   width: 100%;
   white-space: pre-wrap;
   word-wrap: break-word;
-  overflow: auto;
+  ${p => p.theme.overflow.xy};
   user-select: text;
 `;
 

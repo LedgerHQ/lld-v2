@@ -50,11 +50,7 @@ const Main: ThemedComponent<{
 `;
 
 const ScrollZone = styled(Box)`
-  overflow: auto;
-  &::-webkit-scrollbar {
-    width: 0px;
-    height: 0px;
-  }
+  ${p => p.theme.overflow.xy};
 `;
 
 const reloadApp = event => {

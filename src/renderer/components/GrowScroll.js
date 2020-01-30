@@ -1,8 +1,22 @@
 // @flow
 
 import React, { useMemo } from "react";
-
+import styled from "styled-components";
 import Box from "~/renderer/components/Box";
+
+const ScrollContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  ${p => p.theme.overflow.xy};
+  ${p =>
+    p.maxHeight
+      ? `max-height:${p.maxHeight}`
+      : `bottom: 0;
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 0;`}
+`;
 
 type Props = {
   children: any,
@@ -18,26 +32,6 @@ const GrowScroll = (
   ref: React$ElementRef<any>,
 ) => {
   const valueProvider = useMemo(() => ({ scrollContainer: ref ? ref.current : null }), [ref]);
-
-  const scrollContainerStyles = useMemo(
-    () => ({
-      display: "flex",
-      flexDirection: "column",
-      overflow: "scroll",
-      ...(maxHeight
-        ? {
-            maxHeight,
-          }
-        : {
-            bottom: 0,
-            left: 0,
-            position: "absolute",
-            right: 0,
-            top: 0,
-          }),
-    }),
-    [maxHeight],
-  );
 
   const rootStyles = useMemo(
     () => ({
@@ -59,11 +53,11 @@ const GrowScroll = (
 
   return (
     <div style={rootStyles}>
-      <div style={scrollContainerStyles} ref={ref}>
+      <ScrollContainer maxHeight={maxHeight} ref={ref}>
         <Box {...props} grow>
           <GrowScrollContext.Provider value={valueProvider}>{children}</GrowScrollContext.Provider>
         </Box>
-      </div>
+      </ScrollContainer>
     </div>
   );
 };
