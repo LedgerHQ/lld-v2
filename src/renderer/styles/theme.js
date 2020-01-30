@@ -1,7 +1,6 @@
 // @flow
 import { keyframes, css } from "styled-components";
 import { WARN_LEGACY_COLORS } from "~/config/constants";
-import { rgba } from "./helpers";
 import type { CSSRules } from "styled-components";
 
 export const space = [0, 5, 10, 15, 20, 30, 40, 50, 70];
