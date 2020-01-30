@@ -1394,7 +1394,7 @@
       "description": "Please retry or contact Ledger Support"
     },
     "UserRefusedOnDevice": {
-      "title": "Transaction refused on device",
+      "title": "Action refused on device",
       "description": "Please retry or contact Ledger Support in case of doubt"
     },
     "UserRefusedAddress": {

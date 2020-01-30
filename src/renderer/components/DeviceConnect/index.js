@@ -1,11 +1,10 @@
 // @flow
-import React, { useEffect } from "react";
+import React, { useEffect, Component } from "react";
 import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
 import { Trans } from "react-i18next";
 import styled from "styled-components";
-import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
-import type { ListAppsResult } from "@ledgerhq/live-common/lib/apps/types";
+import { WrongDeviceForAccount } from "@ledgerhq/errors";
 import { getCurrentDevice } from "~/renderer/reducers/devices";
 import { setPreferredDeviceModel } from "~/renderer/actions/settings";
 import { preferredDeviceModelSelector } from "~/renderer/reducers/settings";
@@ -15,86 +14,23 @@ import Animation from "~/renderer/animations";
 import BigSpinner from "~/renderer/components/BigSpinner";
 import AutoRepair from "~/renderer/components/AutoRepair";
 import Button from "~/renderer/components/Button";
+import TranslatedError from "~/renderer/components/TranslatedError";
 import ConnectTroubleshooting from "~/renderer/components/ConnectTroubleshooting";
 import Text from "~/renderer/components/Text";
 import useTheme from "~/renderer/hooks/useTheme";
-import { useManagerConnect } from "./logic";
 import ErrorDisplay from "../ErrorDisplay";
+import { getDeviceAnimation } from "./animations";
+import type { Config } from "./configs/shared";
 
-const animations: { [k: DeviceModelId]: * } = {
-  nanoX: {
-    plugAndPinCode: {
-      light: require("~/renderer/animations/nanoX/1PlugAndPinCode/light.json"),
-      dark: require("~/renderer/animations/nanoX/1PlugAndPinCode/dark.json"),
-    },
-    enterPinCode: {
-      light: require("~/renderer/animations/nanoX/3EnterPinCode/light.json"),
-      dark: require("~/renderer/animations/nanoX/3EnterPinCode/dark.json"),
-    },
-    quitApp: {
-      light: require("~/renderer/animations/nanoX/4QuitApp/light.json"),
-      dark: require("~/renderer/animations/nanoX/4QuitApp/dark.json"),
-    },
-    allowManager: {
-      light: require("~/renderer/animations/nanoX/5AllowManager/light.json"),
-      dark: require("~/renderer/animations/nanoX/5AllowManager/dark.json"),
-    },
-  },
-  nanoS: {
-    plugAndPinCode: {
-      light: require("~/renderer/animations/nanoS/1PlugAndPinCode/light.json"),
-      dark: require("~/renderer/animations/nanoS/1PlugAndPinCode/dark.json"),
-    },
-    enterPinCode: {
-      light: require("~/renderer/animations/nanoS/3EnterPinCode/light.json"),
-      dark: require("~/renderer/animations/nanoS/3EnterPinCode/dark.json"),
-    },
-    quitApp: {
-      light: require("~/renderer/animations/nanoS/4QuitApp/light.json"),
-      dark: require("~/renderer/animations/nanoS/4QuitApp/dark.json"),
-    },
-    allowManager: {
-      light: require("~/renderer/animations/nanoS/5AllowManager/light.json"),
-      dark: require("~/renderer/animations/nanoS/5AllowManager/dark.json"),
-    },
-  },
-  blue: {
-    plugAndPinCode: {
-      light: require("~/renderer/animations/blue/1PlugAndPinCode/data.json"),
-    },
-    enterPinCode: {
-      light: require("~/renderer/animations/blue/3EnterPinCode/data.json"),
-    },
-    quitApp: {
-      light: require("~/renderer/animations/blue/4QuitApp/data.json"),
-    },
-    allowManager: {
-      light: require("~/renderer/animations/blue/5AllowManager/data.json"),
-    },
-  },
-};
-
-export const getDeviceAnimation = (
-  modelId: DeviceModelId,
-  theme: "light" | "dark",
-  key: string,
-) => {
-  const lvl1 = animations[modelId] || animations.nanoX;
-  const lvl2 = lvl1[key] || animations.nanoX[key];
-  if (!lvl2) throw new Error("no such animation " + key);
-  return lvl2[theme] || lvl2.light;
-};
-
-type OwnProps = {
+type OwnProps<R, H, P> = {
   overridesPreferredDeviceModel?: DeviceModelId,
-  Success: React$ComponentType<{
-    device: Device,
-    deviceInfo: DeviceInfo,
-    result: ?ListAppsResult,
-  }>,
+  Success?: React$ComponentType<P>,
+  onSuccess?: P => void,
+  config: Config<R, H, P>,
+  request: R,
 };
 
-type Props = OwnProps & {
+type Props<R, H, P> = OwnProps<R, H, P> & {
   reduxDevice?: Device,
   preferredDeviceModel: DeviceModelId,
   dispatch: (*) => void,
@@ -146,27 +82,47 @@ const TroobleshootingWrapper = styled.div`
   margin-top: auto;
 `;
 
-const ManagerConnect = ({
+class OnSuccess extends Component<*> {
+  componentDidMount() {
+    const { onSuccess, ...rest } = this.props;
+    onSuccess(rest);
+  }
+
+  render() {
+    return null;
+  }
+}
+
+const DeviceConnect = <R, H, P>({
   Success,
+  onSuccess,
   reduxDevice,
   overridesPreferredDeviceModel,
   preferredDeviceModel,
   dispatch,
-}: Props) => {
-  const [
-    {
-      device,
-      unresponsive,
-      error,
-      isLoading,
-      allowManagerRequestedWording,
-      inApp,
-      result,
-      deviceInfo,
-      repairModalOpened,
-    },
-    { onRetry, onAutoRepair, closeRepairModal, onRepairModal },
-  ] = useManagerConnect(reduxDevice);
+  // $FlowFixMe god of flow help me
+  config,
+  request,
+}: Props<R, H, P>) => {
+  const hookState = config.useHook(reduxDevice, request);
+  const {
+    device,
+    unresponsive,
+    error,
+    isLoading,
+    allowManagerRequestedWording,
+    requestQuitApp,
+    deviceInfo,
+    repairModalOpened,
+    requestOpenApp,
+    allowOpeningRequestedWording,
+    requiresAppInstallation,
+    inWrongDeviceForAccount,
+    onRetry,
+    onAutoRepair,
+    closeRepairModal,
+    onRepairModal,
+  } = hookState;
 
   const type = useTheme("colors.palette.type");
 
@@ -181,7 +137,23 @@ const ManagerConnect = ({
     return <AutoRepair onDone={closeRepairModal} />;
   }
 
-  if (inApp) {
+  if (requestOpenApp) {
+    // In case of a Nano S 1.3.1 this will be used.
+    // TODO design / wording
+    return (
+      <Wrapper>
+        <Header />
+        <AnimationWrapper modelId={modelId}>
+          <Animation animation={getDeviceAnimation(modelId, type, "openApp")} />
+        </AnimationWrapper>
+        <Footer>
+          <Title>Please open {requestOpenApp} app</Title>
+        </Footer>
+      </Wrapper>
+    );
+  }
+
+  if (requestQuitApp) {
     return (
       <Wrapper>
         <Header />
@@ -193,6 +165,23 @@ const ManagerConnect = ({
             <Trans i18nKey="manager.connect.quitApp" />
           </Title>
         </Footer>
+      </Wrapper>
+    );
+  }
+
+  if (requiresAppInstallation) {
+    return (
+      <Wrapper>
+        <Title>{requiresAppInstallation.appName} App is not yet installed</Title>
+        <Button
+          mt={2}
+          primary
+          onClick={() => {
+            /* TODO */
+          }}
+        >
+          Open Manager
+        </Button>
       </Wrapper>
     );
   }
@@ -212,6 +201,38 @@ const ManagerConnect = ({
             />
           </Title>
         </Footer>
+      </Wrapper>
+    );
+  }
+
+  if (allowOpeningRequestedWording) {
+    return (
+      <Wrapper>
+        <Header />
+        <AnimationWrapper modelId={modelId}>
+          <Animation animation={getDeviceAnimation(modelId, type, "openApp")} />
+        </AnimationWrapper>
+        <Footer>
+          <Title>
+            <Trans
+              i18nKey="appconnect.allowPermission"
+              values={{ wording: allowOpeningRequestedWording }}
+            />
+          </Title>
+        </Footer>
+      </Wrapper>
+    );
+  }
+
+  if (inWrongDeviceForAccount) {
+    return (
+      <Wrapper>
+        <Title>
+          <TranslatedError error={new WrongDeviceForAccount()} />
+        </Title>
+        <Button mt={2} primary onClick={onRetry}>
+          <Trans i18nKey="common.retry" />
+        </Button>
       </Wrapper>
     );
   }
@@ -269,12 +290,7 @@ const ManagerConnect = ({
     );
   }
 
-  if (!deviceInfo || !device) {
-    // this case should not happen because we are either loading or error
-    return null;
-  }
-
-  if (deviceInfo.isBootloader) {
+  if (deviceInfo && deviceInfo.isBootloader) {
     return (
       <Wrapper>
         <Title>
@@ -287,7 +303,18 @@ const ManagerConnect = ({
     );
   }
 
-  return Success ? <Success device={device} deviceInfo={deviceInfo} result={result} /> : null;
+  const payload = config.mapSuccess(hookState);
+
+  if (!payload) {
+    return null;
+  }
+
+  return (
+    <>
+      {Success ? <Success {...payload} /> : null}
+      {onSuccess ? <OnSuccess onSuccess={onSuccess} {...payload} /> : null}
+    </>
+  );
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -295,6 +322,6 @@ const mapStateToProps = createStructuredSelector({
   preferredDeviceModel: preferredDeviceModelSelector,
 });
 
-const component: React$ComponentType<OwnProps> = connect(mapStateToProps)(ManagerConnect);
+const component: React$ComponentType<OwnProps<*, *, *>> = connect(mapStateToProps)(DeviceConnect);
 
 export default component;

@@ -1,5 +1,5 @@
 // @flow
-import { ReplaySubject, concat, of, empty, interval } from "rxjs";
+import { concat, of, empty, interval } from "rxjs";
 import { scan, debounce, debounceTime, catchError, switchMap } from "rxjs/operators";
 import { useEffect, useCallback, useState } from "react";
 import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
@@ -9,10 +9,12 @@ import type { ConnectManagerEvent } from "~/internal/commands/connectManager";
 import type { Device } from "~/renderer/reducers/devices";
 import { command } from "~/renderer/commands";
 import logger from "~/logger";
+import { useReplaySubject } from "./shared";
+import type { Config } from "./shared";
 
-export type State = {|
+type State = {|
   isLoading: boolean,
-  inApp: boolean,
+  requestQuitApp: boolean,
   unresponsive: boolean,
   allowManagerRequestedWording: ?string,
   allowManagerGranted: boolean,
@@ -20,24 +22,42 @@ export type State = {|
   deviceInfo: ?DeviceInfo,
   result: ?ListAppsResult,
   error: ?Error,
-  repairModalOpened: ?{ auto: boolean },
 |};
 
-export type Cbs = {|
+type Result = {|
+  ...State,
+  repairModalOpened: ?{ auto: boolean },
   onRetry: () => void,
   onAutoRepair: () => void,
   onRepairModal: boolean => void,
   closeRepairModal: () => void,
 |};
 
+type Payload = {|
+  device: Device,
+  deviceInfo: DeviceInfo,
+  result: ?ListAppsResult,
+|};
+
+type ManagerConfig = Config<void, Result, Payload>;
+
 type Action =
   | ConnectManagerEvent
   | { type: "error", error: Error }
   | { type: "deviceChange", device: ?Device };
 
+const mapSuccess = ({ deviceInfo, device, result }): ?Payload =>
+  deviceInfo && device
+    ? {
+        device,
+        deviceInfo,
+        result,
+      }
+    : null;
+
 const getInitialState = (device?: ?Device): State => ({
   isLoading: !!device,
-  inApp: false,
+  requestQuitApp: false,
   unresponsive: false,
   allowManagerRequestedWording: null,
   allowManagerGranted: false,
@@ -45,7 +65,6 @@ const getInitialState = (device?: ?Device): State => ({
   deviceInfo: null,
   result: null,
   error: null,
-  repairModalOpened: null,
 });
 
 const reducer = (state: State, action: Action): State => {
@@ -70,7 +89,7 @@ const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         unresponsive: false,
-        inApp: true,
+        requestQuitApp: true,
       };
 
     case "osu":
@@ -79,14 +98,14 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         isLoading: false,
         unresponsive: false,
-        inApp: false,
+        requestQuitApp: false,
         deviceInfo: action.deviceInfo,
       };
 
     case "listingApps":
       return {
         ...state,
-        inApp: false,
+        requestQuitApp: false,
         unresponsive: false,
         deviceInfo: action.deviceInfo,
       };
@@ -117,20 +136,6 @@ const reducer = (state: State, action: Action): State => {
   return state;
 };
 
-// emit value each time it changes by reference. it replays the last value at subscribe time.
-function useReplaySubject<T>(value: T): ReplaySubject<T> {
-  const [subject] = useState(() => new ReplaySubject());
-  useEffect(() => {
-    subject.next(value);
-  }, [subject, value]);
-  useEffect(() => {
-    return () => {
-      subject.complete();
-    };
-  }, [subject]);
-  return subject;
-}
-
 const connectManager = device =>
   concat(
     of({ type: "deviceChange", device }),
@@ -141,7 +146,7 @@ const connectManager = device =>
         ),
   );
 
-export const useManagerConnect = (device: ?Device): [State, Cbs] => {
+const useHook = (device: ?Device): Result => {
   // repair modal will interrupt everything and be rendered instead of the background content
   const [repairModalOpened, setRepairModalOpened] = useState(null);
   const [state, setState] = useState(() => getInitialState(device));
@@ -205,8 +210,17 @@ export const useManagerConnect = (device: ?Device): [State, Cbs] => {
     setRepairModalOpened({ auto: true });
   }, []);
 
-  return [
-    { ...state, repairModalOpened },
-    { onRetry, onAutoRepair, closeRepairModal, onRepairModal },
-  ];
+  return {
+    ...state,
+    repairModalOpened,
+    onRetry,
+    onAutoRepair,
+    closeRepairModal,
+    onRepairModal,
+  };
+};
+
+export const config: ManagerConfig = {
+  useHook,
+  mapSuccess,
 };

@@ -18,7 +18,8 @@ import { createCancelablePolling } from "~/helpers/promise";
 import { command } from "~/renderer/commands";
 import DeviceInteraction from "~/renderer/components/DeviceInteraction";
 import Text from "~/renderer/components/Text";
-import AppConnect from "~/renderer/components/AppConnect";
+import DeviceConnect from "~/renderer/components/DeviceConnect";
+import { config } from "~/renderer/components/DeviceConnect/configs/app";
 import IconUsb from "~/renderer/icons/Usb";
 import { getCurrentDevice } from "~/renderer/reducers/devices";
 import type { Device } from "~/renderer/reducers/devices";
@@ -144,7 +145,11 @@ const Legacy: React$ComponentType<OwnProps> = connect(mapStateToProps)(EnsureDev
 
 const EXPERIMENTAL = true;
 
-const EnsureDeviceAppDispatch = ({ isToken, ...props }: OwnProps) =>
-  EXPERIMENTAL ? <AppConnect {...props} /> : <Legacy {...props} isToken={isToken} />;
+const EnsureDeviceAppDispatch = ({ isToken, onSuccess, ...props }: OwnProps) =>
+  EXPERIMENTAL ? (
+    <DeviceConnect config={config} onSuccess={onSuccess} request={props} />
+  ) : (
+    <Legacy {...props} isToken={isToken} />
+  );
 
 export default EnsureDeviceAppDispatch;

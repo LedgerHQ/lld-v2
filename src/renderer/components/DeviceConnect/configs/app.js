@@ -1,6 +1,6 @@
 // @flow
 import invariant from "invariant";
-import { ReplaySubject, concat, of, empty, interval } from "rxjs";
+import { concat, of, empty, interval } from "rxjs";
 import { scan, debounce, debounceTime, catchError, switchMap, tap } from "rxjs/operators";
 import { useEffect, useCallback, useState, useMemo } from "react";
 import { log } from "@ledgerhq/logs";
@@ -13,8 +13,10 @@ import type { AppAndVersion, ConnectAppEvent } from "~/internal/commands/connect
 import type { Account, CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 import type { Device } from "~/renderer/reducers/devices";
 import { command } from "~/renderer/commands";
+import { useReplaySubject } from "./shared";
+import type { Config } from "./shared";
 
-export type State = {|
+type State = {|
   isLoading: boolean,
   requestQuitApp: boolean,
   requestOpenApp: ?string,
@@ -29,20 +31,32 @@ export type State = {|
   derivation: ?{ address: string },
 |};
 
-export type Cbs = {|
+type Result = {|
+  ...State,
   onRetry: () => void,
+  inWrongDeviceForAccount: boolean,
 |};
 
-export type AppRequest = {
+type AppRequest = {
   appName?: ?string,
   currency?: ?CryptoCurrency,
   account?: ?Account,
 };
 
+type Payload = {|
+  device: Device,
+  appAndVersion: ?AppAndVersion,
+|};
+
+type AppConfig = Config<AppRequest, Result, Payload>;
+
 type Action =
   | { type: "error", error: Error }
   | { type: "deviceChange", device: ?Device }
   | ConnectAppEvent;
+
+const mapSuccess = ({ opened, device, appAndVersion }: Result): ?Payload =>
+  opened && device ? { device, appAndVersion } : null;
 
 const getInitialState = (device?: ?Device): State => ({
   isLoading: !!device,
@@ -131,20 +145,6 @@ const reducer = (state: State, action: Action): State => {
   return state;
 };
 
-// emit value each time it changes by reference. it replays the last value at subscribe time.
-function useReplaySubject<T>(value: T): ReplaySubject<T> {
-  const [subject] = useState(() => new ReplaySubject());
-  useEffect(() => {
-    subject.next(value);
-  }, [subject, value]);
-  useEffect(() => {
-    return () => {
-      subject.complete();
-    };
-  }, [subject]);
-  return subject;
-}
-
 const connectApp = (device, params) =>
   concat(
     of({ type: "deviceChange", device }),
@@ -156,16 +156,7 @@ const connectApp = (device, params) =>
         }).pipe(catchError((error: Error) => of({ type: "error", error }))),
   );
 
-export const useAppConnect = (
-  device: ?Device,
-  appRequest: AppRequest,
-): [
-  {
-    ...State,
-    inWrongDeviceForAccount: boolean,
-  },
-  Cbs,
-] => {
+const useHook = (device: ?Device, appRequest: AppRequest): Result => {
   // repair modal will interrupt everything and be rendered instead of the background content
   const [state, setState] = useState(() => getInitialState(device));
   const [resetIndex, setResetIndex] = useState(0);
@@ -218,18 +209,14 @@ export const useAppConnect = (
     setResetIndex(currIndex => currIndex + 1);
   }, []);
 
-  return [
-    {
-      ...state,
-      inWrongDeviceForAccount:
-        state.derivation && appRequest.account
-          ? state.derivation.address === appRequest.account.freshAddressPath
-          : false,
-    },
-    {
-      onRetry,
-    },
-  ];
+  return {
+    ...state,
+    inWrongDeviceForAccount:
+      state.derivation && appRequest.account
+        ? state.derivation.address === appRequest.account.freshAddressPath
+        : false,
+    onRetry,
+  };
 };
 
 function inferCommandParams(appRequest: AppRequest) {
@@ -273,3 +260,8 @@ function inferCommandParams(appRequest: AppRequest) {
     },
   };
 }
+
+export const config: AppConfig = {
+  useHook,
+  mapSuccess,
+};
