@@ -21,7 +21,7 @@ const PageContainer: ThemedComponent<{}> = styled.div`
 const PageScroller: ThemedComponent<{}> = styled.div`
   padding: 0px ${p => p.theme.space[6]}px;
   padding-top: ${p => p.theme.space[3]}px;
-  overflow: scroll;
+  ${p => p.theme.overflow.xy};
   display: flex;
   flex-direction: column;
   flex: 1;
