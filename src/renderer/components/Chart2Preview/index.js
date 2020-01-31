@@ -77,10 +77,6 @@ const Chart = ({ height, data, color, valueKey = "value" }: Props) => {
     [color, data, valueKey],
   );
 
-  const min = useMemo(() => Math.min(...generatedData.datasets[0].data.map(d => d.y)), [
-    generatedData,
-  ]);
-
   const generateOptions = useMemo(
     () => ({
       responsive: false,
@@ -133,7 +129,7 @@ const Chart = ({ height, data, color, valueKey = "value" }: Props) => {
         ],
       },
     }),
-    [min, theme.text.shade10, theme.text.shade60],
+    [theme.text.shade10, theme.text.shade60],
   );
 
   useLayoutEffect(() => {

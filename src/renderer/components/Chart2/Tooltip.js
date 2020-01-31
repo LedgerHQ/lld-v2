@@ -53,7 +53,11 @@ const Tooltip = ({ tooltip, renderTooltip, color, data }: TooltipProps) => {
           display: tooltip.opacity ? "block" : "none",
         }}
       >
-        <svg height="10" width="10" style={{ transform: "translate3d(-50%,-50%,0)" }}>
+        <svg
+          height="10"
+          width="10"
+          style={{ transform: "translate(-50%,-100%)", transformOrigin: "50% 50%" }}
+        >
           <circle
             cx="5"
             cy="5"
