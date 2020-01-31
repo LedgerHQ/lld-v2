@@ -28,7 +28,6 @@ import perFamilyAccountBodyHeader from "~/renderer/generated/AccountBodyHeader";
 import SyncOneAccountOnMount from "~/renderer/components/SyncOneAccountOnMount";
 import Box from "~/renderer/components/Box";
 import OperationsList from "~/renderer/components/OperationsList";
-import StickyBackToTop from "~/renderer/components/StickyBackToTop";
 import useTheme from "~/renderer/hooks/useTheme";
 
 import BalanceSummary from "./BalanceSummary";
@@ -136,7 +135,6 @@ const AccountPage = ({
             parentAccount={parentAccount}
             title={t("account.lastOperations")}
           />
-          <StickyBackToTop scrollUpOnMount />
         </>
       ) : (
         <EmptyStateAccount account={account} parentAccount={parentAccount} />
