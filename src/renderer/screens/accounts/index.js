@@ -30,6 +30,7 @@ type Props = {
   mode: *,
   setAccountsViewMode: (*) => void,
   setSelectedTimeRange: PortfolioRange => void,
+  openModal: string => void,
 };
 
 const accountsOrFlattenAccountsSelector = createSelector(
@@ -65,7 +66,13 @@ export const GenericBox: ThemedComponent<{}> = styled(Box)`
   box-shadow: 0 4px 8px 0 #00000007;
 `;
 
-const AccountsPage = (props: Props) => {
+const AccountsPage = ({
+  accounts,
+  mode,
+  setAccountsViewMode,
+  setSelectedTimeRange,
+  range,
+}: Props) => {
   const history = useHistory();
 
   const onAccountClick = useCallback(
@@ -75,8 +82,6 @@ const AccountsPage = (props: Props) => {
         : history.push(`/account/${account.id}`),
     [history],
   );
-
-  const { accounts, mode, setAccountsViewMode, setSelectedTimeRange, range } = props;
 
   if (accounts.length === 0) {
     return (
