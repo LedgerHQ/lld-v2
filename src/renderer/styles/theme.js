@@ -133,6 +133,7 @@ const overflow = {
   x: css`
     overflow-x: scroll;
     overflow-x: overlay;
+    will-change: transform;
     &:hover {
       --track-color: ${p => p.theme.colors.palette.text.shade30};
     }
@@ -140,6 +141,7 @@ const overflow = {
   y: css`
     overflow-y: scroll;
     overflow-y: overlay;
+    will-change: transform;
     &:hover {
       --track-color: ${p => p.theme.colors.palette.text.shade30};
     }
@@ -147,6 +149,7 @@ const overflow = {
   xy: css`
     overflow: scroll;
     overflow: overlay;
+    will-change: transform;
     &:hover {
       --track-color: ${p => p.theme.colors.palette.text.shade30};
     }
