@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useCallback, Fragment } from "react";
+import React, { useCallback, Fragment, memo } from "react";
 import { Trans } from "react-i18next";
 
 import IconAngleDown from "~/renderer/icons/AngleDown";
@@ -9,7 +9,12 @@ import Box from "~/renderer/components/Box";
 import BoldToggle from "~/renderer/components/BoldToggle";
 import Text from "~/renderer/components/Text";
 
-const Filter = ({ onFiltersChange, filters }: *) => {
+type Props = {
+  onFiltersChange: Function,
+  filters: *,
+};
+
+const Filter = ({ onFiltersChange, filters }: Props) => {
   const onFilterChangeWrapper = useCallback(
     ({ selectedItem: item }) => {
       if (!item) return;
@@ -95,4 +100,4 @@ const Filter = ({ onFiltersChange, filters }: *) => {
   );
 };
 
-export default Filter;
+export default memo<Props>(Filter);

@@ -32,15 +32,10 @@ import { setDiscreetMode } from "~/renderer/actions/settings";
 
 const Container: ThemedComponent<{}> = styled(Box).attrs(() => ({}))`
   height: ${p => p.theme.sizes.topBarHeight}px;
-  position: sticky;
-  left: 0;
-  right: 0;
-  top: 0;
-  z-index: 20;
-  padding-bottom: ${p => p.theme.space[6]};
   box-sizing: content-box;
   background-color: transparent;
 `;
+
 const Inner = styled(Box).attrs(() => ({
   horizontal: true,
   grow: true,
@@ -140,7 +135,6 @@ const TopBar = () => {
           </Box>
         </Box>
       </Inner>
-      <SeparatorBar />
     </Container>
   );
 };
