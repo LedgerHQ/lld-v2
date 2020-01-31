@@ -131,7 +131,7 @@ const animations = {
 
 const overflow = {
   x: css`
-    overflow-y: scroll;
+    overflow-x: scroll;
     overflow-x: overlay;
     &:hover {
       --track-color: ${p => p.theme.colors.palette.text.shade30};
