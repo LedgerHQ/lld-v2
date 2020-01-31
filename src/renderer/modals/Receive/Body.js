@@ -19,7 +19,7 @@ import type { Step } from "~/renderer/components/Stepper";
 import Stepper from "~/renderer/components/Stepper";
 import StepAccount, { StepAccountFooter } from "./steps/StepAccount";
 import StepConnectDevice, { StepConnectDeviceFooter } from "./steps/StepConnectDevice";
-import StepConfirmAddress, { StepConfirmAddressFooter } from "./steps/StepConfirmAddress";
+// import StepConfirmAddress, { StepConfirmAddressFooter } from "./steps/StepConfirmAddress";
 import StepWarning, { StepWarningFooter } from "./steps/StepWarning";
 import StepReceiveFunds from "./steps/StepReceiveFunds";
 
@@ -72,7 +72,7 @@ export type StepProps = {
   onChangeAddressVerified: (?boolean, ?Error) => void,
 };
 
-export type St = Step<"warning" | "account" | "device" | "confirm" | "receive", StepProps>;
+export type St = Step<"warning" | "account" | "device" | "receive", StepProps>;
 
 const createSteps = (): Array<St> => [
   {
@@ -95,6 +95,7 @@ const createSteps = (): Array<St> => [
     footer: StepConnectDeviceFooter,
     onBack: ({ transitionTo }: StepProps) => transitionTo("account"),
   },
+  /*
   {
     id: "confirm",
     label: <Trans i18nKey="receive.steps.confirmAddress.title" />,
@@ -103,6 +104,7 @@ const createSteps = (): Array<St> => [
     onBack: ({ transitionTo }: StepProps) => transitionTo("device"),
     shouldRenderFooter: ({ isAddressVerified }: StepProps) => isAddressVerified === false,
   },
+  */
   {
     id: "receive",
     label: <Trans i18nKey="receive.steps.receiveFunds.title" />,
@@ -164,10 +166,9 @@ const Body = ({
 
   const handleSkipConfirm = useCallback(() => {
     const connectStepIndex = steps.findIndex(step => step.id === "device");
-    const confirmStepIndex = steps.findIndex(step => step.id === "confirm");
-    if (confirmStepIndex > -1 && connectStepIndex > -1) {
+    if (connectStepIndex > -1) {
       onChangeAddressVerified(false, null);
-      setDisabledSteps([connectStepIndex, confirmStepIndex]);
+      setDisabledSteps([connectStepIndex]);
     }
   }, [onChangeAddressVerified, setDisabledSteps, steps]);
 

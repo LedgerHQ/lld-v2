@@ -66,6 +66,7 @@ function StepConfirmation({
   error,
   signed,
   theme,
+  device,
 }: StepProps & { theme: * }) {
   if (optimisticOperation) {
     return (
@@ -113,8 +114,10 @@ function StepConfirmation({
     );
   }
 
+  if (!device) return null;
+
   return (
-    <StepProgress>
+    <StepProgress modelId={device.modelId}>
       <Trans i18nKey="send.steps.confirmation.pending.title" />
     </StepProgress>
   );

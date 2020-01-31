@@ -60,7 +60,7 @@ const StepVerification = ({
           status={status}
         />
       ) : (
-        <StepProgress>
+        <StepProgress modelId={device.modelId}>
           {lastSignOperationEvent && lastSignOperationEvent.type === "device-streaming" ? (
             // with streaming event, we have accurate version of the wording
             <Trans

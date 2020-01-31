@@ -27,7 +27,7 @@ export default function StepConnectDevice({
         account={mainAccount}
         isToken={!!tokenCur}
         waitBeforeSuccess={200}
-        onSuccess={() => transitionTo("confirm")}
+        onSuccess={() => transitionTo("receive")}
       />
       {!tokenCur ? null : <TokenTips token={tokenCur} />}
     </>

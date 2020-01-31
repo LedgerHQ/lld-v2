@@ -2,25 +2,26 @@
 import React, { useEffect, Component } from "react";
 import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
-import { Trans } from "react-i18next";
-import styled from "styled-components";
-import { WrongDeviceForAccount } from "@ledgerhq/errors";
 import { getCurrentDevice } from "~/renderer/reducers/devices";
 import { setPreferredDeviceModel } from "~/renderer/actions/settings";
 import { preferredDeviceModelSelector } from "~/renderer/reducers/settings";
 import type { DeviceModelId } from "@ledgerhq/devices";
 import type { Device } from "~/renderer/reducers/devices";
-import Animation from "~/renderer/animations";
-import BigSpinner from "~/renderer/components/BigSpinner";
 import AutoRepair from "~/renderer/components/AutoRepair";
-import Button from "~/renderer/components/Button";
-import TranslatedError from "~/renderer/components/TranslatedError";
-import ConnectTroubleshooting from "~/renderer/components/ConnectTroubleshooting";
-import Text from "~/renderer/components/Text";
 import useTheme from "~/renderer/hooks/useTheme";
-import ErrorDisplay from "../ErrorDisplay";
-import { getDeviceAnimation } from "./animations";
 import type { Config } from "./configs/shared";
+import {
+  renderAllowManager,
+  renderAllowOpeningApp,
+  renderBootloaderStep,
+  renderConnectYourDevice,
+  renderError,
+  renderInWrongAppForAccount,
+  renderLoading,
+  renderRequestOpenApp,
+  renderRequestQuitApp,
+  renderRequiresAppInstallation,
+} from "./rendering";
 
 type OwnProps<R, H, P> = {
   overridesPreferredDeviceModel?: DeviceModelId,
@@ -35,52 +36,6 @@ type Props<R, H, P> = OwnProps<R, H, P> & {
   preferredDeviceModel: DeviceModelId,
   dispatch: (*) => void,
 };
-
-const AnimationWrapper = styled.div`
-  width: 600px;
-  height: ${p => (p.modelId === "blue" ? "300px" : "200px")};
-  align-self: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Title = styled(Text).attrs({
-  ff: "Inter|SemiBold",
-  color: "palette.text.shade100",
-  textAlign: "center",
-  fontSize: 5,
-})``;
-
-const Header = styled.div`
-  display: flex;
-  flex: 1 0 0%;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-content: center;
-  align-items: center;
-`;
-
-const Footer = styled.div`
-  display: flex;
-  flex: 1 0 0%;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-content: center;
-  align-items: center;
-`;
-
-const TroobleshootingWrapper = styled.div`
-  margin-top: auto;
-`;
 
 class OnSuccess extends Component<*> {
   componentDidMount() {
@@ -138,169 +93,48 @@ const DeviceConnect = <R, H, P>({
   }
 
   if (requestOpenApp) {
-    // In case of a Nano S 1.3.1 this will be used.
-    // TODO design / wording
-    return (
-      <Wrapper>
-        <Header />
-        <AnimationWrapper modelId={modelId}>
-          <Animation animation={getDeviceAnimation(modelId, type, "openApp")} />
-        </AnimationWrapper>
-        <Footer>
-          <Title>Please open {requestOpenApp} app</Title>
-        </Footer>
-      </Wrapper>
-    );
+    // Nano S 1.3.1. need to ask user to open the app.
+    const { appName } = requestOpenApp;
+    return renderRequestOpenApp({ modelId, type, appName });
   }
 
   if (requestQuitApp) {
-    return (
-      <Wrapper>
-        <Header />
-        <AnimationWrapper modelId={modelId}>
-          <Animation animation={getDeviceAnimation(modelId, type, "quitApp")} />
-        </AnimationWrapper>
-        <Footer>
-          <Title>
-            <Trans i18nKey="manager.connect.quitApp" />
-          </Title>
-        </Footer>
-      </Wrapper>
-    );
+    return renderRequestQuitApp({ modelId, type });
   }
 
   if (requiresAppInstallation) {
-    return (
-      <Wrapper>
-        <Title>{requiresAppInstallation.appName} App is not yet installed</Title>
-        <Button
-          mt={2}
-          primary
-          onClick={() => {
-            /* TODO */
-          }}
-        >
-          Open Manager
-        </Button>
-      </Wrapper>
-    );
+    const { appName } = requiresAppInstallation;
+    return renderRequiresAppInstallation({ appName });
   }
 
   if (allowManagerRequestedWording) {
-    return (
-      <Wrapper>
-        <Header />
-        <AnimationWrapper modelId={modelId}>
-          <Animation animation={getDeviceAnimation(modelId, type, "allowManager")} />
-        </AnimationWrapper>
-        <Footer>
-          <Title>
-            <Trans
-              i18nKey="manager.connect.allowPermission"
-              values={{ wording: allowManagerRequestedWording }}
-            />
-          </Title>
-        </Footer>
-      </Wrapper>
-    );
+    const wording = allowManagerRequestedWording;
+    return renderAllowManager({ modelId, type, wording });
   }
 
   if (allowOpeningRequestedWording) {
-    return (
-      <Wrapper>
-        <Header />
-        <AnimationWrapper modelId={modelId}>
-          <Animation animation={getDeviceAnimation(modelId, type, "openApp")} />
-        </AnimationWrapper>
-        <Footer>
-          <Title>
-            <Trans
-              i18nKey="appconnect.allowPermission"
-              values={{ wording: allowOpeningRequestedWording }}
-            />
-          </Title>
-        </Footer>
-      </Wrapper>
-    );
+    const wording = allowOpeningRequestedWording;
+    return renderAllowOpeningApp({ modelId, type, wording });
   }
 
   if (inWrongDeviceForAccount) {
-    return (
-      <Wrapper>
-        <Title>
-          <TranslatedError error={new WrongDeviceForAccount()} />
-        </Title>
-        <Button mt={2} primary onClick={onRetry}>
-          <Trans i18nKey="common.retry" />
-        </Button>
-      </Wrapper>
-    );
+    return renderInWrongAppForAccount({ onRetry });
   }
 
   if (!isLoading && error) {
-    return <ErrorDisplay error={error} onRetry={onRetry} withExportLogs />;
+    return renderError({ error, onRetry, withExportLogs: true });
   }
 
   if ((!isLoading && !device) || unresponsive) {
-    return (
-      <Wrapper>
-        <Header />
-        <AnimationWrapper modelId={modelId}>
-          <Animation
-            animation={getDeviceAnimation(
-              modelId,
-              type,
-              unresponsive ? "enterPinCode" : "plugAndPinCode",
-            )}
-          />
-        </AnimationWrapper>
-        <Footer>
-          <Title>
-            <Trans
-              i18nKey={
-                unresponsive
-                  ? "manager.connect.unlockDevice"
-                  : "manager.connect.connectAndUnlockDevice"
-              }
-            />
-          </Title>
-          {!device ? (
-            <TroobleshootingWrapper>
-              <ConnectTroubleshooting onRepair={onRepairModal} />
-            </TroobleshootingWrapper>
-          ) : null}
-        </Footer>
-      </Wrapper>
-    );
+    return renderConnectYourDevice({ modelId, type, unresponsive, device, onRepairModal, onRetry });
   }
 
   if (isLoading) {
-    return (
-      <Wrapper>
-        <Header />
-        <AnimationWrapper modelId={modelId}>
-          <BigSpinner size={50} />
-        </AnimationWrapper>
-        <Footer>
-          <Title>
-            <Trans i18nKey="manager.connect.loading" />
-          </Title>
-        </Footer>
-      </Wrapper>
-    );
+    return renderLoading({ modelId });
   }
 
   if (deviceInfo && deviceInfo.isBootloader) {
-    return (
-      <Wrapper>
-        <Title>
-          <Trans i18nKey="genuinecheck.deviceInBootloader" />
-        </Title>
-        <Button mt={2} primary onClick={onAutoRepair}>
-          <Trans i18nKey="common.continue" />
-        </Button>
-      </Wrapper>
-    );
+    return renderBootloaderStep({ onAutoRepair });
   }
 
   const payload = config.mapSuccess(hookState);

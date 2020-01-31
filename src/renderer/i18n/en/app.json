@@ -1374,6 +1374,10 @@
       "title": "Something went wrong, please reconnect your device",
       "description": "{{message}}"
     },
+    "TransportRaceCondition": {
+      "title": "Something went wrong, please reconnect your device",
+      "description": "{{message}}"
+    },
     "TransportStatusError": {
       "title": "Something went wrong, please reconnect your device",
       "description": "{{message}}"

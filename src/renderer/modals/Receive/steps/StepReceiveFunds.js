@@ -41,8 +41,9 @@ export default class StepReceiveFunds extends PureComponent<StepProps> {
       onChangeAddressVerified(true);
       transitionTo("receive");
     } catch (err) {
+      // TODO
       onChangeAddressVerified(false, err);
-      this.props.transitionTo("confirm");
+      // this.props.transitionTo("confirm");
     }
   };
 
