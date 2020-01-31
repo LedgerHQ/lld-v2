@@ -1,5 +1,5 @@
 // @flow
-import React, { useCallback, useMemo, memo, useContext } from "react";
+import React, { useCallback, useMemo, memo } from "react";
 
 import styled from "styled-components";
 import { Trans } from "react-i18next";
@@ -14,8 +14,6 @@ import { colors } from "~/renderer/styles/theme";
 import IconCheck from "~/renderer/icons/Check";
 import IconTrash from "~/renderer/icons/Trash";
 import IconArrowDown from "~/renderer/icons/ArrowDown";
-
-import AppsListContext from "./AppsListContext";
 
 const AppActionsWrapper = styled.div`
   display: flex;
@@ -57,10 +55,11 @@ const AppActions: React$ComponentType<Props> = React.memo(
     notEnoughMemoryToInstall,
     showActions = true,
     progress,
+    setAppInstallDep,
+    setAppUninstallDep,
   }: Props) => {
     const { name, dependencies } = app;
     const { apps, installed, installedAvailable, installQueue, uninstallQueue } = state;
-    const { setAppInstallDep, setAppUninstallDep } = useContext(AppsListContext);
 
     const needsInstallDeps = useMemo(
       () => dependencies && dependencies.some(dep => installed.every(app => app.name !== dep)),

@@ -56,10 +56,7 @@ const AppDepsUninstallModal = ({ app, appList, installed, dispatch, onClose }: P
   const dependentApps = useMemo(
     () =>
       app &&
-      appList
-        .filter(a => installed.some(i => i.name === a.name))
-        .filter(({ dependencies }) => dependencies.includes(name))
-        .map(app => ({ ...app, uri: manager.getIconUrl(app.icon) })),
+      appList.filter(a => installed.some(i => i.name === a.name) && a.dependencies.includes(name)),
     [app, appList, installed, name],
   );
 
@@ -68,55 +65,53 @@ const AppDepsUninstallModal = ({ app, appList, installed, dispatch, onClose }: P
     onClose();
   }, [dispatch, name, onClose]);
 
+  /** if no app with dependencies was triggered to be uninstalled we dont show anything */
+  if (!app || !dependentApps) return null;
+
   return (
-    !!app &&
-    !!dependentApps && (
-      <ConfirmModal
-        analyticsName="ManagerConfirmationUninstallDeps"
-        isOpened={!!app}
-        onReject={onClose}
-        onClose={onClose}
-        onConfirm={onConfirm}
-        title={
-          <IconsSection>
-            <AppTree uri={manager.getIconUrl(app.icon)} />
-          </IconsSection>
-        }
-        subTitle={<Trans i18nKey="manager.apps.dependencyUninstall.title" values={{ app: name }} />}
-        desc={
-          <Trans i18nKey="manager.apps.dependencyUninstall.description" values={{ app: name }} />
-        }
-        confirmText={
-          <Trans i18nKey="manager.apps.dependencyUninstall.confirm" values={{ app: name }} />
+    <ConfirmModal
+      analyticsName="ManagerConfirmationUninstallDeps"
+      isOpened={!!app}
+      onReject={onClose}
+      onClose={onClose}
+      onConfirm={onConfirm}
+      title={
+        <IconsSection>
+          <AppTree uri={manager.getIconUrl(app.icon)} />
+        </IconsSection>
+      }
+      subTitle={<Trans i18nKey="manager.apps.dependencyUninstall.title" values={{ app: name }} />}
+      desc={<Trans i18nKey="manager.apps.dependencyUninstall.description" values={{ app: name }} />}
+      confirmText={
+        <Trans i18nKey="manager.apps.dependencyUninstall.confirm" values={{ app: name }} />
+      }
+    >
+      <CollapsibleCard
+        mt={20}
+        bg="palette.background.default"
+        header={
+          <ItemLine>
+            <Text ff="Inter|Bold" color="palette.primary.main" fontSize={4}>
+              <Trans i18nKey="manager.apps.dependencyUninstall.showAll" />
+            </Text>
+          </ItemLine>
         }
       >
-        <CollapsibleCard
-          mt={20}
-          bg="palette.background.default"
-          header={
-            <ItemLine>
-              <Text ff="Inter|Bold" color="palette.primary.main" fontSize={4}>
-                <Trans i18nKey="manager.apps.dependencyUninstall.showAll" />
-              </Text>
-            </ItemLine>
-          }
-        >
-          {dependentApps.map(app => (
-            <ItemLine px={4} key={`APP_DEPS_${app.name}`}>
-              <ListIcon color="grey">
-                <ListTreeLine size={55} />
-              </ListIcon>
-              <Box ml={4} mr={2}>
-                <img alt="" src={app.uri} width={22} height={22} />
-              </Box>
-              <Text ff="Inter|Bold" color="palette.text.shade100" fontSize={4}>
-                {app.name}
-              </Text>
-            </ItemLine>
-          ))}
-        </CollapsibleCard>
-      </ConfirmModal>
-    )
+        {dependentApps.map(a => (
+          <ItemLine px={4} key={`APP_DEPS_${a.name}`}>
+            <ListIcon color="grey">
+              <ListTreeLine size={55} />
+            </ListIcon>
+            <Box ml={4} mr={2}>
+              <img alt="" src={manager.getIconUrl(a.icon)} width={22} height={22} />
+            </Box>
+            <Text ff="Inter|Bold" color="palette.text.shade100" fontSize={4}>
+              {a.name}
+            </Text>
+          </ItemLine>
+        ))}
+      </CollapsibleCard>
+    </ConfirmModal>
   );
 };
 

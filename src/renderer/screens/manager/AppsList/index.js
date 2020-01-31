@@ -1,5 +1,6 @@
 // @flow
 import React, { memo, useCallback, useState } from "react";
+import styled from "styled-components";
 import { withTranslation } from "react-i18next";
 import type { TFunction } from "react-i18next";
 import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
@@ -13,9 +14,14 @@ import AppList from "./AppsList";
 import DeviceStorage from "../DeviceStorage/index";
 import UpdateAllApps from "./UpdateAllApps";
 
-import AppsListContext from "./AppsListContext";
 import AppDepsInstallModal from "./AppDepsInstallModal";
 import AppDepsUnInstallModal from "./AppDepsUnInstallModal";
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  animation: ${p => p.theme.animations.fadeIn};
+`;
 
 type Props = {
   device: Device,
@@ -43,7 +49,7 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
   ]);
 
   return (
-    <>
+    <Container>
       <DeviceStorage state={filteredState} deviceInfo={deviceInfo} />
       <UpdateAllApps
         state={filteredState}
@@ -52,17 +58,17 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
         plan={plan}
         progress={progress}
       />
-      <AppsListContext.Provider value={{ setAppInstallDep, setAppUninstallDep }}>
-        <AppList
-          deviceInfo={deviceInfo}
-          state={filteredState}
-          dispatch={dispatch}
-          plan={plan}
-          isIncomplete={isIncomplete}
-          progress={progress}
-          t={t}
-        />
-      </AppsListContext.Provider>
+      <AppList
+        deviceInfo={deviceInfo}
+        state={filteredState}
+        dispatch={dispatch}
+        plan={plan}
+        isIncomplete={isIncomplete}
+        progress={progress}
+        setAppInstallDep={setAppInstallDep}
+        setAppUninstallDep={setAppUninstallDep}
+        t={t}
+      />
       <AppDepsInstallModal
         app={appInstallDep}
         appList={filteredState.apps}
@@ -76,7 +82,7 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
         dispatch={dispatch}
         onClose={onCloseDepsUninstallModal}
       />
-    </>
+    </Container>
   );
 };
 

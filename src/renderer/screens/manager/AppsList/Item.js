@@ -71,6 +71,8 @@ const Item: React$ComponentType<Props> = React.memo(
     showActions = true,
     scheduled,
     progress,
+    setAppInstallDep,
+    setAppUninstallDep,
   }: Props) => {
     const { name } = app;
     const { installed, deviceModel } = state;
@@ -131,6 +133,8 @@ const Item: React$ComponentType<Props> = React.memo(
           showActions={showActions}
           notEnoughMemoryToInstall={notEnoughMemoryToInstall}
           progress={progress}
+          setAppInstallDep={setAppInstallDep}
+          setAppUninstallDep={setAppUninstallDep}
         />
       </AppRow>
     );

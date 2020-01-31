@@ -127,7 +127,7 @@ const fadeInGrowX = keyframes`
 const animations = {
   fadeIn: props => css`${fadeIn} ${animationLength} ${easings.outQuadratic} forwards`,
   fadeOut: props => css`${fadeOut} ${animationLength} ${easings.outQuadratic} forwards`,
-  fadeInGrowX: props => css`${fadeInGrowX} ${animationLength} ${easings.outQuadratic} forwards`,
+  fadeInGrowX: props => css`${fadeInGrowX} 0.6s ${easings.outQuadratic} forwards`,
 };
 
 type Font = {

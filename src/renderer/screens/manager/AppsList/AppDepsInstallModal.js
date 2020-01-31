@@ -62,41 +62,41 @@ const AppDepsInstallModal = ({ app, appList, dispatch, onClose }: Props) => {
     [appList, dependencies],
   );
 
+  /** if no app with dependencies was triggered to be installed we dont show anything */
+  if (!app || !dependentApp) return null;
+
   return (
-    !!app &&
-    !!dependentApp && (
-      <ConfirmModal
-        analyticsName="ManagerConfirmationDeps"
-        isOpened={!!app}
-        onReject={onClose}
-        onClose={onClose}
-        onConfirm={onConfirm}
-        title={
-          <IconsSection>
-            <img alt="" src={manager.getIconUrl(app.icon)} width={40} height={40} />
-            <Separator />
-            <LinkIconWrapper>
-              <LinkIcon size={20} />
-            </LinkIconWrapper>
-            <Separator />
-            {<img alt="" src={manager.getIconUrl(dependentApp.icon)} width={40} height={40} />}
-          </IconsSection>
-        }
-        subTitle={
-          <Trans
-            i18nKey="manager.apps.dependencyInstall.title"
-            values={{ dependency: dependentApp.name }}
-          />
-        }
-        desc={
-          <Trans
-            i18nKey="manager.apps.dependencyInstall.description"
-            values={{ app: name, dependency: dependentApp.name }}
-          />
-        }
-        confirmText={<Trans i18nKey="manager.apps.dependencyInstall.confirm" />}
-      ></ConfirmModal>
-    )
+    <ConfirmModal
+      analyticsName="ManagerConfirmationDeps"
+      isOpened={!!app}
+      onReject={onClose}
+      onClose={onClose}
+      onConfirm={onConfirm}
+      title={
+        <IconsSection>
+          <img alt="" src={manager.getIconUrl(app.icon)} width={40} height={40} />
+          <Separator />
+          <LinkIconWrapper>
+            <LinkIcon size={20} />
+          </LinkIconWrapper>
+          <Separator />
+          {<img alt="" src={manager.getIconUrl(dependentApp.icon)} width={40} height={40} />}
+        </IconsSection>
+      }
+      subTitle={
+        <Trans
+          i18nKey="manager.apps.dependencyInstall.title"
+          values={{ dependency: dependentApp.name }}
+        />
+      }
+      desc={
+        <Trans
+          i18nKey="manager.apps.dependencyInstall.description"
+          values={{ app: name, dependency: dependentApp.name }}
+        />
+      }
+      confirmText={<Trans i18nKey="manager.apps.dependencyInstall.confirm" />}
+    ></ConfirmModal>
   );
 };
 
