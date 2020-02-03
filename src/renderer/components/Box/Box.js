@@ -12,6 +12,7 @@ import {
   justifyContent,
   space,
   style,
+  layout,
 } from "styled-system";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import fontFamily from "~/renderer/styles/styled/fontFamily";
@@ -51,6 +52,7 @@ const Box: ThemedComponent<{
   ${styledCursor};
   ${styledTextTransform};
   ${styledOverflow};
+  ${layout};
 
   display: flex;
   flex-shrink: ${p => (p.noShrink === true ? "0" : p.shrink === true ? "1" : "")};

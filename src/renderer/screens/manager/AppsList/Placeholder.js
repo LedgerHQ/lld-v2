@@ -1,24 +1,23 @@
 // @flow
 import React from "react";
 import { Trans } from "react-i18next";
-import styled from "styled-components";
+
 import Text from "~/renderer/components/Text";
-import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
+import NoResults from "~/renderer/icons/NoResults";
+import Box from "~/renderer/components/Box/Box";
 
-const PlaceholderWrapper: ThemedComponent<{}> = styled.div`
-  text-align: center;
-  padding: 20px;
-`;
-
-const Placeholder = ({ installed, query }: { installed: boolean, query: string }) => (
-  <PlaceholderWrapper>
-    <Text ff="Inter|SemiBold" fontSize={6}>
-      <Trans
-        i18nKey={installed ? "manager.applist.placeholderInstalled" : "manager.applist.placeholder"}
-        values={{ search: query }}
-      />
+const Placeholder = () => (
+  <Box in vertical py={6} flex alignContent="center">
+    <Box mb={4} horizontal color="palette.text.shade30" justifyContent="center">
+      <NoResults />
+    </Box>
+    <Text textAlign="center" ff="Inter|SemiBold" fontSize={6}>
+      <Trans i18nKey="manager.applist.noResultsFound" />
     </Text>
-  </PlaceholderWrapper>
+    <Text textAlign="center" fontSize={4}>
+      <Trans i18nKey="manager.applist.noResultsDesc" />
+    </Text>
+  </Box>
 );
 
 export default Placeholder;

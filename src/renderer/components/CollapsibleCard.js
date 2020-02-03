@@ -20,7 +20,7 @@ const HeaderContainer = styled.div`
   justify-content: flex-start;
   height: auto;
   width: auto;
-  padding-left: ${p => (p.chevronVisible ? p.theme.space[6] : 0)};
+  padding-left: ${p => (p.chevronVisible ? p.theme.space[6] : 0)}px;
   position: relative;
   & > * {
     flex: 1;
@@ -55,6 +55,7 @@ const Chevron = styled.div.attrs(p => ({
   style: { transform: `translateY(-50%) rotate(${p.open ? "90deg" : "0deg"})` },
 }))`
   width: 18px;
+  height: 18px;
   padding: 11px;
   position: absolute;
   top: 50%;

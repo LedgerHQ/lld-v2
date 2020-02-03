@@ -19,9 +19,9 @@ const PageContainer: ThemedComponent<{}> = styled.div`
 `;
 
 const PageScroller: ThemedComponent<{}> = styled.div`
-  padding: 0px ${p => p.theme.space[6]}px;
-  padding-top: ${p => p.theme.space[3]}px;
-  ${p => p.theme.overflow.xy};
+  padding: ${p => p.theme.space[3]}px ${p => p.theme.space[6]}px;
+  padding-right: ${p => p.theme.space[6] - p.theme.overflow.trackSize}px;
+  ${p => p.theme.overflow.y};
   display: flex;
   flex-direction: column;
   flex: 1;

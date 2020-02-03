@@ -82,32 +82,30 @@ const StorageBarGraph = styled.div`
 `;
 
 const transitionStyles = {
-  entering: flexBasis => ({ opacity: 1, flexBasis }),
+  entering: () => ({ opacity: 0, flexBasis: 0, flexGrow: 0 }),
   entered: flexBasis => ({ opacity: 1, flexBasis }),
-  exiting: () => ({ opacity: 0, flexBasis: 0 }),
-  exited: () => ({ opacity: 0, flexBasis: 0 }),
+  exiting: () => ({ opacity: 0, flexBasis: 0, flexGrow: 0 }),
+  exited: () => ({ opacity: 0, flexBasis: 0, flexGrow: 0 }),
 };
 
+/** each device storage bar will grow of 0.5% if the space is available or just fill its given percent basis if the bar is filled */
 const StorageBarItem: ThemedComponent<{ ratio: number }> = styled.div.attrs(props => ({
   style: {
-    ...transitionStyles[props.state](`${(props.ratio * 1e2).toFixed(3)}%`),
     backgroundColor: props.color,
+    ...transitionStyles[props.state](`${(props.ratio * 1e2).toFixed(3)}%`),
   },
 }))`
   display: flex;
-  flex: 0 0 0;
+  flex: 0.005 0 0;
   background-color: black;
   position: relative;
   border-right: 1px solid ${p => p.theme.colors.palette.background.paper};
   box-sizing: border-box;
   transform-origin: left;
-  opacity: 0;
-  transition: all 0.4s ease-in;
+  opacity: 1;
+  transition: all 0.33s ease-in-out;
   & > * {
     width: 100%;
-  }
-  &:hover {
-    flex-grow: 0.03;
   }
 `;
 
@@ -158,11 +156,11 @@ export const StorageBar = ({
   deviceModel: *,
   isIncomplete: boolean,
 }) => (
-  <TransitionGroup component={StorageBarWrapper}>
-    <StorageBarGraph>
-      {!isIncomplete &&
-        distribution.apps.map(({ name, currency, bytes, blocks }, index) => (
-          <Transition in timeout={200} mountOnEnter key={`${name}`}>
+  <StorageBarWrapper>
+    {!isIncomplete && (
+      <TransitionGroup component={StorageBarGraph}>
+        {distribution.apps.map(({ name, currency, bytes, blocks }, index) => (
+          <Transition timeout={{ appear: 333, enter: 333, exit: 1200 }} key={`${name}`}>
             {state => (
               <StorageBarItem
                 state={state}
@@ -176,8 +174,9 @@ export const StorageBar = ({
             )}
           </Transition>
         ))}
-    </StorageBarGraph>
-  </TransitionGroup>
+      </TransitionGroup>
+    )}
+  </StorageBarWrapper>
 );
 
 type Props = {
@@ -249,11 +248,17 @@ const DeviceStorage = ({ state, deviceInfo }: Props) => {
               <Text ff="Inter|SemiBold" fontSize={3}>
                 {isIncomplete ? (
                   <Trans i18nKey="manager.deviceStorage.incomplete" />
+                ) : distribution.freeSpaceBytes > 0 ? (
+                  <>
+                    <Trans i18nKey="manager.deviceStorage.freeSpace">
+                      <ByteSize
+                        value={distribution.freeSpaceBytes}
+                        deviceModel={state.deviceModel}
+                      />
+                    </Trans>
+                  </>
                 ) : (
-                  <Trans i18nKey="manager.deviceStorage.freeSpace">
-                    <ByteSize value={distribution.freeSpaceBytes} deviceModel={state.deviceModel} />
-                    {" free"}
-                  </Trans>
+                  <Trans i18nKey="manager.deviceStorage.noFreeSpace" />
                 )}
               </Text>
             </Box>
