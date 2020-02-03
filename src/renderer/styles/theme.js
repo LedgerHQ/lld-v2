@@ -126,13 +126,12 @@ const fadeInGrowX = keyframes`
 const animations = {
   fadeIn: props => css`${fadeIn} ${animationLength} ${easings.outQuadratic} forwards`,
   fadeOut: props => css`${fadeOut} ${animationLength} ${easings.outQuadratic} forwards`,
-  fadeInGrowX: props => css`${fadeInGrowX} ${animationLength} ${easings.outQuadratic} forwards`,
+  fadeInGrowX: props => css`${fadeInGrowX} 0.6s ${easings.outQuadratic} forwards`,
 };
 
 const overflow = {
   x: css`
     overflow-x: scroll;
-    overflow-x: overlay;
     will-change: transform;
     &:hover {
       --track-color: ${p => p.theme.colors.palette.text.shade30};
@@ -140,7 +139,13 @@ const overflow = {
   `,
   y: css`
     overflow-y: scroll;
-    overflow-y: overlay;
+    will-change: transform;
+    &:hover {
+      --track-color: ${p => p.theme.colors.palette.text.shade30};
+    }
+  `,
+  yAuto: css`
+    overflow-y: auto;
     will-change: transform;
     &:hover {
       --track-color: ${p => p.theme.colors.palette.text.shade30};
@@ -148,13 +153,12 @@ const overflow = {
   `,
   xy: css`
     overflow: scroll;
-    overflow: overlay;
     will-change: transform;
     &:hover {
       --track-color: ${p => p.theme.colors.palette.text.shade30};
     }
   `,
-  trackSize: 8,
+  trackSize: 12,
 };
 
 type Font = {

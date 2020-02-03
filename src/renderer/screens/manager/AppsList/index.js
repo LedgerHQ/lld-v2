@@ -1,5 +1,5 @@
 // @flow
-import React, { memo } from "react";
+import React, { memo, useCallback, useState } from "react";
 import styled from "styled-components";
 import { withTranslation } from "react-i18next";
 import type { TFunction } from "react-i18next";
@@ -15,7 +15,16 @@ import AppList from "./AppsList";
 import DeviceStorage from "../DeviceStorage/index";
 import UpdateAllApps from "./UpdateAllApps";
 
+import AppDepsInstallModal from "./AppDepsInstallModal";
+import AppDepsUnInstallModal from "./AppDepsUnInstallModal";
+
 import omit from "lodash/omit";
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  animation: ${p => p.theme.animations.fadeIn};
+`;
 
 const QuitIconWrapper = styled.div`
   display: flex;
@@ -40,10 +49,20 @@ type Props = {
 
 const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
   const [state, dispatch] = useAppsRunner(result, exec);
+  const [appInstallDep, setAppInstallDep] = useState(undefined);
+  const [appUninstallDep, setAppUninstallDep] = useState(undefined);
   const filteredState = omit(state, "currentProgress");
   const progress = state.currentProgress;
   const plan = getActionPlan(filteredState) || [];
   const isIncomplete = isIncompleteState(filteredState);
+
+  const onCloseDepsInstallModal = useCallback(() => setAppInstallDep(undefined), [
+    setAppInstallDep,
+  ]);
+
+  const onCloseDepsUninstallModal = useCallback(() => setAppUninstallDep(undefined), [
+    setAppUninstallDep,
+  ]);
 
   const { installQueue, uninstallQueue } = filteredState;
 
@@ -51,7 +70,7 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
     installQueue.length > 0 ? (uninstallQueue.length > 0 ? "update" : "install") : "uninstall";
 
   return (
-    <>
+    <Container>
       <NavigationGuard
         analyticsName="ManagerGuardModal"
         when={installQueue.length > 0 || uninstallQueue.length > 0}
@@ -80,9 +99,24 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
         plan={plan}
         isIncomplete={isIncomplete}
         progress={progress}
+        setAppInstallDep={setAppInstallDep}
+        setAppUninstallDep={setAppUninstallDep}
         t={t}
       />
-    </>
+      <AppDepsInstallModal
+        app={appInstallDep}
+        appList={filteredState.apps}
+        dispatch={dispatch}
+        onClose={onCloseDepsInstallModal}
+      />
+      <AppDepsUnInstallModal
+        app={appUninstallDep}
+        appList={filteredState.apps}
+        installed={filteredState.installed}
+        dispatch={dispatch}
+        onClose={onCloseDepsUninstallModal}
+      />
+    </Container>
   );
 };
 
