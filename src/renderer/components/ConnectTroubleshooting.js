@@ -19,7 +19,10 @@ const Wrapper: ThemedComponent<{}> = styled(Box).attrs({
   alignItems: "center",
   backgroundColor: "palette.text.shade10",
   borderRadius: 4,
-})``;
+})`
+  width: 550px;
+  max-width: 100%;
+`;
 
 const ConnectTroubleshooting = ({ appearsAfterDelay = 25000, onRepair }: Props) => {
   const [visible, setVisible] = useState(false);
@@ -38,12 +41,9 @@ const ConnectTroubleshooting = ({ appearsAfterDelay = 25000, onRepair }: Props) 
           <Trans i18nKey="connectTroubleshooting.desc" />
         </Text>
       </Box>
-      <Box horizontal>
-        <Box marginRight={100} justifyContent="center">
-          <ConnectTroubleshootingHelpLink />
-        </Box>
-        <RepairDeviceButton onRepair={onRepair} />
-      </Box>
+      <ConnectTroubleshootingHelpLink />
+      <Box flex="1" />
+      <RepairDeviceButton onRepair={onRepair} />
     </Wrapper>
   ) : null;
 };

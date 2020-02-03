@@ -25,6 +25,7 @@ const GenuineCheckModal = ({ isOpened, onClose, Success }: Props) => {
     <Modal
       isOpened={isOpened}
       onClose={onClose}
+      width={600}
       render={({ onClose }) => (
         <ModalBody
           onClose={onClose}

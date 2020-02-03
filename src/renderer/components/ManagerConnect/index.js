@@ -103,6 +103,7 @@ type Props = OwnProps & {
 
 const AnimationWrapper = styled.div`
   width: 600px;
+  max-width: 100%;
   height: ${p => (p.modelId === "blue" ? "300px" : "200px")};
   align-self: center;
   display: flex;
