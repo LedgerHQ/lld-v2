@@ -5,8 +5,9 @@ import { useTranslation } from "react-i18next";
 import { getMainAccount } from "@ledgerhq/live-common/lib/account";
 import TrackPage from "~/renderer/analytics/TrackPage";
 import Button from "~/renderer/components/Button";
-import EnsureDeviceApp from "~/renderer/components/EnsureDeviceApp";
 import TokenTips from "~/renderer/modals/TokenTips";
+import DeviceAction from "~/renderer/components/DeviceAction";
+import { config } from "~/renderer/components/DeviceAction/actions/app";
 
 import type { StepProps } from "../types";
 
@@ -15,11 +16,10 @@ const StepConnectDevice = ({ account, parentAccount, onChangeAppOpened }: StepPr
   return (
     <>
       <TrackPage category="Send Flow" name="Step ConnectDevice" />
-      <EnsureDeviceApp
-        account={account ? getMainAccount(account, parentAccount) : null}
-        isToken={!!token}
-        waitBeforeSuccess={200}
+      <DeviceAction
+        config={config}
         onSuccess={() => onChangeAppOpened(true)}
+        request={{ account: account ? getMainAccount(account, parentAccount) : null }}
       />
       {!token ? null : <TokenTips token={token} />}
     </>

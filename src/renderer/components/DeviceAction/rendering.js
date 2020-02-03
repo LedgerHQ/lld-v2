@@ -129,7 +129,7 @@ export const renderRequestQuitApp = ({
     </AnimationWrapper>
     <Footer>
       <Title>
-        <Trans i18nKey="manager.connect.quitApp" />
+        <Trans i18nKey="DeviceAction.quitApp" />
       </Title>
     </Footer>
   </Wrapper>
@@ -166,7 +166,7 @@ export const renderAllowManager = ({
     </AnimationWrapper>
     <Footer>
       <Title>
-        <Trans i18nKey="manager.connect.allowPermission" values={{ wording }} />
+        <Trans i18nKey="DeviceAction.allowManagerPermission" values={{ wording }} />
       </Title>
     </Footer>
   </Wrapper>
@@ -188,7 +188,7 @@ export const renderAllowOpeningApp = ({
     </AnimationWrapper>
     <Footer>
       <Title>
-        <Trans i18nKey="appconnect.allowPermission" values={{ wording }} />
+        <Trans i18nKey="DeviceAction.allowAppPermission" values={{ wording }} />
       </Title>
     </Footer>
   </Wrapper>
@@ -270,7 +270,7 @@ export const renderConnectYourDevice = ({
       <Title>
         <Trans
           i18nKey={
-            unresponsive ? "manager.connect.unlockDevice" : "manager.connect.connectAndUnlockDevice"
+            unresponsive ? "DeviceAction.unlockDevice" : "DeviceAction.connectAndUnlockDevice"
           }
         />
       </Title>
@@ -296,7 +296,7 @@ export const renderLoading = ({
       <BigSpinner size={50} />
     </AnimationWrapper>
     <Footer>
-      <Title>{children || <Trans i18nKey="manager.connect.loading" />}</Title>
+      <Title>{children || <Trans i18nKey="DeviceAction.loading" />}</Title>
     </Footer>
   </Wrapper>
 );

@@ -2,7 +2,8 @@
 
 import React from "react";
 import type { Account, CryptoCurrency } from "@ledgerhq/live-common/lib/types";
-import EnsureDeviceApp from "~/renderer/components/EnsureDeviceApp";
+import DeviceAction from "~/renderer/components/DeviceAction";
+import { config } from "~/renderer/components/DeviceAction/actions/app";
 import type { Device } from "~/renderer/reducers/devices";
 
 type Props = {
@@ -14,10 +15,9 @@ type Props = {
 
 const StepConnectDevice = ({ account, currency, onChangeDevice, onStatusChange }: Props) =>
   account || currency ? (
-    <EnsureDeviceApp
-      account={account}
-      currency={currency}
-      waitBeforeSuccess={200}
+    <DeviceAction
+      config={config}
+      request={{ account, currency }}
       onSuccess={({ device }) => {
         // TODO: remove those nonsense callbacks
         if (onChangeDevice) {

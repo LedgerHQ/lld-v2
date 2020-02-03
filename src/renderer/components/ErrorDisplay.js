@@ -1,5 +1,5 @@
 // @flow
-import { renderError } from "~/renderer/components/DeviceConnect/rendering";
+import { renderError } from "~/renderer/components/DeviceAction/rendering";
 
 type Props = {
   error: Error,

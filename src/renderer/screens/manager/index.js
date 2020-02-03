@@ -1,9 +1,9 @@
 // @flow
 import React from "react";
-import DeviceConnect from "~/renderer/components/DeviceConnect";
-import { config } from "~/renderer/components/DeviceConnect/configs/manager";
+import DeviceAction from "~/renderer/components/DeviceAction";
+import { config } from "~/renderer/components/DeviceAction/actions/manager";
 import Dashboard from "~/renderer/screens/manager/Dashboard";
 
-const Manager = () => <DeviceConnect Success={Dashboard} config={config} request={null} />;
+const Manager = () => <DeviceAction Success={Dashboard} config={config} request={null} />;
 
 export default Manager;

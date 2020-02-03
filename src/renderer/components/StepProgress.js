@@ -1,6 +1,6 @@
 // @flow
 import type { DeviceModelId } from "@ledgerhq/devices";
-import { renderLoading } from "~/renderer/components/DeviceConnect/rendering";
+import { renderLoading } from "~/renderer/components/DeviceAction/rendering";
 
 type Props = {
   modelId: DeviceModelId,

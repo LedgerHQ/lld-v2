@@ -3,7 +3,8 @@
 import React from "react";
 import { getMainAccount } from "@ledgerhq/live-common/lib/account";
 import TrackPage from "~/renderer/analytics/TrackPage";
-import EnsureDeviceApp from "~/renderer/components/EnsureDeviceApp";
+import DeviceAction from "~/renderer/components/DeviceAction";
+import { config } from "~/renderer/components/DeviceAction/actions/app";
 
 import TokenTips from "../../TokenTips";
 import type { StepProps } from "../types";
@@ -18,10 +19,9 @@ export default function StepConnectDevice({
   return (
     <>
       <TrackPage category="Send Flow" name="Step ConnectDevice" />
-      <EnsureDeviceApp
-        account={account ? getMainAccount(account, parentAccount) : null}
-        isToken={!!token}
-        waitBeforeSuccess={200}
+      <DeviceAction
+        config={config}
+        request={{ account: account ? getMainAccount(account, parentAccount) : null }}
         onSuccess={() => transitionTo("verification")}
       />
       {!token ? null : <TokenTips token={token} />}

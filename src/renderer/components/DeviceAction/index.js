@@ -9,7 +9,7 @@ import type { DeviceModelId } from "@ledgerhq/devices";
 import type { Device } from "~/renderer/reducers/devices";
 import AutoRepair from "~/renderer/components/AutoRepair";
 import useTheme from "~/renderer/hooks/useTheme";
-import type { Config } from "./configs/shared";
+import type { Config } from "./actions/shared";
 import {
   renderAllowManager,
   renderAllowOpeningApp,
@@ -48,7 +48,7 @@ class OnSuccess extends Component<*> {
   }
 }
 
-const DeviceConnect = <R, H, P>({
+const DeviceAction = <R, H, P>({
   Success,
   onSuccess,
   reduxDevice,
@@ -156,6 +156,6 @@ const mapStateToProps = createStructuredSelector({
   preferredDeviceModel: preferredDeviceModelSelector,
 });
 
-const component: React$ComponentType<OwnProps<*, *, *>> = connect(mapStateToProps)(DeviceConnect);
+const component: React$ComponentType<OwnProps<*, *, *>> = connect(mapStateToProps)(DeviceAction);
 
 export default component;

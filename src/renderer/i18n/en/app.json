@@ -403,17 +403,15 @@
   "operationList": {
     "noMoreOperations": "That's all"
   },
-  "appconnect": {
-    "allowPermission": "Run the {{wording}} app on your device"
+  "DeviceAction": {
+    "allowAppPermission": "Run the {{wording}} app on your device",
+    "allowManagerPermission": "{{wording}} on your device",
+    "loading": "Loading...",
+    "connectAndUnlockDevice": "Connect your device and enter your PIN code",
+    "unlockDevice": "Enter your PIN code",
+    "quitApp": "Please quit application on your device"
   },
   "manager": {
-    "connect": {
-      "allowPermission": "{{wording}} on your device",
-      "loading": "Loading...",
-      "connectAndUnlockDevice": "Connect your device and enter your PIN code",
-      "unlockDevice": "Enter your PIN code",
-      "quitApp": "Please quit application on your device"
-    },
     "loading": "Loading",
     "device": {
       "title": "Connect your device",
