@@ -10,6 +10,7 @@ import ManagerConnect from "~/renderer/components/ManagerConnect";
 const Container = styled.div`
   min-height: 450px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 `;

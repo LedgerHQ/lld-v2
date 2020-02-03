@@ -117,6 +117,7 @@ const Wrapper = styled.div`
   flex: 1;
   align-items: center;
   justify-content: center;
+  max-width: 100%;
 `;
 
 const Title = styled(Text).attrs({
