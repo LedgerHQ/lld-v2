@@ -3,7 +3,7 @@
 import React, { PureComponent } from "react";
 import { BridgeSyncConsumer } from "~/renderer/bridge/BridgeSyncContext";
 import type { Sync } from "~/renderer/bridge/BridgeSyncContext";
-import { SYNC_BOOT_DELAY, SYNC_ALL_INTERVAL } from "~/config/constants";
+import { getEnv } from "@ledgerhq/live-common/lib/env";
 
 export class Effect extends PureComponent<{
   sync: Sync,
@@ -12,9 +12,9 @@ export class Effect extends PureComponent<{
     const syncLoop = async () => {
       const { sync } = this.props;
       sync({ type: "BACKGROUND_TICK" });
-      this.syncTimeout = setTimeout(syncLoop, SYNC_ALL_INTERVAL);
+      this.syncTimeout = setTimeout(syncLoop, getEnv("SYNC_ALL_INTERVAL"));
     };
-    this.syncTimeout = setTimeout(syncLoop, SYNC_BOOT_DELAY);
+    this.syncTimeout = setTimeout(syncLoop, getEnv("SYNC_BOOT_DELAY"));
   }
 
   componentWillUnmount() {

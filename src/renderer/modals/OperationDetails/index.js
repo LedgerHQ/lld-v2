@@ -343,10 +343,14 @@ const OperationDetails: React$ComponentType<OwnProps> = connect(mapStateToProps)
 
                   if (!opAccount) return null;
 
+                  const subAccountName =
+                    opAccount.type === "ChildAccount"
+                      ? opAccount.name
+                      : getAccountCurrency(opAccount).name;
                   return (
                     <NoMarginWrapper key={`${op.id}`}>
                       <OperationComponent
-                        text={getAccountCurrency(opAccount).name}
+                        text={subAccountName}
                         operation={op}
                         account={opAccount}
                         parentAccount={account}

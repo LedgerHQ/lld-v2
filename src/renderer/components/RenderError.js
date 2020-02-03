@@ -181,7 +181,7 @@ const VersionContainer = styled.pre`
 const ErrContainer = styled.pre`
   margin: auto;
   max-width: 80vw;
-  overflow: auto;
+  ${p => p.theme.overflow.xy};
   font-size: 10px;
   font-family: monospace;
   cursor: text;

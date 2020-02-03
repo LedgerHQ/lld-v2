@@ -8,19 +8,10 @@ protocols:
 mac:
   artifactName: ${name}-${version}-${os}.${ext}
   category: public.app-category.wallet
-  # hardenedRuntime: true
-  # entitlements: build/mac/entitlements.plist
-  # entitlementsInherit: build/mac/entitlements.plist
   target:
     - dmg
-    - zip
-
-# appImage:
-# systemIntegration: doNotAsk // DEPRECATED
 
 linux:
-  # asarUnpack:
-  #   - node_modules/@ledgerhq/ledger-core
   artifactName: ${name}-${version}-${os}-${arch}.${ext}
   category: Finance
   target:
@@ -42,10 +33,6 @@ nsis:
   oneClick: false
   perMachine: true
   allowToChangeInstallationDirectory: true
-  # installerIcon: build/windows/installer.ico
-  # installerSidebar: build/windows/installerSidebar.bmp
-  # uninstallerIcon: build/windows/uninstaller.ico
-  # uninstallerSidebar: build/windows/uninstallerSidebar.bmp
 
 files:
   # Include files

@@ -49,6 +49,7 @@ type OwnProps = {
   subMagnitude?: number,
   allowZero?: boolean,
   disabled?: boolean,
+  autoFocus?: boolean,
 };
 
 type Props = {
@@ -77,6 +78,7 @@ class InputCurrency extends PureComponent<Props, State> {
     showAllDigits: false,
     subMagnitude: 0,
     allowZero: false,
+    autoFocus: false,
   };
 
   state = {
@@ -86,7 +88,7 @@ class InputCurrency extends PureComponent<Props, State> {
   };
 
   componentDidMount() {
-    this.syncInput({ isFocused: false });
+    this.syncInput({ isFocused: !!this.props.autoFocus });
   }
 
   // eslint-disable-next-line camelcase

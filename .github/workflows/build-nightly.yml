@@ -82,21 +82,8 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: install dependencies
         run: yarn --ignore-scripts --frozen-lockfile
-      - name: clean up
-        run: npx rimraf ./dist
-      - name: install and rebuild
-        run: |
-          yarn --frozen-lockfile
-          yarn install-deps
-      - name: build
-        run: |
-          set NODE_ENV=production
-          node ./tools/main.js build
-      - name: nightly
-        run: |
-          set DEBUG=electron-builder
-          set NODE_ENV=production
-          npx electron-builder --config electron-builder-nightly.yml
+      - name: build the app
+        run: yarn nightly
       - uses: "./.github/actions/get-package-infos"
         id: version
       - name: upload windows

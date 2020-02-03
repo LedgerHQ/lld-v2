@@ -59,9 +59,9 @@ const Stars = ({ pathname, collapsed }: Props) => {
 
   return starredAccounts && starredAccounts.length ? (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="list" direction="vertical">
+      <Droppable droppableId="starred-account-list" direction="vertical">
         {(provided, snapshot) => (
-          <Container key={pathname} ref={provided.innerRef}>
+          <Container key={pathname} ref={provided.innerRef} {...provided.droppableProps}>
             {starredAccounts.map((account, i) => (
               <Tooltip
                 content={

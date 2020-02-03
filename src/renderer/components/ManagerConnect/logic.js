@@ -41,7 +41,7 @@ const getInitialState = (device?: ?Device): State => ({
   unresponsive: false,
   allowManagerRequestedWording: null,
   allowManagerGranted: false,
-  device: null,
+  device,
   deviceInfo: null,
   result: null,
   error: null,
@@ -57,14 +57,11 @@ const reducer = (state: State, action: Action): State => {
       };
 
     case "deviceChange":
-      return {
-        ...getInitialState(action.device),
-        device: action.device,
-      };
+      return getInitialState(action.device);
 
     case "error":
       return {
-        ...getInitialState(),
+        ...getInitialState(state.device),
         error: action.error,
         isLoading: false,
       };
@@ -201,6 +198,7 @@ export const useManagerConnect = (device: ?Device): [State, Cbs] => {
 
   const onRetry = useCallback(() => {
     setResetIndex(currIndex => currIndex + 1);
+    setState(s => getInitialState(s.device));
   }, []);
 
   const onAutoRepair = useCallback(() => {

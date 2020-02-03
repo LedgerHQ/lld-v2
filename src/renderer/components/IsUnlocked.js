@@ -1,5 +1,5 @@
 // @flow
-import React, { useCallback, useState, useMemo } from "react";
+import React, { useCallback, useState } from "react";
 import { remote } from "electron";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -54,9 +54,15 @@ const IconWrapperCircle = styled(Box)`
   height: 50px;
   border-radius: 50%;
   background: #ea2e4919;
-  text-align: center;
+  align-items: center;
   justify-content: center;
 `;
+
+const HardResetIcon = () => (
+  <IconWrapperCircle color="alertRed">
+    <IconTriangleWarning width={23} height={21} />
+  </IconWrapperCircle>
+);
 
 const IsUnlocked = ({ children }: Props) => {
   const dispatch = useDispatch();
@@ -118,15 +124,6 @@ const IsUnlocked = ({ children }: Props) => {
     }
   }, []);
 
-  const hardResetIconRender = useMemo(
-    () => (
-      <IconWrapperCircle color="alertRed">
-        <IconTriangleWarning width={23} height={21} />
-      </IconWrapperCircle>
-    ),
-    [],
-  );
-
   if (isLocked) {
     return (
       <Box sticky alignItems="center" justifyContent="center">
@@ -183,7 +180,7 @@ const IsUnlocked = ({ children }: Props) => {
           confirmText={t("common.reset")}
           title={t("settings.hardResetModal.title")}
           desc={t("settings.hardResetModal.desc")}
-          renderIcon={hardResetIconRender}
+          renderIcon={HardResetIcon}
         />
       </Box>
     );

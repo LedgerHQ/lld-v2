@@ -62,10 +62,35 @@ const spawnCoreProcess = () => {
     SENTRY_USER_ID: userId,
   };
 
-  cluster.setupMaster({ exec: `${__dirname}/main.bundle.js` });
+  cluster.setupMaster({
+    exec: `${__dirname}/main.bundle.js`,
+    execArgv: (process.env.LEDGER_INTERNAL_ARGS || "").split(/[ ]+/).filter(Boolean),
+    silent: true,
+  });
 
   const worker = cluster.fork(env);
   setInternalProcessPID(worker.process.pid);
+
+  worker.process.stdout.on("data", data =>
+    String(data)
+      .split("\n")
+      .forEach(msg => {
+        if (!msg) return;
+        try {
+          const obj = JSON.parse(msg);
+          if (obj && obj.type === "log") {
+            logger.onLog(obj.log);
+            return;
+          }
+        } catch (e) {}
+        logger.debug("I: " + msg);
+      }),
+  );
+  worker.process.stderr.on("data", data => {
+    const msg = String(data).trim();
+    if (__DEV__) console.error("I.e: " + msg);
+    logger.error("I.e: " + String(data).trim());
+  });
 
   worker.on("message", handleGlobalInternalMessage);
   worker.on("exit", handleExit);
@@ -130,9 +155,6 @@ function handleGlobalInternalMessage(payload) {
       // captureException(err)
       break;
     }
-    case "log":
-      logger.onLog(payload.log);
-      break;
     case "setLibcoreBusy":
     case "setDeviceBusy": {
       const win = getMainWindow && getMainWindow();

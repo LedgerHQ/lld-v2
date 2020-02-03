@@ -17,7 +17,17 @@ const pinfo = format(info => {
 
 const transports = [];
 
-if (process.env.NODE_ENV !== "production" || process.env.DEV_TOOLS) {
+const logger = winston.createLogger({
+  level: "debug",
+  format: combine(pinfo(), timestamp(), json()),
+  transports,
+});
+
+const add = (transport: *) => {
+  logger.add(transport);
+};
+
+export function enableDebugLogger() {
   let consoleT;
   if (typeof window === "undefined") {
     // on Node we want a concise logger
@@ -59,18 +69,8 @@ if (process.env.NODE_ENV !== "production" || process.env.DEV_TOOLS) {
     }
     consoleT = new CustomConsole();
   }
-  transports.push(consoleT);
+  add(consoleT);
 }
-
-const logger = winston.createLogger({
-  level: "debug",
-  format: combine(pinfo(), timestamp(), json()),
-  transports,
-});
-
-const add = (transport: *) => {
-  logger.add(transport);
-};
 
 const captureBreadcrumb = (breadcrumb: any) => {
   // FIXME

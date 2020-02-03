@@ -11,8 +11,11 @@ class Electron {
 
   start() {
     if (!this.instance) {
-      this.instance = execa(this.electronPath, [this.bundlePath]);
+      const args = (process.env.ELECTRON_ARGS || "").split(/[ ]+/).filter(Boolean);
+      if (args.length) console.log("electron starts with", args);
+      this.instance = execa(this.electronPath, [this.bundlePath, ...args]);
       this.instance.stdout.pipe(process.stdout);
+      this.instance.stderr.pipe(process.stderr);
     }
   }
 

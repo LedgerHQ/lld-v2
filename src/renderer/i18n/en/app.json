@@ -1341,6 +1341,24 @@
       "title": "Sorry, not enough storage left",
       "description": "Uninstall some apps to make space. The private keys providing access to your crypto assets will stay safe on your device."
     },
+    "ManagerQuitPage": {
+      "install": {
+        "title": "Quit and cancel app install?",
+        "description": "Quitting will cancel the app installing in progress.",
+        "stay": "Finish install"
+      },
+      "uninstall": {
+        "title": "Quit and cancel app uninstalling?",
+        "description": "Quitting will cancel the app uninstalls in progress.",
+        "stay": "Finish uninstalling"
+      },
+      "update": {
+        "title": "Quit and cancel app updates?",
+        "description": "Quitting will cancel the app updates in progress.",
+        "stay": "Finish updates"
+      },
+      "quit": "Quit Manager"
+    },
     "ManagerUninstallBTCDep": {
       "title": "Sorry, this app is required",
       "description": "Uninstall the Bitcoin or Ethereum app last"

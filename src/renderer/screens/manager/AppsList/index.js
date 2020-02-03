@@ -8,7 +8,8 @@ import type { ListAppsResult, Exec } from "@ledgerhq/live-common/lib/apps/types"
 import type { Device } from "~/renderer/reducers/devices";
 import { getActionPlan, useAppsRunner, isIncompleteState } from "@ledgerhq/live-common/lib/apps";
 
-import omit from "lodash/omit";
+import NavigationGuard from "~/renderer/components/NavigationGuard";
+import Quit from "~/renderer/icons/Quit";
 
 import AppList from "./AppsList";
 import DeviceStorage from "../DeviceStorage/index";
@@ -17,10 +18,25 @@ import UpdateAllApps from "./UpdateAllApps";
 import AppDepsInstallModal from "./AppDepsInstallModal";
 import AppDepsUnInstallModal from "./AppDepsUnInstallModal";
 
+import omit from "lodash/omit";
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   animation: ${p => p.theme.animations.fadeIn};
+`;
+
+const QuitIconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  width: ${p => p.theme.space[8]}px;
+  height: ${p => p.theme.space[8]}px;
+  color: ${p => p.theme.colors.palette.primary.main};
+  background-color: ${p => p.theme.colors.palette.action.hover};
+  border-radius: 100%;
+  margin-top: -${p => p.theme.space[6]}px;
 `;
 
 type Props = {
@@ -48,8 +64,26 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
     setAppUninstallDep,
   ]);
 
+  const { installQueue, uninstallQueue } = filteredState;
+
+  const installState =
+    installQueue.length > 0 ? (uninstallQueue.length > 0 ? "update" : "install") : "uninstall";
+
   return (
     <Container>
+      <NavigationGuard
+        analyticsName="ManagerGuardModal"
+        when={installQueue.length > 0 || uninstallQueue.length > 0}
+        title={t(`errors.ManagerQuitPage.${installState}.title`)}
+        renderIcon={() => (
+          <QuitIconWrapper>
+            <Quit size={30} />
+          </QuitIconWrapper>
+        )}
+        desc={t(`errors.ManagerQuitPage.${installState}.description`)}
+        confirmText={t(`errors.ManagerQuitPage.quit`)}
+        cancelText={t(`errors.ManagerQuitPage.${installState}.stay`)}
+      />
       <DeviceStorage state={filteredState} deviceInfo={deviceInfo} />
       <UpdateAllApps
         state={filteredState}

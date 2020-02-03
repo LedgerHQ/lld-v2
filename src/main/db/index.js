@@ -10,8 +10,33 @@ import { encryptData, decryptData } from "~/main/db/crypto";
 import { readFile, writeFile } from "~/main/db/fsHelper";
 
 import logger from "~/logger";
-import { debounce } from "~/helpers/promise";
 import { fsUnlink } from "~/helpers/fs";
+
+const debounce = (fn: any => any, ms: number) => {
+  let timeout;
+  let resolveRefs = [];
+  let rejectRefs = [];
+  return (...args: any) => {
+    const promise: Promise<any> = new Promise((resolve, reject) => {
+      resolveRefs.push(resolve);
+      rejectRefs.push(reject);
+    });
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+    timeout = setTimeout(async () => {
+      try {
+        const res = await fn(...args);
+        resolveRefs.forEach(r => r(res));
+      } catch (err) {
+        rejectRefs.forEach(r => r(err));
+      }
+      resolveRefs = [];
+      rejectRefs = [];
+    }, ms);
+    return promise;
+  };
+};
 
 type Transform = {
   get: any => any,

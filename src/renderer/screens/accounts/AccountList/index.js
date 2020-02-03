@@ -14,7 +14,6 @@ import type {
   TokenAccount,
 } from "@ledgerhq/live-common/lib/types";
 
-import StickyBackToTop from "~/renderer/components/StickyBackToTop";
 import Text from "~/renderer/components/Text";
 
 import { GenericBox } from "../index";
@@ -125,7 +124,6 @@ class AccountList extends Component<Props, State> {
           onAccountClick={onAccountClick}
           lookupParentAccount={this.lookupParentAccount}
         />
-        <StickyBackToTop scrollUpOnMount />
       </div>
     );
   }

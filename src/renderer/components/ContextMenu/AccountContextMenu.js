@@ -10,6 +10,7 @@ import IconStar from "~/renderer/icons/Star";
 import IconAccountSettings from "~/renderer/icons/AccountSettings";
 import ContextMenuItem from "./ContextMenuItem";
 import { toggleStarAction } from "~/renderer/actions/settings";
+import { refreshAccountsOrdering } from "~/renderer/actions/general";
 
 type OwnProps = {
   account: AccountLike,
@@ -23,16 +24,25 @@ type Props = {
   withStar?: boolean,
   openModal: Function,
   toggleStarAction: Function,
+  refreshAccountsOrdering: Function,
 };
 
 const mapDispatchToProps = {
   openModal,
   toggleStarAction,
+  refreshAccountsOrdering,
 };
 
 class AccountContextMenu extends PureComponent<Props> {
   getContextMenuItems = () => {
-    const { openModal, account, parentAccount, withStar, toggleStarAction } = this.props;
+    const {
+      openModal,
+      account,
+      parentAccount,
+      withStar,
+      toggleStarAction,
+      refreshAccountsOrdering,
+    } = this.props;
     const items = [
       {
         label: "accounts.contextMenu.send",
@@ -50,7 +60,10 @@ class AccountContextMenu extends PureComponent<Props> {
       items.push({
         label: "accounts.contextMenu.star",
         Icon: IconStar,
-        callback: () => toggleStarAction(account.id),
+        callback: () => {
+          toggleStarAction(account.id);
+          refreshAccountsOrdering();
+        },
       });
     }
 
