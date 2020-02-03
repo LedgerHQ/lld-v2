@@ -26,12 +26,14 @@ import debounce from "lodash/debounce";
 const StickyTabBar = styled.div`
   position: sticky;
   background-color: ${p => p.theme.colors.palette.background.default};
-  top: 0px;
+  top: -${p => p.theme.space[3]}px;
   left: 0;
   right: 0;
-  padding: 16px 16px 0 16px;
-  margin-left: -16px;
-  width: calc(100% + 32px);
+  padding: ${p => p.theme.space[3]}px ${p => p.theme.space[3]}px 0 ${p => p.theme.space[3]}px;
+  margin-left: -${p => p.theme.space[3]}px;
+  height: ${p => p.theme.sizes.topBarHeight}px;
+  width: 100%;
+  box-sizing: content-box;
   z-index: 1;
 `;
 
@@ -44,7 +46,7 @@ const FilterHeader = styled.div`
   border-bottom: 1px solid ${p => p.theme.colors.palette.text.shade10};
   background-color: ${p => p.theme.colors.palette.background.paper};
   position: sticky;
-  top: ${p => p.theme.sizes.topBarHeight + 16}px;
+  top: ${p => p.theme.sizes.topBarHeight}px;
   left: 0;
   right: 0;
   z-index: 1;
@@ -85,7 +87,7 @@ const AppsList = ({
   }, [activeTab]);
   const onDeviceTab = activeTab === 1;
 
-  const { apps, installed: installedApps, uninstallQueue } = state;
+  const { apps, installed: installedApps, uninstallQueue, installQueue } = state;
 
   const appList = useSortedFilteredApps(apps, { query, installedApps, type: filters }, sort);
 
@@ -94,8 +96,9 @@ const AppsList = ({
     {
       query,
       installedApps,
+      installQueue,
       type: ["installed"],
-    } /** TODO: update this with new filtering that takes in param installQueue to combine installing and installed apps */,
+    },
     sort,
   );
 

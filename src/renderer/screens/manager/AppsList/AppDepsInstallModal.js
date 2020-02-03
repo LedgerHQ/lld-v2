@@ -23,8 +23,8 @@ const IconsSection = styled.div`
 `;
 
 const Separator = styled.div`
-  margin: 0 ${p => p.theme.space[1]};
-  width: ${p => p.theme.space[4]};
+  margin: 0 ${p => p.theme.space[1]}px;
+  width: ${p => p.theme.space[4]}px;
   height: 0px;
   border-bottom: 2px dashed ${p => p.theme.colors.palette.action.hover};
 `;

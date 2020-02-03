@@ -34,7 +34,7 @@ const ItemLine = styled(Box).attrs(() => ({
   alignItems: "center",
   py: 1,
 }))`
-  height: ${p => p.theme.space[7]};
+  height: ${p => p.theme.space[7]}px;
   position: relative;
 `;
 
@@ -91,7 +91,7 @@ const AppDepsUninstallModal = ({ app, appList, installed, dispatch, onClose }: P
         bg="palette.background.default"
         header={
           <ItemLine>
-            <Text ff="Inter|Bold" color="palette.primary.main" fontSize={4}>
+            <Text ff="Inter|SemiBold" color="palette.primary.main" fontSize={4}>
               <Trans i18nKey="manager.apps.dependencyUninstall.showAll" />
             </Text>
           </ItemLine>
@@ -105,7 +105,7 @@ const AppDepsUninstallModal = ({ app, appList, installed, dispatch, onClose }: P
             <Box ml={4} mr={2}>
               <img alt="" src={manager.getIconUrl(a.icon)} width={22} height={22} />
             </Box>
-            <Text ff="Inter|Bold" color="palette.text.shade100" fontSize={4}>
+            <Text ff="Inter|SemiBold" color="palette.text.shade100" fontSize={4}>
               {a.name}
             </Text>
           </ItemLine>
