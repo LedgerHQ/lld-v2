@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 import Modal, { ModalBody } from "~/renderer/components/Modal";
 import DeviceAction from "~/renderer/components/DeviceAction";
-import { config } from "~/renderer/components/DeviceAction/actions/manager";
+import { action } from "~/renderer/components/DeviceAction/actions/manager";
 
 const Container = styled.div`
   min-height: 450px;
@@ -32,7 +32,7 @@ const GenuineCheckModal = ({ isOpened, onClose, onSuccess }: Props) => {
           title={<Trans i18nKey="genuinecheck.modal.title" />}
           render={() => (
             <Container>
-              <DeviceAction config={config} onSuccess={onSuccess} request={null} />
+              <DeviceAction action={action} onResult={onSuccess} request={null} />
             </Container>
           )}
         />

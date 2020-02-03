@@ -42,6 +42,11 @@ type SignTransactionArgs = {
   setSigned: boolean => void,
 };
 
+// TODO migration to actions/transaction:
+// - analytics to be done in a separate function / hook based on the state
+// - broadcast needs to be moved our and happen in another hook that takes signedOperation?
+// - transitionTo also needs to be a hook to react on the state.
+
 export const useSignTransactionCallback = ({
   context,
   device,

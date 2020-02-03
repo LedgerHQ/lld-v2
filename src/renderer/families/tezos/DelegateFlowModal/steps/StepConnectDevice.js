@@ -7,7 +7,7 @@ import TrackPage from "~/renderer/analytics/TrackPage";
 import Button from "~/renderer/components/Button";
 import TokenTips from "~/renderer/modals/TokenTips";
 import DeviceAction from "~/renderer/components/DeviceAction";
-import { config } from "~/renderer/components/DeviceAction/actions/app";
+import { action } from "~/renderer/components/DeviceAction/actions/app";
 
 import type { StepProps } from "../types";
 
@@ -17,8 +17,8 @@ const StepConnectDevice = ({ account, parentAccount, onChangeAppOpened }: StepPr
     <>
       <TrackPage category="Send Flow" name="Step ConnectDevice" />
       <DeviceAction
-        config={config}
-        onSuccess={() => onChangeAppOpened(true)}
+        action={action}
+        onResult={() => onChangeAppOpened(true)}
         request={{ account: account ? getMainAccount(account, parentAccount) : null }}
       />
       {!token ? null : <TokenTips token={token} />}

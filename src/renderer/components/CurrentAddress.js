@@ -23,6 +23,7 @@ import IconRecheck from "~/renderer/icons/Recover";
 import IconCopy from "~/renderer/icons/Copy";
 import IconShield from "~/renderer/icons/Shield";
 import Ellipsis from "~/renderer/components/Ellipsis";
+import { renderVerifyAddressUnwrapped } from "~/renderer/components/DeviceAction/rendering";
 
 const Container = styled(Box).attrs(p => ({
   borderRadius: 1,
@@ -190,32 +191,86 @@ class CurrentAddress extends PureComponent<Props, { copyFeedback: boolean }> {
 
     const { copyFeedback } = this.state;
 
-    return (
-      <Container isAddressVerified={isAddressVerified}>
-        <QRCodeContainer mb={4}>
-          <QRCode
-            size={120}
-            data={encodeURIScheme({
-              address,
-            })}
-          />
-        </QRCodeContainer>
-        <Label>
-          {name ? (
-            <Ellipsis textAlign="center">
-              <Trans i18nKey="currentAddress.for">
-                {"Address for "}
-                <strong>{name}</strong>
-              </Trans>
-            </Ellipsis>
-          ) : (
-            t("currentAddress.title")
-          )}
-        </Label>
+    if (isAddressVerified === true) {
+      // Address was confired on device! we display a success screen!
+
+      return (
+        <Container isAddressVerified>
+          Success Icon Here
+          <Footer>
+            <FooterButton
+              icon={<IconRecheck size={16} />}
+              label={t("common.reverify")}
+              onClick={onVerify}
+            />
+          </Footer>
+        </Container>
+      );
+    }
+
+    const addressBlock = (
+      <Box px={2} horizontal>
+        <QRCode
+          size={80}
+          data={encodeURIScheme({
+            address,
+          })}
+        />
+
         <Address>
           {copyFeedback && <CopyFeedback>{t("common.addressCopied")}</CopyFeedback>}
           {address}
         </Address>
+
+        <CopyToClipboard data={address} render={this.renderCopy} />
+      </Box>
+    );
+
+    if (isAddressVerified === false) {
+      // User explicitly bypass device verification (no device)
+
+      return (
+        <Container isAddressVerified={false}>
+          {addressBlock}
+
+          <h1>1. Share address to recipient</h1>
+
+          <Footer>
+            <FooterButton
+              icon={<IconRecheck size={16} />}
+              label={t("common.verify")}
+              onClick={onVerify}
+            />
+          </Footer>
+
+          <Box horizontal flow={2} mt={2} alignItems="center" style={{ maxWidth: 320 }}>
+            <Box color="alertRed">
+              <IconShield height={32} width={28} />
+            </Box>
+            <Box shrink fontSize={12} color="alertRed" ff="Inter">
+              {t("currentAddress.messageIfSkipped", { currencyName })}
+              <LinkWithExternalIcon
+                onClick={() => openURL(urls.recipientAddressInfo)}
+                label={t("common.learnMore")}
+              />
+            </Box>
+          </Box>
+        </Container>
+      );
+    }
+
+    // Verification with device!
+
+    return (
+      <Container isAddressVerified={isAddressVerified}>
+        {addressBlock}
+
+        <h1>1. Share address to recipient</h1>
+
+        {renderVerifyAddressUnwrapped({ modelId: "nanoS", type: "light" })}
+
+        <h1>2. </h1>
+
         <Box horizontal flow={2} mt={2} alignItems="center" style={{ maxWidth: 320 }}>
           <Box color={isAddressVerified === false ? "alertRed" : "wallet"}>
             <IconShield height={32} width={28} />
@@ -226,27 +281,13 @@ class CurrentAddress extends PureComponent<Props, { copyFeedback: boolean }> {
             color={isAddressVerified === false ? "alertRed" : "palette.text.shade100"}
             ff="Inter"
           >
-            {isAddressVerified === null
-              ? t("currentAddress.messageIfUnverified", { currencyName })
-              : isAddressVerified
-              ? t("currentAddress.messageIfAccepted", { currencyName })
-              : t("currentAddress.messageIfSkipped", { currencyName })}
+            {t("currentAddress.messageIfUnverified", { currencyName })}
             <LinkWithExternalIcon
               onClick={() => openURL(urls.recipientAddressInfo)}
               label={t("common.learnMore")}
             />
           </Box>
         </Box>
-        <Footer>
-          {isAddressVerified !== null ? (
-            <FooterButton
-              icon={<IconRecheck size={16} />}
-              label={isAddressVerified === false ? t("common.verify") : t("common.reverify")}
-              onClick={onVerify}
-            />
-          ) : null}
-          <CopyToClipboard data={address} render={this.renderCopy} />
-        </Footer>
       </Container>
     );
   }

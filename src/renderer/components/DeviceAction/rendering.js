@@ -17,7 +17,7 @@ import ExclamationCircleThin from "~/renderer/icons/ExclamationCircleThin";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import { getDeviceAnimation } from "./animations";
 
-const AnimationWrapper = styled.div`
+const AnimationWrapper: ThemedComponent<{ modelId: DeviceModelId }> = styled.div`
   width: 600px;
   height: ${p => (p.modelId === "blue" ? "300px" : "200px")};
   align-self: center;
@@ -32,6 +32,7 @@ const Wrapper: ThemedComponent<{}> = styled.div`
   flex: 1;
   align-items: center;
   justify-content: center;
+  min-height: 350px;
 `;
 
 const Logo = styled.div`
@@ -135,6 +136,31 @@ export const renderRequestQuitApp = ({
   </Wrapper>
 );
 
+export const renderVerifyAddressUnwrapped = ({
+  modelId,
+  type,
+}: {
+  modelId: DeviceModelId,
+  type: "light" | "dark",
+}) => (
+  <AnimationWrapper modelId={modelId}>
+    <Animation animation={getDeviceAnimation(modelId, type, "quitApp")} />
+  </AnimationWrapper>
+);
+
+export const renderVerifyAddress = ({
+  modelId,
+  type,
+}: {
+  modelId: DeviceModelId,
+  type: "light" | "dark",
+}) => (
+  <Wrapper>
+    <Header />
+    {renderVerifyAddressUnwrapped({ modelId, type })}
+  </Wrapper>
+);
+
 export const renderRequiresAppInstallation = ({ appName }: { appName: string }) => (
   <Wrapper>
     <Title>{appName} App is not yet installed</Title>
@@ -233,9 +259,11 @@ export const renderError = ({
           outlineGrey
         />
       ) : null}
-      <Button primary ml={withExportLogs ? 4 : 0} onClick={onRetry}>
-        <Trans i18nKey="common.retry" />
-      </Button>
+      {onRetry ? (
+        <Button primary ml={withExportLogs ? 4 : 0} onClick={onRetry}>
+          <Trans i18nKey="common.retry" />
+        </Button>
+      ) : null}
     </ButtonContainer>
   </Wrapper>
 );

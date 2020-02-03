@@ -1,7 +1,8 @@
 // @flow
 import { concat, of, empty, interval } from "rxjs";
-import { scan, debounce, debounceTime, catchError, switchMap } from "rxjs/operators";
+import { scan, debounce, debounceTime, catchError, switchMap, tap } from "rxjs/operators";
 import { useEffect, useCallback, useState } from "react";
+import { log } from "@ledgerhq/logs";
 import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
 import type { ListAppsResult } from "@ledgerhq/live-common/lib/apps/types";
 import manager from "@ledgerhq/live-common/lib/manager";
@@ -10,7 +11,7 @@ import type { Device } from "~/renderer/reducers/devices";
 import { command } from "~/renderer/commands";
 import logger from "~/logger";
 import { useReplaySubject } from "./shared";
-import type { Config } from "./shared";
+import type { Action } from "./shared";
 
 type State = {|
   isLoading: boolean,
@@ -24,7 +25,7 @@ type State = {|
   error: ?Error,
 |};
 
-type Result = {|
+type ManagerState = {|
   ...State,
   repairModalOpened: ?{ auto: boolean },
   onRetry: () => void,
@@ -33,20 +34,20 @@ type Result = {|
   closeRepairModal: () => void,
 |};
 
-type Payload = {|
+type Result = {|
   device: Device,
   deviceInfo: DeviceInfo,
   result: ?ListAppsResult,
 |};
 
-type ManagerConfig = Config<void, Result, Payload>;
+type ManagerAction = Action<void, ManagerState, Result>;
 
-type Action =
+type Event =
   | ConnectManagerEvent
   | { type: "error", error: Error }
   | { type: "deviceChange", device: ?Device };
 
-const mapSuccess = ({ deviceInfo, device, result }): ?Payload =>
+const mapResult = ({ deviceInfo, device, result }): ?Result =>
   deviceInfo && device
     ? {
         device,
@@ -67,8 +68,8 @@ const getInitialState = (device?: ?Device): State => ({
   error: null,
 });
 
-const reducer = (state: State, action: Action): State => {
-  switch (action.type) {
+const reducer = (state: State, e: Event): State => {
+  switch (e.type) {
     case "unresponsiveDevice":
       return {
         ...state,
@@ -76,12 +77,12 @@ const reducer = (state: State, action: Action): State => {
       };
 
     case "deviceChange":
-      return getInitialState(action.device);
+      return getInitialState(e.device);
 
     case "error":
       return {
         ...getInitialState(state.device),
-        error: action.error,
+        error: e.error,
         isLoading: false,
       };
 
@@ -99,7 +100,7 @@ const reducer = (state: State, action: Action): State => {
         isLoading: false,
         unresponsive: false,
         requestQuitApp: false,
-        deviceInfo: action.deviceInfo,
+        deviceInfo: e.deviceInfo,
       };
 
     case "listingApps":
@@ -107,14 +108,14 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         requestQuitApp: false,
         unresponsive: false,
-        deviceInfo: action.deviceInfo,
+        deviceInfo: e.deviceInfo,
       };
 
     case "device-permission-requested":
       return {
         ...state,
         unresponsive: false,
-        allowManagerRequestedWording: action.wording,
+        allowManagerRequestedWording: e.wording,
       };
 
     case "device-permission-granted":
@@ -130,7 +131,7 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         isLoading: false,
         unresponsive: false,
-        result: action.result,
+        result: e.result,
       };
   }
   return state;
@@ -146,7 +147,7 @@ const connectManager = device =>
         ),
   );
 
-const useHook = (device: ?Device): Result => {
+const useHook = (device: ?Device): ManagerState => {
   // repair modal will interrupt everything and be rendered instead of the background content
   const [repairModalOpened, setRepairModalOpened] = useState(null);
   const [state, setState] = useState(() => getInitialState(device));
@@ -162,6 +163,7 @@ const useHook = (device: ?Device): Result => {
         debounceTime(1000),
         // each time there is a device change, we pipe to the command
         switchMap(connectManager),
+        tap(e => log("manager-connect-event", e.type, e)),
         // tap(e => console.log("connectManager event", e)),
         // we gather all events with a reducer into the UI state
         scan(reducer, getInitialState()),
@@ -220,7 +222,7 @@ const useHook = (device: ?Device): Result => {
   };
 };
 
-export const config: ManagerConfig = {
+export const action: ManagerAction = {
   useHook,
-  mapSuccess,
+  mapResult,
 };

@@ -7,6 +7,7 @@ import TrackPage from "~/renderer/analytics/TrackPage";
 import { command } from "~/renderer/commands";
 import Box from "~/renderer/components/Box";
 import CurrentAddress from "~/renderer/components/CurrentAddress";
+import ErrorDisplay from "~/renderer/components/ErrorDisplay";
 import { DisconnectedDevice, WrongDeviceForAccount } from "@ledgerhq/errors";
 
 import type { StepProps } from "../Body";
@@ -56,23 +57,27 @@ export default class StepReceiveFunds extends PureComponent<StepProps> {
   };
 
   render() {
-    const { account, parentAccount, isAddressVerified, token } = this.props;
+    const { account, parentAccount, isAddressVerified, verifyAddressError, token } = this.props;
     const mainAccount = account ? getMainAccount(account, parentAccount) : null;
     invariant(account && mainAccount, "No account given");
     const name = token ? token.name : getAccountName(account);
     return (
       <Box flow={5}>
         <TrackPage category="Receive Flow" name="Step 4" />
-        <CurrentAddress
-          name={name}
-          currency={mainAccount.currency}
-          address={mainAccount.freshAddress}
-          isAddressVerified={isAddressVerified}
-          onVerify={this.handleGoPrev}
-          withBadge
-          withFooter
-          withQRCode
-        />
+        {verifyAddressError ? (
+          <ErrorDisplay error={verifyAddressError} onRetry={this.handleGoPrev} />
+        ) : (
+          <CurrentAddress
+            name={name}
+            currency={mainAccount.currency}
+            address={mainAccount.freshAddress}
+            isAddressVerified={isAddressVerified}
+            onVerify={this.handleGoPrev}
+            withBadge
+            withFooter
+            withQRCode
+          />
+        )}
       </Box>
     );
   }

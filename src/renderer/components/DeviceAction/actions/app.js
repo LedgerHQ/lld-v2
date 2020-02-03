@@ -14,7 +14,7 @@ import type { Account, CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 import type { Device } from "~/renderer/reducers/devices";
 import { command } from "~/renderer/commands";
 import { useReplaySubject } from "./shared";
-import type { Config } from "./shared";
+import type { Action } from "./shared";
 
 type State = {|
   isLoading: boolean,
@@ -31,31 +31,31 @@ type State = {|
   derivation: ?{ address: string },
 |};
 
-type Result = {|
+export type AppState = {|
   ...State,
   onRetry: () => void,
   inWrongDeviceForAccount: boolean,
 |};
 
-type AppRequest = {
+export type AppRequest = {
   appName?: ?string,
   currency?: ?CryptoCurrency,
   account?: ?Account,
 };
 
-type Payload = {|
+export type AppResult = {|
   device: Device,
   appAndVersion: ?AppAndVersion,
 |};
 
-type AppConfig = Config<AppRequest, Result, Payload>;
+type AppAction = Action<AppRequest, AppState, AppResult>;
 
-type Action =
+type Event =
   | { type: "error", error: Error }
   | { type: "deviceChange", device: ?Device }
   | ConnectAppEvent;
 
-const mapSuccess = ({ opened, device, appAndVersion }: Result): ?Payload =>
+const mapResult = ({ opened, device, appAndVersion }: AppState): ?AppResult =>
   opened && device ? { device, appAndVersion } : null;
 
 const getInitialState = (device?: ?Device): State => ({
@@ -73,8 +73,8 @@ const getInitialState = (device?: ?Device): State => ({
   derivation: null,
 });
 
-const reducer = (state: State, action: Action): State => {
-  switch (action.type) {
+const reducer = (state: State, e: Event): State => {
+  switch (e.type) {
     case "unresponsiveDevice":
       return {
         ...state,
@@ -83,14 +83,14 @@ const reducer = (state: State, action: Action): State => {
 
     case "deviceChange":
       return {
-        ...getInitialState(action.device),
-        device: action.device,
+        ...getInitialState(e.device),
+        device: e.device,
       };
 
     case "error":
       return {
         ...getInitialState(),
-        error: action.error,
+        error: e.error,
         isLoading: false,
       };
 
@@ -98,7 +98,7 @@ const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         unresponsive: false,
-        requestOpenApp: action.appName,
+        requestOpenApp: e.appName,
       };
 
     case "ask-quit-app":
@@ -112,7 +112,7 @@ const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         unresponsive: false,
-        allowOpeningRequestedWording: action.wording,
+        allowOpeningRequestedWording: e.wording,
       };
 
     case "device-permission-granted":
@@ -129,7 +129,7 @@ const reducer = (state: State, action: Action): State => {
         isLoading: false,
         unresponsive: false,
         allowOpeningRequestedWording: null,
-        requiresAppInstallation: { appName: action.appName },
+        requiresAppInstallation: { appName: e.appName },
       };
 
     case "opened":
@@ -138,8 +138,8 @@ const reducer = (state: State, action: Action): State => {
         isLoading: false,
         unresponsive: false,
         opened: true,
-        appAndVersion: action.app,
-        derivation: action.derivation,
+        appAndVersion: e.app,
+        derivation: e.derivation,
       };
   }
   return state;
@@ -156,7 +156,7 @@ const connectApp = (device, params) =>
         }).pipe(catchError((error: Error) => of({ type: "error", error }))),
   );
 
-const useHook = (device: ?Device, appRequest: AppRequest): Result => {
+const useHook = (device: ?Device, appRequest: AppRequest): AppState => {
   // repair modal will interrupt everything and be rendered instead of the background content
   const [state, setState] = useState(() => getInitialState(device));
   const [resetIndex, setResetIndex] = useState(0);
@@ -198,7 +198,7 @@ const useHook = (device: ?Device, appRequest: AppRequest): Result => {
         }),
       )
       // the state simply goes into a React state
-      .subscribe(setState);
+      .subscribe(setState); // FIXME shouldn't we handle errors?! (is an error possible?)
 
     return () => {
       sub.unsubscribe();
@@ -261,7 +261,7 @@ function inferCommandParams(appRequest: AppRequest) {
   };
 }
 
-export const config: AppConfig = {
+export const action: AppAction = {
   useHook,
-  mapSuccess,
+  mapResult,
 };

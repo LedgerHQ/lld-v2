@@ -5,7 +5,7 @@ import { getMainAccount } from "@ledgerhq/live-common/lib/account/helpers";
 import Box from "~/renderer/components/Box";
 import Button from "~/renderer/components/Button";
 import DeviceAction from "~/renderer/components/DeviceAction";
-import { config } from "~/renderer/components/DeviceAction/actions/app";
+import { action } from "~/renderer/components/DeviceAction/actions/app";
 import CurrencyDownStatusAlert from "~/renderer/components/CurrencyDownStatusAlert";
 import TrackPage from "~/renderer/analytics/TrackPage";
 
@@ -25,9 +25,9 @@ export default function StepConnectDevice({
     <>
       {mainAccount ? <CurrencyDownStatusAlert currency={mainAccount.currency} /> : null}
       <DeviceAction
-        config={config}
+        action={action}
         request={{ account: mainAccount }}
-        onSuccess={() => transitionTo("receive")}
+        onResult={() => transitionTo("receive")}
       />
       {!tokenCur ? null : <TokenTips token={tokenCur} />}
     </>

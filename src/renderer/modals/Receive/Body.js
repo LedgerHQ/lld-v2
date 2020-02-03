@@ -19,7 +19,6 @@ import type { Step } from "~/renderer/components/Stepper";
 import Stepper from "~/renderer/components/Stepper";
 import StepAccount, { StepAccountFooter } from "./steps/StepAccount";
 import StepConnectDevice, { StepConnectDeviceFooter } from "./steps/StepConnectDevice";
-// import StepConfirmAddress, { StepConfirmAddressFooter } from "./steps/StepConfirmAddress";
 import StepWarning, { StepWarningFooter } from "./steps/StepWarning";
 import StepReceiveFunds from "./steps/StepReceiveFunds";
 
@@ -188,9 +187,7 @@ const Body = ({
     }
   }, [accounts, account, params, handleChangeAccount]);
 
-  const errorSteps = verifyAddressError
-    ? [verifyAddressError.name === "UserRefusedAddress" ? 2 : 3]
-    : [];
+  const errorSteps = verifyAddressError ? [2] : [];
 
   const stepperProps = {
     title: stepId === "warning" ? t("common.information") : t("receive.title"),

@@ -3,9 +3,9 @@ import { ReplaySubject } from "rxjs";
 import { useEffect, useState } from "react";
 import type { Device } from "~/renderer/reducers/devices";
 
-export type Config<Request, HookState, Payload> = {|
+export type Action<Request, HookState, Result> = {|
   useHook: (?Device, Request) => HookState,
-  mapSuccess: HookState => ?Payload,
+  mapResult: HookState => ?Result,
 |};
 
 // emit value each time it changes by reference. it replays the last value at subscribe time.

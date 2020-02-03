@@ -1,6 +1,7 @@
 // @flow
 import React, { useEffect, Component } from "react";
 import { createStructuredSelector } from "reselect";
+import { Trans } from "react-i18next";
 import { connect } from "react-redux";
 import { getCurrentDevice } from "~/renderer/reducers/devices";
 import { setPreferredDeviceModel } from "~/renderer/actions/settings";
@@ -8,8 +9,9 @@ import { preferredDeviceModelSelector } from "~/renderer/reducers/settings";
 import type { DeviceModelId } from "@ledgerhq/devices";
 import type { Device } from "~/renderer/reducers/devices";
 import AutoRepair from "~/renderer/components/AutoRepair";
+import TransactionConfirm from "~/renderer/components/TransactionConfirm";
 import useTheme from "~/renderer/hooks/useTheme";
-import type { Config } from "./actions/shared";
+import type { Action } from "./actions/shared";
 import {
   renderAllowManager,
   renderAllowOpeningApp,
@@ -25,9 +27,9 @@ import {
 
 type OwnProps<R, H, P> = {
   overridesPreferredDeviceModel?: DeviceModelId,
-  Success?: React$ComponentType<P>,
-  onSuccess?: P => void,
-  config: Config<R, H, P>,
+  Result?: React$ComponentType<P>,
+  onResult?: P => void,
+  action: Action<R, H, P>,
   request: R,
 };
 
@@ -37,10 +39,10 @@ type Props<R, H, P> = OwnProps<R, H, P> & {
   dispatch: (*) => void,
 };
 
-class OnSuccess extends Component<*> {
+class OnResult extends Component<*> {
   componentDidMount() {
-    const { onSuccess, ...rest } = this.props;
-    onSuccess(rest);
+    const { onResult, ...rest } = this.props;
+    onResult(rest);
   }
 
   render() {
@@ -48,18 +50,26 @@ class OnSuccess extends Component<*> {
   }
 }
 
+/**
+ * Perform an action involving a device.
+ * @prop action: one of the actions/*
+ * @prop request: an object that is the input of that action
+ * @prop Result optional: an action produces a result, this gives a component to render it
+ * @prop onResult optional: an action produces a result, this gives a callback to be called with it
+ */
 const DeviceAction = <R, H, P>({
-  Success,
-  onSuccess,
+  // $FlowFixMe god of flow help me
+  action,
+  // $FlowFixMe god of flow help me
+  request,
+  Result,
+  onResult,
   reduxDevice,
   overridesPreferredDeviceModel,
   preferredDeviceModel,
   dispatch,
-  // $FlowFixMe god of flow help me
-  config,
-  request,
 }: Props<R, H, P>) => {
-  const hookState = config.useHook(reduxDevice, request);
+  const hookState = action.useHook(reduxDevice, request);
   const {
     device,
     unresponsive,
@@ -77,6 +87,8 @@ const DeviceAction = <R, H, P>({
     onAutoRepair,
     closeRepairModal,
     onRepairModal,
+    deviceSignatureRequested,
+    deviceStreamingProgress,
   } = hookState;
 
   const type = useTheme("colors.palette.type");
@@ -137,7 +149,40 @@ const DeviceAction = <R, H, P>({
     return renderBootloaderStep({ onAutoRepair });
   }
 
-  const payload = config.mapSuccess(hookState);
+  if (request && device && deviceSignatureRequested) {
+    const { account, parentAccount, status, transaction } = request;
+    if (account && parentAccount && status && transaction) {
+      return (
+        <TransactionConfirm
+          device={device}
+          account={account}
+          parentAccount={parentAccount}
+          transaction={transaction}
+          status={status}
+        />
+      );
+    }
+  }
+
+  if (typeof deviceStreamingProgress === "number") {
+    return renderLoading({
+      modelId,
+      children:
+        deviceStreamingProgress > 0 ? (
+          // with streaming event, we have accurate version of the wording
+          <Trans
+            i18nKey="send.steps.verification.streaming.accurate"
+            values={{ percentage: (deviceStreamingProgress * 100).toFixed(0) + "%" }}
+          />
+        ) : (
+          // otherwise, we're not accurate (usually because we don't need to, it's fast case)
+
+          <Trans i18nKey="send.steps.verification.streaming.inaccurate" />
+        ),
+    });
+  }
+
+  const payload = action.mapResult(hookState);
 
   if (!payload) {
     return null;
@@ -145,8 +190,8 @@ const DeviceAction = <R, H, P>({
 
   return (
     <>
-      {Success ? <Success {...payload} /> : null}
-      {onSuccess ? <OnSuccess onSuccess={onSuccess} {...payload} /> : null}
+      {Result ? <Result {...payload} /> : null}
+      {onResult ? <OnResult onResult={onResult} {...payload} /> : null}
     </>
   );
 };
