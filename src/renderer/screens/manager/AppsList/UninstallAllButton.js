@@ -45,7 +45,13 @@ const UninstallAllButton = ({ installedApps, uninstallQueue, dispatch }: Props) 
 
   return (
     <>
-      <Button primary inverted fontSize={3} onClick={openModal}>
+      <Button
+        primary
+        inverted
+        style={{ background: "transparent" }}
+        fontSize={3}
+        onClick={openModal}
+      >
         <Trash size={14} />
         <Text style={{ marginLeft: 8 }}>
           <Trans i18nKey="manager.applist.uninstall.title" />
