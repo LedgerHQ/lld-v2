@@ -1,5 +1,5 @@
 // @flow
-import React, { memo } from "react";
+import React, { memo, useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import { withTranslation } from "react-i18next";
 import type { TFunction } from "react-i18next";
@@ -16,6 +16,7 @@ import DeviceStorage from "../DeviceStorage/index";
 import UpdateAllApps from "./UpdateAllApps";
 
 import omit from "lodash/omit";
+import ErrorModal from "~/renderer/modals/ErrorModal/index";
 
 const QuitIconWrapper = styled.div`
   display: flex;
@@ -40,18 +41,26 @@ type Props = {
 
 const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
   const [state, dispatch] = useAppsRunner(result, exec);
+  const [error, setError] = useState();
   const filteredState = omit(state, "currentProgress");
   const progress = state.currentProgress;
   const plan = getActionPlan(filteredState) || [];
   const isIncomplete = isIncompleteState(filteredState);
 
-  const { installQueue, uninstallQueue } = filteredState;
+  const { installQueue, uninstallQueue, currentError } = filteredState;
 
   const installState =
     installQueue.length > 0 ? (uninstallQueue.length > 0 ? "update" : "install") : "uninstall";
 
+  useEffect(() => {
+    if (currentError) setError(currentError.error);
+  }, [currentError]);
+
+  const onCloseError = useCallback(() => setError(), [setError]);
+
   return (
     <>
+      <ErrorModal isOpened={!!error} error={error} onClose={onCloseError} />
       <NavigationGuard
         analyticsName="ManagerGuardModal"
         when={installQueue.length > 0 || uninstallQueue.length > 0}

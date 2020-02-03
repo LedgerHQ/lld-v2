@@ -49,13 +49,13 @@ const ButtonContainer = styled(Box).attrs(p => ({
   horizontal: true,
 }))``;
 
-type Props = {
+export type ErrorDisplayProps = {
   error: Error,
   onRetry?: () => void,
   withExportLogs?: boolean,
 };
 
-const ErrorDisplay = ({ error, onRetry, withExportLogs }: Props) => {
+const ErrorDisplay = ({ error, onRetry, withExportLogs }: ErrorDisplayProps) => {
   const { t } = useTranslation();
   return (
     <Wrapper>
@@ -77,9 +77,11 @@ const ErrorDisplay = ({ error, onRetry, withExportLogs }: Props) => {
             outlineGrey
           />
         ) : null}
-        <Button primary ml={withExportLogs ? 4 : 0} onClick={onRetry}>
-          {t("common.retry")}
-        </Button>
+        {!!onRetry && (
+          <Button primary ml={withExportLogs ? 4 : 0} onClick={onRetry}>
+            {t("common.retry")}
+          </Button>
+        )}
       </ButtonContainer>
     </Wrapper>
   );
