@@ -102,6 +102,7 @@ class InputCurrency extends PureComponent<Props, State> {
     if (needsToBeReformatted) {
       const { isFocused } = this.state;
       this.setState({
+        rawValue: "",
         displayValue:
           !nextProps.value || nextProps.value.isZero()
             ? ""
