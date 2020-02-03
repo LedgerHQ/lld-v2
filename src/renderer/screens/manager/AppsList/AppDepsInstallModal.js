@@ -72,6 +72,7 @@ const AppDepsInstallModal = ({ app, appList, dispatch, onClose }: Props) => {
       onReject={onClose}
       onClose={onClose}
       onConfirm={onConfirm}
+      centered
       title={
         <IconsSection>
           <img alt="" src={manager.getIconUrl(app.icon)} width={40} height={40} />
