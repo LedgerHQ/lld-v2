@@ -15,7 +15,6 @@ import styled from "styled-components";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import TrackPage from "~/renderer/analytics/TrackPage";
 import RefreshAccountsOrdering from "~/renderer/components/RefreshAccountsOrdering";
-// import StickyBackToTop from "~/renderer/components/StickyBackToTop";
 import OperationsList from "~/renderer/components/OperationsList";
 import AssetDistribution from "~/renderer/components/AssetDistribution";
 import DelegationBanner from "~/renderer/families/tezos/Delegation/DelegationBanner";
@@ -104,9 +103,6 @@ const DashboardPage = ({ saveSettings }: Props) => {
                 withSubAccounts
               />
             )}
-            {
-              // <StickyBackToTop scrollUpOnMount />
-            }
           </>
         ) : (
           <Redirect to="/accounts" />

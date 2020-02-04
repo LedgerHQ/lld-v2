@@ -12,8 +12,8 @@ import ModalBody from "~/renderer/components/Modal/ModalBody";
 type Props = {
   isOpened: boolean,
   isDanger?: boolean,
-  title: string,
-  subTitle?: string,
+  title?: React$Node,
+  subTitle?: React$Node,
   desc?: React$Node,
   renderIcon?: Function,
   confirmText?: string,

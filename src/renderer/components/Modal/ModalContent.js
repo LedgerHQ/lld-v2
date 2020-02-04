@@ -13,13 +13,9 @@ const ContentWrapper = styled.div`
 
 const ContentScrollableContainer = styled.div`
   padding: 20px 20px 40px;
-  overflow: ${p => (p.noScroll ? "visible" : "auto")};
+  ${p => (p.noScroll ? "overflow:visible" : p.theme.overflow.xy)};
   position: relative;
   flex: 0 auto;
-  &::-webkit-scrollbar {
-    width: 0px;
-    height: 0px;
-  }
 `;
 
 const ContentScrollableContainerGradient = styled.div.attrs(p => ({

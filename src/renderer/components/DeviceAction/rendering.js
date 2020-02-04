@@ -19,6 +19,7 @@ import { getDeviceAnimation } from "./animations";
 
 const AnimationWrapper: ThemedComponent<{ modelId: DeviceModelId }> = styled.div`
   width: 600px;
+  max-width: 100%;
   height: ${p => (p.modelId === "blue" ? "300px" : "200px")};
   align-self: center;
   display: flex;
@@ -33,6 +34,7 @@ const Wrapper: ThemedComponent<{}> = styled.div`
   align-items: center;
   justify-content: center;
   min-height: 350px;
+  max-width: 100%;
 `;
 
 const Logo = styled.div`
@@ -42,6 +44,24 @@ const Logo = styled.div`
   justify-content: center;
   color: ${p => p.theme.colors.alertRed};
   margin-bottom: 20px;
+`;
+
+const Header = styled.div`
+  display: flex;
+  flex: 1 0 0%;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-content: center;
+  align-items: center;
+`;
+
+const Footer = styled.div`
+  display: flex;
+  flex: 1 0 0%;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-content: center;
+  align-items: center;
 `;
 
 const Title = styled(Text).attrs({
@@ -71,24 +91,6 @@ const ButtonContainer = styled(Box).attrs(p => ({
   mt: 25,
   horizontal: true,
 }))``;
-
-const Header = styled.div`
-  display: flex;
-  flex: 1 0 0%;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-content: center;
-  align-items: center;
-`;
-
-const Footer = styled.div`
-  display: flex;
-  flex: 1 0 0%;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-content: center;
-  align-items: center;
-`;
 
 const TroobleshootingWrapper = styled.div`
   margin-top: auto;

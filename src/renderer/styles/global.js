@@ -50,4 +50,27 @@ export const GlobalStyle = createGlobalStyle`
   ::selection {
     background: ${p => rgba(p.theme.colors.wallet, 0.1)};
   }
+
+
+  --track-color: rgba(0,0,0,0);
+
+  ::-webkit-scrollbar              { 
+    width: 12px;
+    height: 12px;
+    background-color: rgba(0,0,0,0);
+  }
+  ::-webkit-scrollbar-button       { 
+    opacity: 0;
+  }
+  ::-webkit-scrollbar-track        { 
+    background-color: rgba(0,0,0,0);
+  }
+  ::-webkit-scrollbar-thumb        {
+    box-shadow: inset 0 0 0 12px var(--track-color);
+    border: 2px solid rgba(0,0,0,0);
+    border-radius: 12px;
+  }
+  ::-webkit-scrollbar-corner { 
+    opacity: 0;
+  }
 `;

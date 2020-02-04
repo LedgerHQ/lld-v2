@@ -3,10 +3,8 @@
 import { remote } from "electron";
 import React, { useEffect, useRef } from "react";
 import { Route, Switch, useLocation } from "react-router-dom";
-import styled from "styled-components";
 
 import { getEnv } from "@ledgerhq/live-common/lib/env";
-import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import Track from "~/renderer/analytics/Track";
 import Dashboard from "~/renderer/screens/dashboard";
 import Settings from "~/renderer/screens/settings";
@@ -18,7 +16,6 @@ import Asset from "~/renderer/screens/asset";
 import SyncBackground from "~/renderer/components/SyncBackground";
 import SyncContinuouslyPendingOperations from "~/renderer/components/SyncContinouslyPendingOperations";
 import Box from "~/renderer/components/Box/Box";
-import GrowScroll from "~/renderer/components/GrowScroll";
 import ListenDevices from "~/renderer/components/ListenDevices";
 import ExportLogsButton from "~/renderer/components/ExportLogsButton";
 import Idler from "~/renderer/components/Idler";
@@ -27,8 +24,6 @@ import OnboardingOrElse from "~/renderer/components/OnboardingOrElse";
 import AppRegionDrag from "~/renderer/components/AppRegionDrag";
 import CheckTermsAccepted from "~/renderer/components/CheckTermsAccepted";
 import IsNewVersion from "~/renderer/components/IsNewVersion";
-import HSMStatusBanner from "~/renderer/components/HSMStatusBanner";
-import TopBar from "~/renderer/components/TopBar";
 import LibcoreBusyIndicator from "~/renderer/components/LibcoreBusyIndicator";
 import DeviceBusyIndicator from "~/renderer/components/DeviceBusyIndicator";
 import KeyboardContent from "~/renderer/components/KeyboardContent";
@@ -37,27 +32,8 @@ import MainSideBar from "~/renderer/components/MainSideBar";
 import TriggerAppReady from "~/renderer/components/TriggerAppReady";
 import ContextMenuWrapper from "~/renderer/components/ContextMenu/ContextMenuWrapper";
 import DebugUpdater from "~/renderer/components/Updater/DebugUpdater";
+import Page from "~/renderer/components/Page";
 import ModalsLayer from "./ModalsLayer";
-
-const Main: ThemedComponent<{
-  tabIndex?: number,
-  full?: boolean,
-  ref?: React$Ref<React$ElementRef<any>>,
-}> = styled(GrowScroll).attrs(props => ({
-  pt: 6,
-  px: 6,
-  pb: props.theme.space[6] + props.theme.sizes.topBarHeight,
-}))`
-  outline: none;
-`;
-
-const ScrollZone = styled(Box)`
-  overflow: auto;
-  &::-webkit-scrollbar {
-    width: 0px;
-    height: 0px;
-  }
-`;
 
 const reloadApp = event => {
   if ((event.ctrlKey || event.metaKey) && event.key === "r") {
@@ -105,35 +81,26 @@ const Default = () => {
               interval={getEnv("SYNC_PENDING_INTERVAL")}
             />
             <SyncBackground />
-
-            <div id="sticky-back-to-top-root" />
-
-            <Box grow horizontal bg="palette.background.paper">
+            <Box
+              grow
+              horizontal
+              bg="palette.background.default"
+              color="palette.text.shade60"
+              style={{ width: "100vw", height: "100vh" }}
+            >
               <MainSideBar />
-              <ScrollZone
-                className="main-container"
-                shrink
-                grow
-                bg="palette.background.default"
-                color="palette.text.shade60"
-                relative
-              >
-                <HSMStatusBanner />
-                <TopBar />
-
-                <Main ref={ref} tabIndex={-1}>
-                  <Switch>
-                    <Route path="/" exact component={Dashboard} />
-                    <Route path="/settings" component={Settings} />
-                    <Route path="/accounts" component={Accounts} />
-                    <Route path="/manager" component={Manager} />
-                    <Route path="/partners" component={Partners} />
-                    <Route path="/account/:parentId/:id" component={Account} />
-                    <Route path="/account/:id" component={Account} />
-                    <Route path="/asset/:assetId+" component={Asset} />
-                  </Switch>
-                </Main>
-              </ScrollZone>
+              <Page>
+                <Switch>
+                  <Route path="/" exact render={props => <Dashboard {...props} />} />
+                  <Route path="/settings" render={props => <Settings {...props} />} />
+                  <Route path="/accounts" render={props => <Accounts {...props} />} />
+                  <Route path="/manager" render={props => <Manager {...props} />} />
+                  <Route path="/partners" render={props => <Partners {...props} />} />
+                  <Route path="/account/:parentId/:id" render={props => <Account {...props} />} />
+                  <Route path="/account/:id" render={props => <Account {...props} />} />
+                  <Route path="/asset/:assetId+" render={props => <Asset {...props} />} />
+                </Switch>
+              </Page>
             </Box>
 
             <LibcoreBusyIndicator />

@@ -102,7 +102,7 @@ export const Notes: ThemedComponent<{}> = styled(Box).attrs(() => ({
 
   table {
     width: 100%;
-    overflow: auto;
+    ${p => p.theme.overflow.xy};
     border-collapse: collapse;
 
     th {
