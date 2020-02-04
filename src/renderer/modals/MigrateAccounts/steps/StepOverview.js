@@ -266,9 +266,11 @@ const StepOverview = ({
           <Desc>
             <Text color="palette.text.shade80" ff="Inter|Regular" fontSize={4}>
               <Trans
-                i18nKey={`migrateAccounts.overview.${
-                  migratedAccountNames.length > 1 ? "successDescPlu" : "successDesc"
-                }`}
+                i18nKey={
+                  migratedAccountNames.length > 1
+                    ? "migrateAccounts.overview.successDescPlu"
+                    : "migrateAccounts.overview.successDesc"
+                }
                 values={{
                   assets: migratedAccountNames.join(" & "),
                 }}
