@@ -8,6 +8,7 @@
   "private": true,
   "main": "./.webpack/main.bundle.js",
   "scripts": {
+    "start:prod": "electron ./.webpack/main.bundle.js",
     "start": "cross-env NODE_ENV=development node ./tools/main.js",
     "build": "cross-env NODE_ENV=production node ./tools/main.js build",
     "lint": "eslint src tools",

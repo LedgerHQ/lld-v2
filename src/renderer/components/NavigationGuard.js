@@ -37,7 +37,7 @@ const NavigationGuard = ({
       /** Reset redux navigation lock status */
       dispatch(setNavigationLock(false));
     };
-  }, [when]);
+  }, [when, dispatch]);
 
   /** show modal if needed and location to go to on confirm */
   const showModal = useCallback(

@@ -60,7 +60,7 @@ async function init() {
 
   const store = createStore({ dbMiddleware });
 
-  const initialSettings = await getKey("app", "settings", {});
+  const initialSettings = window.settings;
 
   store.dispatch(fetchSettings(initialSettings));
 
