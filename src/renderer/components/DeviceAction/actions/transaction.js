@@ -1,8 +1,10 @@
 // @flow
 import { of } from "rxjs";
-import { scan, catchError } from "rxjs/operators";
+import { scan, catchError, tap } from "rxjs/operators";
 import { useEffect, useState } from "react";
+import { log } from "@ledgerhq/logs";
 import type {
+  TokenCurrency,
   AccountLike,
   Account,
   Transaction,
@@ -31,6 +33,7 @@ type TransactionState = {|
 |};
 
 type TransactionRequest = {
+  tokenCurrency?: ?TokenCurrency,
   parentAccount: ?Account,
   account: AccountLike,
   transaction: Transaction,
@@ -40,6 +43,7 @@ type TransactionRequest = {
 type TransactionResult =
   | {
       signedOperation: SignedOperation,
+      device: Device,
     }
   | {
       transactionSignError: Error,
@@ -48,10 +52,15 @@ type TransactionResult =
 type TransactionAction = Action<TransactionRequest, TransactionState, TransactionResult>;
 
 const mapResult = ({
+  device,
   signedOperation,
   transactionSignError,
 }: TransactionState): ?TransactionResult =>
-  signedOperation ? { signedOperation } : transactionSignError ? { transactionSignError } : null;
+  signedOperation && device
+    ? { signedOperation, device }
+    : transactionSignError
+    ? { transactionSignError }
+    : null;
 
 type Event = SignOperationEvent | { type: "error", error: Error };
 
@@ -70,7 +79,7 @@ const reducer = (state: State, e: Event): State => {
         error instanceof TransportStatusError && error.statusCode === 0x6985
           ? new UserRefusedOnDevice()
           : error;
-      return { ...state, transactionSignError };
+      return { ...initialState, transactionSignError };
     }
     case "signed":
       return { ...state, signedOperation: e.signedOperation };
@@ -89,12 +98,13 @@ const useHook = (reduxDevice: ?Device, txRequest: TransactionRequest): Transacti
   const mainAccount = getMainAccount(txRequest.account, txRequest.parentAccount);
 
   const appState = appAction.useHook(reduxDevice, { account: mainAccount });
-  const { device, appAndVersion } = appState;
+
+  const { device, opened } = appState;
 
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
-    if (!device || !appAndVersion) {
+    if (!device || !opened) {
       setState(initialState);
       return;
     }
@@ -109,6 +119,7 @@ const useHook = (reduxDevice: ?Device, txRequest: TransactionRequest): Transacti
       })
       .pipe(
         catchError(error => of({ type: "error", error })),
+        tap(e => log("actions-transaction-event", e.type, e)),
         scan(reducer, initialState),
       )
       .subscribe(setState);
@@ -116,9 +127,17 @@ const useHook = (reduxDevice: ?Device, txRequest: TransactionRequest): Transacti
     return () => {
       sub.unsubscribe();
     };
-  }, [device, appAndVersion, mainAccount, transaction]);
+  }, [device, mainAccount, transaction, opened]);
 
-  return { ...appState, ...state };
+  return {
+    ...appState,
+    ...state,
+    deviceStreamingProgress:
+      state.signedOperation || state.transactionSignError
+        ? null
+        : // when good app is opened, we start the progress so it doesn't "blink"
+          state.deviceStreamingProgress || (appState.opened ? 0 : null),
+  };
 };
 
 export const action: TransactionAction = {

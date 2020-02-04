@@ -10,7 +10,6 @@ import CurrencyDownStatusAlert from "~/renderer/components/CurrencyDownStatusAle
 import TrackPage from "~/renderer/analytics/TrackPage";
 
 import type { StepProps } from "../Body";
-import TokenTips from "../../TokenTips";
 
 export default function StepConnectDevice({
   account,
@@ -19,17 +18,16 @@ export default function StepConnectDevice({
   transitionTo,
 }: StepProps) {
   const mainAccount = account ? getMainAccount(account, parentAccount) : null;
-  const tokenCur = (account && account.type === "TokenAccount" && account.token) || token;
+  const tokenCurrency = (account && account.type === "TokenAccount" && account.token) || token;
 
   return (
     <>
       {mainAccount ? <CurrencyDownStatusAlert currency={mainAccount.currency} /> : null}
       <DeviceAction
         action={action}
-        request={{ account: mainAccount }}
+        request={{ account: mainAccount, tokenCurrency }}
         onResult={() => transitionTo("receive")}
       />
-      {!tokenCur ? null : <TokenTips token={tokenCur} />}
     </>
   );
 }

@@ -7,10 +7,8 @@ import type {
   Transaction,
   TransactionStatus,
   Operation,
-  SignOperationEvent,
 } from "@ledgerhq/live-common/lib/types";
 import type { Device } from "~/renderer/reducers/devices";
-
 import type { Step } from "~/renderer/components/Stepper";
 
 export type StepId =
@@ -32,22 +30,18 @@ export type StepProps = {
   parentAccount: ?Account,
   transaction: ?Transaction,
   status: TransactionStatus,
-  bridgeError: ?Error,
   bridgePending: boolean,
   error: ?Error,
-  lastSignOperationEvent: ?SignOperationEvent,
-  signed: boolean,
   optimisticOperation: ?Operation,
   closeModal: void => void,
   openModal: (string, any) => void,
-  isAppOpened: boolean,
   onChangeAccount: (?AccountLike, ?Account) => void,
-  onChangeAppOpened: boolean => void,
   onChangeTransaction: Transaction => void,
   onTransactionError: Error => void,
   onOperationBroadcasted: Operation => void,
   onRetry: void => void,
-  signTransaction: ({ transitionTo: string => void }) => void,
+  setSigned: boolean => void,
+  signed: boolean,
 };
 
 export type St = Step<StepId, StepProps>;

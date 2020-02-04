@@ -20,7 +20,6 @@ import {
   renderError,
   renderInWrongAppForAccount,
   renderLoading,
-  renderRequestOpenApp,
   renderRequestQuitApp,
   renderRequiresAppInstallation,
 } from "./rendering";
@@ -104,12 +103,6 @@ const DeviceAction = <R, H, P>({
     return <AutoRepair onDone={closeRepairModal} />;
   }
 
-  if (requestOpenApp) {
-    // Nano S 1.3.1. need to ask user to open the app.
-    const { appName } = requestOpenApp;
-    return renderRequestOpenApp({ modelId, type, appName });
-  }
-
   if (requestQuitApp) {
     return renderRequestQuitApp({ modelId, type });
   }
@@ -124,9 +117,11 @@ const DeviceAction = <R, H, P>({
     return renderAllowManager({ modelId, type, wording });
   }
 
-  if (allowOpeningRequestedWording) {
-    const wording = allowOpeningRequestedWording;
-    return renderAllowOpeningApp({ modelId, type, wording });
+  if (allowOpeningRequestedWording || requestOpenApp) {
+    // requestOpenApp for Nano S 1.3.1 (need to ask user to open the app.)
+    const wording = allowOpeningRequestedWording || requestOpenApp.appName;
+    const tokenContext = request && request.tokenCurrency;
+    return renderAllowOpeningApp({ modelId, type, wording, tokenContext });
   }
 
   if (inWrongDeviceForAccount) {
@@ -151,7 +146,7 @@ const DeviceAction = <R, H, P>({
 
   if (request && device && deviceSignatureRequested) {
     const { account, parentAccount, status, transaction } = request;
-    if (account && parentAccount && status && transaction) {
+    if (account && status && transaction) {
       return (
         <TransactionConfirm
           device={device}

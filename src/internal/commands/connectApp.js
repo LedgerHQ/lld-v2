@@ -14,7 +14,6 @@ import getAppAndVersion from "@ledgerhq/live-common/lib/hw/getAppAndVersion";
 import getAddress from "@ledgerhq/live-common/lib/hw/getAddress";
 import openApp from "@ledgerhq/live-common/lib/hw/openApp";
 import type { DerivationMode } from "@ledgerhq/live-common/lib/types";
-import { delay as delayP } from "@ledgerhq/live-common/lib/promise";
 
 export type RequiresDerivation = {|
   currencyId: string,

@@ -2,6 +2,7 @@
 import React from "react";
 import { Trans } from "react-i18next";
 import styled from "styled-components";
+import type { TokenCurrency } from "@ledgerhq/live-common/lib/types";
 import { WrongDeviceForAccount } from "@ledgerhq/errors";
 import type { DeviceModelId } from "@ledgerhq/devices";
 import type { Device } from "~/renderer/reducers/devices";
@@ -33,7 +34,7 @@ const Wrapper: ThemedComponent<{}> = styled.div`
   flex: 1;
   align-items: center;
   justify-content: center;
-  min-height: 350px;
+  min-height: 260px;
   max-width: 100%;
 `;
 
@@ -69,7 +70,9 @@ const Title = styled(Text).attrs({
   color: "palette.text.shade100",
   textAlign: "center",
   fontSize: 5,
-})``;
+})`
+  white-space: pre-line;
+`;
 
 const ErrorTitle = styled(Text).attrs({
   ff: "Inter|SemiBold",
@@ -77,6 +80,7 @@ const ErrorTitle = styled(Text).attrs({
   textAlign: "center",
   fontSize: 6,
 })`
+  user-select: text;
   margin-bottom: 10px;
 `;
 
@@ -85,7 +89,9 @@ const ErrorDescription = styled(Text).attrs({
   color: "palette.text.shade60",
   textAlign: "center",
   fontSize: 4,
-})``;
+})`
+  user-select: text;
+`;
 
 const ButtonContainer = styled(Box).attrs(p => ({
   mt: 25,
@@ -97,26 +103,6 @@ const TroobleshootingWrapper = styled.div`
 `;
 
 // these are not components because we want reconciliation to not remount the sub elements
-
-export const renderRequestOpenApp = ({
-  modelId,
-  type,
-  appName,
-}: {
-  modelId: DeviceModelId,
-  type: "light" | "dark",
-  appName: string,
-}) => (
-  <Wrapper>
-    <Header />
-    <AnimationWrapper modelId={modelId}>
-      <Animation animation={getDeviceAnimation(modelId, type, "openApp")} />
-    </AnimationWrapper>
-    <Footer>
-      <Title>Please open {appName} app</Title>
-    </Footer>
-  </Wrapper>
-);
 
 export const renderRequestQuitApp = ({
   modelId,
@@ -204,10 +190,12 @@ export const renderAllowOpeningApp = ({
   modelId,
   type,
   wording,
+  tokenContext,
 }: {
   modelId: DeviceModelId,
   type: "light" | "dark",
   wording: string,
+  tokenContext?: ?TokenCurrency,
 }) => (
   <Wrapper>
     <Header />
@@ -217,6 +205,15 @@ export const renderAllowOpeningApp = ({
     <Footer>
       <Title>
         <Trans i18nKey="DeviceAction.allowAppPermission" values={{ wording }} />
+        {!tokenContext ? null : (
+          <>
+            {"\n"}
+            <Trans
+              i18nKey="DeviceAction.allowAppPermissionSubtitleToken"
+              values={{ token: tokenContext.name }}
+            />
+          </>
+        )}
       </Title>
     </Footer>
   </Wrapper>

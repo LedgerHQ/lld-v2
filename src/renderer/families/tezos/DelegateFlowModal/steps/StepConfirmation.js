@@ -14,7 +14,6 @@ import Spinner from "~/renderer/components/Spinner";
 import RetryButton from "~/renderer/components/RetryButton";
 import TranslatedError from "~/renderer/components/TranslatedError";
 import LinkWithExternalIcon from "~/renderer/components/LinkWithExternalIcon";
-import DebugAppInfosForCurrency from "~/renderer/components/DebugAppInfosForCurrency";
 import IconCheckCircle from "~/renderer/icons/CheckCircle";
 import IconExclamationCircleThin from "~/renderer/icons/ExclamationCircleThin";
 import IconTriangleWarning from "~/renderer/icons/TriangleWarning";
@@ -88,7 +87,6 @@ const StepConfirmation = ({
 
   return (
     <Container shouldSpace={broadcastError}>
-      {error && account ? <DebugAppInfosForCurrency /> : null}
       {broadcastError ? (
         <Disclaimer>
           <Box mr={3}>

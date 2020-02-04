@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { getMainAccount } from "@ledgerhq/live-common/lib/account";
 import TrackPage from "~/renderer/analytics/TrackPage";
 import Button from "~/renderer/components/Button";
-import TokenTips from "~/renderer/modals/TokenTips";
 import DeviceAction from "~/renderer/components/DeviceAction";
 import { action } from "~/renderer/components/DeviceAction/actions/app";
 
@@ -19,9 +18,11 @@ const StepConnectDevice = ({ account, parentAccount, onChangeAppOpened }: StepPr
       <DeviceAction
         action={action}
         onResult={() => onChangeAppOpened(true)}
-        request={{ account: account ? getMainAccount(account, parentAccount) : null }}
+        request={{
+          tokenCurrency: token,
+          account: account ? getMainAccount(account, parentAccount) : null,
+        }}
       />
-      {!token ? null : <TokenTips token={token} />}
     </>
   );
 };

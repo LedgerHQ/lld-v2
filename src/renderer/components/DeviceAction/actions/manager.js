@@ -163,7 +163,7 @@ const useHook = (device: ?Device): ManagerState => {
         debounceTime(1000),
         // each time there is a device change, we pipe to the command
         switchMap(connectManager),
-        tap(e => log("manager-connect-event", e.type, e)),
+        tap(e => log("actions-manager-event", e.type, e)),
         // tap(e => console.log("connectManager event", e)),
         // we gather all events with a reducer into the UI state
         scan(reducer, getInitialState()),

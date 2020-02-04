@@ -10,7 +10,7 @@ import {
   runDerivationScheme,
 } from "@ledgerhq/live-common/lib/derivation";
 import type { AppAndVersion, ConnectAppEvent } from "~/internal/commands/connectApp";
-import type { Account, CryptoCurrency } from "@ledgerhq/live-common/lib/types";
+import type { Account, CryptoCurrency, TokenCurrency } from "@ledgerhq/live-common/lib/types";
 import type { Device } from "~/renderer/reducers/devices";
 import { command } from "~/renderer/commands";
 import { useReplaySubject } from "./shared";
@@ -41,6 +41,7 @@ export type AppRequest = {
   appName?: ?string,
   currency?: ?CryptoCurrency,
   account?: ?Account,
+  tokenCurrency?: ?TokenCurrency,
 };
 
 export type AppResult = {|
@@ -182,7 +183,7 @@ const useHook = (device: ?Device, appRequest: AppRequest): AppState => {
         debounceTime(1000),
         // each time there is a device change, we pipe to the command
         switchMap(device => connectApp(device, params)),
-        tap(e => log("app-connect-event", e.type, e)),
+        tap(e => log("actions-app-event", e.type, e)),
         // tap(e => console.log("connectApp event", e)),
         // we gather all events with a reducer into the UI state
         scan(reducer, getInitialState()),

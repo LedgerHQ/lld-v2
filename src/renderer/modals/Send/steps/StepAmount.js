@@ -1,8 +1,8 @@
 // @flow
 
 import React, { Fragment, PureComponent } from "react";
+import { Trans } from "react-i18next";
 import { getMainAccount } from "@ledgerhq/live-common/lib/account";
-
 import TrackPage from "~/renderer/analytics/TrackPage";
 import Box from "~/renderer/components/Box";
 import Button from "~/renderer/components/Button";
@@ -62,7 +62,7 @@ export class StepAmountFooter extends PureComponent<StepProps> {
   };
 
   render() {
-    const { t, account, parentAccount, status, bridgePending } = this.props;
+    const { account, parentAccount, status, bridgePending } = this.props;
     const { errors } = status;
     if (!account) return null;
 
@@ -75,7 +75,7 @@ export class StepAmountFooter extends PureComponent<StepProps> {
       <>
         <AccountFooter parentAccount={parentAccount} account={account} status={status} />
         <Button isLoading={bridgePending} primary disabled={!canNext} onClick={this.onNext}>
-          {t("common.continue")}
+          <Trans i18nKey="common.continue" />
         </Button>
       </>
     );

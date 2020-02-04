@@ -1,5 +1,4 @@
 // @flow
-import getAppAndVersion from "./getAppAndVersion";
 import firmwarePrepare from "./firmwarePrepare";
 import firmwareMain from "./firmwareMain";
 import firmwareRepair from "./firmwareRepair";
@@ -23,7 +22,6 @@ import { commands as bridgeProxyCommands } from "~/renderer/bridge/proxy-command
 export const commandsById = {
   appOpExec,
   ...bridgeProxyCommands,
-  getAppAndVersion,
   firmwarePrepare,
   firmwareMain,
   firmwareRepair,

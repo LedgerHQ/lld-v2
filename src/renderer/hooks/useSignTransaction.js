@@ -44,8 +44,7 @@ type SignTransactionArgs = {
 
 // TODO migration to actions/transaction:
 // - analytics to be done in a separate function / hook based on the state
-// - broadcast needs to be moved our and happen in another hook that takes signedOperation?
-// - transitionTo also needs to be a hook to react on the state.
+// - block during validation phase with a component
 
 export const useSignTransactionCallback = ({
   context,

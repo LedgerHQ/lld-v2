@@ -8,14 +8,11 @@ import TrackPage from "~/renderer/analytics/TrackPage";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import { multiline } from "~/renderer/styles/helpers";
 import IconCheckCircle from "~/renderer/icons/CheckCircle";
-import IconExclamationCircleThin from "~/renderer/icons/ExclamationCircleThin";
 import IconTriangleWarning from "~/renderer/icons/TriangleWarning";
 import Box from "~/renderer/components/Box";
 import Button from "~/renderer/components/Button";
-import DebugAppInfosForCurrency from "~/renderer/components/DebugAppInfosForCurrency";
 import RetryButton from "~/renderer/components/RetryButton";
-import TranslatedError from "~/renderer/components/TranslatedError";
-import StepProgress from "~/renderer/components/StepProgress";
+import ErrorDisplay from "~/renderer/components/ErrorDisplay";
 
 import type { StepProps } from "../types";
 
@@ -64,9 +61,9 @@ function StepConfirmation({
   t,
   optimisticOperation,
   error,
-  signed,
   theme,
   device,
+  signed,
 }: StepProps & { theme: * }) {
   if (optimisticOperation) {
     return (
@@ -90,7 +87,6 @@ function StepConfirmation({
     return (
       <Container shouldSpace={signed}>
         <TrackPage category="Send Flow" name="Step Confirmation Error" />
-        {account ? <DebugAppInfosForCurrency /> : null}
         {signed ? (
           <Disclaimer>
             <Box mr={3}>
@@ -101,26 +97,13 @@ function StepConfirmation({
             </Box>
           </Disclaimer>
         ) : null}
-        <span style={{ color: theme.colors.alertRed }}>
-          <IconExclamationCircleThin size={43} />
-        </span>
-        <Title>
-          <TranslatedError error={error} />
-        </Title>
-        <Text style={{ userSelect: "text" }} color="palette.text.shade80">
-          <TranslatedError error={error} field="description" />
-        </Text>
+
+        <ErrorDisplay error={error} withExportLogs />
       </Container>
     );
   }
 
-  if (!device) return null;
-
-  return (
-    <StepProgress modelId={device.modelId}>
-      <Trans i18nKey="send.steps.confirmation.pending.title" />
-    </StepProgress>
-  );
+  return null;
 }
 
 export function StepConfirmationFooter({
