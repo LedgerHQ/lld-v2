@@ -2,6 +2,10 @@
 
 import os
 import json
+from sys import argv
+
+hideFound = len(argv)>1
+
 
 folder1 = './src'
 locales = './src/renderer/i18n/en/app.json'
@@ -72,9 +76,17 @@ for file in files:
             if key in contents:
                 keys[key] = 0
 
-all = [ ((bcolors.OK, bcolors.NOK)[value==1])+key+bcolors.ENDC for (key, value) in keys.items() ]
+all = []
+if not hideFound:
+    all = [ ((bcolors.OK, bcolors.NOK)[value==1])+key+bcolors.ENDC for (key, value) in keys.items() ]
+else:
+    all = [ bcolors.NOK+key+bcolors.ENDC for (key, value) in keys.items() if value == 1]
+
 notFound = [ 1 for (key, value) in keys.items() if value == 1]
 
+print("===============================================")
+print("List of literals:")
+print("===============================================")
 print("\n".join(all))
 print("===============================================")
 print("Total of "+str(len(notFound))+" not found")

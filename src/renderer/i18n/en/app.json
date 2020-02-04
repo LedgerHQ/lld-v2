@@ -166,7 +166,8 @@
       "desc": "Add accounts to manage more crypto assets",
       "createAccount": "Add account"
     },
-    "recentActivity": "Last operations"
+    "recentActivity": "Last operations",
+    "totalBalance": "Total balance"
   },
   "currentAddress": {
     "title": "Current address",
