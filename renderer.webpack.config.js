@@ -50,7 +50,13 @@ module.exports = {
     }),
     new UnusedWebpackPlugin({
       directories: [path.join(__dirname, "src/renderer")],
-      exclude: ["*.test.js", "*.html", "types.js"],
+      exclude: [
+        "*.test.js",
+        "*.html",
+        "bridge/proxy-commands.js",
+        "fonts/inter/Inter-Bold.woff2",
+        "types.js",
+      ],
     }),
   ],
   module: {
