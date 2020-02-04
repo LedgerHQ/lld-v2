@@ -334,9 +334,6 @@
       "import": "Accounts",
       "finish": "Confirmation"
     },
-    "connectDevice": {
-      "desc": "Follow the steps below to add <1><0>{{currencyName}}</0></1> accounts"
-    },
     "tokensTip": "{{token}} ({{ticker}}) is an {{tokenType}} token. You can receive tokens directly on an {{currency}} account.",
     "accountToImportSubtitle_plural": "Add existing accounts",
     "selectAll": "Select all ({{count}})",
@@ -411,12 +408,6 @@
     "quitApp": "Please quit application on your device"
   },
   "manager": {
-    "loading": "Loading",
-    "device": {
-      "title": "Connect your device",
-      "desc": "Follow the steps below to open the Manager",
-      "cta": "Connect my device"
-    },
     "tabs": {
       "appCatalog": "App Catalog",
       "appCatalogSearch": "Search app in catalog...",

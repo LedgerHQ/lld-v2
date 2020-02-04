@@ -19,7 +19,7 @@ import SyncSkipUnderPriority from "~/renderer/components/SyncSkipUnderPriority";
 import Modal from "~/renderer/components/Modal";
 import Stepper from "~/renderer/components/Stepper";
 import StepChooseCurrency, { StepChooseCurrencyFooter } from "./steps/StepChooseCurrency";
-import StepConnectDevice, { StepConnectDeviceFooter } from "./steps/StepConnectDevice";
+import StepConnectDevice from "./steps/StepConnectDevice";
 import StepImport, { StepImportFooter } from "./steps/StepImport";
 import StepFinish, { StepFinishFooter } from "./steps/StepFinish";
 
@@ -77,7 +77,6 @@ const createSteps = (): St[] => {
       id: "connectDevice",
       label: <Trans i18nKey="addAccounts.breadcrumb.connectDevice" />,
       component: StepConnectDevice,
-      footer: StepConnectDeviceFooter,
       onBack,
       hideFooter: false,
     },
