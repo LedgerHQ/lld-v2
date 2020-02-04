@@ -3,9 +3,13 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 
-import GrowScroll from "~/renderer/components/GrowScroll";
 import Box from "~/renderer/components/Box";
 import Space from "~/renderer/components/Space";
+
+const ListWrapper = styled(Box)`
+  ${p => (p.scroll ? p.theme.overflow.y : "")};
+  will-change: unset;
+`;
 
 type Props = {
   children: any,
@@ -19,7 +23,6 @@ type Props = {
 class SideBarList extends Component<Props> {
   render() {
     const { children, title, scroll, titleRight, emptyState, collapsed } = this.props;
-    const ListWrapper: React$ComponentType<any> = scroll ? GrowScroll : Box;
 
     return (
       <>
@@ -33,7 +36,7 @@ class SideBarList extends Component<Props> {
           </>
         )}
         {children ? (
-          <ListWrapper flow={2} px={3} fontSize={3}>
+          <ListWrapper scroll={scroll} flow={2} px={3} fontSize={3} noTransform>
             {children}
           </ListWrapper>
         ) : emptyState ? (

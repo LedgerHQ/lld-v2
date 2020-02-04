@@ -131,6 +131,7 @@ const animations = {
 
 const overflow = {
   x: css`
+    overflow-y: hidden;
     overflow-x: scroll;
     will-change: transform;
     &:hover {
@@ -138,6 +139,7 @@ const overflow = {
     }
   `,
   y: css`
+    overflow-x: hidden;
     overflow-y: scroll;
     will-change: transform;
     &:hover {
@@ -145,6 +147,7 @@ const overflow = {
     }
   `,
   yAuto: css`
+    overflow-x: hidden;
     overflow-y: auto;
     will-change: transform;
     &:hover {
