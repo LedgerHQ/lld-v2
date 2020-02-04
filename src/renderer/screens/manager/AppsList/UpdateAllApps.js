@@ -123,7 +123,7 @@ const UpdateAllApps = ({ state, dispatch, plan, isIncomplete, progress }: Props)
           {updatableAppList.length}
         </Badge>
         <Box flex={1} />
-        <Button primary onClick={onUpdateAll} fontSize={3}>
+        <Button primary onClick={onUpdateAll} fontSize={3} event="Manager Update All">
           <IconLoader size={14} />
           <Text style={{ marginLeft: 8 }}>
             <Trans i18nKey="manager.applist.item.updateAll" />

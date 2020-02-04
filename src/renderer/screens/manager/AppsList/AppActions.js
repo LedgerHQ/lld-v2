@@ -128,6 +128,11 @@ const AppActions: React$ComponentType<Props> = React.memo(
                     lighterPrimary
                     disabled={notEnoughMemoryToInstall}
                     onClick={notEnoughMemoryToInstall ? null : onInstall}
+                    event="Manager Install Click"
+                    eventProperties={{
+                      appName: name,
+                      appVersion: app.version,
+                    }}
                   >
                     <IconArrowDown size={14} />
                     <Text style={{ marginLeft: 8 }}>
@@ -138,7 +143,15 @@ const AppActions: React$ComponentType<Props> = React.memo(
               ) : null}
               {((isInstalled || !installedAvailable) && !appStoreView && !onlyUpdate) ||
               forceUninstall ? (
-                <Button style={{ padding: 12 }} onClick={onUninstall}>
+                <Button
+                  style={{ padding: 12 }}
+                  onClick={onUninstall}
+                  event="Manager Uninstall Click"
+                  eventProperties={{
+                    appName: name,
+                    appVersion: app.version,
+                  }}
+                >
                   <IconTrash color={colors.grey} size={14} />
                 </Button>
               ) : null}

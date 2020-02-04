@@ -6,6 +6,7 @@ import type { DeviceModelId } from "@ledgerhq/devices";
 import { getDeviceModel } from "@ledgerhq/devices";
 import { connect } from "react-redux";
 import TrackPage from "~/renderer/analytics/TrackPage";
+import Track from "~/renderer/analytics/Track";
 import { rgba } from "~/renderer/styles/helpers";
 import { deviceModelId } from "~/renderer/actions/onboarding";
 import Tooltip from "~/renderer/components/Tooltip";
@@ -45,6 +46,7 @@ class SelectDeviceC extends PureComponent<StepProps, {}> {
           <Box mb={5}>
             <Title>{t("onboarding.selectDevice.title")}</Title>
           </Box>
+          <Track event="SelectDevice" onUpdate deviceModelId={onboarding.deviceModelId} />
           <Box pt={4}>
             <Inner>
               <DeviceContainer

@@ -327,21 +327,21 @@ export default {
     });
   },
 
-  analyticsStart: (id: string) => {
+  analyticsStart: (id: string, props: Object) => {
     if (logAnalytics) {
-      logger.log("info", `△ start() with user id ${id}`, { type: "analytics-start", id });
+      logger.log("info", `△ start() with user id ${id}`, props);
     }
   },
 
   analyticsStop: () => {
     if (logAnalytics) {
-      logger.log("info", "△ stop()", { type: "analytics-stop" });
+      logger.log("info", "△ stop()");
     }
   },
 
   analyticsTrack: (event: string, properties: ?Object) => {
     if (logAnalytics) {
-      logger.log("info", `△ track ${event}`, { type: "analytics-track", properties });
+      logger.log("info", `△ track ${event}`, properties);
     }
     captureBreadcrumb({
       category: "track",
@@ -353,7 +353,7 @@ export default {
   analyticsPage: (category: string, name: ?string, properties: ?Object) => {
     const message = name ? `${category} ${name}` : category;
     if (logAnalytics) {
-      logger.log("info", `△ page ${message}`, { type: "analytics-page", properties });
+      logger.log("info", `△ page ${message}`, properties);
     }
     captureBreadcrumb({
       category: "page",
