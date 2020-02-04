@@ -1,13 +1,13 @@
 // @flow
 import { renderError } from "~/renderer/components/DeviceAction/rendering";
 
-type Props = {
+export type ErrorDisplayProps = {
   error: Error,
   onRetry?: () => void,
   withExportLogs?: boolean,
 };
 
-const ErrorDisplay = ({ error, onRetry, withExportLogs }: Props) =>
+const ErrorDisplay = ({ error, onRetry, withExportLogs }: ErrorDisplayProps) =>
   renderError({ error, onRetry, withExportLogs });
 
 export default ErrorDisplay;

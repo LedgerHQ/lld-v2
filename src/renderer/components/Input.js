@@ -33,7 +33,7 @@ const Container = styled(Box).attrs(() => ({
       ? p.theme.colors.palette.background.default
       : p.theme.colors.palette.background.paper};
   border-radius: ${p => p.theme.radii[1]}px;
-  border-width: 1px;
+  border-width: ${p => (p.noBorder ? 0 : 1)}px;
   border-style: solid;
   border-color: ${p =>
     p.error

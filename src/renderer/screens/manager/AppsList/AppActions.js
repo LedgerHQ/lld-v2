@@ -55,11 +55,34 @@ const AppActions: React$ComponentType<Props> = React.memo(
     notEnoughMemoryToInstall,
     showActions = true,
     progress,
+    setAppInstallDep,
+    setAppUninstallDep,
   }: Props) => {
-    const { name } = app;
-    const { installed, installedAvailable, installQueue, uninstallQueue } = state;
-    const onInstall = useCallback(() => dispatch({ type: "install", name }), [dispatch, name]);
-    const onUninstall = useCallback(() => dispatch({ type: "uninstall", name }), [dispatch, name]);
+    const { name, dependencies } = app;
+    const { apps, installed, installedAvailable, installQueue, uninstallQueue } = state;
+
+    const needsInstallDeps = useMemo(
+      () => dependencies && dependencies.some(dep => installed.every(app => app.name !== dep)),
+      [dependencies, installed],
+    );
+
+    const needsUninstallDeps = useMemo(
+      () =>
+        apps
+          .filter(a => installed.some(i => i.name === a.name))
+          .some(({ dependencies }) => dependencies.includes(name)),
+      [apps, installed, name],
+    );
+
+    const onInstall = useCallback(() => {
+      if (needsInstallDeps) setAppInstallDep(app);
+      else dispatch({ type: "install", name });
+    }, [app, dispatch, name, needsInstallDeps, setAppInstallDep]);
+
+    const onUninstall = useCallback(() => {
+      if (needsUninstallDeps) setAppUninstallDep(app);
+      else dispatch({ type: "uninstall", name });
+    }, [app, dispatch, name, needsUninstallDeps, setAppUninstallDep]);
 
     const isInstalled = useMemo(() => installed.find(i => i.name === name), [installed, name]);
 

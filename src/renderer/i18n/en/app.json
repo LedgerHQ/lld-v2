@@ -416,6 +416,7 @@
     },
     "deviceStorage": {
       "freeSpace": "<0>{{space}}</0> free",
+      "noFreeSpace": "no storage left",
       "installed": "Installed",
       "capacity": "Capacity",
       "used": "Used",
@@ -426,6 +427,10 @@
     "applist": {
       "placeholder": "There are no apps matching the search and filters selected",
       "placeholderInstalled": "There are no installed apps matching the search and filters selected",
+      "placeholderNoAppsInstalled": "No apps installed on your device",
+      "placeholderGoToCatalog": "Go to the Apps catalog to install apps",
+      "noResultsFound": "No results found",
+      "noResultsDesc": "Please verify the spelling and try again",
       "filter": {
         "title": "Show",
         "all": "All",
@@ -437,8 +442,7 @@
         "title": "Sort",
         "name_asc": "Name A-Z",
         "name_desc": "Name Z-A",
-        "marketcap_asc": "Marketcap ASC",
-        "marketcap_desc": "Marketcap DESC"
+        "marketcap_desc": "Marketcap"
       },
       "updatable": {
         "title": "Updates available",
@@ -460,6 +464,11 @@
         "uninstall": "Uninstall",
         "notEnoughSpace": "Not enough space",
         "supported": "Supported"
+      },
+      "uninstall": {
+        "title": "Uninstall all",
+        "subtitle": "Uninstall all apps",
+        "description": "You can reinstall apps in the App catalog."
       }
     },
     "yourDeviceIsGenuine": "Your device is genuine",
@@ -467,6 +476,17 @@
     "intallEthApp": "Install Ethereum app",
     "apps": {
       "install": "Install",
+      "dependencyInstall": {
+        "title": "{{dependency}} app is required",
+        "description": "The {{app}} app will also be installed because the {{dependency}} app needs it.",
+        "confirm": "Install apps"
+      },
+      "dependencyUninstall": {
+        "title": "Other apps need the {{app}} app",
+        "showAll": "Show apps to uninstall",
+        "description": "Apps on your device that are dependent on the {{app}} app will be uninstalled too.",
+        "confirm": "Uninstall {{app}} and other apps"
+      },
       "all": "App catalog",
       "installing": "Installing {{app}}...",
       "uninstalling": "Uninstalling {{app}}...",
