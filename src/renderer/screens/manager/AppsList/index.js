@@ -1,5 +1,5 @@
 // @flow
-import React, { memo, useCallback, useState } from "react";
+import React, { memo, useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import { withTranslation } from "react-i18next";
 import type { TFunction } from "react-i18next";
@@ -19,6 +19,7 @@ import AppDepsInstallModal from "./AppDepsInstallModal";
 import AppDepsUnInstallModal from "./AppDepsUnInstallModal";
 
 import omit from "lodash/omit";
+import ErrorModal from "~/renderer/modals/ErrorModal/index";
 
 const Container = styled.div`
   display: flex;
@@ -49,6 +50,7 @@ type Props = {
 
 const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
   const [state, dispatch] = useAppsRunner(result, exec);
+  const [error, setError] = useState();
   const [appInstallDep, setAppInstallDep] = useState(undefined);
   const [appUninstallDep, setAppUninstallDep] = useState(undefined);
   const filteredState = omit(state, "currentProgress");
@@ -56,6 +58,7 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
   const plan = getActionPlan(filteredState) || [];
   const isIncomplete = isIncompleteState(filteredState);
 
+  const { installQueue, uninstallQueue, currentError } = filteredState;
   const onCloseDepsInstallModal = useCallback(() => setAppInstallDep(undefined), [
     setAppInstallDep,
   ]);
@@ -64,13 +67,18 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
     setAppUninstallDep,
   ]);
 
-  const { installQueue, uninstallQueue } = filteredState;
-
   const installState =
     installQueue.length > 0 ? (uninstallQueue.length > 0 ? "update" : "install") : "uninstall";
 
+  useEffect(() => {
+    if (currentError) setError(currentError.error);
+  }, [currentError]);
+
+  const onCloseError = useCallback(() => setError(), [setError]);
+
   return (
     <Container>
+      <ErrorModal isOpened={!!error} error={error} onClose={onCloseError} />
       <NavigationGuard
         analyticsName="ManagerGuardModal"
         when={installQueue.length > 0 || uninstallQueue.length > 0}
