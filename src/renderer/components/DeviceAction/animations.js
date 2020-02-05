@@ -22,6 +22,10 @@ const nanoS = {
     light: require("~/renderer/animations/nanoS/6OpenApp/light.json"),
     dark: require("~/renderer/animations/nanoS/6OpenApp/dark.json"),
   },
+  validate: {
+    light: require("~/renderer/animations/nanoS/7Validate/light.json"),
+    dark: require("~/renderer/animations/nanoS/7Validate/dark.json"),
+  },
 };
 const nanoX = {
   plugAndPinCode: {
@@ -44,6 +48,10 @@ const nanoX = {
     light: require("~/renderer/animations/nanoX/6OpenApp/light.json"),
     dark: require("~/renderer/animations/nanoX/6OpenApp/dark.json"),
   },
+  validate: {
+    light: require("~/renderer/animations/nanoX/7Validate/light.json"),
+    dark: require("~/renderer/animations/nanoX/7Validate/dark.json"),
+  },
 };
 
 const blue = {
@@ -61,6 +69,9 @@ const blue = {
   },
   openApp: {
     light: require("~/renderer/animations/blue/6OpenApp/data.json"),
+  },
+  validate: {
+    light: require("~/renderer/animations/blue/7Validate/data.json"),
   },
 };
 

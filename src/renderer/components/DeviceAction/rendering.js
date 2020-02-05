@@ -128,7 +128,7 @@ export const renderRequestQuitApp = ({
   </Wrapper>
 );
 
-export const renderVerifyAddressUnwrapped = ({
+export const renderVerifyUnwrapped = ({
   modelId,
   type,
 }: {
@@ -137,34 +137,8 @@ export const renderVerifyAddressUnwrapped = ({
 }) => (
   <AnimationWrapper modelId={modelId}>
     <DeviceBlocker />
-    <Animation animation={getDeviceAnimation(modelId, type, "quitApp")} />
+    <Animation animation={getDeviceAnimation(modelId, type, "validate")} />
   </AnimationWrapper>
-);
-
-export const renderConfirmTransactionUnwrapped = ({
-  modelId,
-  type,
-}: {
-  modelId: DeviceModelId,
-  type: "light" | "dark",
-}) => (
-  <AnimationWrapper modelId={modelId}>
-    <DeviceBlocker />
-    <Animation animation={getDeviceAnimation(modelId, type, "quitApp")} />
-  </AnimationWrapper>
-);
-
-export const renderVerifyAddress = ({
-  modelId,
-  type,
-}: {
-  modelId: DeviceModelId,
-  type: "light" | "dark",
-}) => (
-  <Wrapper>
-    <Header />
-    {renderVerifyAddressUnwrapped({ modelId, type })}
-  </Wrapper>
 );
 
 const OpenManagerBtn = ({ closeAllModal }: { closeAllModal: () => void }) => {

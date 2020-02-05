@@ -23,7 +23,7 @@ import IconRecheck from "~/renderer/icons/Recover";
 import IconCopy from "~/renderer/icons/Copy";
 import IconShield from "~/renderer/icons/Shield";
 import Ellipsis from "~/renderer/components/Ellipsis";
-import { renderVerifyAddressUnwrapped } from "~/renderer/components/DeviceAction/rendering";
+import { renderVerifyUnwrapped } from "~/renderer/components/DeviceAction/rendering";
 
 const Container = styled(Box).attrs(p => ({
   borderRadius: 1,
@@ -267,7 +267,7 @@ class CurrentAddress extends PureComponent<Props, { copyFeedback: boolean }> {
 
         <h1>1. Share address to recipient</h1>
 
-        {renderVerifyAddressUnwrapped({ modelId: "nanoS", type: "light" })}
+        {renderVerifyUnwrapped({ modelId: "nanoS", type: "light" })}
 
         <h1>2. </h1>
 
