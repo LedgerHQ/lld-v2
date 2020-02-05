@@ -17,6 +17,7 @@ import ExportLogsButton from "~/renderer/components/ExportLogsButton";
 import ExclamationCircleThin from "~/renderer/icons/ExclamationCircleThin";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import { getDeviceAnimation } from "./animations";
+import { DeviceBlocker } from "./DeviceBlocker";
 
 const AnimationWrapper: ThemedComponent<{ modelId: DeviceModelId }> = styled.div`
   width: 600px;
@@ -132,6 +133,20 @@ export const renderVerifyAddressUnwrapped = ({
   type: "light" | "dark",
 }) => (
   <AnimationWrapper modelId={modelId}>
+    <DeviceBlocker />
+    <Animation animation={getDeviceAnimation(modelId, type, "quitApp")} />
+  </AnimationWrapper>
+);
+
+export const renderConfirmTransactionUnwrapped = ({
+  modelId,
+  type,
+}: {
+  modelId: DeviceModelId,
+  type: "light" | "dark",
+}) => (
+  <AnimationWrapper modelId={modelId}>
+    <DeviceBlocker />
     <Animation animation={getDeviceAnimation(modelId, type, "quitApp")} />
   </AnimationWrapper>
 );
@@ -174,6 +189,7 @@ export const renderAllowManager = ({
   wording: string,
 }) => (
   <Wrapper>
+    <DeviceBlocker />
     <Header />
     <AnimationWrapper modelId={modelId}>
       <Animation animation={getDeviceAnimation(modelId, type, "allowManager")} />
@@ -191,13 +207,16 @@ export const renderAllowOpeningApp = ({
   type,
   wording,
   tokenContext,
+  isDeviceBlocker,
 }: {
   modelId: DeviceModelId,
   type: "light" | "dark",
   wording: string,
   tokenContext?: ?TokenCurrency,
+  isDeviceBlocker?: boolean,
 }) => (
   <Wrapper>
+    {isDeviceBlocker ? <DeviceBlocker /> : null}
     <Header />
     <AnimationWrapper modelId={modelId}>
       <Animation animation={getDeviceAnimation(modelId, type, "openApp")} />

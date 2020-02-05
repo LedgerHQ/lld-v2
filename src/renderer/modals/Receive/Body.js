@@ -5,12 +5,9 @@ import { connect } from "react-redux";
 import type { TFunction } from "react-i18next";
 import { Trans, withTranslation } from "react-i18next";
 import { createStructuredSelector } from "reselect";
-
 import SyncSkipUnderPriority from "~/renderer/components/SyncSkipUnderPriority";
-
 import Track from "~/renderer/analytics/Track";
 import type { Account, TokenCurrency, AccountLike } from "@ledgerhq/live-common/lib/types";
-
 import type { Device } from "~/renderer/reducers/devices";
 import { getCurrentDevice } from "~/renderer/reducers/devices";
 import { accountsSelector } from "~/renderer/reducers/accounts";
@@ -22,10 +19,12 @@ import StepConnectDevice, { StepConnectDeviceFooter } from "./steps/StepConnectD
 import StepWarning, { StepWarningFooter } from "./steps/StepWarning";
 import StepReceiveFunds from "./steps/StepReceiveFunds";
 
+export type StepId = "warning" | "account" | "device" | "receive";
+
 type OwnProps = {|
-  stepId: string,
+  stepId: StepId,
   onClose: () => void,
-  onChangeStepId: string => void,
+  onChangeStepId: StepId => void,
   isAddressVerified: ?boolean,
   verifyAddressError: ?Error,
   onChangeAddressVerified: (isAddressVerified: ?boolean, err: ?Error) => void,
@@ -71,7 +70,7 @@ export type StepProps = {
   onChangeAddressVerified: (?boolean, ?Error) => void,
 };
 
-export type St = Step<"warning" | "account" | "device" | "receive", StepProps>;
+export type St = Step<StepId, StepProps>;
 
 const createSteps = (): Array<St> => [
   {
@@ -94,21 +93,10 @@ const createSteps = (): Array<St> => [
     footer: StepConnectDeviceFooter,
     onBack: ({ transitionTo }: StepProps) => transitionTo("account"),
   },
-  /*
-  {
-    id: "confirm",
-    label: <Trans i18nKey="receive.steps.confirmAddress.title" />,
-    footer: StepConfirmAddressFooter,
-    component: StepConfirmAddress,
-    onBack: ({ transitionTo }: StepProps) => transitionTo("device"),
-    shouldRenderFooter: ({ isAddressVerified }: StepProps) => isAddressVerified === false,
-  },
-  */
   {
     id: "receive",
     label: <Trans i18nKey="receive.steps.receiveFunds.title" />,
     component: StepReceiveFunds,
-    shouldPreventClose: ({ isAddressVerified }: StepProps) => isAddressVerified === null,
   },
 ];
 
@@ -194,7 +182,7 @@ const Body = ({
     device,
     account,
     parentAccount,
-    initialStepId: params && params.startWithWarning ? "warning" : stepId,
+    stepId: params && params.startWithWarning ? "warning" : stepId,
     steps,
     errorSteps,
     disabledSteps,

@@ -261,7 +261,7 @@ class AddAccounts extends PureComponent<Props, State> {
           <Stepper
             key={reset} // THIS IS A HACK because stepper is not controllable. FIXME
             title={title}
-            initialStepId="chooseCurrency"
+            stepId={stepId}
             onStepChange={this.handleStepChange}
             onClose={onClose}
             steps={this.STEPS}

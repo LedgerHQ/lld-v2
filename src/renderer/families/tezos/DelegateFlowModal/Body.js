@@ -97,7 +97,6 @@ const createSteps = params => [
     id: "verification",
     excludeFromBreadcrumb: true,
     component: StepVerification,
-    shouldPreventClose: true,
   },
   {
     id: "refused",
@@ -265,7 +264,7 @@ const Body = ({ onChangeStepId, onClose, stepId, params }: Props) => {
 
   const stepperProps = {
     title,
-    initialStepId: (params && params.stepId) || stepId,
+    stepId: (params && params.stepId) || stepId,
     openedWithAccount: Boolean(params && params.account),
     steps,
     errorSteps,

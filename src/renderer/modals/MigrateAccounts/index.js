@@ -54,10 +54,13 @@ export type StepProps = {
   onCloseModal: () => void,
   hideLoopNotice: boolean,
 };
-type St = Step<"overview" | "device" | "currency", StepProps>;
+
+type StepId = "overview" | "device" | "currency";
+
+type St = Step<StepId, StepProps>;
 
 type State = {
-  stepId: string,
+  stepId: StepId,
   isAppOpened: boolean,
   currency: ?CryptoCurrency,
   scanStatus: ScanStatus,
@@ -188,7 +191,7 @@ class MigrateAccounts extends PureComponent<*, State> {
         render={({ onClose }) => (
           <Stepper
             hideBreadcrumb
-            initialStepId={stepId}
+            stepId={stepId}
             onStepChange={this.handleStepChange}
             onClose={onClose}
             steps={this.STEPS}

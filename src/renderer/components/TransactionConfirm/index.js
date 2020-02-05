@@ -17,6 +17,7 @@ import transactionConfirmFieldsPerFamily from "~/renderer/generated/TransactionC
 import Box from "~/renderer/components/Box";
 import WarnBox from "~/renderer/components/WarnBox";
 import FormattedVal from "~/renderer/components/FormattedVal";
+import { DeviceBlocker } from "~/renderer/components/DeviceAction/DeviceBlocker";
 import TransactionConfirmField from "./TransactionConfirmField";
 
 const Container = styled(Box).attrs(() => ({
@@ -59,6 +60,8 @@ const TransactionConfirm = ({ t, device, account, parentAccount, transaction, st
 
   return (
     <Container>
+      <DeviceBlocker />
+
       {!device ? null : (
         <Box mt={isBlue ? 4 : null}>
           <Interactions

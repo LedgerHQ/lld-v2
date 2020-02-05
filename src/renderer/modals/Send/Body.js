@@ -18,21 +18,19 @@ import { accountsSelector } from "~/renderer/reducers/accounts";
 import { updateAccountWithUpdater } from "~/renderer/actions/accounts";
 import { getCurrentDevice } from "~/renderer/reducers/devices";
 import Track from "~/renderer/analytics/Track";
-
 import type { Device } from "~/renderer/reducers/devices";
-
 import StepRecipient, { StepRecipientFooter } from "./steps/StepRecipient";
 import StepAmount, { StepAmountFooter } from "./steps/StepAmount";
 import StepConnectDevice from "./steps/StepConnectDevice";
 import StepSummary, { StepSummaryFooter } from "./steps/StepSummary";
 import StepConfirmation, { StepConfirmationFooter } from "./steps/StepConfirmation";
 import StepWarning, { StepWarningFooter } from "./steps/StepWarning";
-import type { St } from "./types";
+import type { St, StepId } from "./types";
 
 type OwnProps = {|
-  stepId: string,
+  stepId: StepId,
+  onChangeStepId: StepId => void,
   onClose: () => void,
-  onChangeStepId: string => void,
   params: {
     account: ?AccountLike,
     parentAccount: ?Account,
@@ -137,10 +135,7 @@ const Body = ({
   } = useBridgeTransaction(() => {
     const parentAccount = params && params.parentAccount;
     const account = (params && params.account) || accounts[0];
-    return {
-      account,
-      parentAccount,
-    };
+    return { account, parentAccount };
   });
 
   // make sure step id is in sync
@@ -206,7 +201,7 @@ const Body = ({
 
   const stepperProps = {
     title: stepId === "warning" ? t("common.information") : t("send.title"),
-    initialStepId: params && params.startWithWarning ? "warning" : stepId,
+    stepId: params && params.startWithWarning ? "warning" : stepId,
     steps,
     errorSteps,
     device,
