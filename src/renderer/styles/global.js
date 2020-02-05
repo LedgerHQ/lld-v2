@@ -61,6 +61,8 @@ export const GlobalStyle = createGlobalStyle`
   }
   ::-webkit-scrollbar-button       { 
     opacity: 0;
+    height: 0;
+    width: 0;
   }
   ::-webkit-scrollbar-track        { 
     background-color: rgba(0,0,0,0);

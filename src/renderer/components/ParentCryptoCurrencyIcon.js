@@ -18,19 +18,17 @@ const ParentCryptoCurrencyIconWrapper: ThemedComponent<{
 }> = styled.div`
   ${p =>
     p.doubleIcon
-      ? `
-  > :nth-child(1) {
-    clip-path: polygon(0% 0%, 100% 0%, 100% 50%, 81% 50%, 68% 54%, 58% 63%, 52% 74%, 50% 86%, 50% 100%, 0% 100%);
-  }`
+      ? ""
       : `
   display: flex;
   align-items: center;`}
-
+  position: relative;
   line-height: ${p => (p.bigger ? "18px" : "18px")};
   font-size: ${p => (p.bigger ? "12px" : "12px")};
   > :nth-child(2) {
-    margin-top: ${p => (p.bigger ? "-10px" : "-8px")};
-    margin-left: ${p => (p.bigger ? "10px" : "8px")};
+    position: absolute;
+    bottom: -8px;
+    left: 8px;
     border: 2px solid transparent;
   }
 `;

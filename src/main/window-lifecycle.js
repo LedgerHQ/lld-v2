@@ -2,6 +2,7 @@
 import "./setup";
 import { BrowserWindow, screen } from "electron";
 import { terminate } from "./terminator";
+import path from "path";
 
 const intFromEnv = (key: string, def: number): number => {
   const v = process.env[key];
@@ -64,6 +65,7 @@ export async function createMainWindow({ dimensions, positions }: any) {
     minHeight: MIN_HEIGHT,
     show: false,
     webPreferences: {
+      preload: path.join(__dirname, "preloader.bundle.js"),
       ...defaultWindowOptions.webPreferences,
     },
   };

@@ -97,10 +97,6 @@ const Chart = ({ height, data, color, renderTickY, renderTooltip, valueKey = "va
     [color, data, valueKey],
   );
 
-  const min = useMemo(() => Math.min(...generatedData.datasets[0].data.map(d => d.y)), [
-    generatedData,
-  ]);
-
   const generateOptions = useMemo(
     () => ({
       responsive: true,
@@ -147,7 +143,7 @@ const Chart = ({ height, data, color, renderTickY, renderTooltip, valueKey = "va
               zeroLineColor: theme.text.shade10,
             },
             ticks: {
-              min: min * 0.8,
+              beginAtZero: true,
               maxTicksLimit: 4,
               fontColor: theme.text.shade60,
               fontFamily: "Inter",
@@ -158,7 +154,7 @@ const Chart = ({ height, data, color, renderTickY, renderTooltip, valueKey = "va
         ],
       },
     }),
-    [min, renderTickY, theme],
+    [renderTickY, theme],
   );
 
   useLayoutEffect(() => {

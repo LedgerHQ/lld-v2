@@ -190,7 +190,7 @@ const DeviceStorage = ({ state, deviceInfo }: Props) => {
   const shouldWarn = distribution.shouldWarnMemory || isIncomplete;
 
   return (
-    <Card p={20} mb={4} horizontal>
+    <Card p={20} horizontal>
       <DeviceIllustration deviceModel={state.deviceModel} />
       <div style={{ flex: 1 }}>
         <Box horizontal alignItems="center">
@@ -232,7 +232,7 @@ const DeviceStorage = ({ state, deviceInfo }: Props) => {
               <Trans i18nKey="manager.deviceStorage.installed" />
             </Text>
             <Text color="palette.text.shade100" ff="Inter|Bold" fontSize={4}>
-              {!isIncomplete ? distribution.apps.length : "-"}
+              {!isIncomplete ? distribution.apps.length : "—"}
             </Text>
           </div>
         </Info>

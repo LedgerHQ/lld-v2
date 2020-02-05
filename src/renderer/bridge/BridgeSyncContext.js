@@ -15,7 +15,8 @@ import { createStructuredSelector } from "reselect";
 import type { OutputSelector } from "reselect";
 import type { Account } from "@ledgerhq/live-common/lib/types";
 import { getEnv } from "@ledgerhq/live-common/lib/env";
-import { getAccountCurrency } from "@ledgerhq/live-common/lib/account";
+import { getAccountCurrency, getMainAccount } from "@ledgerhq/live-common/lib/account";
+import { isAccountDelegating } from "@ledgerhq/live-common/lib/families/tezos/bakers";
 import { getAccountBridge } from "@ledgerhq/live-common/lib/bridge";
 
 import logger from "~/logger";
@@ -85,6 +86,15 @@ const actions = {
 
 const lastTimeAnalyticsTrackPerAccountId = {};
 
+// TODO generalize the concept in live-common
+const getVotesCount = (account, parentAccount) => {
+  const mainAccount = getMainAccount(account, parentAccount);
+  if (mainAccount.currency.id === "tezos") {
+    return isAccountDelegating(account) ? 1 : 0;
+  }
+  return 0;
+};
+
 class Provider extends Component<BridgeSyncProviderOwnProps, Sync> {
   constructor() {
     super();
@@ -130,15 +140,19 @@ class Provider extends Component<BridgeSyncProviderOwnProps, Sync> {
             freshAddressPath: account.freshAddressPath,
             operationsLength: account.operations.length,
             tokensLength: subAccounts.length,
+            votesCount: getVotesCount(account),
           });
           if (event === "SyncSuccess") {
             subAccounts.forEach(a => {
+              const tokenId =
+                a.type === "TokenAccount" ? getAccountCurrency(a).id : account.currency.name;
               track("SyncSuccessToken", {
-                tokenId: getAccountCurrency(a).id,
+                tokenId,
                 tokenTicker: getAccountCurrency(a).ticker,
                 operationsLength: a.operations.length,
                 parentCurrencyName: account.currency.name,
                 parentDerivationMode: account.derivationMode,
+                votesCount: getVotesCount(a, account),
               });
             });
           }

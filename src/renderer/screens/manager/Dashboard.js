@@ -1,9 +1,10 @@
 // @flow
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
 import type { ListAppsResult } from "@ledgerhq/live-common/lib/apps/types";
+import { distribute, initState } from "@ledgerhq/live-common/lib/apps/logic";
 import type { Device } from "~/renderer/reducers/devices";
 import AppsList from "./AppsList";
 import TrackPage from "~/renderer/analytics/TrackPage";
@@ -42,6 +43,12 @@ const Dashboard = ({ device, deviceInfo, result, onReset }: Props) => {
     [device],
   );
 
+  const appsStoragePercentage = useMemo(() => {
+    if (!result) return 0;
+    const d = distribute(initState(result));
+    return d.totalAppsBytes / d.appsSpaceBytes;
+  }, [result]);
+
   return (
     <Box flow={4} selectable>
       <TrackPage
@@ -49,6 +56,8 @@ const Dashboard = ({ device, deviceInfo, result, onReset }: Props) => {
         name="Dashboard"
         deviceModelId={device.modelId}
         deviceVersion={deviceInfo.version}
+        appsStoragePercentage={appsStoragePercentage}
+        appLength={result ? result.installed.length : 0}
       />
       <FirmwareUpdate
         t={t}

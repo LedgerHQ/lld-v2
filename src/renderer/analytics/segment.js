@@ -63,7 +63,7 @@ let storeInstance; // is the redux store. it's also used as a flag to know if an
 export const start = async (store: *) => {
   if (!user) return;
   const { id } = await user();
-  logger.analyticsStart(id);
+  logger.analyticsStart(id, extraProperties(store));
   storeInstance = store;
   const { analytics } = window;
   if (typeof analytics === "undefined") {
