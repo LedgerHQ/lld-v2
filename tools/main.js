@@ -14,12 +14,19 @@ const { SENTRY_URL, GIT_REVISION } = process.env;
 
 const bundles = {
   renderer: {
-    config: require("../renderer.webpack.config"),
+    name: "renderer",
+    wpConf: require("../renderer.webpack.config"),
     color: "teal",
   },
   main: {
-    config: require("../main.webpack.config"),
+    name: "main",
+    wpConf: require("../main.webpack.config"),
     color: "orange",
+  },
+  preloader: {
+    name: "preloader",
+    wpConf: require("../preloader.webpack.config"),
+    color: "purple",
   },
 };
 
@@ -48,47 +55,50 @@ const buildRendererEnv = (mode, config) => {
 };
 
 const buildRendererConfig = (mode, config, argv) => {
+  const { wpConf, color, name } = config;
+
   const entry =
     mode === "development"
-      ? Array.isArray(config.entry)
-        ? ["webpack-hot-middleware/client", ...config.entry]
-        : ["webpack-hot-middleware/client", config.entry]
-      : config.entry;
+      ? Array.isArray(wpConf.entry)
+        ? ["webpack-hot-middleware/client", ...wpConf.entry]
+        : ["webpack-hot-middleware/client", wpConf.entry]
+      : wpConf.entry;
 
   const plugins =
     mode === "development"
-      ? [...config.plugins, new webpack.HotModuleReplacementPlugin()]
-      : config.plugins;
+      ? [...wpConf.plugins, new webpack.HotModuleReplacementPlugin()]
+      : wpConf.plugins;
 
   const alias =
     mode === "development"
-      ? { ...config.resolve.alias, "react-dom": "@hot-loader/react-dom" }
-      : config.resolve.alias;
+      ? { ...wpConf.resolve.alias, "react-dom": "@hot-loader/react-dom" }
+      : wpConf.resolve.alias;
 
   return {
-    ...config,
+    ...wpConf,
     mode: mode === "production" ? "production" : "development",
     devtool: mode === "development" ? "eval-source-map" : "none",
     entry,
     plugins: [
       ...plugins,
-      new WebpackBar({ name: "renderer", color: "#8ABEB7" }),
-      new webpack.DefinePlugin(buildRendererEnv(mode, config, argv)),
+      new WebpackBar({ name, color }),
+      new webpack.DefinePlugin(buildRendererEnv(mode, wpConf, argv)),
     ],
     resolve: {
-      ...config.resolve,
+      ...wpConf.resolve,
       alias,
     },
     output: {
-      ...config.output,
+      ...wpConf.output,
       publicPath: mode === "production" ? "./" : "/webpack",
     },
   };
 };
 
 const buildMainConfig = (mode, config, argv) => {
+  const { wpConf, color, name } = config;
   return {
-    ...config,
+    ...wpConf,
     mode: mode === "production" ? "production" : "development",
     devtool: mode === "development" ? "eval-source-map" : "none",
     externals: [nodeExternals()],
@@ -97,26 +107,30 @@ const buildMainConfig = (mode, config, argv) => {
       __filename: false,
     },
     plugins: [
-      ...config.plugins,
-      new WebpackBar({ name: "main", color: "#F0C674" }),
-      new webpack.DefinePlugin(buildMainEnv(mode, config, argv)),
+      ...wpConf.plugins,
+      new WebpackBar({ name, color }),
+      new webpack.DefinePlugin(buildMainEnv(mode, wpConf, argv)),
     ],
   };
 };
 
 const startDev = async argv => {
-  const mainWorker = new WebpackWorker(
-    "main",
-    buildMainConfig("development", bundles.main.config, argv),
+  const mainWorker = new WebpackWorker("main", buildMainConfig("development", bundles.main, argv));
+  const preloaderWorker = new WebpackWorker(
+    "preloader",
+    buildMainConfig("development", bundles.preloader, argv),
   );
   const rendererWorker = new WebpackWorker(
     "renderer",
-    buildRendererConfig("development", bundles.renderer.config),
+    buildRendererConfig("development", bundles.renderer),
   );
   const electron = new Electron("./.webpack/main.bundle.js");
 
   await Promise.all([
     mainWorker.watch(() => {
+      electron.reload();
+    }),
+    preloaderWorker.watch(() => {
       electron.reload();
     }),
     rendererWorker.serve(argv.port),
@@ -125,13 +139,15 @@ const startDev = async argv => {
 };
 
 const build = async argv => {
-  const mainConfig = buildMainConfig("production", bundles.main.config, argv);
-  const rendererConfig = buildRendererConfig("production", bundles.renderer.config, argv);
+  const mainConfig = buildMainConfig("production", bundles.main, argv);
+  const preloaderConfig = buildMainConfig("production", bundles.preloader, argv);
+  const rendererConfig = buildRendererConfig("production", bundles.renderer, argv);
 
   const mainWorker = new WebpackWorker("main", mainConfig);
   const rendererWorker = new WebpackWorker("renderer", rendererConfig);
+  const preloaderWorker = new WebpackWorker("preloader", preloaderConfig);
 
-  await Promise.all([mainWorker.bundle(), rendererWorker.bundle()]);
+  await Promise.all([mainWorker.bundle(), rendererWorker.bundle(), preloaderWorker.bundle()]);
 };
 
 yargs

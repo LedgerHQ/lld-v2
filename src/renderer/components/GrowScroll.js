@@ -7,10 +7,10 @@ import Box from "~/renderer/components/Box";
 const ScrollContainer = styled.div`
   display: flex;
   flex-direction: column;
-  ${p => p.theme.overflow.xy};
+  ${p => p.theme.overflow.yAuto};
   ${p =>
     p.maxHeight
-      ? `max-height:${p.maxHeight}`
+      ? `max-height:${p.maxHeight}px`
       : `bottom: 0;
       left: 0;
       position: absolute;

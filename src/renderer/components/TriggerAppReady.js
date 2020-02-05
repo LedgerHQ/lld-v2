@@ -1,11 +1,10 @@
 // @flow
 
 import { useEffect } from "react";
-import { ipcRenderer } from "electron";
 
 const TriggerAppReady = () => {
   useEffect(() => {
-    ipcRenderer.send("ready-to-show", {});
+    window.api.appLoaded();
   }, []);
 
   return null;

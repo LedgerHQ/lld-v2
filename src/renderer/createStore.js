@@ -4,6 +4,7 @@ import { createStore, applyMiddleware, compose } from "redux";
 // import { routerMiddleware } from 'react-router-redux'
 import thunk from "redux-thunk";
 import logger from "~/renderer/middlewares/logger";
+import analytics from "~/renderer/middlewares/analytics";
 import reducers from "~/renderer/reducers";
 
 type Props = {
@@ -15,7 +16,7 @@ export default ({ state, dbMiddleware }: Props) => {
   const middlewares = [thunk, logger];
 
   // middlewares.push(require('./../middlewares/sentry').default)
-  // middlewares.push(require('./../middlewares/analytics').default)
+  middlewares.push(analytics);
 
   if (dbMiddleware) {
     middlewares.push(dbMiddleware);

@@ -9,6 +9,7 @@ import palettes from "~/renderer/styles/palettes";
 import { themeSelector } from "~/renderer/actions/general";
 import { setTheme } from "~/renderer/actions/settings";
 import Text from "~/renderer/components/Text";
+import Track from "~/renderer/analytics/Track";
 
 type Props = {
   setTheme: (?string) => void,
@@ -80,6 +81,7 @@ const ThemeName = styled(Text)`
 
 const ThemeSelector = ({ setTheme, currentTheme }: Props) => (
   <ThemeSelectorContainer>
+    <Track event="ThemeSelector" onUpdate currentTheme={currentTheme} />
     {map(palettes, (palette, paletteName: string) => (
       <ThemeContainer key={paletteName} id={paletteName}>
         <ThemePicto

@@ -18,7 +18,6 @@ import { openModal } from "~/renderer/actions/modals";
 import IconAngleDown from "~/renderer/icons/AngleDown";
 import Box, { Card } from "~/renderer/components/Box";
 import Text from "~/renderer/components/Text";
-import Track from "~/renderer/analytics/Track";
 import { track } from "~/renderer/analytics/segment";
 import { createStructuredSelector } from "reselect";
 import { accountsSelector } from "~/renderer/reducers/accounts";
@@ -159,14 +158,6 @@ export class OperationsList extends PureComponent<Props, State> {
             </Card>
           </Box>
         ))}
-        {groupedOperations.completed ? (
-          <Track
-            onMount
-            event="OperationsListEndReached"
-            totalSections={groupedOperations.sections.length}
-            totalOperations={groupedOperations.sections.reduce((sum, s) => sum + s.data.length, 0)}
-          />
-        ) : null}
         {!groupedOperations.completed ? (
           <ShowMore onClick={this.fetchMoreOperations}>
             <span>{t("common.showMore")}</span>

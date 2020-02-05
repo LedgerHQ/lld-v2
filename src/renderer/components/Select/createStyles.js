@@ -82,6 +82,7 @@ export default (
     border: `1px solid ${theme.colors.palette.divider}`,
     boxShadow: "rgba(0, 0, 0, 0.05) 0 2px 2px",
     background: theme.colors.palette.background.paper,
+    "--track-color": theme.colors.palette.text.shade30,
   }),
   menuList: (styles: Object) => ({
     ...styles,

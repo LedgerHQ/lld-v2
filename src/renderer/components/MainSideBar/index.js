@@ -37,28 +37,36 @@ import Hide from "./Hide";
 
 const MAIN_SIDEBAR_WIDTH = 230;
 
-const TagText = styled.div`
-  margin-left: 8px;
+const TagText = styled.div.attrs(p => ({
+  style: {
+    opacity: p.collapsed ? 1 : 0,
+  },
+}))`
+  margin-left: ${p => p.theme.space[3]}px;
+  transition: opacity 0.2s;
 `;
 
 const Tag = styled(Link)`
   display: flex;
   justify-self: flex-end;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   font-family: "Inter";
   font-weight: bold;
   font-size: 10px;
-  padding: 2px 8px;
+  padding: 2px ${p => p.theme.space[3]}px;
   min-height: 32px;
   border-radius: 4px;
+  margin: ${p => p.theme.space[3]}px;
   color: ${p => p.theme.colors.palette.text.shade100};
   background-color: ${p => p.theme.colors.palette.background.default};
   text-decoration: none;
+  cursor: pointer;
+  border: solid 1px rgba(0, 0, 0, 0);
 
   &:hover {
     background-color: ${p => darken(p.theme.colors.palette.action.hover, 0.05)};
-    border: solid 1px ${p => p.theme.colors.wallet};
+    border-color: ${p => p.theme.colors.wallet};
   }
 `;
 
@@ -151,24 +159,10 @@ const TagContainer = ({ collapsed }: { collapsed: boolean }) => {
   const { t } = useTranslation();
 
   return isExperimental ? (
-    <Box
-      justifyContent="center"
-      m={2}
-      style={{
-        alignItems: "center",
-        alignSelf: "center",
-        justifyContent: "flex-end",
-        textAlign: "center",
-        cursor: "pointer",
-      }}
-    >
-      <Tag to="/settings/experimental">
-        <IconExperimental width={16} height={16} />
-        <Hide visible={collapsed}>
-          <TagText>{t("common.experimentalFeature")}</TagText>
-        </Hide>
-      </Tag>
-    </Box>
+    <Tag to="/settings/experimental">
+      <IconExperimental width={16} height={16} />
+      <TagText collapsed={collapsed}>{t("common.experimentalFeature")}</TagText>
+    </Tag>
   ) : null;
 };
 
@@ -307,6 +301,7 @@ const MainSideBar = () => {
             <SideBarList scroll title={t("sidebar.stars")} collapsed={secondAnim}>
               <Stars pathname={location.pathname} collapsed={secondAnim} />
             </SideBarList>
+            <Space grow />
             <TagContainer collapsed={!secondAnim} />
           </SideBar>
         );
