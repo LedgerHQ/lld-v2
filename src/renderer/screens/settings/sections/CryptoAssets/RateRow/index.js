@@ -20,7 +20,10 @@ export const RateRowWrapper: ThemedComponent<{}> = styled.div`
   height: 80px;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid ${p => p.theme.colors.palette.divider};
+  &:after {
+    left: 0;
+    right: 0;
+  }
   &:last-of-type {
     border: none;
   }

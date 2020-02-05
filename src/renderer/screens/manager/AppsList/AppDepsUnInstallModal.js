@@ -75,6 +75,7 @@ const AppDepsUninstallModal = ({ app, appList, installed, dispatch, onClose }: P
       onReject={onClose}
       onClose={onClose}
       onConfirm={onConfirm}
+      centered
       title={
         <IconsSection>
           <AppTree uri={manager.getIconUrl(app.icon)} />

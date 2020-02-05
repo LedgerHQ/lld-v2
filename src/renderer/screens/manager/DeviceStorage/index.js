@@ -233,7 +233,7 @@ const DeviceStorage = ({ state, deviceInfo }: Props) => {
                 <Trans i18nKey="manager.deviceStorage.installed" />
               </Text>
               <Text color="palette.text.shade100" ff="Inter|Bold" fontSize={4}>
-                {!isIncomplete ? distribution.apps.length : "-"}
+                {!isIncomplete ? distribution.apps.length : "—"}
               </Text>
             </div>
           </Info>
