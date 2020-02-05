@@ -93,6 +93,11 @@ type OwnProps = {
     deviceInfo: DeviceInfo,
     result: ?ListAppsResult,
   }>,
+  onSuccess?: ({
+    device: Device,
+    deviceInfo: DeviceInfo,
+    result: ?ListAppsResult,
+  }) => void,
 };
 
 type Props = OwnProps & {
@@ -155,6 +160,7 @@ const ManagerConnect = ({
   overridesPreferredDeviceModel,
   preferredDeviceModel,
   dispatch,
+  onSuccess,
 }: Props) => {
   const [
     {
@@ -290,6 +296,11 @@ const ManagerConnect = ({
         </Button>
       </Wrapper>
     );
+  }
+
+  if (onSuccess) {
+    onSuccess({ device, deviceInfo, result });
+    return null;
   }
 
   return Success ? <Success device={device} deviceInfo={deviceInfo} result={result} /> : null;
