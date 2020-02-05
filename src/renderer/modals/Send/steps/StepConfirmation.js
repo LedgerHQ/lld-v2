@@ -7,12 +7,12 @@ import styled, { withTheme } from "styled-components";
 import TrackPage from "~/renderer/analytics/TrackPage";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import { multiline } from "~/renderer/styles/helpers";
-import IconCheckCircle from "~/renderer/icons/CheckCircle";
-import IconTriangleWarning from "~/renderer/icons/TriangleWarning";
 import Box from "~/renderer/components/Box";
 import Button from "~/renderer/components/Button";
 import RetryButton from "~/renderer/components/RetryButton";
 import ErrorDisplay from "~/renderer/components/ErrorDisplay";
+import SuccessDisplay from "~/renderer/components/SuccessDisplay";
+import BroadcastErrorDisclaimer from "~/renderer/components/BroadcastErrorDisclaimer";
 
 import type { StepProps } from "../types";
 
@@ -25,37 +25,6 @@ const Container: ThemedComponent<{ shouldSpace?: boolean }> = styled(Box).attrs(
   min-height: 220px;
 `;
 
-const Title: ThemedComponent<{}> = styled(Box).attrs(() => ({
-  ff: "Inter",
-  fontSize: 5,
-  mt: 2,
-}))`
-  text-align: center;
-  word-break: break-word;
-`;
-
-const Text: ThemedComponent<{}> = styled(Box).attrs(() => ({
-  ff: "Inter",
-  fontSize: 4,
-  mt: 2,
-}))`
-  text-align: center;
-`;
-
-const Disclaimer: ThemedComponent<{}> = styled(Box).attrs(() => ({
-  horizontal: true,
-  alignItems: "center",
-  color: "palette.background.paper",
-  borderRadius: 1,
-  p: 3,
-  mb: 5,
-}))`
-  width: 100%;
-  background-color: ${p => p.theme.colors.lightRed};
-  color: ${p => p.theme.colors.alertRed};
-`;
-
-// TODO the "broadcasting" step need to be split out in another step, or at least a component
 function StepConfirmation({
   account,
   t,
@@ -69,35 +38,23 @@ function StepConfirmation({
     return (
       <Container>
         <TrackPage category="Send Flow" name="Step Confirmed" />
-        <span style={{ color: theme.colors.positiveGreen }}>
-          <IconCheckCircle size={43} />
-        </span>
-        <Title>
-          <Trans i18nKey="send.steps.confirmation.success.title" />
-        </Title>
-        <Text style={{ userSelect: "text" }} color="palette.text.shade80">
-          {multiline(t("send.steps.confirmation.success.text"))}
-        </Text>
+        <SuccessDisplay
+          title={<Trans i18nKey="send.steps.confirmation.success.title" />}
+          description={multiline(t("send.steps.confirmation.success.text"))}
+        />
       </Container>
     );
   }
 
   if (error) {
-    // FIXME this should be a generic component
     return (
       <Container shouldSpace={signed}>
         <TrackPage category="Send Flow" name="Step Confirmation Error" />
         {signed ? (
-          <Disclaimer>
-            <Box mr={3}>
-              <IconTriangleWarning height={16} width={16} />
-            </Box>
-            <Box style={{ display: "block" }} ff="Inter|SemiBold" fontSize={3} horizontal shrink>
-              <Trans i18nKey="send.steps.confirmation.broadcastError" />
-            </Box>
-          </Disclaimer>
+          <BroadcastErrorDisclaimer
+            title={<Trans i18nKey="send.steps.confirmation.broadcastError" />}
+          />
         ) : null}
-
         <ErrorDisplay error={error} withExportLogs />
       </Container>
     );
@@ -125,6 +82,7 @@ export function StepConfirmationFooter({
   return (
     <>
       {concernedOperation ? (
+        // FIXME make a standalone component!
         <Button
           ml={2}
           event="Send Flow Step 4 View OpD Clicked"

@@ -53,7 +53,6 @@ const Stepper = <T, StepProps>({
   ...props
 }: Props<T, StepProps>) => {
   const preventClose = useDeviceBlocked();
-  console.log({ preventClose });
 
   const transitionTo = useCallback(
     stepId => {

@@ -3,9 +3,10 @@
 import React, { PureComponent } from "react";
 import Modal from "~/renderer/components/Modal";
 import Body from "./Body";
+import type { StepId } from "./types";
 
 type State = {
-  stepId: string,
+  stepId: StepId,
 };
 
 class SendModal extends PureComponent<{}, State> {
@@ -13,12 +14,9 @@ class SendModal extends PureComponent<{}, State> {
     stepId: "starter",
   };
 
-  handleReset = () =>
-    this.setState({
-      stepId: "starter",
-    });
+  handleReset = () => this.setState({ stepId: "starter" });
 
-  handleStepChange = (stepId: string) => {
+  handleStepChange = (stepId: StepId) => {
     this.setState({ stepId });
   };
 

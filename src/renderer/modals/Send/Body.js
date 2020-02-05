@@ -201,7 +201,7 @@ const Body = ({
 
   const stepperProps = {
     title: stepId === "warning" ? t("common.information") : t("send.title"),
-    stepId: params && params.startWithWarning ? "warning" : stepId,
+    stepId,
     steps,
     errorSteps,
     device,

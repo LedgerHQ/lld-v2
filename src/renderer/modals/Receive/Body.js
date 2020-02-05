@@ -182,7 +182,7 @@ const Body = ({
     device,
     account,
     parentAccount,
-    stepId: params && params.startWithWarning ? "warning" : stepId,
+    stepId,
     steps,
     errorSteps,
     disabledSteps,

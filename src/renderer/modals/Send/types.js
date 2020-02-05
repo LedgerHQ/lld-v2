@@ -11,15 +11,7 @@ import type {
 import type { Device } from "~/renderer/reducers/devices";
 import type { Step } from "~/renderer/components/Stepper";
 
-export type StepId =
-  | "warning"
-  | "recipient"
-  | "amount"
-  | "summary"
-  | "device"
-  | "verification"
-  | "refused"
-  | "confirmation";
+export type StepId = "warning" | "recipient" | "amount" | "summary" | "device" | "confirmation";
 
 export type StepProps = {
   t: TFunction,

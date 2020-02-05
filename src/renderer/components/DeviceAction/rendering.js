@@ -1,11 +1,14 @@
 // @flow
-import React from "react";
+import React, { useCallback } from "react";
 import { Trans } from "react-i18next";
+import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import type { TokenCurrency } from "@ledgerhq/live-common/lib/types";
 import { WrongDeviceForAccount } from "@ledgerhq/errors";
 import type { DeviceModelId } from "@ledgerhq/devices";
 import type { Device } from "~/renderer/reducers/devices";
+import { closeAllModal } from "~/renderer/actions/modals";
 import Animation from "~/renderer/animations";
 import Button from "~/renderer/components/Button";
 import TranslatedError from "~/renderer/components/TranslatedError";
@@ -164,18 +167,27 @@ export const renderVerifyAddress = ({
   </Wrapper>
 );
 
+const OpenManagerBtn = ({ closeAllModal }: { closeAllModal: () => void }) => {
+  const history = useHistory();
+  const onClick = useCallback(() => {
+    history.push("manager");
+    closeAllModal();
+  }, [history, closeAllModal]);
+  return (
+    <Button mt={2} primary onClick={onClick}>
+      <Trans i18nKey="DeviceAction.openManager" />
+    </Button>
+  );
+};
+
+const OpenManagerButton = connect(null, { closeAllModal })(OpenManagerBtn);
+
 export const renderRequiresAppInstallation = ({ appName }: { appName: string }) => (
   <Wrapper>
-    <Title>{appName} App is not yet installed</Title>
-    <Button
-      mt={2}
-      primary
-      onClick={() => {
-        /* TODO */
-      }}
-    >
-      Open Manager
-    </Button>
+    <Title>
+      <Trans i18nKey="DeviceAction.appNotInstalled" values={{ appName }} />
+    </Title>
+    <OpenManagerButton />
   </Wrapper>
 );
 

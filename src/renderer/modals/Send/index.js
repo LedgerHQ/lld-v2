@@ -24,7 +24,7 @@ class SendModal extends PureComponent<{}, { stepId: StepId }> {
 
     return (
       <Modal
-        name={"MODAL_SEND"}
+        name="MODAL_SEND"
         centered
         refocusWhenChange={stepId}
         onHide={this.handleReset}

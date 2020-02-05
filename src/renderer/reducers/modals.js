@@ -41,6 +41,9 @@ const handlers = {
       },
     };
   },
+  MODAL_CLOSE_ALL: () => {
+    return {};
+  },
   MODAL_SET_DATA: (state, { payload }: { payload: OpenPayload }) => {
     const { name, data } = payload;
     return {

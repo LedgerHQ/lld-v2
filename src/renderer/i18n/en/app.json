@@ -406,7 +406,9 @@
     "loading": "Loading...",
     "connectAndUnlockDevice": "Connect your device and enter your PIN code",
     "unlockDevice": "Enter your PIN code",
-    "quitApp": "Please quit application on your device"
+    "quitApp": "Please quit application on your device",
+    "appNotInstalled": "{{appName}} app is not yet installed",
+    "openManager": "Open Manager"
   },
   "manager": {
     "tabs": {
