@@ -6,6 +6,7 @@ import Transport from "@ledgerhq/hw-transport";
 import { NotEnoughBalance } from "@ledgerhq/errors";
 import { log } from "@ledgerhq/logs";
 import { checkLibs } from "@ledgerhq/live-common/lib/sanityChecks";
+import i18n from "i18next";
 import { remote, webFrame } from "electron";
 import { render } from "react-dom";
 import moment from "moment";
@@ -72,6 +73,7 @@ async function init() {
   const state = store.getState();
   const language = languageSelector(state);
   moment.locale(language);
+  i18n.changeLanguage(language);
 
   const hideEmptyTokenAccounts = hideEmptyTokenAccountsSelector(state);
   setEnvOnAllThreads("HIDE_EMPTY_TOKEN_ACCOUNTS", hideEmptyTokenAccounts);
