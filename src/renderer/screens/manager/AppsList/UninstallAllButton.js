@@ -51,6 +51,7 @@ const UninstallAllButton = ({ installedApps, uninstallQueue, dispatch }: Props) 
         style={{ background: "transparent" }}
         fontSize={3}
         onClick={openModal}
+        event="Manager Uninstall All"
       >
         <Trash size={14} />
         <Text style={{ marginLeft: 8 }}>
