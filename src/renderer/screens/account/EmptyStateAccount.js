@@ -42,7 +42,10 @@ class EmptyStateAccount extends PureComponent<Props, *> {
     const mainAccount = getMainAccount(account, parentAccount);
     if (!mainAccount) return null;
 
-    const hasTokens = Array.isArray(mainAccount.subAccounts);
+    const hasTokens =
+      mainAccount.subAccounts &&
+      mainAccount.subAccounts.length &&
+      mainAccount.subAccounts[0].type === "TokenAccount";
 
     return (
       <Box mt={7} alignItems="center" selectable>
