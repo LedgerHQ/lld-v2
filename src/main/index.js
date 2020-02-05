@@ -25,11 +25,6 @@ if (!gotLock) {
   });
 }
 
-const showTimeout = setTimeout(() => {
-  const w = getMainWindow();
-  if (w) show(w);
-}, 5000);
-
 app.on("window-all-closed", () => {
   app.quit();
 });
@@ -112,7 +107,6 @@ app.on("ready", async () => {
 ipcMain.on("ready-to-show", () => {
   const w = getMainWindow();
   if (w) {
-    clearTimeout(showTimeout);
     show(w);
   }
 });
