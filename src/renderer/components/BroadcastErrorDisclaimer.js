@@ -1,6 +1,5 @@
 // @flow
 import React from "react";
-import { Trans } from "react-i18next";
 import styled from "styled-components";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import IconTriangleWarning from "~/renderer/icons/TriangleWarning";

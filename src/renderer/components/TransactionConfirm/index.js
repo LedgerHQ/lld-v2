@@ -12,7 +12,6 @@ import type {
   TransactionStatus,
 } from "@ledgerhq/live-common/lib/types";
 import type { Device } from "~/renderer/reducers/devices";
-import Interactions from "~/renderer/icons/device/interactions";
 import transactionConfirmFieldsPerFamily from "~/renderer/generated/TransactionConfirmFields";
 import Box from "~/renderer/components/Box";
 import WarnBox from "~/renderer/components/WarnBox";
