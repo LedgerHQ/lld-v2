@@ -12,7 +12,8 @@ import type {
   SignedOperation,
   SignOperationEvent,
 } from "@ledgerhq/live-common/lib/types";
-import { UserRefusedOnDevice, TransportStatusError } from "@ledgerhq/errors";
+import { TransactionRefusedOnDevice } from "@ledgerhq/live-common/lib/errors";
+import { TransportStatusError } from "@ledgerhq/errors";
 import { getMainAccount } from "@ledgerhq/live-common/lib/account";
 import { getAccountBridge } from "@ledgerhq/live-common/lib/bridge";
 import type { Device } from "~/renderer/reducers/devices";
@@ -77,7 +78,7 @@ const reducer = (state: State, e: Event): State => {
       const { error } = e;
       const transactionSignError =
         error instanceof TransportStatusError && error.statusCode === 0x6985
-          ? new UserRefusedOnDevice()
+          ? new TransactionRefusedOnDevice()
           : error;
       return { ...initialState, transactionSignError };
     }

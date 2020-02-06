@@ -1,7 +1,7 @@
 // @flow
 
 import React, { PureComponent } from "react";
-import { Trans, withTranslation } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import styled from "styled-components";
 import { encodeURIScheme } from "@ledgerhq/live-common/lib/currencies";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
@@ -22,7 +22,6 @@ import LinkWithExternalIcon from "~/renderer/components/LinkWithExternalIcon";
 import IconRecheck from "~/renderer/icons/Recover";
 import IconCopy from "~/renderer/icons/Copy";
 import IconShield from "~/renderer/icons/Shield";
-import Ellipsis from "~/renderer/components/Ellipsis";
 import { renderVerifyUnwrapped } from "~/renderer/components/DeviceAction/rendering";
 
 const Container = styled(Box).attrs(p => ({
@@ -63,28 +62,6 @@ const CopyFeedback = styled(Box).attrs(() => ({
   alignItems: "center",
   justifyContent: "center",
 }))``;
-
-const Label = styled(Box).attrs(() => ({
-  alignItems: "center",
-  justifyContent: "center",
-  color: "palette.text.shade80",
-  ff: "Inter|SemiBold",
-  fontSize: 4,
-  flow: 1,
-  horizontal: true,
-}))`
-  width: 100%;
-  strong {
-    color: ${p => p.theme.colors.palette.text.shade100};
-    font-weight: 600;
-  }
-`;
-
-const QRCodeContainer = styled(Box)`
-  background-color: ${p => p.theme.colors.white};
-  padding: 6px;
-  border-radius: 4px;
-`;
 
 const Footer = styled(Box).attrs(() => ({
   justifyContent: "center",
@@ -185,18 +162,23 @@ class CurrentAddress extends PureComponent<Props, { copyFeedback: boolean }> {
   _timeout: ?TimeoutID = null;
 
   render() {
-    const { name, currency, address, onVerify, isAddressVerified, t } = this.props;
+    const { currency, address, onVerify, isAddressVerified, t } = this.props;
 
     const currencyName = currency.name;
 
     const { copyFeedback } = this.state;
 
     if (isAddressVerified === true) {
-      // Address was confired on device! we display a success screen!
+      // Address was confirmed on device! we display a success screen!
 
       return (
         <Container isAddressVerified>
-          Success Icon Here
+          <h2>Success Icon Here</h2>
+          <div>Address shared securely</div>
+          <LinkWithExternalIcon
+            onClick={() => openURL(urls.recipientAddressInfo)}
+            label={t("common.learnMore")}
+          />
           <Footer>
             <FooterButton
               icon={<IconRecheck size={16} />}
@@ -265,11 +247,11 @@ class CurrentAddress extends PureComponent<Props, { copyFeedback: boolean }> {
       <Container isAddressVerified={isAddressVerified}>
         {addressBlock}
 
-        <h1>1. Share address to recipient</h1>
+        <h1>1. Share address with recipient</h1>
 
         {renderVerifyUnwrapped({ modelId: "nanoS", type: "light" })}
 
-        <h1>2. </h1>
+        <h1>2. {t("currentAddress.messageIfUnverified", { currencyName })}</h1>
 
         <Box horizontal flow={2} mt={2} alignItems="center" style={{ maxWidth: 320 }}>
           <Box color={isAddressVerified === false ? "alertRed" : "wallet"}>
@@ -281,7 +263,6 @@ class CurrentAddress extends PureComponent<Props, { copyFeedback: boolean }> {
             color={isAddressVerified === false ? "alertRed" : "palette.text.shade100"}
             ff="Inter"
           >
-            {t("currentAddress.messageIfUnverified", { currencyName })}
             <LinkWithExternalIcon
               onClick={() => openURL(urls.recipientAddressInfo)}
               label={t("common.learnMore")}

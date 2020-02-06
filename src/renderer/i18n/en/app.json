@@ -214,14 +214,8 @@
   "currentAddress": {
     "title": "Current address",
     "for": "Address for <1><0>{{name}}</0></1>",
-    "messageIfUnverified": "Please verify that the {{currencyName}} address shown on your device matches the one shared with the recipient",
+    "messageIfUnverified": "Verify that the sender has the same {{currencyName}} address as shown on your device",
     "messageIfSkipped": "Your {{currencyName}} address has not been confirmed on your Ledger device. Please verify it for optimal security."
-  },
-  "deviceConnect": {
-    "dashboard": "Navigate to the <1>Dashboard</1> on your device",
-    "step1": "Connect and unlock your <1>Ledger device</1>",
-    "step2": "Open the <1><0>{{managerAppName}}</0></1> app on your device",
-    "step3": "Allow <1>Ledger Manager</1> on your device"
   },
   "emptyState": {
     "sidebar": {
@@ -404,10 +398,10 @@
     "allowAppPermissionSubtitleToken": "to manage your {{token}} tokens",
     "allowManagerPermission": "{{wording}} on your device",
     "loading": "Loading...",
-    "connectAndUnlockDevice": "Connect your device and enter your PIN code",
-    "unlockDevice": "Enter your PIN code",
+    "connectAndUnlockDevice": "Connect and unlock your device",
+    "unlockDevice": "Unlock your device",
     "quitApp": "Please quit application on your device",
-    "appNotInstalled": "{{appName}} app is not yet installed",
+    "appNotInstalled": "Please install the {{appName}} app",
     "openManager": "Open Manager"
   },
   "manager": {
@@ -1415,14 +1409,18 @@
       "description": "Please restart your device or contact us"
     },
     "UserRefusedAllowManager": {
-      "title": "Manager refused on device"
+      "title": "Manager denied on device"
     },
     "UserRefusedFirmwareUpdate": {
       "title": "Update canceled",
       "description": "Please retry or contact Ledger Support"
     },
     "UserRefusedOnDevice": {
-      "title": "Action refused on device",
+      "title": "Action denied on device",
+      "description": "Please retry or contact Ledger Support in case of doubt"
+    },
+    "TransactionRefusedOnDevice": {
+      "title": "Operation denied on device",
       "description": "Please retry or contact Ledger Support in case of doubt"
     },
     "UserRefusedAddress": {
