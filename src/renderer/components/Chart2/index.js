@@ -72,6 +72,7 @@ const Chart = ({ height, data, color, renderTickY, renderTooltip, valueKey = "va
   const chartRef = useRef(null);
   const theme = useTheme("colors.palette");
   const [tooltip, setTooltip] = useState();
+  const valueKeyRef = useRef(valueKey);
 
   const generatedData = useMemo(
     () => ({
@@ -99,6 +100,9 @@ const Chart = ({ height, data, color, renderTickY, renderTooltip, valueKey = "va
 
   const generateOptions = useMemo(
     () => ({
+      animation: {
+        duration: 0,
+      },
       responsive: true,
       maintainAspectRatio: false,
       tooltips: {
@@ -159,9 +163,15 @@ const Chart = ({ height, data, color, renderTickY, renderTooltip, valueKey = "va
 
   useLayoutEffect(() => {
     if (chartRef.current) {
-      chartRef.current.data = generatedData;
+      let shouldAnimate = false;
+      if (valueKeyRef.current !== valueKey) {
+        valueKeyRef.current = valueKey;
+        shouldAnimate = true;
+      }
+
+      chartRef.current.data.datasets[0].data = generatedData.datasets[0].data;
       chartRef.current.options = generateOptions;
-      chartRef.current.update(0);
+      chartRef.current.update(shouldAnimate ? 500 : 0);
     } else {
       chartRef.current = new ChartJs(canvasRef.current, {
         type: "line",
@@ -169,7 +179,7 @@ const Chart = ({ height, data, color, renderTickY, renderTooltip, valueKey = "va
         options: generateOptions,
       });
     }
-  }, [generateOptions, generatedData]);
+  }, [generateOptions, generatedData, valueKey]);
 
   return (
     <ChartContainer height={height}>

@@ -7,9 +7,8 @@ import TrackPage from "~/renderer/analytics/TrackPage";
 import Box from "~/renderer/components/Box";
 import Text from "~/renderer/components/Text";
 import Button from "~/renderer/components/Button";
-import TranslatedError from "~/renderer/components/TranslatedError";
+import ErrorDisplay from "~/renderer/components/ErrorDisplay";
 import CheckCircle from "~/renderer/icons/CheckCircle";
-import ExclamationCircleThin from "~/renderer/icons/ExclamationCircleThin";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import type { StepProps } from "../";
 
@@ -30,33 +29,7 @@ const Title = styled(Box).attrs(() => ({
 const StepConfirmation = ({ error }: StepProps) => {
   const { t } = useTranslation();
   if (error) {
-    return (
-      <Container>
-        <Box color="alertRed">
-          <ExclamationCircleThin size={44} />
-        </Box>
-        <Box
-          color="palette.text.shade100"
-          mt={4}
-          fontSize={5}
-          ff="Inter|Regular"
-          textAlign="center"
-          style={{ maxWidth: 350 }}
-        >
-          <TranslatedError error={error} field="title" />
-        </Box>
-        <Box
-          color="palette.text.shade80"
-          mt={4}
-          fontSize={4}
-          ff="Inter"
-          textAlign="center"
-          style={{ maxWidth: 350 }}
-        >
-          <TranslatedError error={error} field="description" />
-        </Box>
-      </Container>
-    );
+    return <ErrorDisplay error={error} withExportLogs />;
   }
 
   return (
