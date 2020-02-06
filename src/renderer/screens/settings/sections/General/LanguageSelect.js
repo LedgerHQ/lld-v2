@@ -1,7 +1,6 @@
 // @flow
 
 import React, { useMemo, useCallback } from "react";
-import moment from "moment";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 import { allLanguages, prodStableLanguages } from "~/config/languages";
@@ -26,7 +25,7 @@ type ChangeLangArgs = { value: LangKeys, label: string };
 
 const LanguageSelect = () => {
   const { useSystem, language } = useSelector(langAndRegionSelector);
-  const { i18n, t } = useTranslation();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const debugLanguage = useEnv("EXPERIMENTAL_LANGUAGES");
@@ -49,11 +48,9 @@ const LanguageSelect = () => {
 
   const handleChangeLanguage = useCallback(
     ({ value: languageKey }: ChangeLangArgs) => {
-      i18n.changeLanguage(languageKey);
-      moment.locale(languageKey);
       dispatch(setLanguage(languageKey));
     },
-    [dispatch, i18n],
+    [dispatch],
   );
 
   return (

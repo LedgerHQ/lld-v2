@@ -11,9 +11,9 @@ import {
 import type { DeviceModelId } from "@ledgerhq/devices";
 import type { CryptoCurrency, Currency } from "@ledgerhq/live-common/lib/types";
 import { getEnv } from "@ledgerhq/live-common/lib/env";
-import { getSystemLocale } from "~/helpers/systemLocale";
 import { getLanguages } from "~/config/languages";
 import type { State } from ".";
+import { osLangAndRegionSelector } from "~/renderer/reducers/application";
 
 export type CurrencySettings = {
   confirmationsNb: number,
@@ -60,6 +60,8 @@ export const timeRangeDaysByKey = {
 };
 
 export type TimeRange = $Keys<typeof timeRangeDaysByKey>;
+
+export type LangAndRegion = { language: string, region: ?string, useSystem: boolean };
 
 export type SettingsState = {
   loaded: boolean, // is the settings loaded from db (it not we don't save them)
@@ -230,23 +232,23 @@ export const lastUsedVersionSelector = (state: State): string => state.settings.
 
 export const userThemeSelector = (state: State): ?string => state.settings.theme;
 
-export const langAndRegionSelector = (
+export const userLangAndRegionSelector = (
   state: State,
-): { language: string, region: ?string, useSystem: boolean } => {
+): ?{ language: string, region: ?string, useSystem: boolean } => {
   const languages = getLanguages();
-  let { language, region } = state.settings;
+  const { language, region } = state.settings;
   if (language && languages.includes(language)) {
     return { language, region, useSystem: false };
   }
-  const locale = getSystemLocale();
-  language = locale.language;
-  region = locale.region;
-  if (!language || !languages.includes(language)) {
-    language = "en";
-    region = "US";
-  }
-  return { language, region, useSystem: true };
 };
+
+export const langAndRegionSelector: OutputSelector<State, void, LangAndRegion> = createSelector(
+  userLangAndRegionSelector,
+  osLangAndRegionSelector,
+  (userLang, osLang) => {
+    return userLang || osLang;
+  },
+);
 
 export const languageSelector: OutputSelector<State, void, string> = createSelector(
   langAndRegionSelector,
