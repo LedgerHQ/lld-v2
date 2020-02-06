@@ -131,7 +131,7 @@ const UpdateModal = ({
     onCloseModal: onClose,
     setError,
     firmware,
-    error,
+    error: err,
     deviceModelId,
   };
 
