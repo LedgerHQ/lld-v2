@@ -8,6 +8,7 @@ const verboseRenderer = require("listr-verbose-renderer");
 const path = require("path");
 const rimraf = require("rimraf");
 
+const Draft = require("./draft");
 const healthChecksTasks = require("./health-checks");
 
 require("dotenv").config();
@@ -51,8 +52,8 @@ const buildTasks = args => [
     },
   },
   {
-    title: args.p
-      ? "Packing the electron application (for debug purpose)"
+    title: args.publish
+      ? "Bundling and publishing the electron application"
       : "Bundling the electron application",
     task: async () => {
       const commands = ["-s", "--frozen-lockfile", "dist:internal"];
@@ -68,10 +69,40 @@ const buildTasks = args => [
   },
 ];
 
+const draftTasks = args => {
+  let draft;
+
+  return [
+    {
+      title: "Authenticate on GitHub",
+      task: ctx => {
+        const { repo, tag, token } = ctx;
+        draft = new Draft(repo, tag, token);
+      },
+    },
+    {
+      title: "Check if draft already exists",
+      task: async ctx => {
+        ctx.draftExists = await draft.check();
+      },
+    },
+    {
+      title: "Create draft on GitHub",
+      skip: ctx => (ctx.draftExists ? "Draft already exists." : false),
+      task: () => draft.create(),
+    },
+  ];
+};
+
 const mainTask = (args = {}) => {
   const { dirty, publish } = args;
 
   const tasks = [
+    {
+      title: "Health checks",
+      enabled: () => !!publish,
+      task: () => setupList(healthChecksTasks, args),
+    },
     {
       title: "Cleanup",
       skip: () => (dirty ? "--dirty flag passed" : false),
@@ -83,17 +114,17 @@ const mainTask = (args = {}) => {
       task: () => setupList(setupTasks, args),
     },
     {
-      title: "Build",
+      title: "Prepare release on GitHub",
+      enabled: () => !!publish,
+      task: () => setupList(draftTasks, args),
+    },
+    {
+      title: publish ? "Build and publish" : "Build",
       task: () => setupList(buildTasks, args),
     },
   ];
 
-  const healthChecks = {
-    title: "Health checks",
-    task: () => setupList(healthChecksTasks, args),
-  };
-
-  return publish ? [healthChecks, ...tasks] : tasks;
+  return tasks;
 };
 
 const setupList = (getTasks, args) => {

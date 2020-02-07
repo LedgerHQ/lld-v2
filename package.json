@@ -26,6 +26,7 @@
     "dist:dirty": "node ./tools/dist --dirty",
     "dist:dir": "node ./tools/dist --dir",
     "nightly": "node ./tools/dist -n -v",
+    "release": "node ./tools/dist --publish",
     "ci": "node ./tools/ci.js",
     "test": "jest src",
     "test-e2e": "jest test-e2e"

@@ -1,5 +1,6 @@
 const git = require("git-rev-sync");
 const pkg = require("../../package.json");
+const repoInfo = require("./repo-info");
 
 let verbose = false;
 
@@ -7,24 +8,6 @@ const log = str => {
   if (verbose) {
     console.log(`[health-checks] ${str}`);
   }
-};
-
-const extractOwnerAndRepo = str => {
-  log(`extracting owner and repo from '${str}'`);
-
-  const regex = /github.com(:|\/)([^/:.]+)\/([^/:.]+)(.git)?$/;
-  const results = regex.exec(str);
-
-  if (!results || !results[2] || !results[3]) {
-    throw new Error(`Can't extract owner and repo from ${str}`);
-  }
-
-  const owner = results[2];
-  const repo = results[3];
-
-  log(`owner: ${owner}, repo: ${repo}`);
-
-  return { owner, repo };
 };
 
 const isMaster = () => {
@@ -47,34 +30,44 @@ const isClean = () => {
   }
 };
 
-const isTagged = () => {
+const isTagged = ctx => {
   const isTagDirty = git.isTagDirty();
 
   log(`git.isTagDirty(): ${isTagDirty}`);
 
-  if (isTagDirty) {
-    throw new Error("HEAD is not tagged");
+  const tag = git.tag();
+
+  log(`git.tag(): ${tag}`);
+
+  if (isTagDirty || !tag) {
+    throw new Error("HEAD is not tagged or dirty");
   }
+
+  ctx.tag = tag;
 };
 
-const checkRemote = () => {
+const checkRemote = ctx => {
   const { repository } = pkg;
   const gitRemote = git.remoteUrl();
 
   log(`package.json repository is ${repository}, git remote is ${gitRemote}`);
 
-  const pkgInfo = extractOwnerAndRepo(repository);
-  const gitInfo = extractOwnerAndRepo(gitRemote);
+  const pkgInfo = repoInfo(repository);
+  const gitInfo = repoInfo(gitRemote);
 
   if (pkgInfo.owner !== gitInfo.owner || pkgInfo.repo !== gitInfo.repo) {
     throw new Error("git remote URL does not match package.json `repository` entry");
   }
+
+  ctx.repo = pkgInfo;
 };
 
-const checkEnv = () => {
+const checkEnv = ctx => {
   const platform = require("os").platform();
 
-  if (!process.env.GH_TOKEN) {
+  const { GH_TOKEN, APPLEID, APPLEID_PASSWORD } = process.env;
+
+  if (!GH_TOKEN) {
     throw new Error("GH_TOKEN is not set");
   }
 
@@ -85,13 +78,13 @@ const checkEnv = () => {
     return;
   }
 
-  const { APPLEID, APPLEID_PASSWORD } = process.env;
-
   if (!APPLEID || !APPLEID_PASSWORD) {
     throw new Error("APPLEID and/or APPLEID_PASSWORD are not net");
   }
 
   log("APPLEID and APPLEID_PASSWORD are set");
+
+  ctx.token = GH_TOKEN;
 };
 
 module.exports = args => {
