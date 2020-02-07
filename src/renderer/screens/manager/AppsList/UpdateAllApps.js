@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 import { Trans } from "react-i18next";
 
-import type { State, AppOp, Action } from "@ledgerhq/live-common/lib/apps/types";
+import type { State, Action, AppOp } from "@ledgerhq/live-common/lib/apps/types";
 
 import CollapsibleCard from "~/renderer/components/CollapsibleCard";
 import Text from "~/renderer/components/Text";
@@ -50,12 +50,11 @@ const ProgressHolder = styled.div`
 type Props = {
   state: State,
   dispatch: Action => void,
-  plan: AppOp[],
   isIncomplete: boolean,
-  progress: *,
+  progress: ?{ appOp: AppOp, progress: number },
 };
 
-const UpdateAllApps = ({ state, dispatch, plan, isIncomplete, progress }: Props) => {
+const UpdateAllApps = ({ state, dispatch, isIncomplete, progress }: Props) => {
   const [appsUpdating, setAppsUpdating] = useState([]);
 
   const { apps, installed, installQueue, uninstallQueue } = state;
@@ -136,6 +135,7 @@ const UpdateAllApps = ({ state, dispatch, plan, isIncomplete, progress }: Props)
     app => (
       <Item
         state={state}
+        installed={state.installed.find(({ name }) => name === app.name)}
         key={`UPDATE_${app.name}`}
         app={app}
         dispatch={dispatch}
@@ -143,11 +143,10 @@ const UpdateAllApps = ({ state, dispatch, plan, isIncomplete, progress }: Props)
         appStoreView={false}
         onlyUpdate={true}
         showActions={false}
-        scheduled={plan.find(a => a.name === app.name)}
-        progress={get(progress, ["appOp", "name"]) === app.name ? progress : null}
+        progress={get(progress, ["appOp", "name"]) === app.name ? progress : undefined}
       />
     ),
-    [state, dispatch, isIncomplete, plan, progress],
+    [state, dispatch, isIncomplete, progress],
   );
 
   const appsToShow = appsUpdating.length > 0 ? appsUpdating : updatableAppList;

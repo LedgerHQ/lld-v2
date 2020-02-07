@@ -46,7 +46,7 @@ const FilterHeader = styled.div`
   border-bottom: 1px solid ${p => p.theme.colors.palette.text.shade10};
   background-color: ${p => p.theme.colors.palette.background.paper};
   position: sticky;
-  top: ${p => p.theme.sizes.topBarHeight}px;
+  top: ${p => (p.isIncomplete ? -p.theme.space[3] : p.theme.sizes.topBarHeight)}px;
   left: 0;
   right: 0;
   z-index: 1;
@@ -56,9 +56,8 @@ type Props = {
   deviceInfo: DeviceInfo,
   state: State,
   dispatch: Action => void,
-  plan: AppOp[],
   isIncomplete: boolean,
-  progress: *,
+  progress: ?{ appOp: AppOp, progress: number },
   setAppInstallDep: () => void,
   setAppUninstallDep: () => void,
   t: TFunction,
@@ -68,7 +67,6 @@ const AppsList = ({
   deviceInfo,
   state,
   dispatch,
-  plan,
   isIncomplete,
   progress = {},
   setAppInstallDep,
@@ -77,7 +75,7 @@ const AppsList = ({
 }: Props) => {
   const inputRef = useRef();
   const [query, setQuery] = useState("");
-  const [filters, setFilters] = useState([]);
+  const [filters, setFilters] = useState(["all"]);
   const [sort, setSort] = useState({ type: "marketcap", order: "desc" });
   const [activeTab, setActiveTab] = useState(0);
   /** clear search field on tab change */
@@ -110,18 +108,18 @@ const AppsList = ({
         state={state}
         key={`${appStoreView ? "APP_STORE" : "DEVICE_TAB"}_${app.name}`}
         app={app}
+        installed={state.installed.find(({ name }) => name === app.name)}
         dispatch={dispatch}
         forceUninstall={isIncomplete}
         appStoreView={appStoreView}
         onlyUpdate={onlyUpdate}
         showActions={showActions}
-        scheduled={plan.find(a => a.name === app.name)}
-        progress={get(progress, ["appOp", "name"]) === app.name ? progress : null}
+        progress={get(progress, ["appOp", "name"]) === app.name ? progress : undefined}
         setAppInstallDep={setAppInstallDep}
         setAppUninstallDep={setAppUninstallDep}
       />
     ),
-    [state, dispatch, isIncomplete, plan, progress, setAppInstallDep, setAppUninstallDep],
+    [state, dispatch, isIncomplete, progress, setAppInstallDep, setAppUninstallDep],
   );
 
   return (
@@ -146,7 +144,7 @@ const AppsList = ({
         </Box>
       ) : (
         <Card mt={0}>
-          <FilterHeader>
+          <FilterHeader isIncomplete={isIncomplete}>
             <Input
               containerProps={{ noBorder: true, noBoxShadow: true, flex: 1 }}
               renderLeft={<IconSearch size={16} />}

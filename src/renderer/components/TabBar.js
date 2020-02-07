@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useRef, useCallback, useEffect } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import styled from "styled-components";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import { Trans } from "react-i18next";
@@ -15,7 +15,7 @@ const Tabs: ThemedComponent<*> = styled.div`
 `;
 
 const Tab = styled(Base)`
-  padding: 0 0 4px 16px;
+  padding: 0 16px 4px 16px;
   border-radius: 0;
   color: ${p =>
     p.active ? p.theme.colors.palette.text.shade100 : p.theme.colors.palette.text.shade50};
@@ -29,7 +29,7 @@ const Tab = styled(Base)`
 
 const TabIndicator = styled.span.attrs(({ currentRef = {} }) => ({
   style: {
-    width: `${currentRef.clientWidth - 16}px`,
+    width: `${currentRef.clientWidth - 32}px`,
     transform: `translateX(${currentRef.offsetLeft}px)`,
   },
 }))`
@@ -50,11 +50,6 @@ type Props = {
 const TabBar = ({ tabs, onIndexChange, defaultIndex = 0 }: Props) => {
   const tabRefs = useRef([]);
   const [index, setIndex] = useState(defaultIndex);
-  const [currentRef, setCurrentRef] = useState({});
-
-  useEffect(() => {
-    setCurrentRef(() => tabRefs.current[index]);
-  }, [setCurrentRef, index]);
 
   const updateIndex = useCallback(
     i => {
@@ -78,12 +73,12 @@ const TabBar = ({ tabs, onIndexChange, defaultIndex = 0 }: Props) => {
           tabIndex={i}
           onClick={() => updateIndex(i)}
         >
-          <Text fontSize={5}>
+          <Text ff="Inter|Medium" fontSize={5}>
             <Trans i18nKey={tab} />
           </Text>
         </Tab>
       ))}
-      <TabIndicator currentRef={currentRef} />
+      {tabRefs.current[index] && <TabIndicator currentRef={tabRefs.current[index]} />}
     </Tabs>
   );
 };

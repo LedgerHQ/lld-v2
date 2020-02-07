@@ -1,6 +1,9 @@
 // @flow
 import React, { useCallback, useMemo, memo } from "react";
 
+import type { App } from "@ledgerhq/live-common/lib/types/manager";
+import type { State, Action, InstalledItem, AppOp } from "@ledgerhq/live-common/lib/apps/types";
+
 import styled from "styled-components";
 import { Trans } from "react-i18next";
 
@@ -40,14 +43,27 @@ const SuccessUpdate = styled(SuccessInstall)`
   color: ${p => p.theme.colors.palette.primary.main};
 `;
 
-type Props = *; // FIXME
+type Props = {
+  state: State,
+  app: App,
+  installed: ?InstalledItem,
+  dispatch: Action => void,
+  appStoreView: boolean,
+  onlyUpdate?: boolean,
+  forceUninstall?: boolean,
+  notEnoughMemoryToInstall: boolean,
+  showActions?: boolean,
+  progress: ?{ appOp: AppOp, progress: number },
+  setAppInstallDep?: App => void,
+  setAppUninstallDep?: App => void,
+};
 
 // eslint-disable-next-line react/display-name
 const AppActions: React$ComponentType<Props> = React.memo(
   ({
     state,
     app,
-    scheduled,
+    installed,
     dispatch,
     forceUninstall,
     appStoreView,
@@ -59,49 +75,48 @@ const AppActions: React$ComponentType<Props> = React.memo(
     setAppUninstallDep,
   }: Props) => {
     const { name, dependencies } = app;
-    const { apps, installed, installedAvailable, installQueue, uninstallQueue } = state;
+    const {
+      apps,
+      installed: installedList,
+      installedAvailable,
+      installQueue,
+      uninstallQueue,
+    } = state;
 
     const needsInstallDeps = useMemo(
-      () => dependencies && dependencies.some(dep => installed.every(app => app.name !== dep)),
-      [dependencies, installed],
+      () => dependencies && dependencies.some(dep => installedList.every(app => app.name !== dep)),
+      [dependencies, installedList],
     );
 
     const needsUninstallDeps = useMemo(
       () =>
         apps
-          .filter(a => installed.some(i => i.name === a.name))
+          .filter(a => installedList.some(i => i.name === a.name))
           .some(({ dependencies }) => dependencies.includes(name)),
-      [apps, installed, name],
+      [apps, installedList, name],
     );
 
     const onInstall = useCallback(() => {
-      if (needsInstallDeps) setAppInstallDep(app);
+      if (needsInstallDeps && setAppInstallDep) setAppInstallDep(app);
       else dispatch({ type: "install", name });
     }, [app, dispatch, name, needsInstallDeps, setAppInstallDep]);
 
     const onUninstall = useCallback(() => {
-      if (needsUninstallDeps) setAppUninstallDep(app);
+      if (needsUninstallDeps && setAppUninstallDep) setAppUninstallDep(app);
       else dispatch({ type: "uninstall", name });
     }, [app, dispatch, name, needsUninstallDeps, setAppUninstallDep]);
 
-    const isInstalled = useMemo(() => installed.find(i => i.name === name), [installed, name]);
-
-    const installing = useMemo(() => installQueue.includes[name], [installQueue, name]);
-    const uninstalling = useMemo(() => uninstallQueue.includes[name], [uninstallQueue, name]);
+    const installing = useMemo(() => installQueue.includes(name), [installQueue, name]);
+    const uninstalling = useMemo(() => uninstallQueue.includes(name), [uninstallQueue, name]);
 
     return (
       <AppActionsWrapper>
-        {installing || uninstalling || scheduled ? (
-          <Progress
-            name={name}
-            currentProgress={progress}
-            scheduled={scheduled}
-            dispatch={dispatch}
-          />
+        {installing || uninstalling ? (
+          <Progress currentProgress={progress} />
         ) : (
           showActions && (
             <>
-              {appStoreView && isInstalled && isInstalled.updated ? (
+              {appStoreView && installed && installed.updated ? (
                 <SuccessInstall>
                   <IconCheck size={16} />
                   <Text ff="Inter|SemiBold" fontSize={4}>
@@ -109,13 +124,13 @@ const AppActions: React$ComponentType<Props> = React.memo(
                   </Text>
                 </SuccessInstall>
               ) : null}
-              {isInstalled && !isInstalled.updated ? (
+              {installed && !installed.updated ? (
                 <SuccessUpdate>
                   <Text ff="Inter|SemiBold" fontSize={4}>
                     <Trans i18nKey="manager.applist.item.update" />
                   </Text>
                 </SuccessUpdate>
-              ) : !isInstalled ? (
+              ) : !installed ? (
                 <Tooltip
                   content={
                     notEnoughMemoryToInstall ? (
@@ -141,7 +156,7 @@ const AppActions: React$ComponentType<Props> = React.memo(
                   </Button>
                 </Tooltip>
               ) : null}
-              {((isInstalled || !installedAvailable) && !appStoreView && !onlyUpdate) ||
+              {((installed || !installedAvailable) && !appStoreView && !onlyUpdate) ||
               forceUninstall ? (
                 <Button
                   style={{ padding: 12 }}
