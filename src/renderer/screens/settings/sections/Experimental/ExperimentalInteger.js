@@ -1,7 +1,6 @@
 // @flow
 
 import React, { useCallback, useState, useEffect } from "react";
-import { getEnvDefault } from "@ledgerhq/live-common/lib/env";
 import Track from "~/renderer/analytics/Track";
 import Switch from "~/renderer/components/Switch";
 import Input from "~/renderer/components/Input";
@@ -9,22 +8,22 @@ import Box from "~/renderer/components/Box";
 
 type Props = {
   name: *,
-  isDefault: boolean,
   readOnly: boolean,
-  onChange: (name: string, val: mixed) => boolean,
   value: number,
   minValue: number,
   maxValue: number,
+  defaultValue: Number,
+  onChange: (name: string, val: mixed) => boolean,
 };
 
 const ExperimentalInteger = ({
   name,
-  isDefault,
   readOnly,
   onChange,
   value,
   minValue,
   maxValue,
+  defaultValue,
 }: Props) => {
   const constraintValue = useCallback(
     v => {
@@ -36,14 +35,14 @@ const ExperimentalInteger = ({
     [minValue, maxValue],
   );
 
-  const [enabled, setEnabled] = useState(!isDefault);
+  const [enabled, setEnabled] = useState(value !== defaultValue);
   const [inputValue, setInputValue] = useState(String(constraintValue(value)));
 
   useEffect(() => {
-    if (isDefault && !enabled) {
+    if (!enabled) {
       setInputValue(constraintValue(value));
     }
-  }, [isDefault, enabled, value, setInputValue, constraintValue]);
+  }, [enabled, value, setInputValue, constraintValue]);
 
   const onInputChange = useCallback(
     str => {
@@ -64,10 +63,10 @@ const ExperimentalInteger = ({
       if (e) {
         onChange(name, constraintValue(value));
       } else {
-        onChange(name, getEnvDefault(name));
+        onChange(name, defaultValue);
       }
     },
-    [setEnabled, name, onChange, value, constraintValue],
+    [onChange, name, constraintValue, value, defaultValue],
   );
 
   return (

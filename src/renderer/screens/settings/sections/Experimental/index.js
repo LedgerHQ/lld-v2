@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { isEnvDefault } from "@ledgerhq/live-common/lib/env";
+import { getEnvDefault } from "@ledgerhq/live-common/lib/env";
 import { experimentalFeatures, isReadOnlyEnv } from "~/renderer/experimental";
 import { setEnvOnAllThreads } from "~/helpers/env";
 import type { Feature } from "~/renderer/experimental";
@@ -26,20 +26,22 @@ const experimentalTypesMap = {
 };
 
 const ExperimentalFeatureRow = ({ feature }: { feature: Feature }) => {
-  const { type, ...rest } = feature;
+  const { type, shadow, ...rest } = feature;
   const Children = experimentalTypesMap[feature.type];
   const envValue = useEnv(feature.name);
-  const isDefault = isEnvDefault(feature.name);
+  const defaultValue = getEnvDefault(feature.name);
+
+  if (shadow && envValue === defaultValue) {
+    return null;
+  }
 
   return Children ? (
     <Row title={feature.title} desc={feature.description}>
       {/* $FlowFixMe */}
       <Children
-        // $FlowFixMe
         value={envValue}
+        defaultValue={defaultValue}
         readOnly={isReadOnlyEnv(feature.name)}
-        // $FlowFixMe
-        isDefault={isDefault}
         onChange={setEnvOnAllThreads}
         {...rest}
       />
@@ -66,12 +68,10 @@ const SectionExperimental = () => {
           icon={<IconSensitiveOperationShield />}
           content={t("settings.experimental.disclaimer")}
         />
-        {experimentalFeatures.map(feature =>
-          !feature.shadow || (feature.shadow && !isEnvDefault(feature.name)) ? (
-            // $FlowFixMe
-            <ExperimentalFeatureRow key={feature.name} feature={feature} />
-          ) : null,
-        )}
+        {experimentalFeatures.map(feature => (
+          // $FlowFixMe
+          <ExperimentalFeatureRow key={feature.name} feature={feature} />
+        ))}
       </Body>
     </Section>
   );

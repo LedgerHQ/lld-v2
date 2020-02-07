@@ -6,22 +6,22 @@ import Switch from "~/renderer/components/Switch";
 
 type Props = {
   name: string,
+  value: mixed,
   valueOn: mixed,
   valueOff: mixed,
-  isDefault: boolean,
   readOnly: boolean,
   onChange: (name: string, val: mixed) => boolean,
 };
 
 const ExperimentalSwitch = ({
-  onChange,
+  name,
+  value,
   valueOn = true,
   valueOff = false,
-  name,
-  isDefault,
   readOnly,
+  onChange,
 }: Props) => {
-  const [checked, setChecked] = useState(!isDefault);
+  const [checked, setChecked] = useState(value === valueOn);
 
   const handleOnChange = useCallback(
     (evt: boolean) => {
