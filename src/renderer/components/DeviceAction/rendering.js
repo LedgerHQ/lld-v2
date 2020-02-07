@@ -141,12 +141,18 @@ export const renderVerifyUnwrapped = ({
   </AnimationWrapper>
 );
 
-const OpenManagerBtn = ({ closeAllModal }: { closeAllModal: () => void }) => {
+const OpenManagerBtn = ({
+  closeAllModal,
+  appName,
+}: {
+  closeAllModal: () => void,
+  appName?: string,
+}) => {
   const history = useHistory();
   const onClick = useCallback(() => {
-    history.push("manager");
+    history.push(`manager${appName ? `?q=${appName}` : ""}`);
     closeAllModal();
-  }, [history, closeAllModal]);
+  }, [history, appName, closeAllModal]);
   return (
     <Button mt={2} primary onClick={onClick}>
       <Trans i18nKey="DeviceAction.openManager" />
@@ -161,7 +167,7 @@ export const renderRequiresAppInstallation = ({ appName }: { appName: string }) 
     <Title>
       <Trans i18nKey="DeviceAction.appNotInstalled" values={{ appName }} />
     </Title>
-    <OpenManagerButton />
+    <OpenManagerButton appName={appName} />
   </Wrapper>
 );
 
