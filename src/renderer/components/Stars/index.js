@@ -67,11 +67,13 @@ const Stars = ({ pathname, collapsed }: Props) => {
                 content={
                   account.type === "Account" ? account.name : getAccountCurrency(account).name
                 }
-                delay={collapsed ? 0 : 1200}
+                delay={collapsed ? 200 : 1200}
                 key={account.id}
                 placement={collapsed ? "right" : "top"}
                 boundary={collapsed ? "window" : undefined}
                 enabled={!snapshot.isDraggingOver}
+                flip={!collapsed}
+                arrow={!collapsed}
               >
                 <Item
                   index={i}

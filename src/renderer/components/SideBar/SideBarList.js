@@ -38,7 +38,7 @@ class SideBarList extends Component<Props> {
           </>
         )}
         {children ? (
-          <ListWrapper scroll={scroll} flow={2} px={3} fontSize={3} noTransform>
+          <ListWrapper collapsed={collapsed} scroll={scroll} flow={2} px={3} fontSize={3}>
             {children}
           </ListWrapper>
         ) : emptyState ? (
