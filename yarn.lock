@@ -1278,19 +1278,10 @@
     node-hid "^1.1.0"
     usb-detection "^4.5.0"
 
-"@ledgerhq/hw-transport@5.8.0", "@ledgerhq/hw-transport@^5.8.0":
+"@ledgerhq/hw-transport@5.8.0", "@ledgerhq/hw-transport@^5.7.0", "@ledgerhq/hw-transport@^5.8.0":
   version "5.8.0"
   resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport/-/hw-transport-5.8.0.tgz#47427b2920c9e1562e94a053ef54b3fc4de98e93"
   integrity sha512-zDIefyQMvSUiTiB9XVkcUW9wzfsSQb+tzRXNiI6KN/YN8c2LaLcNG82jmKOa0F6ajBcki1fty6wlcIhGmz+NhA==
-  dependencies:
-    "@ledgerhq/devices" "^5.7.0"
-    "@ledgerhq/errors" "^5.7.0"
-    events "^3.1.0"
-
-"@ledgerhq/hw-transport@^5.7.0":
-  version "5.7.0"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport/-/hw-transport-5.7.0.tgz#6da4f1511551a27071155aeed813c1b03200ff96"
-  integrity sha512-F1Kr61iByP2I3gcE88SbfymRF2dQ6fECvS4nQCBSz3mSMsoeHxXK+EhuuzXrYhTzqGkl+kD5yitBw7KRHV1AiA==
   dependencies:
     "@ledgerhq/devices" "^5.7.0"
     "@ledgerhq/errors" "^5.7.0"
