@@ -19,7 +19,6 @@ export default function StepConnectDevice({
 }: StepProps) {
   const mainAccount = account ? getMainAccount(account, parentAccount) : null;
   const tokenCurrency = (account && account.type === "TokenAccount" && account.token) || token;
-
   return (
     <>
       {mainAccount ? <CurrencyDownStatusAlert currency={mainAccount.currency} /> : null}

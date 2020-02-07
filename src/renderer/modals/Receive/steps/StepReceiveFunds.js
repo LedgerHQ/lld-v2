@@ -179,10 +179,12 @@ const StepReceiveFunds = ({
 
   const onVerify = useCallback(() => {
     // if device has changed since the beginning, we need to re-entry device
-    if (device !== initialDevice.current) transitionTo("device");
+    if (device !== initialDevice.current || !isAddressVerified) {
+      transitionTo("device");
+    }
     onChangeAddressVerified(null);
     onResetSkip();
-  }, [device, onChangeAddressVerified, onResetSkip, transitionTo]);
+  }, [device, onChangeAddressVerified, onResetSkip, transitionTo, isAddressVerified]);
 
   const hideQRCodeModal = useCallback(() => setModalVisible(false), [setModalVisible]);
   const showQRCodeModal = useCallback(() => setModalVisible(true), [setModalVisible]);
