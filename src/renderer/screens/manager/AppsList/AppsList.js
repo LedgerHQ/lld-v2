@@ -46,7 +46,7 @@ const FilterHeader = styled.div`
   border-bottom: 1px solid ${p => p.theme.colors.palette.text.shade10};
   background-color: ${p => p.theme.colors.palette.background.paper};
   position: sticky;
-  top: ${p => p.theme.sizes.topBarHeight}px;
+  top: ${p => (p.isIncomplete ? -p.theme.space[3] : p.theme.sizes.topBarHeight)}px;
   left: 0;
   right: 0;
   z-index: 1;
@@ -146,7 +146,7 @@ const AppsList = ({
         </Box>
       ) : (
         <Card mt={0}>
-          <FilterHeader>
+          <FilterHeader isIncomplete={isIncomplete}>
             <Input
               containerProps={{ noBorder: true, noBoxShadow: true, flex: 1 }}
               renderLeft={<IconSearch size={16} />}
