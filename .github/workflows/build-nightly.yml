@@ -40,7 +40,7 @@ jobs:
         with:
           node-version: 12.x
       - name: install linux dependencies
-        run: sudo apt-get install libudev-dev libusb-1.0-0-dev
+        run: sudo apt-get update && sudo apt-get install libudev-dev libusb-1.0-0-dev 
       - name: get yarn cache
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
