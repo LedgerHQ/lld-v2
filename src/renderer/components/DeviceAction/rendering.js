@@ -17,10 +17,10 @@ import Box from "~/renderer/components/Box";
 import BigSpinner from "~/renderer/components/BigSpinner";
 import ConnectTroubleshooting from "~/renderer/components/ConnectTroubleshooting";
 import ExportLogsButton from "~/renderer/components/ExportLogsButton";
-import ExclamationCircleThin from "~/renderer/icons/ExclamationCircleThin";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import { getDeviceAnimation } from "./animations";
 import { DeviceBlocker } from "./DeviceBlocker";
+import ErrorIcon from "~/renderer/components/ErrorIcon";
 
 const AnimationWrapper: ThemedComponent<{ modelId: DeviceModelId }> = styled.div`
   width: 600px;
@@ -246,7 +246,7 @@ export const renderError = ({
 }) => (
   <Wrapper>
     <Logo>
-      <ExclamationCircleThin size={44} />
+      <ErrorIcon size={44} error={error} />
     </Logo>
     <ErrorTitle>
       <TranslatedError error={error} />
