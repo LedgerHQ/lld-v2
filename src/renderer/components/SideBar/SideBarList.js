@@ -8,7 +8,7 @@ import Space from "~/renderer/components/Space";
 
 const ListWrapper = styled(Box)`
   ${p => (p.scroll ? p.theme.overflow.y : "")};
-  ${p => (p.scroll ? "padding-lrft: 2px" : "")};
+  ${p => (p.scroll ? "padding-left: 2px" : "")};
   will-change: unset;
   flex: auto;
 `;
