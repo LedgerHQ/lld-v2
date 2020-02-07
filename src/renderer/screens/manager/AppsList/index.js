@@ -6,7 +6,7 @@ import type { TFunction } from "react-i18next";
 import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
 import type { ListAppsResult, Exec } from "@ledgerhq/live-common/lib/apps/types";
 import type { Device } from "~/renderer/reducers/devices";
-import { getActionPlan, useAppsRunner, isIncompleteState } from "@ledgerhq/live-common/lib/apps";
+import { useAppsRunner, isIncompleteState } from "@ledgerhq/live-common/lib/apps";
 
 import NavigationGuard from "~/renderer/components/NavigationGuard";
 import Quit from "~/renderer/icons/Quit";
@@ -55,7 +55,6 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
   const [appUninstallDep, setAppUninstallDep] = useState(undefined);
   const filteredState = omit(state, "currentProgress");
   const progress = state.currentProgress;
-  const plan = getActionPlan(filteredState) || [];
   const isIncomplete = isIncompleteState(filteredState);
 
   const { installQueue, uninstallQueue, currentError } = filteredState;
@@ -97,14 +96,12 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
         state={filteredState}
         dispatch={dispatch}
         isIncomplete={isIncomplete}
-        plan={plan}
         progress={progress}
       />
       <AppList
         deviceInfo={deviceInfo}
         state={filteredState}
         dispatch={dispatch}
-        plan={plan}
         isIncomplete={isIncomplete}
         progress={progress}
         setAppInstallDep={setAppInstallDep}
