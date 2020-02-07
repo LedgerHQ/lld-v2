@@ -18,23 +18,16 @@ const Filter = ({ onFiltersChange, filters }: Props) => {
   const onFilterChangeWrapper = useCallback(
     ({ selectedItem: item }) => {
       if (!item) return;
-      const newFilters = [...filters];
-      const i = newFilters.indexOf(item.key);
-      if (i >= 0) {
-        newFilters.splice(i, 1);
-      } else {
-        newFilters.push(item.key);
-      }
-      onFiltersChange(newFilters);
+      onFiltersChange([item.key]);
     },
-    [filters, onFiltersChange],
+    [onFiltersChange],
   );
 
   const filterItems = [
-    // {
-    //   key: "all",
-    //   label: <Trans i18nKey="manager.applist.filter.all" />,
-    // },
+    {
+      key: "all",
+      label: <Trans i18nKey="manager.applist.filter.all" />,
+    },
     // {
     //   key: "installed",
     //   label: <Trans i18nKey="manager.applist.filter.installed" />,
@@ -75,8 +68,7 @@ const Filter = ({ onFiltersChange, filters }: Props) => {
       items={filterItems}
       renderItem={renderItem}
       onStateChange={onFilterChangeWrapper}
-      value={filters}
-      multiple
+      value={filterItems.find(item => item.key === filters[0])}
     >
       <Text color="palette.text.shade60" ff="Inter|SemiBold" fontSize={4}>
         <Trans i18nKey="manager.applist.filter.title" />

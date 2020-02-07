@@ -77,7 +77,7 @@ const AppsList = ({
 }: Props) => {
   const inputRef = useRef();
   const [query, setQuery] = useState("");
-  const [filters, setFilters] = useState([]);
+  const [filters, setFilters] = useState(["all"]);
   const [sort, setSort] = useState({ type: "marketcap", order: "desc" });
   const [activeTab, setActiveTab] = useState(0);
   /** clear search field on tab change */
