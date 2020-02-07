@@ -224,10 +224,16 @@ export const renderAllowOpeningApp = ({
   </Wrapper>
 );
 
-export const renderInWrongAppForAccount = ({ onRetry }: { onRetry: () => void }) => (
+export const renderInWrongAppForAccount = ({
+  onRetry,
+  accountName,
+}: {
+  onRetry: () => void,
+  accountName: string,
+}) => (
   <Wrapper>
     <Title>
-      <TranslatedError error={new WrongDeviceForAccount()} />
+      <TranslatedError error={new WrongDeviceForAccount(null, { accountName })} />
     </Title>
     <Button mt={2} primary onClick={onRetry}>
       <Trans i18nKey="common.retry" />

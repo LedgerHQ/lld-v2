@@ -131,7 +131,10 @@ const DeviceAction = <R, H, P>({
   }
 
   if (inWrongDeviceForAccount) {
-    return renderInWrongAppForAccount({ onRetry });
+    return renderInWrongAppForAccount({
+      onRetry,
+      accountName: inWrongDeviceForAccount.accountName,
+    });
   }
 
   if (!isLoading && error) {

@@ -11,6 +11,7 @@ import {
 } from "@ledgerhq/live-common/lib/derivation";
 import type { AppAndVersion, ConnectAppEvent } from "~/internal/commands/connectApp";
 import type { Account, CryptoCurrency, TokenCurrency } from "@ledgerhq/live-common/lib/types";
+import { getAccountName } from "@ledgerhq/live-common/lib/account";
 import type { Device } from "~/renderer/reducers/devices";
 import { command } from "~/renderer/commands";
 import { useReplaySubject } from "./shared";
@@ -34,7 +35,7 @@ type State = {|
 export type AppState = {|
   ...State,
   onRetry: () => void,
-  inWrongDeviceForAccount: boolean,
+  inWrongDeviceForAccount: ?{ accountName: string },
 |};
 
 export type AppRequest = {
@@ -214,8 +215,10 @@ const useHook = (device: ?Device, appRequest: AppRequest): AppState => {
     ...state,
     inWrongDeviceForAccount:
       state.derivation && appRequest.account
-        ? state.derivation.address === appRequest.account.freshAddressPath
-        : false,
+        ? state.derivation.address !== appRequest.account.freshAddress
+          ? { accountName: getAccountName(appRequest.account) }
+          : null
+        : null,
     onRetry,
   };
 };
