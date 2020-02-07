@@ -28,13 +28,10 @@ const Wrapper: ThemedComponent<{}> = styled(Label).attrs(() => ({
 
 type Props = {
   address: string,
+  onClick: () => void,
 };
 
-export function LinkShowQRCode({ address }: Props) {
-  const onClick = () => {
-    // TODO show in place modal with address qrcode
-  };
-
+export function LinkShowQRCode({ address, onClick }: Props) {
   return (
     <Wrapper onClick={onClick}>
       <IconQrCode size={12} />

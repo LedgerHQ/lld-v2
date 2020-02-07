@@ -1,7 +1,7 @@
 // @flow
 
 import invariant from "invariant";
-import React, { useEffect, useRef, useCallback } from "react";
+import React, { useEffect, useRef, useCallback, useState } from "react";
 import { getMainAccount, getAccountName } from "@ledgerhq/live-common/lib/account";
 import TrackPage from "~/renderer/analytics/TrackPage";
 import { command } from "~/renderer/commands";
@@ -23,6 +23,9 @@ import SuccessDisplay from "~/renderer/components/SuccessDisplay";
 import IconShield from "~/renderer/icons/Shield";
 import { renderVerifyUnwrapped } from "~/renderer/components/DeviceAction/rendering";
 import type { StepProps } from "../Body";
+import Modal from "~/renderer/components/Modal";
+import ModalBody from "~/renderer/components/Modal/ModalBody";
+import QRCode from "~/renderer/components/QRCode";
 
 const Bullet = styled.span`
   font-family: Inter;
@@ -43,7 +46,13 @@ const Separator = styled.div`
   margin: 50px 0;
 `;
 
-const Receive1ShareAddress = ({ address }: { address: string }) => {
+const Receive1ShareAddress = ({
+  address,
+  showQRCodeModal,
+}: {
+  address: string,
+  showQRCodeModal: () => void,
+}) => {
   return (
     <>
       <Box horizontal alignItems="center" flow={2} mb={4}>
@@ -51,7 +60,7 @@ const Receive1ShareAddress = ({ address }: { address: string }) => {
         <Text style={{ flex: 1 }} ff="Inter|SemiBold" color="palette.text.shade100" fontSize={4}>
           <Trans i18nKey="receive.shareWithSender" />
         </Text>
-        <LinkShowQRCode address={address} />
+        <LinkShowQRCode onClick={showQRCodeModal} address={address} />
       </Box>
       <ReadOnlyAddressField address={address} />
     </>
@@ -142,6 +151,7 @@ const StepReceiveFunds = ({
   const currencyName = token ? token.name : getAccountName(account);
   const initialDevice = useRef(device);
   const address = mainAccount.freshAddress;
+  const [modalVisible, setModalVisible] = useState(false);
 
   const confirmAddress = useCallback(async () => {
     try {
@@ -174,6 +184,9 @@ const StepReceiveFunds = ({
     onResetSkip();
   }, [device, onChangeAddressVerified, onResetSkip, transitionTo]);
 
+  const hideQRCodeModal = useCallback(() => setModalVisible(false), [setModalVisible]);
+  const showQRCodeModal = useCallback(() => setModalVisible(true), [setModalVisible]);
+
   // when address need verification we trigger it on device
   useEffect(() => {
     if (isAddressVerified === null) {
@@ -182,51 +195,66 @@ const StepReceiveFunds = ({
   }, [isAddressVerified, confirmAddress]);
 
   return (
-    <Box px={2}>
-      <TrackPage category="Receive Flow" name="Step 4" />
-      {verifyAddressError ? (
-        <ErrorDisplay error={verifyAddressError} onRetry={onVerify} />
-      ) : isAddressVerified === true ? (
-        // Address was confirmed on device! we display a success screen!
+    <>
+      <Box px={2}>
+        <TrackPage category="Receive Flow" name="Step 4" />
+        {verifyAddressError ? (
+          <ErrorDisplay error={verifyAddressError} onRetry={onVerify} />
+        ) : isAddressVerified === true ? (
+          // Address was confirmed on device! we display a success screen!
 
-        <Box alignItems="center">
-          <SuccessDisplay
-            title={<Trans i18nKey="receive.successTitle" />}
-            description={
-              <LinkWithExternalIcon
-                style={{ display: "inline-flex", marginLeft: "10px" }}
-                onClick={() => openURL(urls.recipientAddressInfo)}
-                label={<Trans i18nKey="common.learnMore" />}
-              />
-            }
-          >
-            <Box flow={4} pt={4} horizontal justifyContent="center">
-              <Button outlineGrey onClick={onVerify}>
-                <Trans i18nKey="common.reverify" />
-              </Button>
-              <Button primary onClick={onClose}>
-                <Trans i18nKey="common.done" />
-              </Button>
+          <Box alignItems="center">
+            <SuccessDisplay
+              title={<Trans i18nKey="receive.successTitle" />}
+              description={
+                <LinkWithExternalIcon
+                  style={{ display: "inline-flex", marginLeft: "10px" }}
+                  onClick={() => openURL(urls.recipientAddressInfo)}
+                  label={<Trans i18nKey="common.learnMore" />}
+                />
+              }
+            >
+              <Box flow={4} pt={4} horizontal justifyContent="center">
+                <Button outlineGrey onClick={onVerify}>
+                  <Trans i18nKey="common.reverify" />
+                </Button>
+                <Button primary onClick={onClose}>
+                  <Trans i18nKey="common.done" />
+                </Button>
+              </Box>
+            </SuccessDisplay>
+          </Box>
+        ) : isAddressVerified === false ? (
+          // User explicitly bypass device verification (no device)
+          <>
+            <Receive1ShareAddress address={address} showQRCodeModal={showQRCodeModal} />
+            <Separator />
+            <Receive2NoDevice onVerify={onVerify} currencyName={currencyName} />
+          </>
+        ) : device ? (
+          // verification with device
+          <>
+            <Receive1ShareAddress address={address} showQRCodeModal={showQRCodeModal} />
+            <Separator />
+            <Receive2Device device={device} onVerify={onVerify} currencyName={currencyName} />
+          </>
+        ) : null // should not happen
+        }
+      </Box>
+      <Modal isOpened={modalVisible} onClose={hideQRCodeModal} centered width={414}>
+        <ModalBody
+          onClose={hideQRCodeModal}
+          render={() => (
+            <Box alignItems="center">
+              <QRCode size={211} data={address} />
+              <Box mt={6}>
+                <ReadOnlyAddressField address={address} />
+              </Box>
             </Box>
-          </SuccessDisplay>
-        </Box>
-      ) : isAddressVerified === false ? (
-        // User explicitly bypass device verification (no device)
-        <>
-          <Receive1ShareAddress address={address} />
-          <Separator />
-          <Receive2NoDevice onVerify={onVerify} currencyName={currencyName} />
-        </>
-      ) : device ? (
-        // verification with device
-        <>
-          <Receive1ShareAddress address={address} />
-          <Separator />
-          <Receive2Device device={device} onVerify={onVerify} currencyName={currencyName} />
-        </>
-      ) : null // should not happen
-      }
-    </Box>
+          )}
+        />
+      </Modal>
+    </>
   );
 };
 

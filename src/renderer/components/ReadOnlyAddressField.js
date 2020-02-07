@@ -66,7 +66,7 @@ function ReadOnlyAddressField({ address }: Props) {
     setCopyFeedback(true);
     clearTimeout(copyTimeout.current);
     copyTimeout.current = setTimeout(() => setCopyFeedback(false), 1e3);
-  }, []);
+  }, [address]);
 
   useEffect(() => {
     return () => {
