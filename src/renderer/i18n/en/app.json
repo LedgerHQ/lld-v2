@@ -1446,8 +1446,8 @@
       "description": null
     },
     "WrongDeviceForAccount": {
-      "title": "Wrong device or passphrase for ‘{{accountName}}’",
-      "description": "Please use the device or passphrase for the selected account"
+      "title": "Wrong keys for ‘{{accountName}}’",
+      "description": "Please check that your hardware wallet is set up with the recovery phrase or passphrase that belongs to the selected account."
     },
     "DeviceAppVerifyNotSupported": {
       "title": "App update required",
