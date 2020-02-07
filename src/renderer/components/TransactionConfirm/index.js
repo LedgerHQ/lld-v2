@@ -62,7 +62,9 @@ const TransactionConfirm = ({ t, device, account, parentAccount, transaction, st
 
   return (
     <Container>
-      {renderVerifyUnwrapped({ modelId: device.modelId, type })}
+      <WarnBox>
+        <Trans i18nKey="TransactionConfirm.warning" values={{ recipientWording }} />
+      </WarnBox>
 
       <Info>
         <Trans i18nKey="TransactionConfirm.title" />
@@ -110,9 +112,8 @@ const TransactionConfirm = ({ t, device, account, parentAccount, transaction, st
           />
         ) : null}
       </Box>
-      <WarnBox>
-        <Trans i18nKey="TransactionConfirm.warning" values={{ recipientWording }} />
-      </WarnBox>
+
+      {renderVerifyUnwrapped({ modelId: device.modelId, type })}
     </Container>
   );
 };
