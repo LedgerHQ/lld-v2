@@ -46,6 +46,10 @@ const Separator = styled.div`
   margin: 50px 0;
 `;
 
+const QRCodeWrapper = styled.div`
+  border: 6px solid white;
+`;
+
 const Receive1ShareAddress = ({
   address,
   showQRCodeModal,
@@ -243,12 +247,14 @@ const StepReceiveFunds = ({
         ) : null // should not happen
         }
       </Box>
-      <Modal isOpened={modalVisible} onClose={hideQRCodeModal} centered width={414}>
+      <Modal isOpened={modalVisible} onClose={hideQRCodeModal} centered width={460}>
         <ModalBody
           onClose={hideQRCodeModal}
           render={() => (
             <Box alignItems="center">
-              <QRCode size={211} data={address} />
+              <QRCodeWrapper>
+                <QRCode size={211} data={address} />
+              </QRCodeWrapper>
               <Box mt={6}>
                 <ReadOnlyAddressField address={address} />
               </Box>
