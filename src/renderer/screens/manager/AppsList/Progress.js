@@ -1,14 +1,13 @@
 // @flow
-import React, { useCallback } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Trans } from "react-i18next";
 
-import type { Action, AppOp } from "@ledgerhq/live-common/lib/apps/types";
+import type { AppOp } from "@ledgerhq/live-common/lib/apps/types";
 
 import Box from "~/renderer/components/Box";
 import Text from "~/renderer/components/Text";
 import ProgressBar from "~/renderer/components/Progress";
-import IconCrossCircle from "~/renderer/icons/CrossCircle";
 
 const Holder = styled.div`
   width: 100px;
@@ -18,34 +17,12 @@ const Holder = styled.div`
   overflow: hidden;
 `;
 
-const Cancel = styled.div`
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  cursor: pointer;
-  margin-left: 4px;
-  color: ${p => p.theme.colors.palette.primary.main};
-`;
-
 type Props = {
-  name: string,
-  dispatch: Action => void,
-  scheduled: AppOp,
-  currentProgress?: { appOp: AppOp, progress: number },
+  currentProgress: ?{ appOp: AppOp, progress: number },
 };
 
-const Progress = ({ name, dispatch, scheduled, currentProgress }: Props) => {
+const Progress = ({ currentProgress }: Props) => {
   const { progress, appOp } = currentProgress || {};
-
-  const onInstall = useCallback(() => dispatch({ type: "install", name }), [dispatch, name]);
-  const onUninstall = useCallback(() => dispatch({ type: "uninstall", name }), [dispatch, name]);
-
-  const onClick = useCallback(() => {
-    if (scheduled) {
-      if (scheduled.type === "install") onUninstall();
-      if (scheduled.type === "uninstall") onInstall();
-    }
-  }, [scheduled, onInstall, onUninstall]);
 
   return (
     <Box flex="1" horizontal justifyContent="flex-end" overflow="hidden">
@@ -69,11 +46,6 @@ const Progress = ({ name, dispatch, scheduled, currentProgress }: Props) => {
               }
             />
           </Text>
-          {!progress ? (
-            <Cancel onClick={onClick}>
-              <IconCrossCircle size={20} />
-            </Cancel>
-          ) : null}
         </Box>
         <Holder>
           {appOp ? (
