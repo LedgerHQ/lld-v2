@@ -84,6 +84,7 @@ const Stepper = <T, StepProps>({
   // $FlowFixMe we'll need to improve this. also ...props is bad practice...
   const stepProps: StepProps = {
     ...props,
+    onClose,
     t,
     transitionTo,
   };

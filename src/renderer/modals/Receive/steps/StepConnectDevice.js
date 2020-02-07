@@ -32,22 +32,11 @@ export default function StepConnectDevice({
   );
 }
 
-export function StepConnectDeviceFooter({
-  t,
-  transitionTo,
-  isAppOpened,
-  onSkipConfirm,
-}: StepProps) {
+export function StepConnectDeviceFooter({ t, transitionTo, onSkipConfirm }: StepProps) {
   return (
     <Box horizontal flow={2}>
       <TrackPage category="Receive Flow" name="Step 2" />
-      <Button
-        event="Receive Flow Without Device Clicked"
-        onClick={() => {
-          onSkipConfirm();
-          transitionTo("receive");
-        }}
-      >
+      <Button event="Receive Flow Without Device Clicked" onClick={onSkipConfirm}>
         {t("receive.steps.connectDevice.withoutDevice")}
       </Button>
     </Box>

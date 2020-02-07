@@ -1,31 +1,153 @@
 // @flow
 
 import invariant from "invariant";
-import React, { PureComponent } from "react";
+import React, { useEffect, useRef, useCallback } from "react";
 import { getMainAccount, getAccountName } from "@ledgerhq/live-common/lib/account";
 import TrackPage from "~/renderer/analytics/TrackPage";
 import { command } from "~/renderer/commands";
-import Box from "~/renderer/components/Box";
-import CurrentAddress from "~/renderer/components/CurrentAddress";
 import ErrorDisplay from "~/renderer/components/ErrorDisplay";
 import { DisconnectedDevice, WrongDeviceForAccount } from "@ledgerhq/errors";
-
+import { Trans } from "react-i18next";
+import styled from "styled-components";
+import useTheme from "~/renderer/hooks/useTheme";
+import { urls } from "~/config/urls";
+import { openURL } from "~/renderer/linking";
+import { rgba } from "~/renderer/styles/helpers";
+import Box from "~/renderer/components/Box";
+import Button from "~/renderer/components/Button";
+import Text from "~/renderer/components/Text";
+import ReadOnlyAddressField from "~/renderer/components/ReadOnlyAddressField";
+import LinkWithExternalIcon from "~/renderer/components/LinkWithExternalIcon";
+import LinkShowQRCode from "~/renderer/components/LinkShowQRCode";
+import SuccessDisplay from "~/renderer/components/SuccessDisplay";
+import IconShield from "~/renderer/icons/Shield";
+import { renderVerifyUnwrapped } from "~/renderer/components/DeviceAction/rendering";
 import type { StepProps } from "../Body";
 
-export default class StepReceiveFunds extends PureComponent<StepProps> {
-  componentDidMount() {
-    if (this.props.isAddressVerified === null) {
-      this.confirmAddress();
-    }
-  }
+const Bullet = styled.span`
+  font-family: Inter;
+  font-weight: bold;
+  font-size: 13px;
+  color: ${p => p.theme.colors.wallet};
+  background-color: ${p => rgba(p.theme.colors.wallet, 0.2)};
+  border-radius: 13px;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
-  confirmAddress = async () => {
-    const { account, parentAccount, device, onChangeAddressVerified, transitionTo } = this.props;
+const Separator = styled.div`
+  border-top: 1px solid #99999933;
+  margin: 50px 0;
+`;
+
+const Receive1ShareAddress = ({ address }: { address: string }) => {
+  return (
+    <>
+      <Box horizontal alignItems="center" flow={2} mb={4}>
+        <Bullet>1</Bullet>
+        <Text style={{ flex: 1 }} ff="Inter|SemiBold" color="palette.text.shade100" fontSize={4}>
+          <Trans i18nKey="receive.shareWithSender" />
+        </Text>
+        <LinkShowQRCode address={address} />
+      </Box>
+      <ReadOnlyAddressField address={address} />
+    </>
+  );
+};
+
+const Receive2NoDevice = ({
+  onVerify,
+  currencyName,
+}: {
+  onVerify: () => void,
+  currencyName: string,
+}) => {
+  return (
+    <>
+      <Box horizontal flow={2} mt={2} alignItems="center">
+        <Box color="alertRed">
+          <IconShield height={32} width={28} />
+        </Box>
+        <Text fontSize={12} color="alertRed" ff="Inter" style={{ flexShrink: "unset" }}>
+          <Trans i18nKey="currentAddress.messageIfSkipped" values={{ currencyName }} />
+          <LinkWithExternalIcon
+            style={{ display: "inline-flex", marginLeft: "10px" }}
+            onClick={() => openURL(urls.recipientAddressInfo)}
+            label={<Trans i18nKey="common.learnMore" />}
+          />
+        </Text>
+      </Box>
+
+      <Box pt={4} horizontal justifyContent="center">
+        <Button primary onClick={onVerify}>
+          <Trans i18nKey="common.verify" />
+        </Button>
+      </Box>
+    </>
+  );
+};
+
+const Receive2Device = ({
+  onVerify,
+  currencyName,
+  device,
+}: {
+  onVerify: () => void,
+  currencyName: string,
+  device: *,
+}) => {
+  const type = useTheme("colors.palette.type");
+
+  return (
+    <>
+      <Box horizontal alignItems="center" flow={2}>
+        <Bullet>2</Bullet>
+        <Text
+          style={{ maxWidth: 300 }}
+          ff="Inter|SemiBold"
+          color="palette.text.shade100"
+          fontSize={4}
+        >
+          <Trans i18nKey="currentAddress.messageIfUnverified" value={{ currencyName }} />
+          <LinkWithExternalIcon
+            style={{ display: "inline-flex", marginLeft: "10px" }}
+            onClick={() => openURL(urls.recipientAddressInfo)}
+            label={<Trans i18nKey="common.learnMore" />}
+          />
+        </Text>
+      </Box>
+
+      {renderVerifyUnwrapped({ modelId: device.modelId, type })}
+    </>
+  );
+};
+
+const StepReceiveFunds = ({
+  isAddressVerified,
+  account,
+  parentAccount,
+  device,
+  onChangeAddressVerified,
+  transitionTo,
+  onResetSkip,
+  verifyAddressError,
+  token,
+  onClose,
+}: StepProps) => {
+  const mainAccount = account ? getMainAccount(account, parentAccount) : null;
+  invariant(account && mainAccount, "No account given");
+  const currencyName = token ? token.name : getAccountName(account);
+  const initialDevice = useRef(device);
+  const address = mainAccount.freshAddress;
+
+  const confirmAddress = useCallback(async () => {
     try {
-      if (!device || !account) {
+      if (!device) {
         throw new DisconnectedDevice();
       }
-      const mainAccount = getMainAccount(account, parentAccount);
       const { address } = await command("getAddress")({
         derivationMode: mainAccount.derivationMode,
         currencyId: mainAccount.currency.id,
@@ -33,7 +155,6 @@ export default class StepReceiveFunds extends PureComponent<StepProps> {
         path: mainAccount.freshAddressPath,
         verify: true,
       }).toPromise();
-
       if (address !== mainAccount.freshAddress) {
         throw new WrongDeviceForAccount(`WrongDeviceForAccount ${mainAccount.name}`, {
           accountName: mainAccount.name,
@@ -42,43 +163,71 @@ export default class StepReceiveFunds extends PureComponent<StepProps> {
       onChangeAddressVerified(true);
       transitionTo("receive");
     } catch (err) {
-      // TODO
       onChangeAddressVerified(false, err);
-      // this.props.transitionTo("confirm");
     }
-  };
+  }, [device, mainAccount, transitionTo, onChangeAddressVerified]);
 
-  handleGoPrev = () => {
-    // FIXME this is not a good practice at all. it triggers tons of setState. these are even concurrent setState potentially in future React :o
-    this.props.onChangeAddressVerified(null);
-    this.props.onChangeAppOpened(false);
-    this.props.onResetSkip();
-    this.props.transitionTo("device");
-  };
+  const onVerify = useCallback(() => {
+    // if device has changed since the beginning, we need to re-entry device
+    if (device !== initialDevice.current) transitionTo("device");
+    onChangeAddressVerified(null);
+    onResetSkip();
+  }, [device, onChangeAddressVerified, onResetSkip, transitionTo]);
 
-  render() {
-    const { account, parentAccount, isAddressVerified, verifyAddressError, token } = this.props;
-    const mainAccount = account ? getMainAccount(account, parentAccount) : null;
-    invariant(account && mainAccount, "No account given");
-    const name = token ? token.name : getAccountName(account);
-    return (
-      <Box flow={5}>
-        <TrackPage category="Receive Flow" name="Step 4" />
-        {verifyAddressError ? (
-          <ErrorDisplay error={verifyAddressError} onRetry={this.handleGoPrev} />
-        ) : (
-          <CurrentAddress
-            name={name}
-            currency={mainAccount.currency}
-            address={mainAccount.freshAddress}
-            isAddressVerified={isAddressVerified}
-            onVerify={this.handleGoPrev}
-            withBadge
-            withFooter
-            withQRCode
-          />
-        )}
-      </Box>
-    );
-  }
-}
+  // when address need verification we trigger it on device
+  useEffect(() => {
+    if (isAddressVerified === null) {
+      confirmAddress();
+    }
+  }, [isAddressVerified, confirmAddress]);
+
+  return (
+    <Box px={2}>
+      <TrackPage category="Receive Flow" name="Step 4" />
+      {verifyAddressError ? (
+        <ErrorDisplay error={verifyAddressError} onRetry={onVerify} />
+      ) : isAddressVerified === true ? (
+        // Address was confirmed on device! we display a success screen!
+
+        <Box alignItems="center">
+          <SuccessDisplay
+            title={<Trans i18nKey="receive.successTitle" />}
+            description={
+              <LinkWithExternalIcon
+                style={{ display: "inline-flex", marginLeft: "10px" }}
+                onClick={() => openURL(urls.recipientAddressInfo)}
+                label={<Trans i18nKey="common.learnMore" />}
+              />
+            }
+          >
+            <Box flow={4} pt={4} horizontal justifyContent="center">
+              <Button outlineGrey onClick={onVerify}>
+                <Trans i18nKey="common.reverify" />
+              </Button>
+              <Button primary onClick={onClose}>
+                <Trans i18nKey="common.done" />
+              </Button>
+            </Box>
+          </SuccessDisplay>
+        </Box>
+      ) : isAddressVerified === false ? (
+        // User explicitly bypass device verification (no device)
+        <>
+          <Receive1ShareAddress address={address} />
+          <Separator />
+          <Receive2NoDevice onVerify={onVerify} currencyName={currencyName} />
+        </>
+      ) : device ? (
+        // verification with device
+        <>
+          <Receive1ShareAddress address={address} />
+          <Separator />
+          <Receive2Device device={device} onVerify={onVerify} currencyName={currencyName} />
+        </>
+      ) : null // should not happen
+      }
+    </Box>
+  );
+};
+
+export default StepReceiveFunds;

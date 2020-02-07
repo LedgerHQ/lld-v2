@@ -565,6 +565,8 @@
   },
   "receive": {
     "title": "Receive",
+    "successTitle": "Address shared securely",
+    "shareWithSender": "Share address with sender",
     "steps": {
       "chooseAccount": {
         "title": "Account",

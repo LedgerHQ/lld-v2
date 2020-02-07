@@ -58,7 +58,6 @@ export type StepProps = {
   token: ?TokenCurrency,
   receiveTokenMode: boolean,
   closeModal: void => void,
-  isAppOpened: boolean,
   isAddressVerified: ?boolean,
   verifyAddressError: ?Error,
   onRetry: void => void,
@@ -66,8 +65,8 @@ export type StepProps = {
   onResetSkip: void => void,
   onChangeToken: (token: ?TokenCurrency) => void,
   onChangeAccount: (account: ?AccountLike, tokenAccount: ?Account) => void,
-  onChangeAppOpened: boolean => void,
   onChangeAddressVerified: (?boolean, ?Error) => void,
+  onClose: () => void,
 };
 
 export type St = Step<StepId, StepProps>;
@@ -125,7 +124,6 @@ const Body = ({
   const [account, setAccount] = useState(() => (params && params.account) || accounts[0]);
   const [parentAccount, setParentAccount] = useState(() => params && params.parentAccount);
   const [disabledSteps, setDisabledSteps] = useState([]);
-  const [isAppOpened, setAppOpened] = useState(false);
   const [token, setToken] = useState(null);
 
   const handleChangeAccount = useCallback(
@@ -148,8 +146,7 @@ const Body = ({
 
   const handleRetry = useCallback(() => {
     onChangeAddressVerified(null, null);
-    setAppOpened(false);
-  }, [onChangeAddressVerified, setAppOpened]);
+  }, [onChangeAddressVerified]);
 
   const handleSkipConfirm = useCallback(() => {
     const connectStepIndex = steps.findIndex(step => step.id === "device");
@@ -157,7 +154,8 @@ const Body = ({
       onChangeAddressVerified(false, null);
       setDisabledSteps([connectStepIndex]);
     }
-  }, [onChangeAddressVerified, setDisabledSteps, steps]);
+    onChangeStepId("receive");
+  }, [onChangeAddressVerified, setDisabledSteps, steps, onChangeStepId]);
 
   useEffect(() => {
     const stepId =
@@ -189,7 +187,6 @@ const Body = ({
     receiveTokenMode: !!params.receiveTokenMode,
     hideBreadcrumb: stepId === "warning",
     token,
-    isAppOpened,
     isAddressVerified,
     verifyAddressError,
     closeModal: handleCloseModal,
@@ -198,7 +195,6 @@ const Body = ({
     onResetSkip: handleResetSkip,
     onChangeAccount: handleChangeAccount,
     onChangeToken: setToken,
-    onChangeAppOpened: setAppOpened,
     onChangeAddressVerified,
     onStepChange: handleStepChange,
     onClose: handleCloseModal,

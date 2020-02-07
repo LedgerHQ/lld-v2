@@ -38,7 +38,6 @@ export type StepProps = {
   transitionTo: string => void,
   currency: ?CryptoCurrency | ?TokenCurrency,
   device: ?Device,
-  isAppOpened: boolean,
   scannedAccounts: Account[],
   existingAccounts: Account[],
   checkedAccountsIds: string[],
@@ -49,7 +48,6 @@ export type StepProps = {
   onCloseModal: () => void,
   resetScanState: () => void,
   setCurrency: (?CryptoCurrency) => void,
-  setAppOpened: boolean => void,
   setScanStatus: (ScanStatus, ?Error) => string,
   setAccountName: (Account, string) => void,
   editedNames: { [_: string]: string },
@@ -102,8 +100,6 @@ const createSteps = (): St[] => {
 type State = {
   stepId: StepId,
   scanStatus: ScanStatus | string,
-
-  isAppOpened: boolean,
   currency: ?CryptoCurrency,
   scannedAccounts: Account[],
   checkedAccountsIds: string[],
@@ -124,7 +120,6 @@ const mapDispatchToProps = {
 
 const INITIAL_STATE = {
   stepId: "chooseCurrency",
-  isAppOpened: false,
   currency: null,
   scannedAccounts: [],
   checkedAccountsIds: [],
@@ -185,15 +180,12 @@ class AddAccounts extends PureComponent<Props, State> {
 
   handleResetScanState = () => {
     this.setState({
-      isAppOpened: false,
       scanStatus: "idle",
       err: null,
       scannedAccounts: [],
       checkedAccountsIds: [],
     });
   };
-
-  handleSetAppOpened = (isAppOpened: boolean) => this.setState({ isAppOpened });
 
   handleBeforeOpen = ({ data }) => {
     const { currency } = this.state;
@@ -216,7 +208,6 @@ class AddAccounts extends PureComponent<Props, State> {
     const {
       stepId,
       currency,
-      isAppOpened,
       scannedAccounts,
       checkedAccountsIds,
       scanStatus,
@@ -233,14 +224,12 @@ class AddAccounts extends PureComponent<Props, State> {
       checkedAccountsIds,
       scanStatus,
       err,
-      isAppOpened,
       onClickAdd: this.handleClickAdd,
       onCloseModal: this.handleCloseModal,
       setScanStatus: this.handleSetScanStatus,
       setCurrency: this.handleSetCurrency,
       setScannedAccounts: this.handleSetScannedAccounts,
       resetScanState: this.handleResetScanState,
-      setAppOpened: this.handleSetAppOpened,
       setAccountName: this.handleSetAccountName,
       onGoStep1: this.onGoStep1,
       editedNames,
