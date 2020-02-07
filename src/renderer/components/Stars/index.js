@@ -69,7 +69,7 @@ const Stars = ({ pathname, collapsed }: Props) => {
                 }
                 delay={collapsed ? 200 : 1200}
                 key={account.id}
-                placement={collapsed ? "right" : "top"}
+                placement={collapsed ? "left" : "top"}
                 boundary={collapsed ? "window" : undefined}
                 enabled={!snapshot.isDraggingOver}
                 flip={!collapsed}
