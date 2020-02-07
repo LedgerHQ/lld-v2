@@ -9,6 +9,7 @@ import Space from "~/renderer/components/Space";
 const ListWrapper = styled(Box)`
   ${p => (p.scroll ? p.theme.overflow.y : "")};
   will-change: unset;
+  flex: auto;
 `;
 
 type Props = {
