@@ -259,7 +259,7 @@
     "modal": {
       "title": "Genuine check"
     },
-    "deviceInBootloader": "Your device is in Bootloader mode. Click {{button}} to update it."
+    "deviceInBootloader": "Device in Bootloader mode. Click on Continue to update it."
   },
   "tokensList": {
     "title": "Tokens",
@@ -400,7 +400,7 @@
     "loading": "Loading...",
     "connectAndUnlockDevice": "Connect and unlock your device",
     "unlockDevice": "Unlock your device",
-    "quitApp": "Please quit application on your device",
+    "quitApp": "Quit the application on your device",
     "appNotInstalled": "Please install the {{appName}} app",
     "openManager": "Open Manager"
   },
