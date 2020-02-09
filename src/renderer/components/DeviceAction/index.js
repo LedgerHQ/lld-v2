@@ -119,7 +119,7 @@ const DeviceAction = <R, H, P>({
 
   if (allowOpeningRequestedWording || requestOpenApp) {
     // requestOpenApp for Nano S 1.3.1 (need to ask user to open the app.)
-    const wording = allowOpeningRequestedWording || requestOpenApp.appName;
+    const wording = allowOpeningRequestedWording || requestOpenApp;
     const tokenContext = request && request.tokenCurrency;
     return renderAllowOpeningApp({
       modelId,
