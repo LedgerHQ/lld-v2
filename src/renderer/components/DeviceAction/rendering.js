@@ -21,6 +21,7 @@ import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import { getDeviceAnimation } from "./animations";
 import { DeviceBlocker } from "./DeviceBlocker";
 import ErrorIcon from "~/renderer/components/ErrorIcon";
+import SupportLinkError from "~/renderer/components/SupportLinkError";
 
 const AnimationWrapper: ThemedComponent<{ modelId: DeviceModelId }> = styled.div`
   width: 600px;
@@ -248,6 +249,7 @@ export const renderError = ({
     </ErrorTitle>
     <ErrorDescription>
       <TranslatedError error={error} field="description" />
+      <SupportLinkError error={error} />
     </ErrorDescription>
     <ButtonContainer>
       {withExportLogs ? (
