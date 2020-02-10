@@ -1,10 +1,15 @@
 // @flow
-import React, { memo, useState, useEffect, useCallback } from "react";
+import React, { memo, useState, useEffect, useCallback, useMemo } from "react";
 import styled from "styled-components";
 import { withTranslation } from "react-i18next";
 import type { TFunction } from "react-i18next";
 import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
 import type { ListAppsResult, Exec } from "@ledgerhq/live-common/lib/apps/types";
+import {
+  isOutOfMemoryState,
+  predictOptimisticState,
+  reducer,
+} from "@ledgerhq/live-common/lib/apps";
 import { useAppsRunner, isIncompleteState, distribute } from "@ledgerhq/live-common/lib/apps";
 
 import NavigationGuard from "~/renderer/components/NavigationGuard";
@@ -54,9 +59,17 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
   const filteredState = omit(state, "currentProgress");
   const progress = state.currentProgress;
   const isIncomplete = isIncompleteState(filteredState);
-  const distribution = distribute(filteredState);
 
   const { installQueue, uninstallQueue, currentError } = filteredState;
+  const jobInProgress = installQueue.length > 0 || uninstallQueue.length > 0;
+
+  const distribution = useMemo(() => {
+    const newState = installQueue.length
+      ? predictOptimisticState(reducer(filteredState, { type: "install", name: installQueue[0] }))
+      : filteredState;
+    return distribute(newState);
+  }, [filteredState, installQueue]);
+
   const onCloseDepsInstallModal = useCallback(() => setAppInstallDep(undefined), [
     setAppInstallDep,
   ]);
@@ -79,7 +92,7 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
       <ErrorModal isOpened={!!error} error={error} onClose={onCloseError} />
       <NavigationGuard
         analyticsName="ManagerGuardModal"
-        when={installQueue.length > 0 || uninstallQueue.length > 0}
+        when={jobInProgress}
         title={t(`errors.ManagerQuitPage.${installState}.title`)}
         renderIcon={() => (
           <QuitIconWrapper>
@@ -91,6 +104,8 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
         cancelText={t(`errors.ManagerQuitPage.${installState}.stay`)}
       />
       <DeviceStorage
+        jobInProgress={jobInProgress}
+        installQueue={installQueue}
         distribution={distribution}
         deviceModel={filteredState.deviceModel}
         deviceInfo={deviceInfo}

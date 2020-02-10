@@ -29,7 +29,6 @@ const AppRow = styled.div`
   border-top: 1px solid ${p => p.theme.colors.palette.text.shade10};
   padding: 20px;
   font-size: 12px;
-  animation: ${p => p.theme.animations.fadeIn};
 `;
 
 const AppName = styled.div`
