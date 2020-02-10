@@ -5,8 +5,7 @@ import { withTranslation } from "react-i18next";
 import type { TFunction } from "react-i18next";
 import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
 import type { ListAppsResult, Exec } from "@ledgerhq/live-common/lib/apps/types";
-import type { Device } from "~/renderer/reducers/devices";
-import { useAppsRunner, isIncompleteState } from "@ledgerhq/live-common/lib/apps";
+import { useAppsRunner, isIncompleteState, distribute } from "@ledgerhq/live-common/lib/apps";
 
 import NavigationGuard from "~/renderer/components/NavigationGuard";
 import Quit from "~/renderer/icons/Quit";
@@ -41,7 +40,6 @@ const QuitIconWrapper = styled.div`
 `;
 
 type Props = {
-  device: Device,
   deviceInfo: DeviceInfo,
   result: ListAppsResult,
   exec: Exec,
@@ -56,6 +54,7 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
   const filteredState = omit(state, "currentProgress");
   const progress = state.currentProgress;
   const isIncomplete = isIncompleteState(filteredState);
+  const distribution = distribute(filteredState);
 
   const { installQueue, uninstallQueue, currentError } = filteredState;
   const onCloseDepsInstallModal = useCallback(() => setAppInstallDep(undefined), [
@@ -91,7 +90,12 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
         confirmText={t(`errors.ManagerQuitPage.quit`)}
         cancelText={t(`errors.ManagerQuitPage.${installState}.stay`)}
       />
-      <DeviceStorage state={filteredState} deviceInfo={deviceInfo} />
+      <DeviceStorage
+        distribution={distribution}
+        deviceModel={filteredState.deviceModel}
+        deviceInfo={deviceInfo}
+        isIncomplete={isIncomplete}
+      />
       <UpdateAllApps
         state={filteredState}
         dispatch={dispatch}
@@ -107,6 +111,7 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
         setAppInstallDep={setAppInstallDep}
         setAppUninstallDep={setAppUninstallDep}
         t={t}
+        distribution={distribution}
       />
       <AppDepsInstallModal
         app={appInstallDep}

@@ -1,13 +1,13 @@
 // @flow
 
 import React, { memo } from "react";
-import { distribute, isIncompleteState } from "@ledgerhq/live-common/lib/apps";
 import styled from "styled-components";
 import { Trans } from "react-i18next";
 import { Transition, TransitionGroup } from "react-transition-group";
 
 import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
-import type { State } from "@ledgerhq/live-common/lib/apps/types";
+import type { AppsDistribution } from "@ledgerhq/live-common/lib/apps";
+import type { DeviceModel } from "@ledgerhq/devices";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
 import ByteSize from "~/renderer/components/ByteSize";
@@ -137,7 +137,7 @@ const TooltipContent = ({
 }: {
   name: string,
   bytes: number,
-  deviceModel: *,
+  deviceModel: DeviceModel,
 }) => (
   <TooltipContentWrapper>
     <Text>{name}</Text>
@@ -180,22 +180,22 @@ export const StorageBar = ({
 );
 
 type Props = {
-  state: State,
+  deviceModel: DeviceModel,
   deviceInfo: DeviceInfo,
+  distribution: AppsDistribution,
+  isIncomplete: boolean,
 };
 
-const DeviceStorage = ({ state, deviceInfo }: Props) => {
-  const distribution = distribute(state);
-  const isIncomplete = isIncompleteState(state);
+const DeviceStorage = ({ deviceModel, deviceInfo, distribution, isIncomplete }: Props) => {
   const shouldWarn = distribution.shouldWarnMemory || isIncomplete;
 
   return (
     <Card p={20} mb={4} horizontal>
-      <DeviceIllustration deviceModel={state.deviceModel} />
+      <DeviceIllustration deviceModel={deviceModel} />
       <div style={{ flex: 1 }}>
         <Box horizontal alignItems="center">
           <Text ff="Inter|SemiBold" color="palette.text.shade100" fontSize={5}>
-            {state.deviceModel.productName}
+            {deviceModel.productName}
           </Text>
           <Box ml={2}>
             <Tooltip content={<Trans i18nKey="manager.deviceStorage.genuine" />}>
@@ -216,7 +216,7 @@ const DeviceStorage = ({ state, deviceInfo }: Props) => {
               <Trans i18nKey="manager.deviceStorage.used" />
             </Text>
             <Text color="palette.text.shade100" ff="Inter|Bold" fontSize={4}>
-              <ByteSize deviceModel={state.deviceModel} value={distribution.totalAppsBytes} />
+              <ByteSize deviceModel={deviceModel} value={distribution.totalAppsBytes} />
             </Text>
           </div>
           <div>
@@ -224,7 +224,7 @@ const DeviceStorage = ({ state, deviceInfo }: Props) => {
               <Trans i18nKey="manager.deviceStorage.capacity" />
             </Text>
             <Text color="palette.text.shade100" ff="Inter|Bold" fontSize={4}>
-              <ByteSize deviceModel={state.deviceModel} value={distribution.appsSpaceBytes} />
+              <ByteSize deviceModel={deviceModel} value={distribution.appsSpaceBytes} />
             </Text>
           </div>
           <div>
@@ -238,7 +238,7 @@ const DeviceStorage = ({ state, deviceInfo }: Props) => {
         </Info>
         <StorageBar
           distribution={distribution}
-          deviceModel={state.deviceModel}
+          deviceModel={deviceModel}
           isIncomplete={isIncomplete}
         />
         <FreeInfo danger={shouldWarn}>
@@ -250,7 +250,7 @@ const DeviceStorage = ({ state, deviceInfo }: Props) => {
               ) : distribution.freeSpaceBytes > 0 ? (
                 <>
                   <Trans i18nKey="manager.deviceStorage.freeSpace">
-                    <ByteSize value={distribution.freeSpaceBytes} deviceModel={state.deviceModel} />
+                    <ByteSize value={distribution.freeSpaceBytes} deviceModel={deviceModel} />
                   </Trans>
                 </>
               ) : (
