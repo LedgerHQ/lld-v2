@@ -235,10 +235,12 @@ export const renderError = ({
   error,
   onRetry,
   withExportLogs,
+  children,
 }: {
   error: Error,
   onRetry?: () => void,
   withExportLogs?: boolean,
+  children?: React$Node,
 }) => (
   <Wrapper>
     <Logo>
@@ -251,6 +253,7 @@ export const renderError = ({
       <TranslatedError error={error} field="description" />
       <SupportLinkError error={error} />
     </ErrorDescription>
+    {children ? <ErrorDescription>{children}</ErrorDescription> : null}
     <ButtonContainer>
       {withExportLogs ? (
         <ExportLogsButton
