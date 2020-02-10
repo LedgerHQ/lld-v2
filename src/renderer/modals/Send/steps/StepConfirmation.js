@@ -5,22 +5,18 @@ import { Trans } from "react-i18next";
 import styled, { withTheme } from "styled-components";
 
 import TrackPage from "~/renderer/analytics/TrackPage";
-import Box from "~/renderer/components/Box";
-import Button from "~/renderer/components/Button";
-import DebugAppInfosForCurrency from "~/renderer/components/DebugAppInfosForCurrency";
-import RetryButton from "~/renderer/components/RetryButton";
-import Spinner from "~/renderer/components/Spinner";
-import TranslatedError from "~/renderer/components/TranslatedError";
-import IconCheckCircle from "~/renderer/icons/CheckCircle";
-import IconExclamationCircleThin from "~/renderer/icons/ExclamationCircleThin";
-import IconTriangleWarning from "~/renderer/icons/TriangleWarning";
-
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import { multiline } from "~/renderer/styles/helpers";
+import Box from "~/renderer/components/Box";
+import Button from "~/renderer/components/Button";
+import RetryButton from "~/renderer/components/RetryButton";
+import ErrorDisplay from "~/renderer/components/ErrorDisplay";
+import SuccessDisplay from "~/renderer/components/SuccessDisplay";
+import BroadcastErrorDisclaimer from "~/renderer/components/BroadcastErrorDisclaimer";
 
 import type { StepProps } from "../types";
 
-const Container: ThemedComponent<{ shouldSpace: boolean }> = styled(Box).attrs(() => ({
+const Container: ThemedComponent<{ shouldSpace?: boolean }> = styled(Box).attrs(() => ({
   alignItems: "center",
   grow: true,
   color: "palette.text.shade100",
@@ -29,88 +25,42 @@ const Container: ThemedComponent<{ shouldSpace: boolean }> = styled(Box).attrs((
   min-height: 220px;
 `;
 
-const Title: ThemedComponent<{}> = styled(Box).attrs(() => ({
-  ff: "Inter",
-  fontSize: 5,
-  mt: 2,
-}))`
-  text-align: center;
-  word-break: break-word;
-`;
-
-const Text: ThemedComponent<{}> = styled(Box).attrs(() => ({
-  ff: "Inter",
-  fontSize: 4,
-  mt: 2,
-}))`
-  text-align: center;
-`;
-
-const Disclaimer: ThemedComponent<{}> = styled(Box).attrs(() => ({
-  horizontal: true,
-  alignItems: "center",
-  color: "palette.background.paper",
-  borderRadius: 1,
-  p: 3,
-  mb: 5,
-}))`
-  width: 100%;
-  background-color: ${p => p.theme.colors.lightRed};
-  color: ${p => p.theme.colors.alertRed};
-`;
-
 function StepConfirmation({
   account,
   t,
   optimisticOperation,
   error,
-  signed,
   theme,
+  device,
+  signed,
 }: StepProps & { theme: * }) {
-  const Icon = optimisticOperation ? IconCheckCircle : error ? IconExclamationCircleThin : Spinner;
-  const iconColor = optimisticOperation
-    ? theme.colors.positiveGreen
-    : error
-    ? theme.colors.alertRed
-    : theme.colors.palette.text.shade60;
+  if (optimisticOperation) {
+    return (
+      <Container>
+        <TrackPage category="Send Flow" name="Step Confirmed" />
+        <SuccessDisplay
+          title={<Trans i18nKey="send.steps.confirmation.success.title" />}
+          description={multiline(t("send.steps.confirmation.success.text"))}
+        />
+      </Container>
+    );
+  }
 
-  const broadcastError = error && signed;
-
-  return (
-    <Container shouldSpace={broadcastError}>
-      {error && account ? <DebugAppInfosForCurrency /> : null}
-      {broadcastError ? (
-        <Disclaimer>
-          <Box mr={3}>
-            <IconTriangleWarning height={16} width={16} />
-          </Box>
-          <Box style={{ display: "block" }} ff="Inter|SemiBold" fontSize={3} horizontal shrink>
-            <Trans i18nKey="send.steps.confirmation.broadcastError" />
-          </Box>
-        </Disclaimer>
-      ) : null}
-      <TrackPage category="Send Flow" name="Step Confirmed" />
-      <span style={{ color: iconColor }}>
-        <Icon size={43} />
-      </span>
-      <Title>
-        {error ? (
-          <TranslatedError error={error} />
-        ) : optimisticOperation ? (
-          <Trans i18nKey="send.steps.confirmation.success.title" />
-        ) : (
-          <Trans i18nKey="send.steps.confirmation.pending.title" />
-        )}
-      </Title>
-      <Text style={{ userSelect: "text" }} color="palette.text.shade80">
-        {optimisticOperation ? (
-          multiline(t("send.steps.confirmation.success.text"))
-        ) : error ? (
-          <TranslatedError error={error} field="description" />
+  if (error) {
+    return (
+      <Container shouldSpace={signed}>
+        <TrackPage category="Send Flow" name="Step Confirmation Error" />
+        {signed ? (
+          <BroadcastErrorDisclaimer
+            title={<Trans i18nKey="send.steps.confirmation.broadcastError" />}
+          />
         ) : null}
-      </Text>
-    </Container>
-  );
+        <ErrorDisplay error={error} withExportLogs />
+      </Container>
+    );
+  }
+
+  return null;
 }
 
 export function StepConfirmationFooter({
@@ -132,6 +82,7 @@ export function StepConfirmationFooter({
   return (
     <>
       {concernedOperation ? (
+        // FIXME make a standalone component!
         <Button
           ml={2}
           event="Send Flow Step 4 View OpD Clicked"

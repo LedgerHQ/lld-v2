@@ -5,12 +5,9 @@ import { connect } from "react-redux";
 import type { TFunction } from "react-i18next";
 import { Trans, withTranslation } from "react-i18next";
 import { createStructuredSelector } from "reselect";
-
 import SyncSkipUnderPriority from "~/renderer/components/SyncSkipUnderPriority";
-
 import Track from "~/renderer/analytics/Track";
 import type { Account, TokenCurrency, AccountLike } from "@ledgerhq/live-common/lib/types";
-
 import type { Device } from "~/renderer/reducers/devices";
 import { getCurrentDevice } from "~/renderer/reducers/devices";
 import { accountsSelector } from "~/renderer/reducers/accounts";
@@ -19,14 +16,15 @@ import type { Step } from "~/renderer/components/Stepper";
 import Stepper from "~/renderer/components/Stepper";
 import StepAccount, { StepAccountFooter } from "./steps/StepAccount";
 import StepConnectDevice, { StepConnectDeviceFooter } from "./steps/StepConnectDevice";
-import StepConfirmAddress, { StepConfirmAddressFooter } from "./steps/StepConfirmAddress";
 import StepWarning, { StepWarningFooter } from "./steps/StepWarning";
 import StepReceiveFunds from "./steps/StepReceiveFunds";
 
+export type StepId = "warning" | "account" | "device" | "receive";
+
 type OwnProps = {|
-  stepId: string,
+  stepId: StepId,
   onClose: () => void,
-  onChangeStepId: string => void,
+  onChangeStepId: StepId => void,
   isAddressVerified: ?boolean,
   verifyAddressError: ?Error,
   onChangeAddressVerified: (isAddressVerified: ?boolean, err: ?Error) => void,
@@ -60,7 +58,6 @@ export type StepProps = {
   token: ?TokenCurrency,
   receiveTokenMode: boolean,
   closeModal: void => void,
-  isAppOpened: boolean,
   isAddressVerified: ?boolean,
   verifyAddressError: ?Error,
   onRetry: void => void,
@@ -68,11 +65,11 @@ export type StepProps = {
   onResetSkip: void => void,
   onChangeToken: (token: ?TokenCurrency) => void,
   onChangeAccount: (account: ?AccountLike, tokenAccount: ?Account) => void,
-  onChangeAppOpened: boolean => void,
   onChangeAddressVerified: (?boolean, ?Error) => void,
+  onClose: () => void,
 };
 
-export type St = Step<"warning" | "account" | "device" | "confirm" | "receive", StepProps>;
+export type St = Step<StepId, StepProps>;
 
 const createSteps = (): Array<St> => [
   {
@@ -96,18 +93,9 @@ const createSteps = (): Array<St> => [
     onBack: ({ transitionTo }: StepProps) => transitionTo("account"),
   },
   {
-    id: "confirm",
-    label: <Trans i18nKey="receive.steps.confirmAddress.title" />,
-    footer: StepConfirmAddressFooter,
-    component: StepConfirmAddress,
-    onBack: ({ transitionTo }: StepProps) => transitionTo("device"),
-    shouldRenderFooter: ({ isAddressVerified }: StepProps) => isAddressVerified === false,
-  },
-  {
     id: "receive",
     label: <Trans i18nKey="receive.steps.receiveFunds.title" />,
     component: StepReceiveFunds,
-    shouldPreventClose: ({ isAddressVerified }: StepProps) => isAddressVerified === null,
   },
 ];
 
@@ -136,7 +124,6 @@ const Body = ({
   const [account, setAccount] = useState(() => (params && params.account) || accounts[0]);
   const [parentAccount, setParentAccount] = useState(() => params && params.parentAccount);
   const [disabledSteps, setDisabledSteps] = useState([]);
-  const [isAppOpened, setAppOpened] = useState(false);
   const [token, setToken] = useState(null);
 
   const handleChangeAccount = useCallback(
@@ -159,17 +146,16 @@ const Body = ({
 
   const handleRetry = useCallback(() => {
     onChangeAddressVerified(null, null);
-    setAppOpened(false);
-  }, [onChangeAddressVerified, setAppOpened]);
+  }, [onChangeAddressVerified]);
 
   const handleSkipConfirm = useCallback(() => {
     const connectStepIndex = steps.findIndex(step => step.id === "device");
-    const confirmStepIndex = steps.findIndex(step => step.id === "confirm");
-    if (confirmStepIndex > -1 && connectStepIndex > -1) {
+    if (connectStepIndex > -1) {
       onChangeAddressVerified(false, null);
-      setDisabledSteps([connectStepIndex, confirmStepIndex]);
+      setDisabledSteps([connectStepIndex]);
     }
-  }, [onChangeAddressVerified, setDisabledSteps, steps]);
+    onChangeStepId("receive");
+  }, [onChangeAddressVerified, setDisabledSteps, steps, onChangeStepId]);
 
   useEffect(() => {
     const stepId =
@@ -187,23 +173,20 @@ const Body = ({
     }
   }, [accounts, account, params, handleChangeAccount]);
 
-  const errorSteps = verifyAddressError
-    ? [verifyAddressError.name === "UserRefusedAddress" ? 2 : 3]
-    : [];
+  const errorSteps = verifyAddressError ? [2] : [];
 
   const stepperProps = {
     title: stepId === "warning" ? t("common.information") : t("receive.title"),
     device,
     account,
     parentAccount,
-    initialStepId: params && params.startWithWarning ? "warning" : stepId,
+    stepId,
     steps,
     errorSteps,
     disabledSteps,
     receiveTokenMode: !!params.receiveTokenMode,
     hideBreadcrumb: stepId === "warning",
     token,
-    isAppOpened,
     isAddressVerified,
     verifyAddressError,
     closeModal: handleCloseModal,
@@ -212,7 +195,6 @@ const Body = ({
     onResetSkip: handleResetSkip,
     onChangeAccount: handleChangeAccount,
     onChangeToken: setToken,
-    onChangeAppOpened: setAppOpened,
     onChangeAddressVerified,
     onStepChange: handleStepChange,
     onClose: handleCloseModal,

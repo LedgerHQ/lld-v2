@@ -19,7 +19,7 @@ import SyncSkipUnderPriority from "~/renderer/components/SyncSkipUnderPriority";
 import Modal from "~/renderer/components/Modal";
 import Stepper from "~/renderer/components/Stepper";
 import StepChooseCurrency, { StepChooseCurrencyFooter } from "./steps/StepChooseCurrency";
-import StepConnectDevice, { StepConnectDeviceFooter } from "./steps/StepConnectDevice";
+import StepConnectDevice from "./steps/StepConnectDevice";
 import StepImport, { StepImportFooter } from "./steps/StepImport";
 import StepFinish, { StepFinishFooter } from "./steps/StepFinish";
 
@@ -38,7 +38,6 @@ export type StepProps = {
   transitionTo: string => void,
   currency: ?CryptoCurrency | ?TokenCurrency,
   device: ?Device,
-  isAppOpened: boolean,
   scannedAccounts: Account[],
   existingAccounts: Account[],
   checkedAccountsIds: string[],
@@ -49,7 +48,6 @@ export type StepProps = {
   onCloseModal: () => void,
   resetScanState: () => void,
   setCurrency: (?CryptoCurrency) => void,
-  setAppOpened: boolean => void,
   setScanStatus: (ScanStatus, ?Error) => string,
   setAccountName: (Account, string) => void,
   editedNames: { [_: string]: string },
@@ -77,7 +75,6 @@ const createSteps = (): St[] => {
       id: "connectDevice",
       label: <Trans i18nKey="addAccounts.breadcrumb.connectDevice" />,
       component: StepConnectDevice,
-      footer: StepConnectDeviceFooter,
       onBack,
       hideFooter: false,
     },
@@ -103,8 +100,6 @@ const createSteps = (): St[] => {
 type State = {
   stepId: StepId,
   scanStatus: ScanStatus | string,
-
-  isAppOpened: boolean,
   currency: ?CryptoCurrency,
   scannedAccounts: Account[],
   checkedAccountsIds: string[],
@@ -125,7 +120,6 @@ const mapDispatchToProps = {
 
 const INITIAL_STATE = {
   stepId: "chooseCurrency",
-  isAppOpened: false,
   currency: null,
   scannedAccounts: [],
   checkedAccountsIds: [],
@@ -186,15 +180,12 @@ class AddAccounts extends PureComponent<Props, State> {
 
   handleResetScanState = () => {
     this.setState({
-      isAppOpened: false,
       scanStatus: "idle",
       err: null,
       scannedAccounts: [],
       checkedAccountsIds: [],
     });
   };
-
-  handleSetAppOpened = (isAppOpened: boolean) => this.setState({ isAppOpened });
 
   handleBeforeOpen = ({ data }) => {
     const { currency } = this.state;
@@ -217,7 +208,6 @@ class AddAccounts extends PureComponent<Props, State> {
     const {
       stepId,
       currency,
-      isAppOpened,
       scannedAccounts,
       checkedAccountsIds,
       scanStatus,
@@ -234,14 +224,12 @@ class AddAccounts extends PureComponent<Props, State> {
       checkedAccountsIds,
       scanStatus,
       err,
-      isAppOpened,
       onClickAdd: this.handleClickAdd,
       onCloseModal: this.handleCloseModal,
       setScanStatus: this.handleSetScanStatus,
       setCurrency: this.handleSetCurrency,
       setScannedAccounts: this.handleSetScannedAccounts,
       resetScanState: this.handleResetScanState,
-      setAppOpened: this.handleSetAppOpened,
       setAccountName: this.handleSetAccountName,
       onGoStep1: this.onGoStep1,
       editedNames,
@@ -262,7 +250,7 @@ class AddAccounts extends PureComponent<Props, State> {
           <Stepper
             key={reset} // THIS IS A HACK because stepper is not controllable. FIXME
             title={title}
-            initialStepId="chooseCurrency"
+            stepId={stepId}
             onStepChange={this.handleStepChange}
             onClose={onClose}
             steps={this.STEPS}

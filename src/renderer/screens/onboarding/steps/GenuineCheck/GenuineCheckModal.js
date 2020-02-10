@@ -5,7 +5,8 @@ import { Trans } from "react-i18next";
 import styled from "styled-components";
 
 import Modal, { ModalBody } from "~/renderer/components/Modal";
-import ManagerConnect from "~/renderer/components/ManagerConnect";
+import DeviceAction from "~/renderer/components/DeviceAction";
+import { action } from "~/renderer/components/DeviceAction/actions/manager";
 
 const Container = styled.div`
   min-height: 450px;
@@ -18,10 +19,10 @@ const Container = styled.div`
 type Props = {
   isOpened: boolean,
   onClose: () => void,
-  Success: React$ComponentType<*>,
+  onSuccess: () => void,
 };
 
-const GenuineCheckModal = ({ isOpened, onClose, Success }: Props) => {
+const GenuineCheckModal = ({ isOpened, onClose, onSuccess }: Props) => {
   return (
     <Modal
       isOpened={isOpened}
@@ -33,7 +34,7 @@ const GenuineCheckModal = ({ isOpened, onClose, Success }: Props) => {
           title={<Trans i18nKey="genuinecheck.modal.title" />}
           render={() => (
             <Container>
-              <ManagerConnect Success={Success} />
+              <DeviceAction action={action} onResult={onSuccess} request={null} />
             </Container>
           )}
         />

@@ -1,38 +1,32 @@
 // @flow
-
 import React from "react";
-import { useTranslation } from "react-i18next";
-import { getMainAccount } from "@ledgerhq/live-common/lib/account";
 import TrackPage from "~/renderer/analytics/TrackPage";
-import Button from "~/renderer/components/Button";
-import EnsureDeviceApp from "~/renderer/components/EnsureDeviceApp";
-import TokenTips from "~/renderer/modals/TokenTips";
-
+import GenericStepConnectDevice from "~/renderer/modals/Send/steps/GenericStepConnectDevice";
 import type { StepProps } from "../types";
 
-const StepConnectDevice = ({ account, parentAccount, onChangeAppOpened }: StepProps) => {
-  const token = account && account.type === "TokenAccount" && account.token;
+export default function StepConnectDevice({
+  account,
+  parentAccount,
+  transaction,
+  status,
+  transitionTo,
+  onOperationBroadcasted,
+  onTransactionError,
+  setSigned,
+}: StepProps) {
   return (
     <>
-      <TrackPage category="Send Flow" name="Step ConnectDevice" />
-      <EnsureDeviceApp
-        account={account ? getMainAccount(account, parentAccount) : null}
-        isToken={!!token}
-        waitBeforeSuccess={200}
-        onSuccess={() => onChangeAppOpened(true)}
+      <TrackPage category="Delegation Flow" name="Step ConnectDevice" />
+      <GenericStepConnectDevice
+        account={account}
+        parentAccount={parentAccount}
+        transaction={transaction}
+        status={status}
+        transitionTo={transitionTo}
+        onOperationBroadcasted={onOperationBroadcasted}
+        onTransactionError={onTransactionError}
+        setSigned={setSigned}
       />
-      {!token ? null : <TokenTips token={token} />}
     </>
   );
-};
-
-export const StepConnectDeviceFooter = ({ transitionTo, isAppOpened }: StepProps) => {
-  const { t } = useTranslation();
-  return (
-    <Button disabled={!isAppOpened} primary onClick={() => transitionTo("verification")}>
-      {t("common.continue")}
-    </Button>
-  );
-};
-
-export default StepConnectDevice;
+}

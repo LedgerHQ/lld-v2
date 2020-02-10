@@ -23,7 +23,6 @@ import AccountsList from "~/renderer/components/AccountsList";
 import TranslatedError from "~/renderer/components/TranslatedError";
 import Spinner from "~/renderer/components/Spinner";
 import Text from "~/renderer/components/Text";
-import DebugAppInfosForCurrency from "~/renderer/components/DebugAppInfosForCurrency";
 import IconExclamationCircleThin from "~/renderer/icons/ExclamationCircleThin";
 
 import type { StepProps } from "..";
@@ -76,7 +75,6 @@ const ImportError = ({ error }: { error: Error }) => (
     <Box color="alertRed" alignItems="center">
       <IconExclamationCircleThin size={43} />
     </Box>
-    <DebugAppInfosForCurrency />
     <Title>
       <TranslatedError error={error} field="title" />
     </Title>

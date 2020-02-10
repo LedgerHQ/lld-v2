@@ -1,11 +1,11 @@
 // @flow
 
-import React, { PureComponent } from "react";
+import React, { useCallback, useMemo } from "react";
 import invariant from "invariant";
 import { withTranslation } from "react-i18next";
 import type { TFunction } from "react-i18next";
-
 import { ModalBody } from "~/renderer/components/Modal";
+import { useDeviceBlocked } from "~/renderer/components/DeviceAction/DeviceBlocker";
 import Breadcrumb from "./Breadcrumb";
 
 export type BasicStepProps = {
@@ -19,24 +19,18 @@ export type Step<T, StepProps> = {
   excludeFromBreadcrumb?: boolean,
   component: React$ComponentType<StepProps>,
   footer?: React$ComponentType<StepProps>,
-  shouldRenderFooter?: StepProps => boolean,
-  shouldPreventClose?: boolean | (StepProps => boolean),
   onBack?: ?(StepProps) => void,
   noScroll?: boolean,
-};
-
-type State = {
-  stepId: string,
 };
 
 type Props<T, StepProps> = {
   t: TFunction,
   title?: React$Node,
+  stepId: T,
+  onStepChange: (Step<T, StepProps>) => void,
   steps: Step<T, StepProps>[],
-  initialStepId: string,
   hideBreadcrumb?: boolean,
   onClose: void => void,
-  onStepChange?: (Step<T, StepProps>) => void,
   disabledSteps?: number[],
   errorSteps?: number[],
   children: any,
@@ -45,37 +39,32 @@ type Props<T, StepProps> = {
   children?: React$Node,
 };
 
-class Stepper<T, StepProps> extends PureComponent<Props<T, StepProps>, State> {
-  state = {
-    stepId: this.props.initialStepId,
-  };
+const Stepper = <T, StepProps>({
+  stepId,
+  steps,
+  onStepChange,
+  t,
+  hideBreadcrumb,
+  title,
+  onClose,
+  disabledSteps,
+  errorSteps,
+  children,
+  ...props
+}: Props<T, StepProps>) => {
+  const deviceBlocked = useDeviceBlocked();
 
-  transitionTo = stepId => {
-    const { onStepChange, steps } = this.props;
-    this.setState({ stepId });
-    if (onStepChange) {
+  const transitionTo = useCallback(
+    stepId => {
       const stepIndex = steps.findIndex(s => s.id === stepId);
       const step = steps[stepIndex];
-      if (step) {
-        onStepChange(step);
-      }
-    }
-  };
+      invariant(step, "Stepper: step %s doesn't exists", stepId);
+      onStepChange(step);
+    },
+    [onStepChange, steps],
+  );
 
-  render() {
-    const {
-      t,
-      hideBreadcrumb,
-      steps,
-      title,
-      onClose,
-      disabledSteps,
-      errorSteps,
-      children,
-      ...props
-    } = this.props;
-    const { stepId } = this.state;
-
+  const { step, visibleSteps, indexVisible } = useMemo(() => {
     const stepIndex = steps.findIndex(s => s.id === stepId);
     const step = steps[stepIndex];
 
@@ -85,58 +74,46 @@ class Stepper<T, StepProps> extends PureComponent<Props<T, StepProps>, State> {
       visibleSteps.length - 1,
     );
 
-    invariant(step, `Stepper: step ${stepId} doesn't exists`);
+    return { step, visibleSteps, indexVisible };
+  }, [stepId, steps]);
 
-    const {
-      component: StepComponent,
-      footer: StepFooter,
-      onBack,
-      shouldPreventClose,
-      shouldRenderFooter,
-      noScroll,
-    } = step;
+  invariant(step, "Stepper: step %s doesn't exists", stepId);
 
-    // $FlowFixMe we'll need to improve this. also ...props is bad practice...
-    const stepProps: StepProps = {
-      ...props,
-      t,
-      transitionTo: this.transitionTo,
-    };
+  const { component: StepComponent, footer: StepFooter, onBack, noScroll } = step;
 
-    const renderFooter =
-      !!StepFooter && (shouldRenderFooter === undefined || shouldRenderFooter(stepProps));
+  // $FlowFixMe we'll need to improve this. also ...props is bad practice...
+  const stepProps: StepProps = {
+    ...props,
+    onClose,
+    t,
+    transitionTo,
+  };
 
-    const preventClose =
-      typeof shouldPreventClose === "function"
-        ? shouldPreventClose(stepProps)
-        : !!shouldPreventClose;
-
-    return (
-      <ModalBody
-        refocusWhenChange={stepId}
-        onClose={preventClose ? undefined : onClose}
-        onBack={onBack ? () => onBack(stepProps) : undefined}
-        title={title}
-        noScroll={noScroll}
-        render={() => (
-          <>
-            {!hideBreadcrumb && (
-              <Breadcrumb
-                mb={props.error && props.signed ? 4 : 6}
-                currentStep={indexVisible}
-                items={visibleSteps}
-                stepsDisabled={disabledSteps}
-                stepsErrors={errorSteps}
-              />
-            )}
-            <StepComponent {...stepProps} />
-            {children}
-          </>
-        )}
-        renderFooter={renderFooter && StepFooter ? () => <StepFooter {...stepProps} /> : undefined}
-      />
-    );
-  }
-}
+  return (
+    <ModalBody
+      refocusWhenChange={stepId}
+      onClose={deviceBlocked ? undefined : onClose}
+      onBack={onBack && !deviceBlocked ? () => onBack(stepProps) : undefined}
+      title={title}
+      noScroll={noScroll}
+      render={() => (
+        <>
+          {hideBreadcrumb ? null : (
+            <Breadcrumb
+              mb={props.error && props.signed ? 4 : 6}
+              currentStep={indexVisible}
+              items={visibleSteps}
+              stepsDisabled={disabledSteps}
+              stepsErrors={errorSteps}
+            />
+          )}
+          <StepComponent {...stepProps} />
+          {children}
+        </>
+      )}
+      renderFooter={StepFooter ? () => <StepFooter {...stepProps} /> : undefined}
+    />
+  );
+};
 
 export default withTranslation()(Stepper);

@@ -44,7 +44,7 @@ type Props = {|
   primary?: boolean,
   small?: boolean,
   hookToShortcut?: boolean,
-  title?: string,
+  title?: React$Node,
   withoutAppData?: boolean,
 |};
 

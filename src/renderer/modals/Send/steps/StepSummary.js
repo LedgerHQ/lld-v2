@@ -168,14 +168,14 @@ export class StepSummaryFooter extends PureComponent<StepProps> {
   };
 
   render() {
-    const { t, account, status, bridgePending } = this.props;
+    const { account, status, bridgePending } = this.props;
     if (!account) return null;
     const { errors } = status;
     const canNext = !bridgePending && !Object.keys(errors).length;
     return (
       <>
         <Button primary disabled={!canNext} onClick={this.onNext}>
-          {t("common.continue")}
+          <Trans i18nKey="common.continue" />
         </Button>
       </>
     );
