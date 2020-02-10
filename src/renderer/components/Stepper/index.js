@@ -52,7 +52,7 @@ const Stepper = <T, StepProps>({
   children,
   ...props
 }: Props<T, StepProps>) => {
-  const preventClose = useDeviceBlocked();
+  const deviceBlocked = useDeviceBlocked();
 
   const transitionTo = useCallback(
     stepId => {
@@ -92,8 +92,8 @@ const Stepper = <T, StepProps>({
   return (
     <ModalBody
       refocusWhenChange={stepId}
-      onClose={preventClose ? undefined : onClose}
-      onBack={onBack ? () => onBack(stepProps) : undefined}
+      onClose={deviceBlocked ? undefined : onClose}
+      onBack={onBack && !deviceBlocked ? () => onBack(stepProps) : undefined}
       title={title}
       noScroll={noScroll}
       render={() => (
