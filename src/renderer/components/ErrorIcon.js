@@ -1,6 +1,7 @@
 // @flow
 import React from "react";
 import ExclamationCircleThin from "~/renderer/icons/ExclamationCircleThin";
+import CrossCircle from "~/renderer/icons/CrossCircle";
 
 import {
   UserRefusedAllowManager,
@@ -23,7 +24,7 @@ const ErrorIcon = ({ error, size = 44 }: ErrorIconProps) => {
     error instanceof UserRefusedOnDevice ||
     error instanceof UserRefusedAddress
   ) {
-    // TODO Pending other icon
+    return <CrossCircle size={size} />;
   }
 
   return <ExclamationCircleThin size={size} />;
