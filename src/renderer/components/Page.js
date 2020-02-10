@@ -1,6 +1,7 @@
 // @flow
 
 import React, { useLayoutEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import AngleUp from "~/renderer/icons/AngleUp";
 import HSMStatusBanner from "~/renderer/components/HSMStatusBanner";
@@ -89,12 +90,17 @@ const Page = ({ children }: Props) => {
   const pageScrollerRef = useRef(null);
   const [isScrollUpButtonVisible, setScrollUpButtonVisibility] = useState(false);
   const [isScrollAtUpperBound, setScrollAtUpperBound] = useState(true);
+  const { pathname } = useLocation();
 
-  const scrolltoTop = () => {
+  const scrolltoTop = (smooth = true) => {
     if (pageScrollerRef.current) {
-      pageScrollerRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      pageScrollerRef.current.scrollTo({ top: 0, behavior: smooth ? "smooth" : undefined });
     }
   };
+
+  useLayoutEffect(() => {
+    scrolltoTop(false);
+  }, [pathname]);
 
   useLayoutEffect(() => {
     const pageContentElement = pageScrollerRef.current;
