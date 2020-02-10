@@ -73,6 +73,8 @@ const checkEnv = ctx => {
 
   log("GH_TOKEN is set");
 
+  ctx.token = GH_TOKEN;
+
   if (platform !== "darwin") {
     log("OS is not mac, skipping APPLEID and APPLEID_PASSWORD check");
     return;
@@ -83,8 +85,6 @@ const checkEnv = ctx => {
   }
 
   log("APPLEID and APPLEID_PASSWORD are set");
-
-  ctx.token = GH_TOKEN;
 };
 
 module.exports = args => {
