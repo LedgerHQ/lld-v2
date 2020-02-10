@@ -111,5 +111,6 @@ dist
 
 # Don't Ignore
 !jsconfig.json
+!tools/dist
 
 src/renderer/generated/
