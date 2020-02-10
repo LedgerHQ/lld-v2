@@ -108,7 +108,7 @@ const StepSummary = ({ account, transaction, transitionTo, isRandomChoice }: Ste
                   ff="Inter|SemiBold"
                   color="palette.primary.main"
                   fontSize={3}
-                  onClick={/* quick hack */ () => transitionTo("validator")}
+                  onClick={() => transitionTo("validator")}
                   style={{ cursor: "pointer" }}
                 >
                   <Trans i18nKey="delegation.flow.steps.summary.select" />
@@ -208,21 +208,21 @@ export const StepSummaryFooter = ({
   t,
   account,
   parentAccount,
-  bridgeError,
+  error,
   status,
   bridgePending,
   transitionTo,
 }: StepProps) => {
   if (!account) return null;
   // $FlowFixMe
-  const error: ?Error = bridgeError || Object.values(status.errors)[0];
-  const canNext = !bridgePending && !error;
+  const anyError: ?Error = error || Object.values(status.errors)[0];
+  const canNext = !bridgePending && !anyError;
   return (
     <Box horizontal alignItems="center" flow={2} grow>
       <AccountFooter parentAccount={parentAccount} account={account} status={status} />
 
       <Text fontSize={13} color="alertRed">
-        <TranslatedError error={error} field="title" />
+        <TranslatedError error={anyError} field="title" />
       </Text>
       <Button
         primary

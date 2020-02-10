@@ -15,7 +15,6 @@ import { UserRefusedOnDevice } from "@ledgerhq/errors";
 import logger from "~/logger";
 import { updateAccountWithUpdater } from "~/renderer/actions/accounts";
 import Track from "~/renderer/analytics/Track";
-import { useSignTransactionCallback } from "~/renderer/hooks/useSignTransaction";
 import { getCurrentDevice } from "~/renderer/reducers/devices";
 import { delegatableAccountsSelector } from "~/renderer/actions/general";
 import { closeModal, openModal } from "~/renderer/actions/modals";
@@ -23,12 +22,12 @@ import Stepper from "~/renderer/components/Stepper";
 import SyncSkipUnderPriority from "~/renderer/components/SyncSkipUnderPriority";
 import StepAccount, { StepAccountFooter } from "./steps/StepAccount";
 import StepStarter from "./steps/StepStarter";
-import StepConnectDevice, { StepConnectDeviceFooter } from "./steps/StepConnectDevice";
-import StepVerification from "./steps/StepVerification";
+import StepConnectDevice from "./steps/StepConnectDevice";
 import StepSummary, { StepSummaryFooter } from "./steps/StepSummary";
 import StepValidator from "./steps/StepValidator";
 import StepCustom, { StepCustomFooter } from "./steps/StepCustom";
 import StepConfirmation, { StepConfirmationFooter } from "./steps/StepConfirmation";
+import type { StepId, St } from "./types";
 
 const createTitles = t => ({
   account: t("delegation.flow.steps.account.title"),
@@ -41,18 +40,18 @@ const createTitles = t => ({
 });
 
 type Props = {|
-  stepId: string,
+  stepId: StepId,
   onClose: () => void,
-  onChangeStepId: string => void,
+  onChangeStepId: StepId => void,
   params: {
     account: ?AccountLike,
     parentAccount: ?Account,
     mode: ?string,
-    stepId: ?string,
+    stepId: ?StepId,
   },
 |};
 
-const createSteps = params => [
+const createSteps = (params): St[] => [
   {
     id: "starter",
     component: StepStarter,
@@ -89,25 +88,7 @@ const createSteps = params => [
     id: "device",
     excludeFromBreadcrumb: true,
     component: StepConnectDevice,
-    footer: StepConnectDeviceFooter,
     onBack: ({ transitionTo }) => transitionTo("summary"),
-  },
-  {
-    id: "verification",
-    excludeFromBreadcrumb: true,
-    component: StepVerification,
-    shouldPreventClose: true,
-  },
-  {
-    id: "refused",
-    excludeFromBreadcrumb: true,
-    component: StepConfirmation,
-    footer: StepConfirmationFooter,
-    // $FlowFixMe this deserve better typing
-    onBack: ({ transitionTo, onRetry }) => {
-      onRetry();
-      transitionTo("summary");
-    },
   },
   {
     id: "confirmation",
@@ -139,10 +120,7 @@ const Body = ({ onChangeStepId, onClose, stepId, params }: Props) => {
   } = useBridgeTransaction(() => {
     const parentAccount = params && params.parentAccount;
     const account = (params && params.account) || accounts[0];
-    return {
-      account,
-      parentAccount,
-    };
+    return { account, parentAccount };
   });
 
   // make sure tx is in sync
@@ -174,7 +152,6 @@ const Body = ({ onChangeStepId, onClose, stepId, params }: Props) => {
     if (stepId) onChangeStepId(stepId);
   }, [onChangeStepId, params]);
 
-  const [isAppOpened, setAppOpened] = useState(false);
   const [optimisticOperation, setOptimisticOperation] = useState(null);
   const [transactionError, setTransactionError] = useState(null);
   const [signed, setSigned] = useState(false);
@@ -194,21 +171,15 @@ const Body = ({ onChangeStepId, onClose, stepId, params }: Props) => {
   const handleRetry = useCallback(() => {
     setTransactionError(null);
     setOptimisticOperation(null);
-    setAppOpened(false);
     setSigned(false);
   }, []);
 
-  const handleTransactionError = useCallback(
-    (error: Error) => {
-      if (!(error instanceof UserRefusedOnDevice)) {
-        logger.critical(error);
-      }
-      const stepVerificationIndex = steps.findIndex(step => step.id === "verification");
-      if (stepVerificationIndex === -1) return;
-      setTransactionError(error);
-    },
-    [steps],
-  );
+  const handleTransactionError = useCallback((error: Error) => {
+    if (!(error instanceof UserRefusedOnDevice)) {
+      logger.critical(error);
+    }
+    setTransactionError(error);
+  }, []);
 
   const handleOperationBroadcasted = useCallback(
     (optimisticOperation: Operation) => {
@@ -225,17 +196,6 @@ const Body = ({ onChangeStepId, onClose, stepId, params }: Props) => {
     [account, parentAccount, dispatch],
   );
 
-  const handleSignTransaction = useSignTransactionCallback({
-    context: "Delegate",
-    device,
-    account,
-    parentAccount,
-    handleOperationBroadcasted,
-    transaction,
-    handleTransactionError,
-    setSigned,
-  });
-
   const handleStepChange = useCallback(e => onChangeStepId(e.id), [onChangeStepId]);
 
   const titles = useMemo(() => createTitles(t), [t]);
@@ -243,7 +203,7 @@ const Body = ({ onChangeStepId, onClose, stepId, params }: Props) => {
   const title =
     transaction && transaction.family === "tezos" && transaction.mode === "undelegate"
       ? titles.undelegate
-      : titles[stepId] || titles.account;
+      : titles[String(stepId)] || titles.account;
 
   const errorSteps = [];
 
@@ -260,7 +220,7 @@ const Body = ({ onChangeStepId, onClose, stepId, params }: Props) => {
 
   const stepperProps = {
     title,
-    initialStepId: (params && params.stepId) || stepId,
+    stepId,
     openedWithAccount: Boolean(params && params.account),
     steps,
     errorSteps,
@@ -269,28 +229,27 @@ const Body = ({ onChangeStepId, onClose, stepId, params }: Props) => {
     account,
     parentAccount,
     transaction,
-    isAppOpened,
     hideBreadcrumb:
       stepId === "starter" ||
       stepId === "validator" ||
       stepId === "custom" ||
       stepId === "confirmation",
     error,
-    bridgeError,
     status,
     bridgePending,
     signed,
+    setSigned,
     optimisticOperation,
     openModal: handleOpenModal,
     onClose,
     isRandomChoice,
     closeModal: handleCloseModal,
     onChangeAccount: handleChangeAccount,
-    onChangeAppOpened: setAppOpened,
     onChangeTransaction: setTransaction,
     onRetry: handleRetry,
-    signTransaction: handleSignTransaction,
     onStepChange: handleStepChange,
+    onOperationBroadcasted: handleOperationBroadcasted,
+    onTransactionError: handleTransactionError,
   };
 
   if (!status) return null;

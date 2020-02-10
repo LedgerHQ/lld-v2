@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import type { TFunction } from "react-i18next";
@@ -18,23 +18,19 @@ import { accountsSelector } from "~/renderer/reducers/accounts";
 import { updateAccountWithUpdater } from "~/renderer/actions/accounts";
 import { getCurrentDevice } from "~/renderer/reducers/devices";
 import Track from "~/renderer/analytics/Track";
-import { useSignTransactionCallback } from "~/renderer/hooks/useSignTransaction";
-
 import type { Device } from "~/renderer/reducers/devices";
-
 import StepRecipient, { StepRecipientFooter } from "./steps/StepRecipient";
 import StepAmount, { StepAmountFooter } from "./steps/StepAmount";
-import StepConnectDevice, { StepConnectDeviceFooter } from "./steps/StepConnectDevice";
-import StepVerification from "./steps/StepVerification";
+import StepConnectDevice from "./steps/StepConnectDevice";
 import StepSummary, { StepSummaryFooter } from "./steps/StepSummary";
 import StepConfirmation, { StepConfirmationFooter } from "./steps/StepConfirmation";
 import StepWarning, { StepWarningFooter } from "./steps/StepWarning";
-import type { St } from "./types";
+import type { St, StepId } from "./types";
 
 type OwnProps = {|
-  stepId: string,
+  stepId: StepId,
+  onChangeStepId: StepId => void,
   onClose: () => void,
-  onChangeStepId: string => void,
   params: {
     account: ?AccountLike,
     parentAccount: ?Account,
@@ -87,24 +83,7 @@ const createSteps = (): St[] => [
     id: "device",
     label: <Trans i18nKey="send.steps.device.title" />,
     component: StepConnectDevice,
-    footer: StepConnectDeviceFooter,
     onBack: ({ transitionTo }) => transitionTo("summary"),
-  },
-  {
-    id: "verification",
-    excludeFromBreadcrumb: true,
-    component: StepVerification,
-    shouldPreventClose: true,
-  },
-  {
-    id: "refused",
-    excludeFromBreadcrumb: true,
-    component: StepConfirmation,
-    footer: StepConfirmationFooter,
-    onBack: ({ transitionTo, onRetry }) => {
-      onRetry();
-      transitionTo("summary");
-    },
   },
   {
     id: "confirmation",
@@ -156,10 +135,7 @@ const Body = ({
   } = useBridgeTransaction(() => {
     const parentAccount = params && params.parentAccount;
     const account = (params && params.account) || accounts[0];
-    return {
-      account,
-      parentAccount,
-    };
+    return { account, parentAccount };
   });
 
   // make sure step id is in sync
@@ -168,13 +144,13 @@ const Body = ({
     if (stepId) onChangeStepId(stepId);
   }, [onChangeStepId, params]);
 
-  const [isAppOpened, setAppOpened] = useState(false);
   const [optimisticOperation, setOptimisticOperation] = useState(null);
   const [transactionError, setTransactionError] = useState(null);
   const [signed, setSigned] = useState(false);
-  const signTransactionSubRef = useRef(null);
 
-  const handleCloseModal = useCallback(() => closeModal("MODAL_SEND"), [closeModal]);
+  const handleCloseModal = useCallback(() => {
+    closeModal("MODAL_SEND");
+  }, [closeModal]);
 
   const handleChangeAccount = useCallback(
     (nextAccount: AccountLike, nextParentAccount: ?Account) => {
@@ -188,21 +164,15 @@ const Body = ({
   const handleRetry = useCallback(() => {
     setTransactionError(null);
     setOptimisticOperation(null);
-    setAppOpened(false);
     setSigned(false);
   }, []);
 
-  const handleTransactionError = useCallback(
-    (error: Error) => {
-      if (!(error instanceof UserRefusedOnDevice)) {
-        logger.critical(error);
-      }
-      const stepVerificationIndex = steps.findIndex(step => step.id === "verification");
-      if (stepVerificationIndex === -1) return;
-      setTransactionError(error);
-    },
-    [steps],
-  );
+  const handleTransactionError = useCallback((error: Error) => {
+    if (!(error instanceof UserRefusedOnDevice)) {
+      logger.critical(error);
+    }
+    setTransactionError(error);
+  }, []);
 
   const handleOperationBroadcasted = useCallback(
     (optimisticOperation: Operation) => {
@@ -217,28 +187,7 @@ const Body = ({
     [account, parentAccount, updateAccountWithUpdater],
   );
 
-  const handleSignTransaction = useSignTransactionCallback({
-    context: "Send",
-    device,
-    account,
-    parentAccount,
-    handleOperationBroadcasted,
-    transaction,
-    handleTransactionError,
-    setSigned,
-  });
-
   const handleStepChange = useCallback(e => onChangeStepId(e.id), [onChangeStepId]);
-
-  // only call on mount/unmount
-  useEffect(
-    () => () => {
-      if (signTransactionSubRef.current) {
-        signTransactionSubRef.current.unsubscribe();
-      }
-    },
-    [],
-  );
 
   const errorSteps = [];
 
@@ -252,7 +201,7 @@ const Body = ({
 
   const stepperProps = {
     title: stepId === "warning" ? t("common.information") : t("send.title"),
-    initialStepId: params && params.startWithWarning ? "warning" : stepId,
+    stepId,
     steps,
     errorSteps,
     device,
@@ -260,22 +209,22 @@ const Body = ({
     account,
     parentAccount,
     transaction,
-    isAppOpened,
+    signed,
     hideBreadcrumb: (!!error && ["recipient", "amount"].includes(stepId)) || stepId === "warning",
     error,
     status,
     bridgePending,
-    signed,
     optimisticOperation,
     openModal,
     onClose,
+    setSigned,
     closeModal: handleCloseModal,
     onChangeAccount: handleChangeAccount,
-    onChangeAppOpened: setAppOpened,
     onChangeTransaction: setTransaction,
     onRetry: handleRetry,
-    signTransaction: handleSignTransaction,
     onStepChange: handleStepChange,
+    onOperationBroadcasted: handleOperationBroadcasted,
+    onTransactionError: handleTransactionError,
   };
 
   if (!status) return null;

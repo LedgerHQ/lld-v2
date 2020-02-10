@@ -6,7 +6,7 @@ import path from "path";
 import rimraf from "rimraf";
 
 import resolveUserDataDirectory from "~/helpers/resolveUserDataDirectory";
-import { delay } from "~/helpers/promise";
+import { delay } from "@ledgerhq/live-common/lib/promise";
 import { resetAll, cleanCache } from "~/renderer/storage";
 import { disable as disableDBMiddleware } from "./middlewares/db";
 import { clearBridgeCache } from "./bridge/cache";

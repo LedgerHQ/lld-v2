@@ -1,5 +1,4 @@
 // @flow
-import getAppAndVersion from "./getAppAndVersion";
 import firmwarePrepare from "./firmwarePrepare";
 import firmwareMain from "./firmwareMain";
 import firmwareRepair from "./firmwareRepair";
@@ -12,6 +11,7 @@ import libcoreReset from "./libcoreReset";
 import listenDevices from "./listenDevices";
 import listApps from "./listApps";
 import ping from "./ping";
+import connectApp from "./connectApp";
 import connectManager from "./connectManager";
 import testApdu from "./testApdu";
 import testCrash from "./testCrash";
@@ -22,7 +22,6 @@ import { commands as bridgeProxyCommands } from "~/renderer/bridge/proxy-command
 export const commandsById = {
   appOpExec,
   ...bridgeProxyCommands,
-  getAppAndVersion,
   firmwarePrepare,
   firmwareMain,
   firmwareRepair,
@@ -33,6 +32,7 @@ export const commandsById = {
   libcoreGetVersion,
   libcoreReset,
   listenDevices,
+  connectApp,
   connectManager,
   listApps,
   ping,

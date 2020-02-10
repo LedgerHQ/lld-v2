@@ -1,5 +1,6 @@
 // @flow
 import React, { useState, memo, useCallback, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { Trans } from "react-i18next";
 
@@ -73,6 +74,7 @@ const AppsList = ({
   setAppUninstallDep,
   t,
 }: Props) => {
+  const { search } = useLocation();
   const inputRef = useRef();
   const [query, setQuery] = useState("");
   const [filters, setFilters] = useState(["all"]);
@@ -81,9 +83,20 @@ const AppsList = ({
   /** clear search field on tab change */
   useEffect(() => {
     if (inputRef && inputRef.current) inputRef.current.value = "";
-    setQuery();
+    setQuery("");
   }, [activeTab]);
   const onDeviceTab = activeTab === 1;
+
+  /** retrieve search query from router location search params */
+  useEffect(() => {
+    const params = new URLSearchParams(search);
+    const q = params.get("q");
+
+    if (inputRef && inputRef.current && q) {
+      inputRef.current.value = q;
+      setQuery(q);
+    }
+  }, [search]);
 
   const { apps, installed: installedApps, uninstallQueue, installQueue } = state;
 

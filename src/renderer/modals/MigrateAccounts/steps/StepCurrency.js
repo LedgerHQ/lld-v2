@@ -12,7 +12,6 @@ import type { Account } from "@ledgerhq/live-common/lib/types";
 import logger from "~/logger";
 import Box from "~/renderer/components/Box";
 import IconExclamationCircleThin from "~/renderer/icons/ExclamationCircleThin";
-import DebugAppInfosForCurrency from "~/renderer/components/DebugAppInfosForCurrency";
 import TranslatedError from "~/renderer/components/TranslatedError";
 import { getCurrencyBridge } from "~/renderer/bridge/proxy";
 import { colors } from "~/renderer/styles/theme";
@@ -33,7 +32,6 @@ const MigrationError = ({ error }: { error: Error }) => (
     <Box color="alertRed" alignItems="center">
       <IconExclamationCircleThin size={43} />
     </Box>
-    <DebugAppInfosForCurrency />
     <Title>
       <TranslatedError error={error} field="title" />
     </Title>
