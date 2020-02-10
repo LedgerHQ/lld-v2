@@ -84,8 +84,12 @@ const AppActions: React$ComponentType<Props> = React.memo(
     } = state;
 
     const needsInstallDeps = useMemo(
-      () => dependencies && dependencies.some(dep => installedList.every(app => app.name !== dep)),
-      [dependencies, installedList],
+      () =>
+        dependencies &&
+        dependencies.some(
+          dep => installedList.every(app => app.name !== dep) && !installQueue.includes(dep),
+        ),
+      [dependencies, installQueue, installedList],
     );
 
     const needsUninstallDeps = useMemo(
