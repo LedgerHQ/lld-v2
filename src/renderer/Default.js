@@ -86,7 +86,7 @@ const Default = () => {
               horizontal
               bg="palette.background.default"
               color="palette.text.shade60"
-              style={{ width: "100vw", height: "100vh" }}
+              style={{ width: "100%", height: "100%" }}
             >
               <MainSideBar />
               <Page>
