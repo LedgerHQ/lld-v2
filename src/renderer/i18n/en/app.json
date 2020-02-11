@@ -697,6 +697,7 @@
     "howItWorks": "How delegation works",
     "delegationEarn": "You can now earn Tezos staking rewards by delegating your account.",
     "earnRewards": "Earn rewards",
+    "overdelegated": "Overdelegated",
     "flow": {
       "steps": {
         "starter": {
