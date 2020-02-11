@@ -41,7 +41,7 @@ const reloadApp = event => {
   }
 };
 
-const Default = () => {
+const Default = ({ test }) => {
   const location = useLocation();
   const ref: React$ElementRef<any> = useRef();
 
