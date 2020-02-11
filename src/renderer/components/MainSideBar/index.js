@@ -294,7 +294,7 @@ const MainSideBar = () => {
               <Space of={30} />
             </SideBarList>
 
-            <Hide visible={secondAnim && hasStarredAccounts} style={{ marginBottom: -8 }}>
+            <Hide visible={secondAnim && hasStarredAccounts} mb={"-8px"}>
               <Separator />
             </Hide>
 
