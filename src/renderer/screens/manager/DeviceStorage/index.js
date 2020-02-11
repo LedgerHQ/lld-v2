@@ -33,10 +33,12 @@ const illustrations = {
 export const DeviceIllustration: ThemedComponent<{}> = styled.img.attrs(p => ({
   src: illustrations[p.deviceModel.id],
 }))`
-  max-height: 153px;
-  margin-left: 36px;
-  margin-right: 56px;
-  filter: drop-shadow(0px 10px 10px rgba(0, 0, 0, 0.2));
+  position: absolute;
+  top: 0;
+  left: 50%;
+  max-height: 100%;
+  filter: drop-shadow(0px 5px 7px ${p => p.theme.colors.palette.text.shade10});
+  transform: translateX(-50%);
 `;
 
 const Separator = styled.div`
@@ -75,7 +77,7 @@ const gradient = keyframes`
 	}
 `;
 
-const StorageBarWrapper: ThemedComponent<{}> = styled.div`
+const StorageBarWrapper: ThemedComponent<{ installing: boolean }> = styled.div`
   width: 100%;
   border-radius: 3px;
   height: 23px;
@@ -147,7 +149,7 @@ const StorageBarItem: ThemedComponent<{ ratio: number }> = styled.div.attrs(prop
 `;
 
 const FreeInfo = styled.div`
-  padding: 10px 0;
+  padding: 10px 0 0 0;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -242,7 +244,9 @@ const DeviceStorage = ({
 
   return (
     <Card p={20} mb={4} horizontal>
-      <DeviceIllustration deviceModel={deviceModel} />
+      <Box position="relative" flex="0 0 140px" mr={20}>
+        <DeviceIllustration deviceModel={deviceModel} />
+      </Box>
       <div style={{ flex: 1 }}>
         <Box horizontal alignItems="center">
           <Text ff="Inter|SemiBold" color="palette.text.shade100" fontSize={5}>

@@ -41,7 +41,7 @@ const QuitIconWrapper = styled.div`
   color: ${p => p.theme.colors.palette.primary.main};
   background-color: ${p => p.theme.colors.palette.action.hover};
   border-radius: 100%;
-  margin-top: -${p => p.theme.space[6]}px;
+  margin: ${p => -p.theme.space[5]}px auto ${p => p.theme.space[6]}px auto;
 `;
 
 type Props = {
@@ -93,15 +93,18 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
       <NavigationGuard
         analyticsName="ManagerGuardModal"
         when={jobInProgress}
-        title={t(`errors.ManagerQuitPage.${installState}.title`)}
-        renderIcon={() => (
-          <QuitIconWrapper>
-            <Quit size={30} />
-          </QuitIconWrapper>
-        )}
+        subTitle={
+          <>
+            <QuitIconWrapper>
+              <Quit size={30} />
+            </QuitIconWrapper>
+            {t(`errors.ManagerQuitPage.${installState}.title`)}
+          </>
+        }
         desc={t(`errors.ManagerQuitPage.${installState}.description`)}
         confirmText={t(`errors.ManagerQuitPage.quit`)}
         cancelText={t(`errors.ManagerQuitPage.${installState}.stay`)}
+        centered
       />
       <DeviceStorage
         jobInProgress={jobInProgress}

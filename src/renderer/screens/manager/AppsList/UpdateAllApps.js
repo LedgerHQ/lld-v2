@@ -55,6 +55,7 @@ type Props = {
 };
 
 const UpdateAllApps = ({ state, dispatch, isIncomplete, progress }: Props) => {
+  const [open, setIsOpen] = useState();
   const [appsUpdating, setAppsUpdating] = useState([]);
 
   const { apps, installed, installQueue, uninstallQueue } = state;
@@ -75,10 +76,14 @@ const UpdateAllApps = ({ state, dispatch, isIncomplete, progress }: Props) => {
     if (updateProgress >= 1) setAppsUpdating([]);
   }, [updateProgress]);
 
-  const onUpdateAll = useCallback(() => {
-    setAppsUpdating(updatableAppList);
-    dispatch({ type: "updateAll" });
-  }, [dispatch, setAppsUpdating, updatableAppList]);
+  const onUpdateAll = useCallback(
+    e => {
+      if (open) e.stopPropagation();
+      setAppsUpdating(updatableAppList);
+      dispatch({ type: "updateAll" });
+    },
+    [dispatch, setAppsUpdating, updatableAppList, open],
+  );
 
   const updateHeader =
     appsUpdating.length > 0 ? (
@@ -157,6 +162,7 @@ const UpdateAllApps = ({ state, dispatch, isIncomplete, progress }: Props) => {
       <CollapsibleCard
         mt={20}
         header={<UpdatableHeader>{visible && updateHeader}</UpdatableHeader>}
+        onOpen={setIsOpen}
       >
         {appsToShow.map(mapApp)}
       </CollapsibleCard>

@@ -17,14 +17,12 @@ import Text from "~/renderer/components/Text";
 import Box from "~/renderer/components/Box/Box";
 
 const IconsSection = styled.div`
-  padding-top: ${p => p.theme.space[5]}px;
-  height: ${p => p.theme.space[7]}px;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   align-content: center;
-  margin: ${p => p.theme.space[2]}px 0px;
+  margin: ${p => -p.theme.space[6]}px 0px ${p => p.theme.space[6]}px 0;
   color: ${p => p.theme.colors.grey};
 `;
 
@@ -76,12 +74,14 @@ const AppDepsUninstallModal = ({ app, appList, installed, dispatch, onClose }: P
       onClose={onClose}
       onConfirm={onConfirm}
       centered
-      title={
-        <IconsSection>
-          <AppTree uri={manager.getIconUrl(app.icon)} />
-        </IconsSection>
+      subTitle={
+        <>
+          <IconsSection>
+            <AppTree uri={manager.getIconUrl(app.icon)} />
+          </IconsSection>
+          <Trans i18nKey="manager.apps.dependencyUninstall.title" values={{ app: name }} />
+        </>
       }
-      subTitle={<Trans i18nKey="manager.apps.dependencyUninstall.title" values={{ app: name }} />}
       desc={<Trans i18nKey="manager.apps.dependencyUninstall.description" values={{ app: name }} />}
       confirmText={
         <Trans i18nKey="manager.apps.dependencyUninstall.confirm" values={{ app: name }} />
