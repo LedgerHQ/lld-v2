@@ -46,6 +46,7 @@ const FilterHeader = styled.div`
   align-items: center;
   background-color: ${p => p.theme.colors.palette.background.paper};
   box-shadow: 0 1px 0 0 ${p => p.theme.colors.palette.text.shade10};
+  border-radius: 4px 4px 0 0;
   position: sticky;
   top: ${p => (p.isIncomplete ? -p.theme.space[3] : p.theme.sizes.topBarHeight)}px;
   left: 0;
