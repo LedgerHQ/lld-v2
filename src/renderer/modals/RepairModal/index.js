@@ -12,7 +12,6 @@ import Button from "~/renderer/components/Button";
 import Box from "~/renderer/components/Box";
 import Text from "~/renderer/components/Text";
 import ProgressCircle from "~/renderer/components/ProgressCircle";
-import TranslatedError from "~/renderer/components/TranslatedError";
 import ConnectTroubleshootingHelpButton from "~/renderer/components/ConnectTroubleshootingHelpButton";
 import FlashMCU from "~/renderer/components/FlashMCU";
 import Modal, { ModalBody } from "~/renderer/components/Modal";
@@ -106,11 +105,7 @@ const FlashStep = ({
   );
 
 const ErrorStep = ({ error }: { error: Error }) => (
-  <ErrorDisplay error={error} withExportLogs>
-    <ol style={{ textAlign: "justify" }}>
-      <TranslatedError error={error} field="list" />
-    </ol>
-  </ErrorDisplay>
+  <ErrorDisplay error={error} withExportLogs list />
 );
 
 type Props = {
