@@ -9,7 +9,7 @@ import styled from "styled-components";
 import { lock } from "~/renderer/actions/application";
 import { openModal } from "~/renderer/actions/modals";
 
-import { discreetModeSelector, hasPasswordSelector } from "~/renderer/reducers/settings";
+import { discreetModeSelector } from "~/renderer/reducers/settings";
 import { hasAccountsSelector } from "~/renderer/reducers/accounts";
 
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
@@ -29,6 +29,7 @@ import IconSettings from "~/renderer/icons/Settings";
 import ActivityIndicator from "./ActivityIndicator";
 import ItemContainer from "./ItemContainer";
 import { setDiscreetMode } from "~/renderer/actions/settings";
+import { hasPasswordSelector } from "~/renderer/reducers/application";
 
 const Container: ThemedComponent<{}> = styled(Box).attrs(() => ({}))`
   height: ${p => p.theme.sizes.topBarHeight}px;
