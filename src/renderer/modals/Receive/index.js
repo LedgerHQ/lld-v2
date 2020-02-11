@@ -1,13 +1,12 @@
 // @flow
 import React, { PureComponent } from "react";
 import logger from "~/logger";
-
 import Modal from "~/renderer/components/Modal";
-
 import Body from "./Body";
+import type { StepId } from "./Body";
 
 type State = {
-  stepId: string,
+  stepId: StepId,
   isAddressVerified: ?boolean,
   verifyAddressError: ?Error,
 };
@@ -23,7 +22,7 @@ class ReceiveModal extends PureComponent<{}, State> {
 
   handleReset = () => this.setState({ ...INITIAL_STATE });
 
-  handleStepChange = (stepId: string) => this.setState({ stepId });
+  handleStepChange = (stepId: StepId) => this.setState({ stepId });
 
   handleChangeAddressVerified = (isAddressVerified: ?boolean, err: ?Error) => {
     if (err && err.name !== "UserRefusedAddress") {

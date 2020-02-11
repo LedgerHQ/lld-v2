@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState, useCallback, useMemo, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { Trans } from "react-i18next";
 import { getDeviceModel } from "@ledgerhq/devices";
 import styled from "styled-components";
@@ -21,16 +21,6 @@ import OnboardingFooter from "../../OnboardingFooter";
 import type { StepProps } from "../..";
 import GenuineCheckModal from "./GenuineCheckModal";
 import GenuineCheckErrorPage from "./GenuineCheckErrorPage";
-
-const makeCallOnMount = cb => {
-  function Success() {
-    useEffect(() => {
-      cb();
-    }, []);
-    return null;
-  }
-  return Success;
-};
 
 const CardTitle = styled(Box).attrs(() => ({
   ff: "Inter|SemiBold",
@@ -92,10 +82,6 @@ const GenuineCheck = (props: StepProps) => {
     });
     setGenuineCheckModalOpened(false);
   }, [updateGenuineCheck]);
-
-  const GenuineCheckPass = useMemo(() => makeCallOnMount(handleGenuineCheckPass), [
-    handleGenuineCheckPass,
-  ]);
 
   const redoGenuineCheck = useCallback(() => {
     setRecovery(undefined);
@@ -209,7 +195,7 @@ const GenuineCheck = (props: StepProps) => {
       <GenuineCheckModal
         isOpened={isGenuineCheckModalOpened}
         onClose={handleCloseGenuineCheckModal}
-        Success={GenuineCheckPass}
+        onSuccess={handleGenuineCheckPass}
       />
     </FixedTopContainer>
   );

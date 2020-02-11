@@ -20,6 +20,7 @@ import type { ModalStatus } from "./types";
 type Props = {
   deviceInfo: DeviceInfo,
   device: Device,
+  setFirmwareUpdateOpened: boolean => void,
 };
 
 type State = {
@@ -76,9 +77,15 @@ class FirmwareUpdate extends PureComponent<Props, State> {
 
   _unmounting = false;
 
-  handleCloseModal = () => this.setState({ modal: "closed" });
+  handleCloseModal = () => {
+    this.props.setFirmwareUpdateOpened(false);
+    this.setState({ modal: "closed" });
+  };
 
-  handleDisclaimerModal = () => this.setState({ modal: "disclaimer" });
+  handleDisclaimerModal = () => {
+    this.props.setFirmwareUpdateOpened(true);
+    this.setState({ modal: "disclaimer" });
+  };
 
   handleDisclaimerNext = () => this.setState({ modal: "install" });
 

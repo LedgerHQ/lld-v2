@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import styled from "styled-components";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import { Trans } from "react-i18next";
@@ -51,6 +51,12 @@ const TabBar = ({ tabs, onIndexChange, defaultIndex = 0 }: Props) => {
   const tabRefs = useRef([]);
   const [index, setIndex] = useState(defaultIndex);
 
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const updateIndex = useCallback(
     i => {
       setIndex(i);
@@ -73,12 +79,12 @@ const TabBar = ({ tabs, onIndexChange, defaultIndex = 0 }: Props) => {
           tabIndex={i}
           onClick={() => updateIndex(i)}
         >
-          <Text ff="Inter|Medium" fontSize={5}>
+          <Text ff="Inter|SemiBold" fontSize={5}>
             <Trans i18nKey={tab} />
           </Text>
         </Tab>
       ))}
-      {tabRefs.current[index] && <TabIndicator currentRef={tabRefs.current[index]} />}
+      {mounted && tabRefs.current[index] && <TabIndicator currentRef={tabRefs.current[index]} />}
     </Tabs>
   );
 };

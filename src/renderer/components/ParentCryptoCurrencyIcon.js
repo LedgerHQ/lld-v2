@@ -25,6 +25,8 @@ const ParentCryptoCurrencyIconWrapper: ThemedComponent<{
   position: relative;
   line-height: ${p => (p.bigger ? "18px" : "18px")};
   font-size: ${p => (p.bigger ? "12px" : "12px")};
+  max-height: 25px;
+  padding-right: 10px;
   > :nth-child(2) {
     position: absolute;
     bottom: -8px;

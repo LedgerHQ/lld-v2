@@ -14,9 +14,7 @@ import type { Step } from "~/renderer/components/Stepper";
 import StepOverview, {
   StepOverviewFooter,
 } from "~/renderer/modals/MigrateAccounts/steps/StepOverview";
-import StepConnectDevice, {
-  StepConnectDeviceFooter,
-} from "~/renderer/modals/MigrateAccounts/steps/StepConnectDevice";
+import StepConnectDevice from "~/renderer/modals/MigrateAccounts/steps/StepConnectDevice";
 import StepCurrency, {
   StepCurrencyFooter,
 } from "~/renderer/modals/MigrateAccounts/steps/StepCurrency";
@@ -50,17 +48,17 @@ export type StepProps = {
   flushMigratedAccounts: () => void,
   moveToNextCurrency: (?boolean) => void,
   getNextCurrency: () => CryptoCurrency,
-  setAppOpened: (isAppOpened: boolean) => void,
   scanStatus: ScanStatus,
-  isAppOpened: boolean,
   onCloseModal: () => void,
   hideLoopNotice: boolean,
 };
-type St = Step<"overview" | "device" | "currency", StepProps>;
+
+type StepId = "overview" | "device" | "currency";
+
+type St = Step<StepId, StepProps>;
 
 type State = {
-  stepId: string,
-  isAppOpened: boolean,
+  stepId: StepId,
   currency: ?CryptoCurrency,
   scanStatus: ScanStatus,
   err: ?Error,
@@ -81,7 +79,6 @@ const createSteps = (): St[] => {
     {
       id: "device",
       component: StepConnectDevice,
-      footer: StepConnectDeviceFooter,
       onBack,
     },
     {
@@ -95,7 +92,6 @@ const createSteps = (): St[] => {
 const INITIAL_STATE = {
   stepId: "overview",
   currency: null,
-  isAppOpened: false,
   scanStatus: "idle",
   err: null,
   migratedAccounts: {},
@@ -110,8 +106,7 @@ class MigrateAccounts extends PureComponent<*, State> {
   hideLoopNotice = true;
   STEPS = createSteps();
 
-  handleStepChange = (step: St) => this.setState({ stepId: step.id, isAppOpened: false });
-  handleSetAppOpened = (isAppOpened: boolean) => this.setState({ isAppOpened });
+  handleStepChange = (step: St) => this.setState({ stepId: step.id });
   handleSetScanStatus = (scanStatus: ScanStatus, err: ?Error = null) => {
     if (err) {
       logger.critical(err);
@@ -155,7 +150,7 @@ class MigrateAccounts extends PureComponent<*, State> {
       replaceAccounts,
       replaceStarAccountId,
     } = this.props;
-    const { stepId, isAppOpened, err, scanStatus, currency } = this.state;
+    const { stepId, err, scanStatus, currency } = this.state;
 
     const stepperProps = {
       starredAccountIds,
@@ -166,13 +161,11 @@ class MigrateAccounts extends PureComponent<*, State> {
       accounts,
       device,
       currency,
-      isAppOpened,
       err,
       scanStatus,
       addMigratedAccount: this.addMigratedAccount,
       migratedAccounts: this.state.migratedAccounts,
       hideLoopNotice: this.hideLoopNotice,
-      setAppOpened: this.handleSetAppOpened,
       setScanStatus: this.handleSetScanStatus,
       moveToNextCurrency: this.handleMoveToNextCurrency,
       getNextCurrency: this.getNextCurrency,
@@ -191,7 +184,7 @@ class MigrateAccounts extends PureComponent<*, State> {
         render={({ onClose }) => (
           <Stepper
             hideBreadcrumb
-            initialStepId={stepId}
+            stepId={stepId}
             onStepChange={this.handleStepChange}
             onClose={onClose}
             steps={this.STEPS}

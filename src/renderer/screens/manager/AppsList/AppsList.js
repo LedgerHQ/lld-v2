@@ -1,11 +1,12 @@
 // @flow
 import React, { useState, memo, useCallback, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { Trans } from "react-i18next";
 
 import type { TFunction } from "react-i18next";
 import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
-import type { State, Action, AppOp } from "@ledgerhq/live-common/lib/apps/types";
+import type { State, Action, AppOp, AppsDistribution } from "@ledgerhq/live-common/lib/apps/types";
 import { useSortedFilteredApps } from "@ledgerhq/live-common/lib/apps/filtering";
 import Placeholder from "./Placeholder";
 import Card from "~/renderer/components/Box/Card";
@@ -61,6 +62,7 @@ type Props = {
   setAppInstallDep: () => void,
   setAppUninstallDep: () => void,
   t: TFunction,
+  distribution: AppsDistribution,
 };
 
 const AppsList = ({
@@ -72,7 +74,9 @@ const AppsList = ({
   setAppInstallDep,
   setAppUninstallDep,
   t,
+  distribution,
 }: Props) => {
+  const { search } = useLocation();
   const inputRef = useRef();
   const [query, setQuery] = useState("");
   const [filters, setFilters] = useState(["all"]);
@@ -81,9 +85,21 @@ const AppsList = ({
   /** clear search field on tab change */
   useEffect(() => {
     if (inputRef && inputRef.current) inputRef.current.value = "";
-    setQuery();
+    setQuery("");
   }, [activeTab]);
   const onDeviceTab = activeTab === 1;
+
+  /** retrieve search query from router location search params */
+  useEffect(() => {
+    const params = new URLSearchParams(search);
+    const q = params.get("q");
+
+    if (inputRef && inputRef.current && q) {
+      inputRef.current.value = q;
+      inputRef.current.focus();
+      setQuery(q);
+    }
+  }, [search]);
 
   const { apps, installed: installedApps, uninstallQueue, installQueue } = state;
 
@@ -97,10 +113,22 @@ const AppsList = ({
       installQueue,
       type: ["installed"],
     },
-    sort,
+    { type: "default", order: "asc" },
   );
 
-  const displayedAppList = onDeviceTab ? installedAppList : appList;
+  const distributionOrder = distribution.apps.map(({ name }) => name);
+
+  const displayedAppList = onDeviceTab
+    ? installedAppList
+        .sort(
+          ({ name: _name }, { name }) =>
+            distributionOrder.indexOf(_name) > distributionOrder.indexOf(name) ? -1 : 0, // order by distribution in device
+        )
+        .sort(
+          ({ name: _name }, { name }) =>
+            installQueue.indexOf(_name) > installQueue.indexOf(name) ? -1 : 0, // place install queue on top of list
+        )
+    : appList;
 
   const mapApp = useCallback(
     (app, appStoreView, onlyUpdate, showActions) => (

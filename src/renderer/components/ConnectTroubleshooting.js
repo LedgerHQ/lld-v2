@@ -20,8 +20,8 @@ const Wrapper: ThemedComponent<{}> = styled(Box).attrs({
   backgroundColor: "palette.text.shade10",
   borderRadius: 4,
 })`
-  width: 550px;
-  max-width: 100%;
+  margin-top: 40px;
+  max-width: 550px;
 `;
 
 const ConnectTroubleshooting = ({ appearsAfterDelay = 25000, onRepair }: Props) => {
@@ -43,7 +43,7 @@ const ConnectTroubleshooting = ({ appearsAfterDelay = 25000, onRepair }: Props) 
       </Box>
       <ConnectTroubleshootingHelpLink />
       <Box flex="1" />
-      <RepairDeviceButton onRepair={onRepair} />
+      {onRepair ? <RepairDeviceButton onRepair={onRepair} /> : null}
     </Wrapper>
   ) : null;
 };

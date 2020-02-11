@@ -214,15 +214,8 @@
   "currentAddress": {
     "title": "Current address",
     "for": "Address for <1><0>{{name}}</0></1>",
-    "messageIfUnverified": "Please verify that the {{currencyName}} address shown in Ledger Live matches the one on your Ledger device",
-    "messageIfAccepted": "Address confirmed, please re-verify it if you copy/paste or scan the QR code.",
+    "messageIfUnverified": "Verify that the sender has the same {{currencyName}} address as shown on your device",
     "messageIfSkipped": "Your {{currencyName}} address has not been confirmed on your Ledger device. Please verify it for optimal security."
-  },
-  "deviceConnect": {
-    "dashboard": "Navigate to the <1>Dashboard</1> on your device",
-    "step1": "Connect and unlock your <1>Ledger device</1>",
-    "step2": "Open the <1><0>{{managerAppName}}</0></1> app on your device",
-    "step3": "Allow <1>Ledger Manager</1> on your device"
   },
   "emptyState": {
     "sidebar": {
@@ -266,7 +259,7 @@
     "modal": {
       "title": "Genuine check"
     },
-    "deviceInBootloader": "Your device is in Bootloader mode. Click {{button}} to update it."
+    "deviceInBootloader": "Device in Bootloader mode. Click on Continue to update it."
   },
   "tokensList": {
     "title": "Tokens",
@@ -335,9 +328,6 @@
       "import": "Accounts",
       "finish": "Confirmation"
     },
-    "connectDevice": {
-      "desc": "Follow the steps below to add <1><0>{{currencyName}}</0></1> accounts"
-    },
     "tokensTip": "{{token}} ({{ticker}}) is an {{tokenType}} token. You can receive tokens directly on an {{currency}} account.",
     "accountToImportSubtitle_plural": "Add existing accounts",
     "selectAll": "Select all ({{count}})",
@@ -403,20 +393,18 @@
   "operationList": {
     "noMoreOperations": "That's all"
   },
+  "DeviceAction": {
+    "allowAppPermission": "Open the {{wording}} app on your device",
+    "allowAppPermissionSubtitleToken": "to manage your {{token}} tokens",
+    "allowManagerPermission": "{{wording}} on your device",
+    "loading": "Loading...",
+    "connectAndUnlockDevice": "Connect and unlock your device",
+    "unlockDevice": "Unlock your device",
+    "quitApp": "Quit the application on your device",
+    "appNotInstalled": "Please install the {{appName}} app",
+    "openManager": "Open Manager"
+  },
   "manager": {
-    "connect": {
-      "allowPermission": "{{wording}} on your device",
-      "loading": "Loading...",
-      "connectAndUnlockDevice": "Connect your device and enter your PIN code",
-      "unlockDevice": "Enter your PIN code",
-      "quitApp": "Please quit application on your device"
-    },
-    "loading": "Loading",
-    "device": {
-      "title": "Connect your device",
-      "desc": "Follow the steps below to open the Manager",
-      "cta": "Connect my device"
-    },
     "tabs": {
       "appCatalog": "App Catalog",
       "appCatalogSearch": "Search app in catalog...",
@@ -577,6 +565,8 @@
   },
   "receive": {
     "title": "Receive",
+    "successTitle": "Address shared securely",
+    "shareWithSender": "Share address with sender",
     "steps": {
       "chooseAccount": {
         "title": "Account",
@@ -586,8 +576,7 @@
       },
       "connectDevice": {
         "title": "Device",
-        "withoutDevice": "Don't have your device?",
-        "tokensTip": "* Open the {{currency}} app to manage your {{token}} tokens"
+        "withoutDevice": "Don't have your device?"
       },
       "confirmAddress": {
         "title": "Verification",
@@ -640,7 +629,11 @@
         "unitPerByte": "{{unit}} per byte"
       },
       "verification": {
-        "title": "Verification"
+        "title": "Verification",
+        "streaming": {
+          "accurate": "Loading... ({{percentage}})",
+          "inaccurate": "Loading..."
+        }
       },
       "confirmation": {
         "title": "Confirmation",
@@ -1401,6 +1394,10 @@
       "title": "Something went wrong, please reconnect your device",
       "description": "{{message}}"
     },
+    "TransportRaceCondition": {
+      "title": "Something went wrong, please reconnect your device",
+      "description": "{{message}}"
+    },
     "TransportStatusError": {
       "title": "Something went wrong, please reconnect your device",
       "description": "{{message}}"
@@ -1414,14 +1411,18 @@
       "description": "Please restart your device or contact us"
     },
     "UserRefusedAllowManager": {
-      "title": "Manager refused on device"
+      "title": "Manager denied on device"
     },
     "UserRefusedFirmwareUpdate": {
       "title": "Update canceled",
       "description": "Please retry or contact Ledger Support"
     },
     "UserRefusedOnDevice": {
-      "title": "Transaction refused on device",
+      "title": "Action denied on device",
+      "description": "Please retry or contact Ledger Support in case of doubt"
+    },
+    "TransactionRefusedOnDevice": {
+      "title": "Operation denied on device",
       "description": "Please retry or contact Ledger Support in case of doubt"
     },
     "UserRefusedAddress": {
@@ -1445,8 +1446,8 @@
       "description": null
     },
     "WrongDeviceForAccount": {
-      "title": "Wrong device or passphrase for ‘{{accountName}}’",
-      "description": "Please use the device or passphrase for the selected account"
+      "title": "Wrong keys for ‘{{accountName}}’",
+      "description": "Please check that your hardware wallet is set up with the recovery phrase or passphrase that belongs to the selected account."
     },
     "DeviceAppVerifyNotSupported": {
       "title": "App update required",

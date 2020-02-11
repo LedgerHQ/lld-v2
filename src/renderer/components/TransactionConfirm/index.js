@@ -12,11 +12,12 @@ import type {
   TransactionStatus,
 } from "@ledgerhq/live-common/lib/types";
 import type { Device } from "~/renderer/reducers/devices";
-import Interactions from "~/renderer/icons/device/interactions";
 import transactionConfirmFieldsPerFamily from "~/renderer/generated/TransactionConfirmFields";
 import Box from "~/renderer/components/Box";
 import WarnBox from "~/renderer/components/WarnBox";
+import useTheme from "~/renderer/hooks/useTheme";
 import FormattedVal from "~/renderer/components/FormattedVal";
+import { renderVerifyUnwrapped } from "~/renderer/components/DeviceAction/rendering";
 import TransactionConfirmField from "./TransactionConfirmField";
 
 const Container = styled(Box).attrs(() => ({
@@ -46,10 +47,12 @@ type Props = {
 
 const TransactionConfirm = ({ t, device, account, parentAccount, transaction, status }: Props) => {
   const mainAccount = getMainAccount(account, parentAccount);
-  const isBlue = device && device.modelId === "blue";
   const { estimatedFees, amount } = status;
   const unit = getAccountUnit(account);
   const feesUnit = getAccountUnit(mainAccount);
+  const type = useTheme("colors.palette.type");
+
+  if (!device) return null;
 
   const r = transactionConfirmFieldsPerFamily[mainAccount.currency.family];
   const Pre = r && r.pre;
@@ -59,17 +62,10 @@ const TransactionConfirm = ({ t, device, account, parentAccount, transaction, st
 
   return (
     <Container>
-      {!device ? null : (
-        <Box mt={isBlue ? 4 : null}>
-          <Interactions
-            screen="validation"
-            action="accept"
-            type={device.modelId}
-            width={isBlue ? 120 : 375}
-            wire="wired"
-          />
-        </Box>
-      )}
+      <WarnBox>
+        <Trans i18nKey="TransactionConfirm.warning" values={{ recipientWording }} />
+      </WarnBox>
+
       <Info>
         <Trans i18nKey="TransactionConfirm.title" />
       </Info>
@@ -116,9 +112,8 @@ const TransactionConfirm = ({ t, device, account, parentAccount, transaction, st
           />
         ) : null}
       </Box>
-      <WarnBox>
-        <Trans i18nKey="TransactionConfirm.warning" values={{ recipientWording }} />
-      </WarnBox>
+
+      {renderVerifyUnwrapped({ modelId: device.modelId, type })}
     </Container>
   );
 };
