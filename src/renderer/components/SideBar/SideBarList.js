@@ -11,6 +11,14 @@ const ListWrapper = styled(Box)`
   ${p => (p.scroll ? "padding-right: 2px" : "")};
   will-change: unset;
   flex: auto;
+  ${p =>
+    p.collapsed
+      ? `
+    padding-right: ${p.scroll ? 200 - p.theme.overflow.trackSize : 200}px; 
+    margin-right: -${200 - p.theme.overflow.trackSize}px;
+    --track-color: rgba(0,0,0,0)!important;
+  `
+      : ""};
 `;
 
 type Props = {
