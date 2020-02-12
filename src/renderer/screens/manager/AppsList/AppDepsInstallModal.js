@@ -49,7 +49,10 @@ type Props = {
 };
 
 const AppDepsInstallModal = ({ app, appList, dispatch, onClose }: Props) => {
+  // FIXME there is no need for a memo for this!
   const name = useMemo(() => app && app.name, [app]);
+
+  // FIXME there is no need for a memo for this!
   const dependencies = useMemo(() => app && app.dependencies, [app]);
 
   const onConfirm = useCallback(() => {
@@ -57,6 +60,7 @@ const AppDepsInstallModal = ({ app, appList, dispatch, onClose }: Props) => {
     onClose();
   }, [dispatch, name, onClose]);
 
+  // FIXME this would come as part of the useAppInstallNeedsDeps data
   const dependentApp = useMemo(
     () => dependencies && appList.find(a => dependencies.includes(a.name)),
     [appList, dependencies],

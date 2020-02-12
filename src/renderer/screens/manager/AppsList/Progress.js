@@ -21,6 +21,8 @@ type Props = {
   currentProgress: ?{ appOp: AppOp, progress: number },
 };
 
+// TODO we should have two props: progress and appOp
+// we can forward appOp from state.currentAppOp if it matches the contextual app
 const Progress = ({ currentProgress }: Props) => {
   const { progress, appOp } = currentProgress || {};
 

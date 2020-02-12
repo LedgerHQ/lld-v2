@@ -59,10 +59,16 @@ const UpdateAllApps = ({ state, dispatch, isIncomplete, progress }: Props) => {
 
   const { apps, installed, installQueue, uninstallQueue } = state;
 
+  // TODO use useAppsSections on parent and forward the .update app list
+
   const updatableAppList = useMemo(
     () => apps.filter(({ name }) => installed.some(i => i.name === name && !i.updated)),
     [apps, installed],
   );
+  const appsToShow = appsUpdating.length > 0 ? appsUpdating : updatableAppList;
+  const visible = appsToShow.length > 0;
+
+  // TODO use updateAllProgress(state) from apps/logic
 
   const updateProgress = useMemo(() => {
     return (
@@ -148,9 +154,6 @@ const UpdateAllApps = ({ state, dispatch, isIncomplete, progress }: Props) => {
     ),
     [state, dispatch, isIncomplete, progress],
   );
-
-  const appsToShow = appsUpdating.length > 0 ? appsUpdating : updatableAppList;
-  const visible = appsToShow.length > 0;
 
   return (
     <FadeInOutBox in={visible}>

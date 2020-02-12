@@ -91,6 +91,7 @@ const Item: React$ComponentType<Props> = ({
   const { name } = app;
   const { deviceModel } = state;
 
+  // FIXME uses useNotEnoughMemoryToInstall
   const notEnoughMemoryToInstall = useMemo(
     () => isOutOfMemoryState(predictOptimisticState(reducer(state, { type: "install", name }))),
     [name, state],

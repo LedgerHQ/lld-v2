@@ -83,6 +83,7 @@ const AppActions: React$ComponentType<Props> = React.memo(
       uninstallQueue,
     } = state;
 
+    // FIXME useAppInstallNeedsDeps & forward the data to the setAppInstallDep
     const needsInstallDeps = useMemo(
       () =>
         dependencies &&
@@ -92,6 +93,7 @@ const AppActions: React$ComponentType<Props> = React.memo(
       [dependencies, installQueue, installedList],
     );
 
+    // FIXME useAppUninstallNeedsDeps & forward the data to the setAppUninstallDep
     const needsUninstallDeps = useMemo(
       () =>
         apps

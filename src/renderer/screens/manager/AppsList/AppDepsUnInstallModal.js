@@ -53,6 +53,8 @@ type Props = {
 
 const AppDepsUninstallModal = ({ app, appList, installed, dispatch, onClose }: Props) => {
   const name = useMemo(() => app && app.name, [app]);
+
+  // please use the param you will receive as part of useAppUninstallNeedsDeps
   const dependentApps = useMemo(
     () =>
       app &&
