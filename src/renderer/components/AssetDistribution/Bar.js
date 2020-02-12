@@ -16,17 +16,23 @@ const Wrapper: ThemedComponent<{ height: number, backgroundColor?: string }> = s
   flex-grow: 1;
   background-color: ${p => p.backgroundColor || p.theme.colors.palette.divider};
   border-radius: ${p => p.height}px;
+  overflow: hidden;
 `;
 
 const Progress: ThemedComponent<{
   height: number,
   width: string,
   backgroundColor?: string,
-}> = styled.div`
-  width: ${p => p.width}%;
+}> = styled.div.attrs(p => ({
+  style: {
+    transform: `translateX(-${100 - p.width}%)`,
+  },
+}))`
   height: ${p => p.height}px;
   background-color: ${p => p.backgroundColor};
   border-radius: ${p => p.height}px;
+  transition: transform 800ms ease-out;
+  width: 100%;
 `;
 
 class Bar extends PureComponent<Props> {
