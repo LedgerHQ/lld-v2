@@ -1,4 +1,4 @@
-const context = require.context("./", true, /\.(json)$/);
+const context = require.context("../../../static/i18n", true, /\.(json)$/);
 
 const regexp = /\.\/([a-z]{2})\/(.+).json/;
 
