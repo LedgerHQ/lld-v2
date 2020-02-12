@@ -236,10 +236,12 @@ export const renderError = ({
   error,
   onRetry,
   withExportLogs,
+  list,
 }: {
   error: Error,
   onRetry?: () => void,
   withExportLogs?: boolean,
+  list?: boolean,
 }) => (
   <Wrapper>
     <Logo>
@@ -252,6 +254,13 @@ export const renderError = ({
       <TranslatedError error={error} field="description" />
       <SupportLinkError error={error} />
     </ErrorDescription>
+    {list ? (
+      <ErrorDescription>
+        <ol style={{ textAlign: "justify" }}>
+          <TranslatedError error={error} field="list" />
+        </ol>
+      </ErrorDescription>
+    ) : null}
     <ButtonContainer>
       {withExportLogs ? (
         <ExportLogsButton

@@ -12,11 +12,10 @@ import Button from "~/renderer/components/Button";
 import Box from "~/renderer/components/Box";
 import Text from "~/renderer/components/Text";
 import ProgressCircle from "~/renderer/components/ProgressCircle";
-import TranslatedError from "~/renderer/components/TranslatedError";
 import ConnectTroubleshootingHelpButton from "~/renderer/components/ConnectTroubleshootingHelpButton";
 import FlashMCU from "~/renderer/components/FlashMCU";
 import Modal, { ModalBody } from "~/renderer/components/Modal";
-import ExclamationCircleThin from "~/renderer/icons/ExclamationCircleThin";
+import ErrorDisplay from "~/renderer/components/ErrorDisplay";
 import IconCheck from "~/renderer/icons/Check";
 
 const Container = styled(Box).attrs(() => ({
@@ -106,36 +105,7 @@ const FlashStep = ({
   );
 
 const ErrorStep = ({ error }: { error: Error }) => (
-  <Box>
-    <Container>
-      <Box color="alertRed">
-        <ExclamationCircleThin size={44} />
-      </Box>
-      <Box
-        color="palette.text.shade100"
-        mt={4}
-        fontSize={6}
-        ff="Inter|Regular"
-        textAlign="center"
-        style={{ maxWidth: 350 }}
-      >
-        <TranslatedError error={error} field="title" />
-      </Box>
-      <Box
-        color="palette.text.shade80"
-        mt={3}
-        fontSize={4}
-        ff="Inter"
-        textAlign="center"
-        style={{ maxWidth: 380 }}
-      >
-        <TranslatedError error={error} field="description" />
-        <ol style={{ textAlign: "justify" }}>
-          <TranslatedError error={error} field="list" />
-        </ol>
-      </Box>
-    </Container>
-  </Box>
+  <ErrorDisplay error={error} withExportLogs list />
 );
 
 type Props = {
