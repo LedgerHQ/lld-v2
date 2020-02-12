@@ -10,6 +10,17 @@ const FIRMWARE_LOG_PATH = path.resolve(app.getPath("userData"));
 export default class FirmwareTransport extends Transport {
   logs = [];
   active = false;
+  whitelist = [
+    "hw",
+    "apdu",
+    "socket-opened",
+    "socket-in",
+    "socket-out",
+    "socket-error",
+    "socket-message-error",
+    "socket-close",
+    "cmd.ERROR",
+  ];
 
   log(info, callback) {
     setImmediate(() => {
@@ -34,7 +45,7 @@ export default class FirmwareTransport extends Transport {
         });
     }
 
-    if (this.active) {
+    if (this.active && this.whitelist.includes(info.type)) {
       this.logs.unshift(info);
     }
 
