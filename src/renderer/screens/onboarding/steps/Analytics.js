@@ -16,8 +16,10 @@ import Switch from "~/renderer/components/Switch";
 import OnboardingFooter from "../OnboardingFooter";
 import { Description, FixedTopContainer, StepContainerInner, Title } from "../sharedComponents";
 import type { StepProps } from "..";
+import { removeEncryptionKey } from "~/renderer/storage";
+import { setHasPassword } from "~/renderer/actions/application";
 
-const mapDispatchToProps = { saveSettings, openModal };
+const mapDispatchToProps = { saveSettings, openModal, setHasPassword };
 
 type State = {
   analyticsToggle: boolean,
@@ -50,8 +52,9 @@ class Analytics extends PureComponent<StepProps, State> {
   onClickPrivacy = () => openURL(urls.privacyPolicy);
 
   handleNavBack = () => {
-    const { savePassword, prevStep } = this.props;
-    savePassword(undefined);
+    const { prevStep, setHasPassword } = this.props;
+    removeEncryptionKey("app", "accounts");
+    setHasPassword(false);
     prevStep();
   };
 
