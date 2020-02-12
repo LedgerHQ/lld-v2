@@ -78,19 +78,17 @@ class FirmwareUpdate extends PureComponent<Props, State> {
   _unmounting = false;
 
   handleCloseModal = () => {
-    this.props.setFirmwareUpdateOpened(false);
     this.setState({ modal: "closed" });
   };
 
   handleDisclaimerModal = () => {
-    this.props.setFirmwareUpdateOpened(true);
     this.setState({ modal: "disclaimer" });
   };
 
   handleDisclaimerNext = () => this.setState({ modal: "install" });
 
   render() {
-    const { deviceInfo, device } = this.props;
+    const { deviceInfo, device, setFirmwareUpdateOpened } = this.props;
     const { firmware, modal, stepId, ready, error } = this.state;
 
     if (!firmware) return null;
@@ -146,6 +144,7 @@ class FirmwareUpdate extends PureComponent<Props, State> {
               firmware={firmware}
               error={error}
               deviceModelId={deviceSpecs.id}
+              setFirmwareUpdateOpened={setFirmwareUpdateOpened}
             />
           </>
         ) : null}
