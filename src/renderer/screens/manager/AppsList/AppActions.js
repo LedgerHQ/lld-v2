@@ -54,7 +54,7 @@ type Props = {
   setAppInstallDep?: App => void,
   setAppUninstallDep?: App => void,
   isLiveSupported: boolean,
-  addAccount?: App => void,
+  addAccount?: () => void,
 };
 
 // eslint-disable-next-line react/display-name

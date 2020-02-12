@@ -72,7 +72,7 @@ type Props = {
   progress: ?{ appOp: AppOp, progress: number },
   setAppInstallDep?: App => void,
   setAppUninstallDep?: App => void,
-  addAccount?: App => void,
+  addAccount?: (*) => void,
 };
 
 // eslint-disable-next-line react/display-name
@@ -102,10 +102,10 @@ const Item: React$ComponentType<Props> = ({
     [name, state],
   );
 
-  const isLiveSupported = currency && isCurrencySupported(currency);
+  const isLiveSupported = !!currency && isCurrencySupported(currency);
 
   const onAddAccount = useCallback(() => {
-    addAccount(currency);
+    if (addAccount) addAccount(currency);
   }, [addAccount, currency]);
 
   return (
@@ -114,7 +114,7 @@ const Item: React$ComponentType<Props> = ({
         <img alt="" src={manager.getIconUrl(app.icon)} width={40} height={40} />
         <AppName>
           <Text ff="Inter|Bold" color="palette.text.shade100" fontSize={3}>{`${app.name}${
-            app.currencyId ? ` (${currency.ticker})` : ""
+            currency ? ` (${currency.ticker})` : ""
           }`}</Text>
           <Text ff="Inter|Regular" color="palette.text.shade50" fontSize={3}>
             <Trans
