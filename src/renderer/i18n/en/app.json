@@ -460,7 +460,9 @@
         "installed": "Installed",
         "uninstall": "Uninstall",
         "notEnoughSpace": "Not enough space",
-        "supported": "Supported"
+        "supported": "Supported",
+        "addAccount": "Add account",
+        "addAccountWarn": "Please wait for the app updates to finish"
       },
       "uninstall": {
         "title": "Uninstall all",
