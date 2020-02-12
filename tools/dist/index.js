@@ -70,7 +70,11 @@ const buildTasks = args => [
     task: async () => {
       const commands = ["-s", "--frozen-lockfile", "dist:internal"];
       if (args.dir) commands.push("--dir");
-      if (args.publish) commands.push("--publish", "always");
+      if (args.publish) {
+        commands.push("--publish", "always");
+      } else {
+        commands.push("-c.afterSign='lodash/noop'");
+      }
       if (args.n) {
         commands.push("--config");
         commands.push("electron-builder-nightly.yml");
