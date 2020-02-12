@@ -28,6 +28,7 @@ const Title = styled(Box).attrs(() => ({
 
 const StepConfirmation = ({ error }: StepProps) => {
   const { t } = useTranslation();
+
   if (error) {
     return <ErrorDisplay error={error} withExportLogs />;
   }

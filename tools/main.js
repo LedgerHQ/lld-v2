@@ -34,6 +34,7 @@ const buildMainEnv = (mode, config, argv) => {
   const env = {
     __DEV__: JSON.stringify(mode === "development"),
     __APP_VERSION__: JSON.stringify(pkg.version),
+    __GIT_REVISION__: JSON.stringify(GIT_REVISION),
   };
 
   if (mode === "development") {
