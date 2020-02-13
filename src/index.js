@@ -5,9 +5,5 @@ if (cluster.isMaster) {
   require("./main");
 } else {
   // Internal thread (libcore, hardware)
-  try {
-    require("./internal");
-  } catch (err) {
-    console.log(err);
-  }
+  require("./internal");
 }
