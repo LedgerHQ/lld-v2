@@ -32,6 +32,11 @@ export default class FirmwareTransport extends Transport {
       this.logs = [];
     }
 
+    if (info.type === "firmware-record-cancel") {
+      this.active = false;
+      this.logs = [];
+    }
+
     if (info.type === "firmware-record-end") {
       this.active = false;
       const logsName = `ledgerlive-fwupdate-${moment().format(

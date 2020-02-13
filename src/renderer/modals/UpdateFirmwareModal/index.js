@@ -131,7 +131,7 @@ const UpdateModal = ({
     log("firmware-record-start");
 
     return () => {
-      log("firmware-record-end");
+      log("firmware-record-cancel");
     };
   }, []);
 
