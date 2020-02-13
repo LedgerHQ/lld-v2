@@ -112,6 +112,14 @@ async function ensureNSLoaded(ns: string) {
 }
 
 /**
+ * In the event of a user refreshing the app we need to reload the data
+ * to ensure the lock/unlock detection is still valid.
+ */
+async function reload() {
+  DBPath && init(DBPath);
+}
+
+/**
  * Register a keyPath in db that is encrypted
  * This will decrypt the keyPath at this moment, and will be used
  * in `save` to encrypt it back
@@ -285,6 +293,7 @@ function getDBPath() {
 
 export default {
   init,
+  reload,
   load,
   registerTransform,
   setEncryptionKey,

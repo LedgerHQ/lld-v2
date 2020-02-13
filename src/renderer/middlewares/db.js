@@ -27,11 +27,14 @@ export default (store: any) => (next: any) => (action: any) => {
     const oldState = store.getState();
     const res = next(action);
     const newState = store.getState();
-    if (oldState.countervalues !== newState.countervalues) {
-      setKey("app", "countervalues", CounterValues.exportSelector(newState));
-    }
-    if (areSettingsLoaded(newState) && oldState.settings !== newState.settings) {
-      setKey("app", "settings", settingsExportSelector(newState));
+    // NB Prevent write attempts when the app is locked.
+    if (!oldState.application.isLocked || action.type === "APPLICATION_SET_DATA") {
+      if (oldState.countervalues !== newState.countervalues) {
+        setKey("app", "countervalues", CounterValues.exportSelector(newState));
+      }
+      if (areSettingsLoaded(newState) && oldState.settings !== newState.settings) {
+        setKey("app", "settings", settingsExportSelector(newState));
+      }
     }
     return res;
   }

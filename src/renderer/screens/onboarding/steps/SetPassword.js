@@ -3,7 +3,6 @@
 import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import { getDeviceModel } from "@ledgerhq/devices";
-import { saveSettings } from "~/renderer/actions/settings";
 import { setEncryptionKey } from "~/renderer/storage";
 import IconChevronRight from "~/renderer/icons/ChevronRight";
 import {
@@ -20,6 +19,9 @@ import PasswordForm from "~/renderer/modals/PasswordModal/PasswordForm";
 import Button from "~/renderer/components/Button";
 import { withTheme } from "styled-components";
 import type { StepProps } from "~/renderer/screens/onboarding";
+import { setHasPassword } from "~/renderer/actions/application";
+import { hasPasswordSelector } from "~/renderer/reducers/application";
+import { createStructuredSelector } from "reselect";
 
 type State = {
   currentPassword: string,
@@ -28,8 +30,12 @@ type State = {
 };
 
 const mapDispatchToProps = {
-  saveSettings,
+  setHasPassword,
 };
+
+const mapStateToProps = createStructuredSelector({
+  hasPasswordSelector,
+});
 
 const INITIAL_STATE = {
   currentPassword: "",
@@ -38,7 +44,8 @@ const INITIAL_STATE = {
 };
 
 type Props = StepProps & {
-  saveSettings: any => void,
+  hasPassword: boolean,
+  setHasPassword: boolean => void,
   theme: any,
 };
 
@@ -53,10 +60,10 @@ class SetPassword extends PureComponent<Props, State> {
       return;
     }
     const { newPassword } = this.state;
-    const { nextStep, saveSettings } = this.props;
+    const { nextStep, setHasPassword } = this.props;
 
     await setEncryptionKey("app", "accounts", newPassword);
-    saveSettings({ hasPassword: true });
+    setHasPassword(true);
     this.handleReset();
     nextStep();
   };
@@ -73,10 +80,8 @@ class SetPassword extends PureComponent<Props, State> {
   };
 
   render() {
-    const { nextStep, prevStep, t, settings, onboarding, theme } = this.props;
+    const { nextStep, prevStep, t, onboarding, theme, hasPassword } = this.props;
     const { newPassword, currentPassword, confirmPassword } = this.state;
-
-    const hasPassword = settings.hasPassword === true;
 
     const disclaimerNotes = [
       {
@@ -157,6 +162,6 @@ class SetPassword extends PureComponent<Props, State> {
 }
 
 const ConnectedSetPassword: React$ComponentType<{}> = withTheme(
-  connect(null, mapDispatchToProps)(SetPassword),
+  connect(mapStateToProps, mapDispatchToProps)(SetPassword),
 );
 export default ConnectedSetPassword;

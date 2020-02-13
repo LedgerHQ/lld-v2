@@ -74,7 +74,6 @@ export type SettingsState = {
   region: ?string,
   orderAccounts: string,
   countervalueFirst: boolean,
-  hasPassword: boolean,
   autoLockTimeout: number,
   selectedTimeRange: TimeRange,
   marketIndicator: "eastern" | "western",
@@ -113,7 +112,6 @@ const INITIAL_STATE: SettingsState = {
   region: null,
   orderAccounts: "balance|desc",
   countervalueFirst: false,
-  hasPassword: false,
   autoLockTimeout: 10,
   selectedTimeRange: "month",
   marketIndicator: "western",
@@ -206,8 +204,6 @@ const handlers: Object = {
 export const storeSelector = (state: State): SettingsState => state.settings;
 
 export const settingsExportSelector = storeSelector;
-
-export const hasPasswordSelector = (state: State): boolean => state.settings.hasPassword === true;
 
 export const discreetModeSelector = (state: State): boolean => state.settings.discreetMode === true;
 
