@@ -1,14 +1,10 @@
 // @flow
-import React, { useMemo, memo } from "react";
-import {
-  isOutOfMemoryState,
-  predictOptimisticState,
-  reducer,
-} from "@ledgerhq/live-common/lib/apps";
+import React, { memo } from "react";
+import { useNotEnoughMemoryToInstall } from "@ledgerhq/live-common/lib/apps/react";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import { isCurrencySupported } from "@ledgerhq/live-common/lib/data/cryptocurrencies";
 import type { App } from "@ledgerhq/live-common/lib/types/manager";
-import type { State, Action, InstalledItem, AppOp } from "@ledgerhq/live-common/lib/apps/types";
+import type { State, Action, InstalledItem } from "@ledgerhq/live-common/lib/apps/types";
 
 import styled from "styled-components";
 import { Trans } from "react-i18next";
@@ -69,7 +65,7 @@ type Props = {
   onlyUpdate?: boolean,
   forceUninstall?: boolean,
   showActions?: boolean,
-  progress: ?{ appOp: AppOp, progress: number },
+  progress: number,
   setAppInstallDep?: App => void,
   setAppUninstallDep?: App => void,
 };
@@ -92,10 +88,7 @@ const Item: React$ComponentType<Props> = ({
   const { deviceModel } = state;
 
   // FIXME uses useNotEnoughMemoryToInstall
-  const notEnoughMemoryToInstall = useMemo(
-    () => isOutOfMemoryState(predictOptimisticState(reducer(state, { type: "install", name }))),
-    [name, state],
-  );
+  const notEnoughMemoryToInstall = useNotEnoughMemoryToInstall(state, name);
 
   const isLiveSupported =
     app.currencyId && isCurrencySupported(getCryptoCurrencyById(app.currencyId));
@@ -156,15 +149,12 @@ const Item: React$ComponentType<Props> = ({
 export default memo<Props>(
   Item,
   (
-    {
-      state: { installQueue: _installQueue, uninstallQueue: _uninstallQueue },
-      progress: _progress,
-    },
-    { state: { installQueue, uninstallQueue }, progress },
+    { state: { installQueue: _installQueue, uninstallQueue: _uninstallQueue } },
+    { state: { installQueue, uninstallQueue }, progress, app: { name } },
   ) => {
     /** compare _prev to next props that if different should trigger a rerender */
     return (
-      progress === _progress &&
+      !(progress !== 1 && installQueue.length > 0 && installQueue[0] === name) &&
       installQueue.length === _installQueue.length &&
       uninstallQueue.length === _uninstallQueue.length
     );

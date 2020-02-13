@@ -5,19 +5,17 @@ import { withTranslation } from "react-i18next";
 import type { TFunction } from "react-i18next";
 import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
 import type { ListAppsResult, Exec } from "@ledgerhq/live-common/lib/apps/types";
-import { useAppsRunner, isIncompleteState, distribute } from "@ledgerhq/live-common/lib/apps";
-
+import { useAppsRunner, useAppInstallProgress } from "@ledgerhq/live-common/lib/apps/react";
+import { isIncompleteState, distribute } from "@ledgerhq/live-common/lib/apps";
 import NavigationGuard from "~/renderer/components/NavigationGuard";
 import Quit from "~/renderer/icons/Quit";
 
 import AppList from "./AppsList";
 import DeviceStorage from "../DeviceStorage/index";
-import UpdateAllApps from "./UpdateAllApps";
 
 import AppDepsInstallModal from "./AppDepsInstallModal";
 import AppDepsUnInstallModal from "./AppDepsUnInstallModal";
 
-import omit from "lodash/omit";
 import ErrorModal from "~/renderer/modals/ErrorModal/index";
 
 const Container = styled.div`
@@ -51,12 +49,11 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
   const [error, setError] = useState();
   const [appInstallDep, setAppInstallDep] = useState(undefined);
   const [appUninstallDep, setAppUninstallDep] = useState(undefined);
-  const filteredState = omit(state, "currentProgress");
-  const progress = state.currentProgress;
-  const isIncomplete = isIncompleteState(filteredState);
-  const distribution = distribute(filteredState);
+  const isIncomplete = isIncompleteState(state);
+  const distribution = distribute(state);
 
-  const { installQueue, uninstallQueue, currentError } = filteredState;
+  const { installQueue, uninstallQueue, currentError } = state;
+  const progress = useAppInstallProgress(state, installQueue[0]);
   const onCloseDepsInstallModal = useCallback(() => setAppInstallDep(undefined), [
     setAppInstallDep,
   ]);
@@ -92,19 +89,13 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
       />
       <DeviceStorage
         distribution={distribution}
-        deviceModel={filteredState.deviceModel}
+        deviceModel={state.deviceModel}
         deviceInfo={deviceInfo}
         isIncomplete={isIncomplete}
-      />
-      <UpdateAllApps
-        state={filteredState}
-        dispatch={dispatch}
-        isIncomplete={isIncomplete}
-        progress={progress}
       />
       <AppList
         deviceInfo={deviceInfo}
-        state={filteredState}
+        state={state}
         dispatch={dispatch}
         isIncomplete={isIncomplete}
         progress={progress}
@@ -115,14 +106,14 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
       />
       <AppDepsInstallModal
         app={appInstallDep}
-        appList={filteredState.apps}
+        appList={state.apps}
         dispatch={dispatch}
         onClose={onCloseDepsInstallModal}
       />
       <AppDepsUnInstallModal
         app={appUninstallDep}
-        appList={filteredState.apps}
-        installed={filteredState.installed}
+        appList={state.apps}
+        installed={state.installed}
         dispatch={dispatch}
         onClose={onCloseDepsUninstallModal}
       />

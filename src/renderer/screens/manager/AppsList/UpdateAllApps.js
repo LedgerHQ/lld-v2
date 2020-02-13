@@ -1,11 +1,14 @@
 // @flow
-import React, { useState, useEffect, useCallback, useMemo, memo } from "react";
+import React, { useCallback, memo } from "react";
 
 import styled from "styled-components";
 
 import { Trans } from "react-i18next";
 
-import type { State, Action, AppOp } from "@ledgerhq/live-common/lib/apps/types";
+import { updateAllProgress } from "@ledgerhq/live-common/lib/apps";
+
+import type { App } from "@ledgerhq/live-common/lib/types/manager";
+import type { State, Action } from "@ledgerhq/live-common/lib/apps/types";
 
 import CollapsibleCard from "~/renderer/components/CollapsibleCard";
 import Text from "~/renderer/components/Text";
@@ -17,7 +20,6 @@ import IconLoader from "~/renderer/icons/Loader";
 
 import Item from "./Item";
 import Progress from "~/renderer/components/Progress";
-import get from "lodash/get";
 
 const UpdatableHeader = styled.div`
   display: flex;
@@ -48,52 +50,32 @@ const ProgressHolder = styled.div`
 `;
 
 type Props = {
+  update: App[],
   state: State,
   dispatch: Action => void,
   isIncomplete: boolean,
-  progress: ?{ appOp: AppOp, progress: number },
+  progress: number,
 };
 
-const UpdateAllApps = ({ state, dispatch, isIncomplete, progress }: Props) => {
-  const [appsUpdating, setAppsUpdating] = useState([]);
+const UpdateAllApps = ({ update, state, dispatch, isIncomplete, progress }: Props) => {
+  const { updateAllQueue } = state;
 
-  const { apps, installed, installQueue, uninstallQueue } = state;
+  const visible = update.length > 0;
 
-  // TODO use useAppsSections on parent and forward the .update app list
-
-  const updatableAppList = useMemo(
-    () => apps.filter(({ name }) => installed.some(i => i.name === name && !i.updated)),
-    [apps, installed],
-  );
-  const appsToShow = appsUpdating.length > 0 ? appsUpdating : updatableAppList;
-  const visible = appsToShow.length > 0;
-
-  // TODO use updateAllProgress(state) from apps/logic
-
-  const updateProgress = useMemo(() => {
-    return (
-      (appsUpdating.length * 2 - (uninstallQueue.length + installQueue.length)) /
-        (appsUpdating.length * 2) || 0
-    );
-  }, [appsUpdating, uninstallQueue, installQueue]);
-
-  useEffect(() => {
-    if (updateProgress >= 1) setAppsUpdating([]);
-  }, [updateProgress]);
+  const updateProgress = updateAllProgress(state);
 
   const onUpdateAll = useCallback(() => {
-    setAppsUpdating(updatableAppList);
     dispatch({ type: "updateAll" });
-  }, [dispatch, setAppsUpdating, updatableAppList]);
+  }, [dispatch]);
 
   const updateHeader =
-    appsUpdating.length > 0 ? (
+    updateAllQueue.length > 0 ? (
       <>
         <Box vertical>
           <Text ff="Inter|SemiBold" fontSize={5} color="palette.primary.main">
             <Trans
               i18nKey="manager.applist.updatable.progressTitle"
-              values={{ number: appsUpdating.length }}
+              values={{ number: updateAllQueue.length }}
             />
           </Text>
           <Text ff="Inter|SemiBold" fontSize={2} color="palette.text.shade60">
@@ -125,7 +107,7 @@ const UpdateAllApps = ({ state, dispatch, isIncomplete, progress }: Props) => {
           <Trans i18nKey="manager.applist.updatable.title" />
         </Text>
         <Badge ff="Inter|Bold" fontSize={3} color="palette.text.shade100">
-          {updatableAppList.length}
+          {update.length}
         </Badge>
         <Box flex={1} />
         <Button primary onClick={onUpdateAll} fontSize={3} event="Manager Update All">
@@ -149,7 +131,7 @@ const UpdateAllApps = ({ state, dispatch, isIncomplete, progress }: Props) => {
         appStoreView={false}
         onlyUpdate={true}
         showActions={false}
-        progress={get(progress, ["appOp", "name"]) === app.name ? progress : undefined}
+        progress={progress}
       />
     ),
     [state, dispatch, isIncomplete, progress],
@@ -161,7 +143,7 @@ const UpdateAllApps = ({ state, dispatch, isIncomplete, progress }: Props) => {
         mt={20}
         header={<UpdatableHeader>{visible && updateHeader}</UpdatableHeader>}
       >
-        {appsToShow.map(mapApp)}
+        {update.map(mapApp)}
       </CollapsibleCard>
     </FadeInOutBox>
   );

@@ -1,8 +1,13 @@
 // @flow
 import React, { useCallback, useMemo, memo } from "react";
 
+import {
+  useAppInstallNeedsDeps,
+  useAppUninstallNeedsDeps,
+} from "@ledgerhq/live-common/lib/apps/react";
+
 import type { App } from "@ledgerhq/live-common/lib/types/manager";
-import type { State, Action, InstalledItem, AppOp } from "@ledgerhq/live-common/lib/apps/types";
+import type { State, Action, InstalledItem } from "@ledgerhq/live-common/lib/apps/types";
 
 import styled from "styled-components";
 import { Trans } from "react-i18next";
@@ -53,7 +58,7 @@ type Props = {
   forceUninstall?: boolean,
   notEnoughMemoryToInstall: boolean,
   showActions?: boolean,
-  progress: ?{ appOp: AppOp, progress: number },
+  progress: number,
   setAppInstallDep?: App => void,
   setAppUninstallDep?: App => void,
 };
@@ -74,33 +79,12 @@ const AppActions: React$ComponentType<Props> = React.memo(
     setAppInstallDep,
     setAppUninstallDep,
   }: Props) => {
-    const { name, dependencies } = app;
-    const {
-      apps,
-      installed: installedList,
-      installedAvailable,
-      installQueue,
-      uninstallQueue,
-    } = state;
+    const { name } = app;
+    const { installedAvailable, installQueue, uninstallQueue } = state;
 
-    // FIXME useAppInstallNeedsDeps & forward the data to the setAppInstallDep
-    const needsInstallDeps = useMemo(
-      () =>
-        dependencies &&
-        dependencies.some(
-          dep => installedList.every(app => app.name !== dep) && !installQueue.includes(dep),
-        ),
-      [dependencies, installQueue, installedList],
-    );
+    const needsInstallDeps = useAppInstallNeedsDeps(state, app);
 
-    // FIXME useAppUninstallNeedsDeps & forward the data to the setAppUninstallDep
-    const needsUninstallDeps = useMemo(
-      () =>
-        apps
-          .filter(a => installedList.some(i => i.name === a.name))
-          .some(({ dependencies }) => dependencies.includes(name)),
-      [apps, installedList, name],
-    );
+    const needsUninstallDeps = useAppUninstallNeedsDeps(state, app);
 
     const onInstall = useCallback(() => {
       if (needsInstallDeps && setAppInstallDep) setAppInstallDep(app);
@@ -118,7 +102,7 @@ const AppActions: React$ComponentType<Props> = React.memo(
     return (
       <AppActionsWrapper>
         {installing || uninstalling ? (
-          <Progress currentProgress={progress} />
+          <Progress installing={installing} uninstalling={uninstalling} progress={progress} />
         ) : (
           showActions && (
             <>
