@@ -76,6 +76,7 @@ const spawnCoreProcess = () => {
       .split("\n")
       .forEach(msg => {
         if (!msg) return;
+        if (process.env.INTERNAL_LOGS) console.log(msg);
         try {
           const obj = JSON.parse(msg);
           if (obj && obj.type === "log") {
