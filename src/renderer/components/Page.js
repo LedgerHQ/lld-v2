@@ -126,7 +126,7 @@ const Page = ({ children }: Props) => {
     <PageContainer>
       <HSMStatusBanner />
       <TopBar />
-      <PageScrollerContainer>
+      <PageScrollerContainer id="scroll-area">
         <PageScrollTopSeparator isAtUpperBound={isScrollAtUpperBound} />
         <PageScroller ref={pageScrollerRef}>
           <PageContentContainer>{children}</PageContentContainer>

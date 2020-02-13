@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { Trans } from "react-i18next";
 import { BigNumber } from "bignumber.js";
@@ -17,8 +17,6 @@ import { calculateCountervalueSelector } from "~/renderer/actions/general";
 type Props = {
   accountDistribution: AccountDistributionItem[],
 };
-
-type State = {};
 
 const mapStateToProps = (state, props) => {
   const { accounts } = props;
@@ -38,31 +36,53 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-class AccountDistribution extends PureComponent<Props, State> {
-  render() {
-    const { accountDistribution } = this.props;
-    return (
-      <>
-        <Box horizontal alignItems="center">
-          <Text ff="Inter|Medium" fontSize={6} color="palette.text.shade100">
-            <Trans
-              i18nKey="accountDistribution.header"
-              values={{ count: accountDistribution.length }}
-              count={accountDistribution.length}
-            />
-          </Text>
-        </Box>
+const AccountDistribution = ({ accountDistribution }: Props) => {
+  const cardRef = useRef(null);
+  const [isVisible, setVisible] = useState(false);
+  useLayoutEffect(() => {
+    const scrollArea = document.getElementById("scroll-area");
+    if (!cardRef.current) {
+      return;
+    }
+    const callback = entries => {
+      if (entries[0] && entries[0].isIntersecting) {
+        setVisible(true);
+      }
+    };
+    const observer = new IntersectionObserver(callback, {
+      threshold: 0.0,
+      root: scrollArea,
+      rootMargin: "-48px",
+    });
+    observer.observe(cardRef.current);
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
-        <Card p={0} mt={20}>
-          <Header />
+  return (
+    <>
+      <Box horizontal alignItems="center">
+        <Text ff="Inter|Medium" fontSize={6} color="palette.text.shade100">
+          <Trans
+            i18nKey="accountDistribution.header"
+            values={{ count: accountDistribution.length }}
+            count={accountDistribution.length}
+          />
+        </Text>
+      </Box>
+
+      <Card p={0} mt={24}>
+        <Header />
+        <div ref={cardRef}>
           {accountDistribution.map(item => (
-            <Row key={item.account.id} item={item} />
+            <Row key={item.account.id} item={item} isVisible={isVisible} />
           ))}
-        </Card>
-      </>
-    );
-  }
-}
+        </div>
+      </Card>
+    </>
+  );
+};
 
 const ConnectedAccountDistribution: React$ComponentType<{}> = connect(mapStateToProps)(
   AccountDistribution,
