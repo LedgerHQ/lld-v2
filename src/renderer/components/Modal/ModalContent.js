@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useEffect, useState, useLayoutEffect, useCallback } from "react";
+import React, { useState, useLayoutEffect, useCallback } from "react";
 import styled from "styled-components";
 
 const ContentWrapper = styled.div`
@@ -12,8 +12,8 @@ const ContentWrapper = styled.div`
 `;
 
 const ContentScrollableContainer = styled.div`
-  padding: 20px 20px 40px;
-  ${p => (p.noScroll ? "overflow:visible" : p.theme.overflow.xy)};
+  padding: 20px ${p => (p.noScroll ? 20 : 20 - p.theme.overflow.trackSize)}px 40px 20px;
+  ${p => (p.noScroll ? "overflow:hidden" : p.theme.overflow.xy)};
   position: relative;
   flex: 0 auto;
 `;
@@ -62,8 +62,6 @@ const ModalContent: React$ComponentType<Props> = React.forwardRef(function Modal
       ro.disconnect();
     };
   }, [containerRef, onHeightUpdate]);
-
-  useEffect(() => {}, [isScrollable]); // WAT ?
 
   return (
     <ContentWrapper>

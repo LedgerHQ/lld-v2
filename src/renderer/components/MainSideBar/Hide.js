@@ -3,6 +3,8 @@ import React from "react";
 import { Transition } from "react-transition-group";
 import styled from "styled-components";
 
+import Box from "~/renderer/components/Box";
+
 const hideTransitionDuration = 200;
 
 const hideTransitionStyles = {
@@ -23,13 +25,17 @@ const hideTransitionStyles = {
   },
 };
 
-const HideContainer = styled.div`
+const HideContainer = styled(Box)`
   overflow: hidden;
 `;
 
-const Hide = ({ visible, children }: { visible: boolean, children: any }) => (
+const Hide = ({ visible, children, ...rest }: { visible: boolean, children: any }) => (
   <Transition in={visible} timeout={hideTransitionDuration}>
-    {state => <HideContainer style={hideTransitionStyles[state]}>{children}</HideContainer>}
+    {state => (
+      <HideContainer {...rest} style={hideTransitionStyles[state]}>
+        {children}
+      </HideContainer>
+    )}
   </Transition>
 );
 

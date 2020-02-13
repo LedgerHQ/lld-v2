@@ -212,6 +212,7 @@ export const StorageBar = ({
                 ratio={blocks / (distribution.totalBlocks - distribution.osBlocks)}
               >
                 <Tooltip
+                  hideOnClick={false}
                   content={<TooltipContent name={name} bytes={bytes} deviceModel={deviceModel} />}
                 />
               </StorageBarItem>

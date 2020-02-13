@@ -29,6 +29,10 @@ export const GlobalStyle = createGlobalStyle`
     fill: ${p => p.theme.colors.palette.text.shade100};
   }
 
+  .tippy-tooltip[data-placement^=bottom]>.tippy-svg-arrow {
+    top: -6px;
+  }
+
   .tippy-popper.ledger-theme .tippy-roundarrow {
     fill: ${p => p.theme.colors.palette.text.shade100};
   }

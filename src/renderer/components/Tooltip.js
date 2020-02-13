@@ -40,7 +40,7 @@ export const defaultTippyOptions = {
   plugins: [followCursorPlugin],
 };
 
-const arrow = bg =>
+const Arrow = bg =>
   `<svg viewBox="0 0 24 8"><path fill=${bg} d="M5 8l5.5-5.6c.8-.8 2-.8 2.8 0L19 8" /></svg>`;
 
 type Props = {
@@ -51,6 +51,9 @@ type Props = {
   followCursor?: boolean,
   enabled?: boolean,
   placement?: string,
+  arrow?: boolean,
+  flip?: boolean,
+  hideOnClick?: boolean,
 };
 
 const ToolTip = ({
@@ -61,6 +64,9 @@ const ToolTip = ({
   delay,
   enabled,
   placement = "top",
+  arrow = true,
+  flip = true,
+  hideOnClick = true,
 }: Props) => {
   const colors = useTheme("colors");
 
@@ -71,10 +77,12 @@ const ToolTip = ({
       {...defaultTippyOptions}
       content={<ContentContainer bg={bg}>{content}</ContentContainer>}
       delay={[delay, 0]}
-      arrow={content ? arrow(bg) : null}
+      arrow={content && arrow ? Arrow(bg) : null}
       followCursor={followCursor}
       enabled={!!content && enabled}
       placement={placement}
+      flip={flip}
+      hideOnClick={hideOnClick}
     >
       <ChildrenContainer>{children}</ChildrenContainer>
     </Tippy>
