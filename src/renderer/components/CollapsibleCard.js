@@ -74,6 +74,7 @@ type Props = {
   /** show header chevron */
   chevronVisible?: boolean,
   children?: React$Node,
+  onOpen?: (isOpen: boolean) => void,
 };
 
 const CollapsibleCard = ({
@@ -81,10 +82,14 @@ const CollapsibleCard = ({
   children,
   timing = 400,
   chevronVisible = true,
+  onOpen = () => {},
   ...props
 }: Props) => {
   const [open, setOpen] = useState(false);
-  const toggle = useCallback(() => setOpen(!open), [setOpen, open]);
+  const toggle = useCallback(() => {
+    setOpen(!open);
+    onOpen(!open);
+  }, [open, onOpen]);
 
   return (
     <Container {...props} timing={timing}>

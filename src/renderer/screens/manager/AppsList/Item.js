@@ -29,7 +29,6 @@ const AppRow = styled.div`
   border-top: 1px solid ${p => p.theme.colors.palette.text.shade10};
   padding: 20px;
   font-size: 12px;
-  animation: ${p => p.theme.animations.fadeIn};
 `;
 
 const AppName = styled.div`
@@ -43,7 +42,7 @@ const AppName = styled.div`
 const AppSize = styled.div`
   flex: 0.5;
   text-align: center;
-  color: ${p => p.theme.colors.palette.text.shade40};
+  color: ${p => p.theme.colors.palette.text.shade60};
 `;
 
 const LiveCompatible = styled.div`
@@ -107,7 +106,7 @@ const Item: React$ComponentType<Props> = ({
           <Text ff="Inter|Bold" color="palette.text.shade100" fontSize={3}>{`${app.name}${
             app.currencyId ? ` (${getCryptoCurrencyById(app.currencyId).ticker})` : ""
           }`}</Text>
-          <Text ff="Inter|Regular" color="palette.text.shade50" fontSize={3}>
+          <Text ff="Inter|Regular" color="palette.text.shade60" fontSize={3}>
             <Trans
               i18nKey={
                 installed && !installed.updated

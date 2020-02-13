@@ -1,7 +1,7 @@
 // @flow
 
 import React, { memo } from "react";
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import { Trans } from "react-i18next";
 import { Transition, TransitionGroup } from "react-transition-group";
 
@@ -33,10 +33,12 @@ const illustrations = {
 export const DeviceIllustration: ThemedComponent<{}> = styled.img.attrs(p => ({
   src: illustrations[p.deviceModel.id],
 }))`
-  max-height: 153px;
-  margin-left: 36px;
-  margin-right: 56px;
-  filter: drop-shadow(0px 10px 10px rgba(0, 0, 0, 0.2));
+  position: absolute;
+  top: 0;
+  left: 50%;
+  max-height: 100%;
+  filter: drop-shadow(0px 5px 7px ${p => p.theme.colors.palette.text.shade10});
+  transform: translateX(-50%);
 `;
 
 const Separator = styled.div`
@@ -63,12 +65,47 @@ const Info = styled.div`
   }
 `;
 
-const StorageBarWrapper: ThemedComponent<{}> = styled.div`
+const gradient = keyframes`
+	0% {
+		background-position: 0% 50%;
+  }
+  50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+`;
+
+const StorageBarWrapper: ThemedComponent<{ installing: boolean }> = styled.div`
   width: 100%;
   border-radius: 3px;
   height: 23px;
   background: ${p => p.theme.colors.palette.text.shade10};
   overflow: hidden;
+  position: relative;
+  ${p =>
+    p.installing
+      ? css`
+          &:before {
+            content: "";
+            position: absolute;
+            pointer-events: none;
+            background: linear-gradient(
+              -45deg,
+              rgba(0, 0, 0, 0),
+              ${p.theme.colors.palette.text.shade20},
+              rgba(0, 0, 0, 0)
+            );
+            background-size: 400% 400%;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            animation: ${gradient} 3s ease infinite;
+          }
+        `
+      : ""};
 `;
 
 const StorageBarGraph = styled.div`
@@ -91,7 +128,7 @@ const transitionStyles = {
 /** each device storage bar will grow of 0.5% if the space is available or just fill its given percent basis if the bar is filled */
 const StorageBarItem: ThemedComponent<{ ratio: number }> = styled.div.attrs(props => ({
   style: {
-    backgroundColor: props.color,
+    backgroundColor: props.installing ? props.theme.colors.palette.text.shade30 : props.color,
     ...transitionStyles[props.state](`${(props.ratio * 1e2).toFixed(3)}%`),
   },
 }))`
@@ -104,13 +141,15 @@ const StorageBarItem: ThemedComponent<{ ratio: number }> = styled.div.attrs(prop
   transform-origin: left;
   opacity: 1;
   transition: all 0.33s ease-in-out;
+  position: relative;
+  overflow: hidden;
   & > * {
     width: 100%;
   }
 `;
 
 const FreeInfo = styled.div`
-  padding: 10px 0;
+  padding: 10px 0 0 0;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -151,12 +190,16 @@ export const StorageBar = ({
   distribution,
   deviceModel,
   isIncomplete,
+  installQueue,
+  jobInProgress,
 }: {
-  distribution: *,
-  deviceModel: *,
+  distribution: AppsDistribution,
+  deviceModel: DeviceModel,
   isIncomplete: boolean,
+  installQueue: string[],
+  jobInProgress: boolean,
 }) => (
-  <StorageBarWrapper>
+  <StorageBarWrapper installing={jobInProgress}>
     {!isIncomplete && (
       <TransitionGroup component={StorageBarGraph}>
         {distribution.apps.map(({ name, currency, bytes, blocks }, index) => (
@@ -164,6 +207,7 @@ export const StorageBar = ({
             {state => (
               <StorageBarItem
                 state={state}
+                installing={installQueue.includes(name)}
                 color={currency && currency.color}
                 ratio={blocks / (distribution.totalBlocks - distribution.osBlocks)}
               >
@@ -185,14 +229,25 @@ type Props = {
   deviceInfo: DeviceInfo,
   distribution: AppsDistribution,
   isIncomplete: boolean,
+  installQueue: string[],
+  jobInProgress: boolean,
 };
 
-const DeviceStorage = ({ deviceModel, deviceInfo, distribution, isIncomplete }: Props) => {
+const DeviceStorage = ({
+  deviceModel,
+  deviceInfo,
+  distribution,
+  isIncomplete,
+  installQueue,
+  jobInProgress,
+}: Props) => {
   const shouldWarn = distribution.shouldWarnMemory || isIncomplete;
 
   return (
     <Card p={20} mb={4} horizontal>
-      <DeviceIllustration deviceModel={deviceModel} />
+      <Box position="relative" flex="0 0 140px" mr={20}>
+        <DeviceIllustration deviceModel={deviceModel} />
+      </Box>
       <div style={{ flex: 1 }}>
         <Box horizontal alignItems="center">
           <Text ff="Inter|SemiBold" color="palette.text.shade100" fontSize={5}>
@@ -241,6 +296,8 @@ const DeviceStorage = ({ deviceModel, deviceInfo, distribution, isIncomplete }: 
           distribution={distribution}
           deviceModel={deviceModel}
           isIncomplete={isIncomplete}
+          installQueue={installQueue}
+          jobInProgress={jobInProgress}
         />
         <FreeInfo danger={shouldWarn}>
           {shouldWarn ? <IconTriangleWarning /> : ""}{" "}

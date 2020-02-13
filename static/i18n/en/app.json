@@ -475,7 +475,7 @@
       "install": "Install",
       "dependencyInstall": {
         "title": "{{dependency}} app is required",
-        "description": "The {{app}} app will also be installed because the {{dependency}} app needs it.",
+        "description": "The {{dependency}} app will also be installed because the {{app}} app needs it.",
         "confirm": "Install apps"
       },
       "dependencyUninstall": {
