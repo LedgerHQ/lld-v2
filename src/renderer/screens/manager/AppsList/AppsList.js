@@ -60,8 +60,8 @@ type Props = {
   dispatch: Action => void,
   isIncomplete: boolean,
   progress?: number,
-  setAppInstallDep: () => void,
-  setAppUninstallDep: () => void,
+  setAppInstallDep: (*) => void,
+  setAppUninstallDep: (*) => void,
   t: TFunction,
   distribution: AppsDistribution,
 };

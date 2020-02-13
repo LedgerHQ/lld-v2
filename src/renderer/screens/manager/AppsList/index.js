@@ -105,13 +105,15 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
         distribution={distribution}
       />
       <AppDepsInstallModal
-        app={appInstallDep}
+        app={appInstallDep && appInstallDep.app}
+        dependencies={appInstallDep && appInstallDep.dependencies}
         appList={state.apps}
         dispatch={dispatch}
         onClose={onCloseDepsInstallModal}
       />
       <AppDepsUnInstallModal
-        app={appUninstallDep}
+        app={appUninstallDep && appUninstallDep.app}
+        dependents={appUninstallDep && appUninstallDep.dependents}
         appList={state.apps}
         installed={state.installed}
         dispatch={dispatch}

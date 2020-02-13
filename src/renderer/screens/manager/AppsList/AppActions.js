@@ -59,8 +59,8 @@ type Props = {
   notEnoughMemoryToInstall: boolean,
   showActions?: boolean,
   progress: number,
-  setAppInstallDep?: App => void,
-  setAppUninstallDep?: App => void,
+  setAppInstallDep?: (*) => void,
+  setAppUninstallDep?: (*) => void,
 };
 
 // eslint-disable-next-line react/display-name
@@ -87,14 +87,14 @@ const AppActions: React$ComponentType<Props> = React.memo(
     const needsUninstallDeps = useAppUninstallNeedsDeps(state, app);
 
     const onInstall = useCallback(() => {
-      if (needsInstallDeps && setAppInstallDep) setAppInstallDep(app);
+      if (needsInstallDeps && setAppInstallDep) setAppInstallDep(needsInstallDeps);
       else dispatch({ type: "install", name });
-    }, [app, dispatch, name, needsInstallDeps, setAppInstallDep]);
+    }, [dispatch, name, needsInstallDeps, setAppInstallDep]);
 
     const onUninstall = useCallback(() => {
-      if (needsUninstallDeps && setAppUninstallDep) setAppUninstallDep(app);
+      if (needsUninstallDeps && setAppUninstallDep) setAppUninstallDep(needsUninstallDeps);
       else dispatch({ type: "uninstall", name });
-    }, [app, dispatch, name, needsUninstallDeps, setAppUninstallDep]);
+    }, [dispatch, name, needsUninstallDeps, setAppUninstallDep]);
 
     const installing = useMemo(() => installQueue.includes(name), [installQueue, name]);
     const uninstalling = useMemo(() => uninstallQueue.includes(name), [uninstallQueue, name]);

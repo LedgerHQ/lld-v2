@@ -66,8 +66,8 @@ type Props = {
   forceUninstall?: boolean,
   showActions?: boolean,
   progress: number,
-  setAppInstallDep?: App => void,
-  setAppUninstallDep?: App => void,
+  setAppInstallDep?: (*) => void,
+  setAppUninstallDep?: (*) => void,
 };
 
 // eslint-disable-next-line react/display-name
