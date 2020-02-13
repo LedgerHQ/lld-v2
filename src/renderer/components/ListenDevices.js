@@ -38,9 +38,11 @@ const ListenDevices = () => {
         },
       );
     }
-    syncDevices();
+
+    const timeoutSyncDevices = setTimeout(syncDevices, 1000);
 
     return () => {
+      clearTimeout(timeoutSyncDevices);
       sub.unsubscribe();
     };
   }, [dispatch]);
