@@ -8,6 +8,7 @@ const innerStyle = {
   textOverflow: "ellipsis",
   whiteSpace: "nowrap",
   maxWidth: "100%",
+  display: "block" /** important for ellipsis to work */,
 };
 
 const Ellipsis = ({ children, canSelect, ...p }: { children: any, canSelect?: boolean }) => (

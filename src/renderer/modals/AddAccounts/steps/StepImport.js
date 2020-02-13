@@ -20,10 +20,9 @@ import Box from "~/renderer/components/Box";
 import Button from "~/renderer/components/Button";
 import CurrencyBadge from "~/renderer/components/CurrencyBadge";
 import AccountsList from "~/renderer/components/AccountsList";
-import TranslatedError from "~/renderer/components/TranslatedError";
 import Spinner from "~/renderer/components/Spinner";
 import Text from "~/renderer/components/Text";
-import IconExclamationCircleThin from "~/renderer/icons/ExclamationCircleThin";
+import ErrorDisplay from "~/renderer/components/ErrorDisplay";
 
 import type { StepProps } from "..";
 
@@ -52,37 +51,6 @@ const LoadingRow = styled(Box).attrs(() => ({
   height: 48px;
   border: 1px dashed ${p => p.theme.colors.palette.text.shade60};
 `;
-const Title = styled(Box).attrs(() => ({
-  ff: "Inter",
-  fontSize: 5,
-  mt: 2,
-  color: "palette.text.shade100",
-}))`
-  text-align: center;
-`;
-
-const Desc = styled(Box).attrs(() => ({
-  ff: "Inter",
-  fontSize: 4,
-  mt: 2,
-  color: "palette.text.shade80",
-}))`
-  text-align: center;
-`;
-
-const ImportError = ({ error }: { error: Error }) => (
-  <Box style={{ height: 200 }} px={5} justifyContent="center">
-    <Box color="alertRed" alignItems="center">
-      <IconExclamationCircleThin size={43} />
-    </Box>
-    <Title>
-      <TranslatedError error={error} field="title" />
-    </Title>
-    <Desc>
-      <TranslatedError error={error} field="description" />
-    </Desc>
-  </Box>
-);
 
 const SectionAccounts = ({ defaultSelected, ...rest }: *) => {
   // componentDidMount-like effect
@@ -239,8 +207,7 @@ class StepImport extends PureComponent<StepProps> {
     const mainCurrency = currency.type === "TokenCurrency" ? currency.parentCurrency : currency;
 
     if (err) {
-      console.log("mayday err", err);
-      return <ImportError error={err} currency={mainCurrency} />;
+      return <ErrorDisplay error={err} withExportLogs />;
     }
 
     const currencyName = mainCurrency ? mainCurrency.name : "";

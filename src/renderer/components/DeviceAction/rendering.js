@@ -26,7 +26,8 @@ import SupportLinkError from "~/renderer/components/SupportLinkError";
 const AnimationWrapper: ThemedComponent<{ modelId: DeviceModelId }> = styled.div`
   width: 600px;
   max-width: 100%;
-  height: ${p => (p.modelId === "blue" ? "300px" : "200px")};
+  height: ${p => (p.modelId === "blue" ? 300 : 200)}px;
+  padding-bottom: ${p => (p.modelId === "blue" ? 20 : 0)}px;
   align-self: center;
   display: flex;
   align-items: center;
@@ -235,10 +236,12 @@ export const renderError = ({
   error,
   onRetry,
   withExportLogs,
+  list,
 }: {
   error: Error,
   onRetry?: () => void,
   withExportLogs?: boolean,
+  list?: boolean,
 }) => (
   <Wrapper>
     <Logo>
@@ -251,6 +254,13 @@ export const renderError = ({
       <TranslatedError error={error} field="description" />
       <SupportLinkError error={error} />
     </ErrorDescription>
+    {list ? (
+      <ErrorDescription>
+        <ol style={{ textAlign: "justify" }}>
+          <TranslatedError error={error} field="list" />
+        </ol>
+      </ErrorDescription>
+    ) : null}
     <ButtonContainer>
       {withExportLogs ? (
         <ExportLogsButton

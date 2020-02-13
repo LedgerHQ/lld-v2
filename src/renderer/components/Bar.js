@@ -11,6 +11,7 @@ const Bar: ThemedComponent<{
 }> = styled(Box)`
   background: ${p => get(p.theme.colors, p.color)};
   height: ${p => p.size || 1}px;
+  width: 100%;
 `;
 
 export default Bar;

@@ -6,11 +6,24 @@ import styled from "styled-components";
 import Box from "~/renderer/components/Box";
 import Space from "~/renderer/components/Space";
 
+/**
+ * when collapsed =>
+ * Hack to allocate an extension of space on the right for the tooltips
+ * !important to keep track color hidden
+ **/
 const ListWrapper = styled(Box)`
   ${p => (p.scroll ? p.theme.overflow.y : "")};
   ${p => (p.scroll ? "padding-right: 2px" : "")};
   will-change: unset;
   flex: auto;
+  ${p =>
+    p.collapsed
+      ? `
+    padding-right: ${p.scroll ? 200 - p.theme.overflow.trackSize : 200}px; 
+    margin-right: -${200 - p.theme.overflow.trackSize}px;
+    --track-color: rgba(0,0,0,0)!important;
+  `
+      : ""};
 `;
 
 type Props = {
@@ -38,7 +51,7 @@ class SideBarList extends Component<Props> {
           </>
         )}
         {children ? (
-          <ListWrapper scroll={scroll} flow={2} px={3} fontSize={3} noTransform>
+          <ListWrapper collapsed={collapsed} scroll={scroll} flow={2} px={3} fontSize={3}>
             {children}
           </ListWrapper>
         ) : emptyState ? (

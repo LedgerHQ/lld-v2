@@ -6,7 +6,7 @@ import Lottie from "react-lottie";
 const Animation = ({
   animation,
   width = "100%",
-  height = "auto",
+  height = "100%",
   loop = true,
   autoplay = true,
   rendererSettings = { preserveAspectRatio: "xMidYMin" },
