@@ -54,14 +54,6 @@ export const experimentalFeatures: Feature[] = [
     description: "Changing this value may break the countervalues displayed for your accounts.",
   },
   {
-    type: "toggle",
-    name: "BASE_SOCKET_URL",
-    valueOn: "wss://scriptrunner-k8s.dev.aws.ledger.fr:443/update",
-    valueOff: "wss://api.ledgerwallet.com/update",
-    title: "Experimental Script Runner API",
-    description: "Uses an experimental implementation of Manager script runner",
-  },
-  {
     type: "integer",
     name: "KEYCHAIN_OBSERVABLE_RANGE",
     title: "Custom gap limit",
