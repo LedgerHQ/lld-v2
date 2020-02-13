@@ -1,13 +1,16 @@
 // @flow
 import React, { useState, memo, useCallback, useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Trans } from "react-i18next";
-
 import type { TFunction } from "react-i18next";
 import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
 import type { State, Action, AppOp, AppsDistribution } from "@ledgerhq/live-common/lib/apps/types";
 import { useSortedFilteredApps } from "@ledgerhq/live-common/lib/apps/filtering";
+
+import { openModal } from "~/renderer/actions/modals";
+
 import Placeholder from "./Placeholder";
 import Card from "~/renderer/components/Box/Card";
 import Box from "~/renderer/components/Box";
@@ -77,7 +80,10 @@ const AppsList = ({
   t,
   distribution,
 }: Props) => {
+  const { push } = useHistory();
   const { search } = useLocation();
+  const reduxDispatch = useDispatch();
+
   const inputRef = useRef();
   const [query, setQuery] = useState("");
   const [filters, setFilters] = useState(["all"]);
@@ -101,6 +107,14 @@ const AppsList = ({
       setQuery(q);
     }
   }, [search]);
+
+  const addAccount = useCallback(
+    currency => {
+      push("/accounts");
+      reduxDispatch(openModal("MODAL_ADD_ACCOUNTS", { currency: currency || null }));
+    },
+    [push, reduxDispatch],
+  );
 
   const { apps, installed: installedApps, uninstallQueue, installQueue } = state;
 
@@ -146,9 +160,10 @@ const AppsList = ({
         progress={get(progress, ["appOp", "name"]) === app.name ? progress : undefined}
         setAppInstallDep={setAppInstallDep}
         setAppUninstallDep={setAppUninstallDep}
+        addAccount={addAccount}
       />
     ),
-    [state, dispatch, isIncomplete, progress, setAppInstallDep, setAppUninstallDep],
+    [state, dispatch, isIncomplete, progress, setAppInstallDep, setAppUninstallDep, addAccount],
   );
 
   return (
