@@ -1,7 +1,8 @@
 //  @flow
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "react-i18next";
+import { log } from "@ledgerhq/logs";
 import type { DeviceModelId } from "@ledgerhq/devices";
 import type { FirmwareUpdateContext } from "@ledgerhq/live-common/lib/types/manager";
 import logger from "~/logger";
@@ -124,6 +125,14 @@ const UpdateModal = ({
 
   const handleStepChange = useCallback((step: Step) => {
     setStateStepId(step.id);
+  }, []);
+
+  useEffect(() => {
+    log("firmware-record-start");
+
+    return () => {
+      log("firmware-record-cancel");
+    };
   }, []);
 
   const additionalProps = {
