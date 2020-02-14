@@ -8,10 +8,10 @@ import type { ListAppsResult, Exec } from "@ledgerhq/live-common/lib/apps/types"
 import {
   predictOptimisticState,
   reducer,
-  useAppsRunner,
   isIncompleteState,
   distribute,
 } from "@ledgerhq/live-common/lib/apps";
+import { useAppsRunner } from "@ledgerhq/live-common/lib/apps/react";
 
 import NavigationGuard from "~/renderer/components/NavigationGuard";
 import Quit from "~/renderer/icons/Quit";
@@ -82,11 +82,16 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
   const installState =
     installQueue.length > 0 ? (uninstallQueue.length > 0 ? "update" : "install") : "uninstall";
 
+  // FIXME I think we do not need to have a local error state but just uses the currentError
+  // and "close" it with a "recover" event.
   useEffect(() => {
     if (currentError) setError(currentError.error);
   }, [currentError]);
 
-  const onCloseError = useCallback(() => setError(), [setError]);
+  const onCloseError = useCallback(() => {
+    dispatch({ type: "recover" });
+    setError();
+  }, [dispatch, setError]);
 
   return (
     <Container>
