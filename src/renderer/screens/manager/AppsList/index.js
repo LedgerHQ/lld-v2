@@ -57,6 +57,7 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
   const [error, setError] = useState();
   const [appInstallDep, setAppInstallDep] = useState(undefined);
   const [appUninstallDep, setAppUninstallDep] = useState(undefined);
+
   const filteredState = omit(state, "currentProgress");
   const progress = state.currentProgress;
   const isIncomplete = isIncompleteState(filteredState);
@@ -109,6 +110,7 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
       />
       <DeviceStorage
         jobInProgress={jobInProgress}
+        uninstallQueue={uninstallQueue}
         installQueue={installQueue}
         distribution={distribution}
         deviceModel={filteredState.deviceModel}

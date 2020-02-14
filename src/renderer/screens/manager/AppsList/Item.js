@@ -19,7 +19,7 @@ import Text from "~/renderer/components/Text";
 import Box from "~/renderer/components/Box";
 import Tooltip from "~/renderer/components/Tooltip";
 
-import IconLoader from "~/renderer/icons/Loader";
+import IconCheckFull from "~/renderer/icons/CheckFull";
 import AppActions from "./AppActions";
 
 const AppRow = styled.div`
@@ -40,23 +40,9 @@ const AppName = styled.div`
 `;
 
 const AppSize = styled.div`
-  flex: 0.5;
+  flex: 0 0 50px;
   text-align: center;
   color: ${p => p.theme.colors.palette.text.shade60};
-`;
-
-const LiveCompatible = styled.div`
-  width: 100px;
-  text-align: center;
-  & > * > * {
-    align-items: center;
-    justify-content: center;
-    padding: 3px;
-    display: flex;
-    color: ${p => p.theme.colors.palette.background.paper};
-    background: ${p => p.theme.colors.palette.primary.main};
-    border-radius: 50%;
-  }
 `;
 
 type Props = {
@@ -109,7 +95,7 @@ const Item: React$ComponentType<Props> = ({
 
   return (
     <AppRow>
-      <Box flex="1" horizontal>
+      <Box flex="0.7" horizontal>
         <img alt="" src={manager.getIconUrl(app.icon)} width={40} height={40} />
         <AppName>
           <Text ff="Inter|Bold" color="palette.text.shade100" fontSize={3}>{`${app.name}${
@@ -134,13 +120,16 @@ const Item: React$ComponentType<Props> = ({
         />
       </AppSize>
       <Box flex="0.5" horizontal alignContent="center" justifyContent="center">
-        <LiveCompatible>
-          {isLiveSupported ? (
-            <Tooltip content={<Trans i18nKey="manager.applist.item.supported" />}>
-              <IconLoader size={16} />
-            </Tooltip>
-          ) : null}
-        </LiveCompatible>
+        {isLiveSupported && (
+          <>
+            <Box mr={1}>
+              <IconCheckFull size={16} />
+            </Box>
+            <Text ml={1} ff="Inter|Regular" color="palette.text.shade60" fontSize={3}>
+              <Trans i18nKey="manager.applist.item.supported" />
+            </Text>
+          </>
+        )}
       </Box>
       <AppActions
         state={state}

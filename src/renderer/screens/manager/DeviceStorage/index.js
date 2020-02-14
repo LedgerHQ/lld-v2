@@ -191,12 +191,14 @@ export const StorageBar = ({
   deviceModel,
   isIncomplete,
   installQueue,
+  uninstallQueue,
   jobInProgress,
 }: {
   distribution: AppsDistribution,
   deviceModel: DeviceModel,
   isIncomplete: boolean,
   installQueue: string[],
+  uninstallQueue: string[],
   jobInProgress: boolean,
 }) => (
   <StorageBarWrapper installing={jobInProgress}>
@@ -207,7 +209,7 @@ export const StorageBar = ({
             {state => (
               <StorageBarItem
                 state={state}
-                installing={installQueue.includes(name)}
+                installing={installQueue.includes(name) || uninstallQueue.includes(name)}
                 color={currency && currency.color}
                 ratio={blocks / (distribution.totalBlocks - distribution.osBlocks)}
               >
@@ -230,6 +232,7 @@ type Props = {
   distribution: AppsDistribution,
   isIncomplete: boolean,
   installQueue: string[],
+  uninstallQueue: string[],
   jobInProgress: boolean,
 };
 
@@ -239,6 +242,7 @@ const DeviceStorage = ({
   distribution,
   isIncomplete,
   installQueue,
+  uninstallQueue,
   jobInProgress,
 }: Props) => {
   const shouldWarn = distribution.shouldWarnMemory || isIncomplete;
@@ -297,6 +301,7 @@ const DeviceStorage = ({
           deviceModel={deviceModel}
           isIncomplete={isIncomplete}
           installQueue={installQueue}
+          uninstallQueue={uninstallQueue}
           jobInProgress={jobInProgress}
         />
         <FreeInfo danger={shouldWarn}>
@@ -309,6 +314,7 @@ const DeviceStorage = ({
                 <>
                   <Trans i18nKey="manager.deviceStorage.freeSpace">
                     <ByteSize value={distribution.freeSpaceBytes} deviceModel={deviceModel} />
+                    {"free"}
                   </Trans>
                 </>
               ) : (
