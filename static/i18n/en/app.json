@@ -214,8 +214,8 @@
   "currentAddress": {
     "title": "Current address",
     "for": "Address for <1><0>{{name}}</0></1>",
-    "messageIfUnverified": "Verify that the sender has the same {{currencyName}} address as shown on your device",
-    "messageIfSkipped": "Your {{currencyName}} address has not been confirmed on your Ledger device. Please verify it for optimal security."
+    "messageIfUnverified": "Verify that the shared address matches the one on your device",
+    "messageIfSkipped": "Your {{name}} address has not been confirmed on your Ledger device. Please verify it for optimal security."
   },
   "emptyState": {
     "sidebar": {
@@ -568,7 +568,6 @@
   "receive": {
     "title": "Receive",
     "successTitle": "Address shared securely",
-    "shareWithSender": "Share address with sender",
     "steps": {
       "chooseAccount": {
         "title": "Account",
