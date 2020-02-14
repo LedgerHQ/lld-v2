@@ -1,7 +1,7 @@
 // @flow
 import React, { useState, useEffect, useCallback, useRef, memo } from "react";
 
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 import { Trans } from "react-i18next";
 
@@ -16,6 +16,7 @@ import FadeInOutBox from "~/renderer/components/FadeInOutBox";
 import IconCross from "~/renderer/icons/Cross";
 
 import Button from "~/renderer/components/Button";
+import AccountsIllustration from "~/renderer/icons/AccountsIllustration";
 
 const IconContainer = styled(Box).attrs(() => ({
   horizontal: true,
@@ -29,15 +30,28 @@ const IconContainer = styled(Box).attrs(() => ({
   cursor: pointer;
 `;
 
+const animLogo = keyframes`
+0% {
+  transform: translateY(0px);
+  opacity: 0;
+}
+100% {
+  transform: translateY(-20px);
+  opacity: 1;
+}
+`;
+
 const LogoContainer = styled(Box).attrs(() => ({
   flex: 1,
   justifyContent: "center",
   alignItems: "center",
 }))`
   position: absolute;
-  top: 10px;
-  left: 20px;
-
+  bottom: -20px;
+  left: -50px;
+  transform: translateY(0px);
+  opacity: 0;
+  animation: ${animLogo} 0.4s 0.6s ease-out forwards;
   ${IconContainer} {
     width: 100%;
     max-width: 110px;
@@ -104,43 +118,46 @@ const InstallSuccessBanner = ({ state, isIncomplete, dispatch, addAccount }: Pro
 
   return (
     <Container ref={cardRef}>
-      <FadeInOutBox
-        in={installSuccess.length > 0}
-        bg="palette.primary.main"
-        color="palette.primary.contrastText"
-        borderRadius={1}
-        my={4}
-      >
-        <Box horizontal px={6} py={3}>
-          <IconContainer style={{ zIndex: 10 }} onClick={onClose}>
-            <IconCross size={16} />
-          </IconContainer>
-          <Box style={{ zIndex: 10 }} flex={1} justifyContent="space-between">
-            <Box mb={24}>
-              <Text
-                ff="Inter|SemiBold"
-                fontSize={6}
-                color="palette.primary.contrastText"
-                style={{ maxWidth: 320 }}
-              >
-                {installSuccess.length === 1 ? (
-                  <Trans
-                    i18nKey="manager.applist.installSuccess.title"
-                    values={{ app: installSuccess[0].name }}
-                  />
-                ) : (
-                  <Trans i18nKey="manager.applist.installSuccess.title_plural" />
-                )}
-              </Text>
+      <FadeInOutBox in={installSuccess.length > 0} color="palette.primary.contrastText">
+        <Box horizontal my={4} pt={1} overflow="hidden">
+          <Box
+            borderRadius={1}
+            flex="1"
+            bg="palette.primary.main"
+            horizontal
+            pr={6}
+            pl={200}
+            py={3}
+            position="relative"
+          >
+            <IconContainer style={{ zIndex: 10 }} onClick={onClose}>
+              <IconCross size={16} />
+            </IconContainer>
+            <Box style={{ zIndex: 10 }} flex={1} justifyContent="space-between">
+              <Box mb={3}>
+                <Text ff="Inter|SemiBold" fontSize={6} color="palette.primary.contrastText">
+                  {installSuccess.length === 1 ? (
+                    <Trans
+                      i18nKey="manager.applist.installSuccess.title"
+                      values={{ app: installSuccess[0].name }}
+                    />
+                  ) : (
+                    <Trans i18nKey="manager.applist.installSuccess.title_plural" />
+                  )}
+                </Text>
+              </Box>
+              <Box horizontal>
+                <Button primary inverted onClick={onAddAccount} mr={1}>
+                  <Trans i18nKey="manager.applist.installSuccess.manageAccount" />
+                </Button>
+                <Button onClick={onClose} color="palette.primary.contrastText">
+                  <Trans i18nKey="manager.applist.installSuccess.later" />
+                </Button>
+              </Box>
             </Box>
-            <Box horizontal>
-              <Button primary inverted onClick={onAddAccount} mr={1}>
-                <Trans i18nKey="manager.applist.installSuccess.manageAccount" />
-              </Button>
-              <Button onClick={onClose} color="palette.primary.contrastText">
-                <Trans i18nKey="manager.applist.installSuccess.later" />
-              </Button>
-            </Box>
+            <LogoContainer in={installSuccess.length > 0}>
+              <AccountsIllustration size={130} />
+            </LogoContainer>
           </Box>
         </Box>
       </FadeInOutBox>
