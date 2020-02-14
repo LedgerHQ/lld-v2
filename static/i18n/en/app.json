@@ -462,6 +462,7 @@
         "cancel": "Cancel",
         "update": "Update available",
         "updateAll": "Update All",
+        "updateAllOutOfMemory": "Not enough space to update, please uninstall some apps",
         "install": "Install",
         "installed": "Installed",
         "uninstall": "Uninstall",

@@ -119,10 +119,10 @@ const Item: React$ComponentType<Props> = ({
           deviceModel={deviceModel}
         />
       </AppSize>
-      <Box flex="0.5" horizontal alignContent="center" justifyContent="center">
+      <Box flex="0.6" horizontal alignContent="center" justifyContent="center">
         {isLiveSupported && (
           <>
-            <Box mr={1}>
+            <Box mr={2}>
               <IconCheckFull size={16} />
             </Box>
             <Text ml={1} ff="Inter|Regular" color="palette.text.shade60" fontSize={3}>

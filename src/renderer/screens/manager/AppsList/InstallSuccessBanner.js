@@ -79,7 +79,6 @@ const InstallSuccessBanner = ({ state, isIncomplete, dispatch, addAccount }: Pro
       );
     setInstallSuccess(installArray || []);
     installs = new Set([]);
-    console.log(cardRef);
     if (installArray.length && cardRef && cardRef.current) {
       cardRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
     }
@@ -110,6 +109,7 @@ const InstallSuccessBanner = ({ state, isIncomplete, dispatch, addAccount }: Pro
         bg="palette.primary.main"
         color="palette.primary.contrastText"
         borderRadius={1}
+        my={4}
       >
         <Box horizontal px={6} py={3}>
           <IconContainer style={{ zIndex: 10 }} onClick={onClose}>

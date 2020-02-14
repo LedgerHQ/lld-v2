@@ -5,6 +5,12 @@ import styled from "styled-components";
 
 import { Trans } from "react-i18next";
 
+import {
+  isOutOfMemoryState,
+  predictOptimisticState,
+  reducer,
+} from "@ledgerhq/live-common/lib/apps";
+
 import type { State, Action, AppOp } from "@ledgerhq/live-common/lib/apps/types";
 
 import CollapsibleCard from "~/renderer/components/CollapsibleCard";
@@ -18,6 +24,7 @@ import IconLoader from "~/renderer/icons/Loader";
 import Item from "./Item";
 import Progress from "~/renderer/components/Progress";
 import get from "lodash/get";
+import ToolTip from "~/renderer/components/Tooltip";
 
 const UpdatableHeader = styled.div`
   display: flex;
@@ -59,6 +66,11 @@ const UpdateAllApps = ({ state, dispatch, isIncomplete, progress }: Props) => {
   const [appsUpdating, setAppsUpdating] = useState([]);
 
   const { apps, installed, installQueue, uninstallQueue } = state;
+
+  const outOfMemory = useMemo(
+    () => isOutOfMemoryState(predictOptimisticState(reducer(state, { type: "updateAll" }))),
+    [state],
+  );
 
   const updatableAppList = useMemo(
     () => apps.filter(({ name }) => installed.some(i => i.name === name && !i.updated)),
@@ -127,12 +139,24 @@ const UpdateAllApps = ({ state, dispatch, isIncomplete, progress }: Props) => {
           {updatableAppList.length}
         </Badge>
         <Box flex={1} />
-        <Button primary onClick={onUpdateAll} fontSize={3} event="Manager Update All">
-          <IconLoader size={14} />
-          <Text style={{ marginLeft: 8 }}>
-            <Trans i18nKey="manager.applist.item.updateAll" />
-          </Text>
-        </Button>
+        <ToolTip
+          content={
+            outOfMemory ? <Trans i18nKey="manager.applist.item.updateAllOutOfMemory" /> : null
+          }
+        >
+          <Button
+            primary
+            disabled={outOfMemory}
+            onClick={onUpdateAll}
+            fontSize={3}
+            event="Manager Update All"
+          >
+            <IconLoader size={14} />
+            <Text style={{ marginLeft: 8 }}>
+              <Trans i18nKey="manager.applist.item.updateAll" />
+            </Text>
+          </Button>
+        </ToolTip>
       </>
     );
 
@@ -160,7 +184,6 @@ const UpdateAllApps = ({ state, dispatch, isIncomplete, progress }: Props) => {
   return (
     <FadeInOutBox in={visible}>
       <CollapsibleCard
-        mt={20}
         header={<UpdatableHeader>{visible && updateHeader}</UpdatableHeader>}
         onOpen={setIsOpen}
       >
