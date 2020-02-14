@@ -12,10 +12,10 @@ import styled from "styled-components";
 import useTheme from "~/renderer/hooks/useTheme";
 import { urls } from "~/config/urls";
 import { openURL } from "~/renderer/linking";
-import { rgba } from "~/renderer/styles/helpers";
 import Box from "~/renderer/components/Box";
 import Button from "~/renderer/components/Button";
 import Text from "~/renderer/components/Text";
+import Ellipsis from "~/renderer/components/Ellipsis";
 import ReadOnlyAddressField from "~/renderer/components/ReadOnlyAddressField";
 import LinkWithExternalIcon from "~/renderer/components/LinkWithExternalIcon";
 import LinkShowQRCode from "~/renderer/components/LinkShowQRCode";
@@ -27,20 +27,6 @@ import Modal from "~/renderer/components/Modal";
 import ModalBody from "~/renderer/components/Modal/ModalBody";
 import QRCode from "~/renderer/components/QRCode";
 
-const Bullet = styled.span`
-  font-family: Inter;
-  font-weight: bold;
-  font-size: 13px;
-  color: ${p => p.theme.colors.wallet};
-  background-color: ${p => rgba(p.theme.colors.wallet, 0.2)};
-  border-radius: 13px;
-  width: 26px;
-  height: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 const Separator = styled.div`
   border-top: 1px solid #99999933;
   margin: 50px 0;
@@ -51,18 +37,28 @@ const QRCodeWrapper = styled.div`
 `;
 
 const Receive1ShareAddress = ({
+  name,
   address,
   showQRCodeModal,
 }: {
+  name: string,
   address: string,
   showQRCodeModal: () => void,
 }) => {
   return (
     <>
       <Box horizontal alignItems="center" flow={2} mb={4}>
-        <Bullet>1</Bullet>
         <Text style={{ flex: 1 }} ff="Inter|SemiBold" color="palette.text.shade100" fontSize={4}>
-          <Trans i18nKey="receive.shareWithSender" />
+          {name ? (
+            <Ellipsis>
+              <Trans i18nKey="currentAddress.for">
+                {"Address for "}
+                <strong>{name}</strong>
+              </Trans>
+            </Ellipsis>
+          ) : (
+            <Trans i18nKey="currentAddress.title" />
+          )}
         </Text>
         <LinkShowQRCode onClick={showQRCodeModal} address={address} />
       </Box>
@@ -71,13 +67,7 @@ const Receive1ShareAddress = ({
   );
 };
 
-const Receive2NoDevice = ({
-  onVerify,
-  currencyName,
-}: {
-  onVerify: () => void,
-  currencyName: string,
-}) => {
+const Receive2NoDevice = ({ onVerify, name }: { onVerify: () => void, name: string }) => {
   return (
     <>
       <Box horizontal flow={2} mt={2} alignItems="center">
@@ -85,9 +75,11 @@ const Receive2NoDevice = ({
           <IconShield height={32} width={28} />
         </Box>
         <Text fontSize={12} color="alertRed" ff="Inter" style={{ flexShrink: "unset" }}>
-          <Trans i18nKey="currentAddress.messageIfSkipped" values={{ currencyName }} />
+          <span style={{ marginRight: 10 }}>
+            <Trans i18nKey="currentAddress.messageIfSkipped" values={{ name }} />
+          </span>
           <LinkWithExternalIcon
-            style={{ display: "inline-flex", marginLeft: "10px" }}
+            style={{ display: "inline-flex" }}
             onClick={() => openURL(urls.recipientAddressInfo)}
             label={<Trans i18nKey="common.learnMore" />}
           />
@@ -105,11 +97,11 @@ const Receive2NoDevice = ({
 
 const Receive2Device = ({
   onVerify,
-  currencyName,
+  name,
   device,
 }: {
   onVerify: () => void,
-  currencyName: string,
+  name: string,
   device: *,
 }) => {
   const type = useTheme("colors.palette.type");
@@ -117,16 +109,17 @@ const Receive2Device = ({
   return (
     <>
       <Box horizontal alignItems="center" flow={2}>
-        <Bullet>2</Bullet>
         <Text
-          style={{ maxWidth: 300 }}
+          style={{ flexShrink: "unset" }}
           ff="Inter|SemiBold"
           color="palette.text.shade100"
           fontSize={4}
         >
-          <Trans i18nKey="currentAddress.messageIfUnverified" value={{ currencyName }} />
+          <span style={{ marginRight: 10 }}>
+            <Trans i18nKey="currentAddress.messageIfUnverified" value={{ name }} />
+          </span>
           <LinkWithExternalIcon
-            style={{ display: "inline-flex", marginLeft: "10px" }}
+            style={{ display: "inline-flex" }}
             onClick={() => openURL(urls.recipientAddressInfo)}
             label={<Trans i18nKey="common.learnMore" />}
           />
@@ -152,7 +145,7 @@ const StepReceiveFunds = ({
 }: StepProps) => {
   const mainAccount = account ? getMainAccount(account, parentAccount) : null;
   invariant(account && mainAccount, "No account given");
-  const currencyName = token ? token.name : getAccountName(account);
+  const name = token ? token.name : getAccountName(account);
   const initialDevice = useRef(device);
   const address = mainAccount.freshAddress;
   const [modalVisible, setModalVisible] = useState(false);
@@ -233,16 +226,16 @@ const StepReceiveFunds = ({
         ) : isAddressVerified === false ? (
           // User explicitly bypass device verification (no device)
           <>
-            <Receive1ShareAddress address={address} showQRCodeModal={showQRCodeModal} />
+            <Receive1ShareAddress name={name} address={address} showQRCodeModal={showQRCodeModal} />
             <Separator />
-            <Receive2NoDevice onVerify={onVerify} currencyName={currencyName} />
+            <Receive2NoDevice onVerify={onVerify} name={name} />
           </>
         ) : device ? (
           // verification with device
           <>
-            <Receive1ShareAddress address={address} showQRCodeModal={showQRCodeModal} />
+            <Receive1ShareAddress name={name} address={address} showQRCodeModal={showQRCodeModal} />
             <Separator />
-            <Receive2Device device={device} onVerify={onVerify} currencyName={currencyName} />
+            <Receive2Device device={device} onVerify={onVerify} name={name} />
           </>
         ) : null // should not happen
         }
