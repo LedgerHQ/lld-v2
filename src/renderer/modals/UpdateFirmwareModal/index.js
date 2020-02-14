@@ -40,7 +40,7 @@ type Props = {
   setFirmwareUpdateOpened: boolean => void,
 };
 
-const Hooker = ({ onMountUnmount }: { onMountUnmount: boolean => void }) => {
+const HookMountUnmount = ({ onMountUnmount }: { onMountUnmount: boolean => void }) => {
   useEffect(() => {
     onMountUnmount(true);
     return () => onMountUnmount(false);
@@ -164,7 +164,7 @@ const UpdateModal = ({
           // $FlowFixMe fucking spread
           {...additionalProps}
         >
-          <Hooker onMountUnmount={setFirmwareUpdateOpened} />
+          <HookMountUnmount onMountUnmount={setFirmwareUpdateOpened} />
         </Stepper>
       )}
     />
