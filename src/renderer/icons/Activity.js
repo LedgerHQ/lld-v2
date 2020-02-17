@@ -11,8 +11,8 @@ const path = (
 
 type Props = {
   size: number,
-  style: {
-    [key: string]: string | number,
+  style?: {
+    [key: string]: ?(string | number),
   },
 };
 
