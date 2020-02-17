@@ -1287,10 +1287,10 @@
     "@ledgerhq/errors" "^5.9.0"
     events "^3.1.0"
 
-"@ledgerhq/ledger-core@^5.3.4":
-  version "5.3.4"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/ledger-core/-/ledger-core-5.3.4.tgz#95697415ae2425cf57402e9480a40eaa3458ed93"
-  integrity sha512-yOfHfNForxjXVy4yKqJoj0jvoWfahRCtOJ8TUrQBWxJP85yXsE6SmIwEQOaRaG2uIyFiyqJxMh7lCB06cL2P0Q==
+"@ledgerhq/ledger-core@^6.0.0-rc.4":
+  version "6.0.0-rc.4"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/ledger-core/-/ledger-core-6.0.0-rc.4.tgz#9936e85a022dc32d175deee9622dcbd022c7ea81"
+  integrity sha512-Y1GL+kWWLVR2FK4XrePyrv9WZ+USKsoqJHHbG9SSgGIduQ68n+oBV3/soZzZ+nLyMc7OZHlhHgBk38K61Bl6xA==
   dependencies:
     bindings "1.3.0"
     nan "^2.6.2"
@@ -1298,10 +1298,10 @@
     node-pre-gyp "^0.14.0"
     node-pre-gyp-github "^1.4.3"
 
-"@ledgerhq/live-common@^12.0.0-beta.5":
-  version "12.0.0-beta.5"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/live-common/-/live-common-12.0.0-beta.5.tgz#70efb8209275f6e630e6b8d4eb1ce55eb67c1af2"
-  integrity sha512-pN5dXI4ur2PqtrgNcM8O7nqflTnTU8Xhbq16VX8+ncXSnQpMe14gxk7dFz0FSrvbSsr/H/T09MTSAAVrzC6YRw==
+"@ledgerhq/live-common@^12.0.0-beta.8":
+  version "12.0.0-beta.8"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/live-common/-/live-common-12.0.0-beta.8.tgz#c800db6858e435dc0846d6c4b727adf4bb7538dd"
+  integrity sha512-oHuDXSV8wi7opNfgVyfahiFELdElKMugebWCA15U0B58d81cZsvGA+P2M5EenN+murLUuiYYbWCxy2jXqBZbKQ==
   dependencies:
     "@ledgerhq/compressjs" "1.3.2"
     "@ledgerhq/devices" "5.9.0"
@@ -1320,6 +1320,7 @@
     eip55 "^1.0.3"
     ethereumjs-tx "^1.3.7"
     invariant "^2.2.2"
+    isomorphic-ws "^4.0.1"
     lodash "^4.17.15"
     lru-cache "5.1.1"
     numeral "^2.0.6"
@@ -7238,6 +7239,11 @@ isobject@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-4.0.0.tgz#3f1c9155e73b192022a80819bacd0343711697b0"
   integrity sha512-S/2fF5wH8SJA/kmwr6HYhK/RI/OkhD84k8ntalo0iJjZikgq1XFvR5M8NPT1x5F7fBwCG3qHfnzeP/Vh/ZxCUA==
+
+isomorphic-ws@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/isomorphic-ws/-/isomorphic-ws-4.0.1.tgz#55fd4cd6c5e6491e76dc125938dd863f5cd4f2dc"
+  integrity sha512-BhBvN2MBpWTaSHdWRb/bwdZJ1WaehQ2L1KngkCkfLUGF0mAWAT1sQUQacEmQ0jXkFw/czDXPNQSL5u2/Krsz1w==
 
 isstream@~0.1.2:
   version "0.1.2"
