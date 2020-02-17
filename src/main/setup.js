@@ -2,10 +2,11 @@
 
 import "../env";
 import { ipcMain } from "electron";
-import logger, { enableDebugLogger } from "../logger";
-import LoggerTransport from "../logger/logger-transport-main";
-import LoggerTransportFirmware from "../logger/logger-transport-firmware";
 import contextMenu from "electron-context-menu";
+import logger, { enableDebugLogger } from "../logger";
+import LoggerTransport from "~/logger/logger-transport-main";
+import LoggerTransportFirmware from "~/logger/logger-transport-firmware";
+import { fsWriteFile } from "~/helpers/fs";
 import updater from "./updater";
 
 const loggerTransport = new LoggerTransport();
@@ -17,17 +18,18 @@ if (process.env.DEV_TOOLS) {
   enableDebugLogger();
 }
 
-ipcMain.on("log", (e, { log }) => {
-  logger.onLog(log);
-});
-
-ipcMain.on("queryLogs", event => {
-  event.sender.send("logs", { logs: loggerTransport.logs });
-});
-
 ipcMain.on("updater", (e, type) => {
   updater(type);
 });
+
+ipcMain.handle("save-logs", async (event, path: { canceled: boolean, filePath: string }) =>
+  Promise.resolve().then(
+    () =>
+      !path.canceled &&
+      path.filePath &&
+      fsWriteFile(path.filePath, JSON.stringify(loggerTransport.logs)),
+  ),
+);
 
 process.setMaxListeners(0);
 
