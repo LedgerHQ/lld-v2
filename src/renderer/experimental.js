@@ -47,6 +47,12 @@ export const experimentalFeatures: Feature[] = [
   },
   {
     type: "toggle",
+    name: "EXPERIMENTAL_DEVICE_FLOW",
+    title: "Experimental device flow",
+    description: "Automatically asks an Open App device permission in device flows",
+  },
+  {
+    type: "toggle",
     name: "LEDGER_COUNTERVALUES_API",
     valueOn: "http://countervalue-service.dev.aws.ledger.fr",
     valueOff: "https://countervalues.api.live.ledger.com",

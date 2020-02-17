@@ -14,6 +14,7 @@ import getAppAndVersion from "@ledgerhq/live-common/lib/hw/getAppAndVersion";
 import getAddress from "@ledgerhq/live-common/lib/hw/getAddress";
 import openApp from "@ledgerhq/live-common/lib/hw/openApp";
 import type { DerivationMode } from "@ledgerhq/live-common/lib/types";
+import { getEnv } from "@ledgerhq/live-common/lib/env";
 
 export type RequiresDerivation = {|
   currencyId: string,
@@ -44,24 +45,27 @@ export type ConnectAppEvent =
 
 const dashboardNames = ["BOLOS", "OLOS\u0000"];
 
-const dashboardLogic = (transport, appName): Observable<ConnectAppEvent> =>
-  concat(
-    of({ type: "device-permission-requested", wording: appName }),
-    defer(() => from(openApp(transport, appName))).pipe(
-      concatMap(() => of({ type: "device-permission-granted" })),
-      catchError(e => {
-        if (e && e instanceof TransportStatusError) {
-          switch (e.statusCode) {
-            case 0x6984:
-              return of({ type: "app-not-installed", appName });
-            case 0x6985:
-              return throwError(new UserRefusedOnDevice());
-          }
-        }
-        return throwError(e);
-      }),
-    ),
-  );
+const openAppFromDashboard = (transport, appName): Observable<ConnectAppEvent> =>
+  !getEnv("EXPERIMENTAL_DEVICE_FLOW")
+    ? of({ type: "ask-open-app", appName })
+    : concat(
+        // TODO optim: the requested should happen a better in a deferred way because openApp might error straightaway instead
+        of({ type: "device-permission-requested", wording: appName }),
+        defer(() => from(openApp(transport, appName))).pipe(
+          concatMap(() => of({ type: "device-permission-granted" })),
+          catchError(e => {
+            if (e && e instanceof TransportStatusError) {
+              switch (e.statusCode) {
+                case 0x6984:
+                  return of({ type: "app-not-installed", appName });
+                case 0x6985:
+                  return throwError(new UserRefusedOnDevice());
+              }
+            }
+            return throwError(e);
+          }),
+        ),
+      );
 
 const derivationLogic = (
   transport,
@@ -125,7 +129,7 @@ const cmd = ({ devicePath, appName, requiresDerivation }: Input): Observable<Con
 
             if (dashboardNames.includes(appAndVersion.name)) {
               // we're in dashboard
-              return dashboardLogic(transport, appName);
+              return openAppFromDashboard(transport, appName);
             }
 
             if (appAndVersion.name !== appName) {

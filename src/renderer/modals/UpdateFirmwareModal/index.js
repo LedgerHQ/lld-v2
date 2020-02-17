@@ -9,8 +9,6 @@ import logger from "~/logger";
 import Modal from "~/renderer/components/Modal";
 import Stepper from "~/renderer/components/Stepper";
 import type { Step as TypedStep } from "~/renderer/components/Stepper";
-import SyncSkipUnderPriority from "~/renderer/components/SyncSkipUnderPriority";
-import { FreezeDeviceChangeEvents } from "~/renderer/screens/manager/HookDeviceChange";
 import type { ModalStatus } from "~/renderer/screens/manager/FirmwareUpdate/types";
 import StepResetDevice, { StepResetFooter } from "./steps/00-step-reset-device";
 import StepFullFirmwareInstall from "./steps/01-step-install-full-firmware";
@@ -40,6 +38,15 @@ type Props = {
   stepId: StepId,
   error: ?Error,
   deviceModelId: DeviceModelId,
+  setFirmwareUpdateOpened: boolean => void,
+};
+
+const HookMountUnmount = ({ onMountUnmount }: { onMountUnmount: boolean => void }) => {
+  useEffect(() => {
+    onMountUnmount(true);
+    return () => onMountUnmount(false);
+  }, [onMountUnmount]);
+  return null;
 };
 
 const UpdateModal = ({
@@ -49,6 +56,7 @@ const UpdateModal = ({
   status,
   onClose,
   firmware,
+  setFirmwareUpdateOpened,
   ...props
 }: Props) => {
   const [stateStepId, setStateStepId] = useState<StepId>(stepId);
@@ -165,8 +173,7 @@ const UpdateModal = ({
           // $FlowFixMe fucking spread
           {...additionalProps}
         >
-          <FreezeDeviceChangeEvents />
-          <SyncSkipUnderPriority priority={100} />
+          <HookMountUnmount onMountUnmount={setFirmwareUpdateOpened} />
         </Stepper>
       )}
     />
