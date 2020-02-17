@@ -1,8 +1,9 @@
 // @flow
 
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
+import { log } from "@ledgerhq/logs";
 import TrackPage from "~/renderer/analytics/TrackPage";
 import Box from "~/renderer/components/Box";
 import Text from "~/renderer/components/Text";
@@ -28,6 +29,9 @@ const Title = styled(Box).attrs(() => ({
 
 const StepConfirmation = ({ error }: StepProps) => {
   const { t } = useTranslation();
+
+  useEffect(() => () => log("firmware-record-end"), []);
+
   if (error) {
     return <ErrorDisplay error={error} withExportLogs />;
   }

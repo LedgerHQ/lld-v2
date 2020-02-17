@@ -1,5 +1,5 @@
 // @flow
-import React, { useCallback, memo } from "react";
+import React, { useCallback, memo, useState } from "react";
 
 import styled from "styled-components";
 
@@ -58,15 +58,20 @@ type Props = {
 };
 
 const UpdateAllApps = ({ update, state, dispatch, isIncomplete, progress }: Props) => {
+  const [open, setIsOpen] = useState();
   const { updateAllQueue } = state;
 
   const visible = update.length > 0;
 
   const updateProgress = updateAllProgress(state);
 
-  const onUpdateAll = useCallback(() => {
-    dispatch({ type: "updateAll" });
-  }, [dispatch]);
+  const onUpdateAll = useCallback(
+    e => {
+      if (open) e.stopPropagation();
+      dispatch({ type: "updateAll" });
+    },
+    [dispatch, open],
+  );
 
   const updateHeader =
     updateAllQueue.length > 0 ? (
@@ -120,11 +125,11 @@ const UpdateAllApps = ({ update, state, dispatch, isIncomplete, progress }: Prop
     );
 
   const mapApp = useCallback(
-    app => (
+    (app, i) => (
       <Item
         state={state}
         installed={state.installed.find(({ name }) => name === app.name)}
-        key={`UPDATE_${app.name}`}
+        key={`UPDATE_${app.name}_${i}`}
         app={app}
         dispatch={dispatch}
         forceUninstall={isIncomplete}
@@ -142,6 +147,7 @@ const UpdateAllApps = ({ update, state, dispatch, isIncomplete, progress }: Prop
       <CollapsibleCard
         mt={20}
         header={<UpdatableHeader>{visible && updateHeader}</UpdatableHeader>}
+        onOpen={setIsOpen}
       >
         {update.map(mapApp)}
       </CollapsibleCard>

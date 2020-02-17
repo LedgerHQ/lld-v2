@@ -27,6 +27,7 @@ export type DistributionItem = {
 
 type Props = {
   item: DistributionItem,
+  isVisible: boolean,
 };
 
 const Wrapper: ThemedComponent<{}> = styled.div`
@@ -85,7 +86,7 @@ const Value: ThemedComponent<{}> = styled.div`
   justify-content: flex-end;
 `;
 
-const Row = ({ item: { currency, amount, distribution } }: Props) => {
+const Row = ({ item: { currency, amount, distribution }, isVisible }: Props) => {
   const theme = useTheme();
   const history = useHistory();
   const color = getCurrencyColor(currency, theme.colors.palette.background.paper);
@@ -116,7 +117,7 @@ const Row = ({ item: { currency, amount, distribution } }: Props) => {
             <Text ff="Inter" color="palette.text.shade100" fontSize={3}>
               {`${percentage}%`}
             </Text>
-            <Bar progress={percentage} progressColor={color} />
+            <Bar progress={isVisible ? percentage : "0"} progressColor={color} />
           </>
         )}
       </Distribution>

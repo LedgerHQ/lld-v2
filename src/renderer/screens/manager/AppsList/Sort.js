@@ -26,6 +26,11 @@ const Sort = ({ onSortChange, sort }: Props) => {
 
   const sortItems = [
     {
+      key: "marketcap_desc",
+      sort: { type: "marketcap", order: "desc" },
+      label: <Trans i18nKey="manager.applist.sort.marketcap_desc" />,
+    },
+    {
       key: "name_asc",
       sort: { type: "name", order: "asc" },
       label: <Trans i18nKey="manager.applist.sort.name_asc" />,
@@ -34,11 +39,6 @@ const Sort = ({ onSortChange, sort }: Props) => {
       key: "name_desc",
       sort: { type: "name", order: "desc" },
       label: <Trans i18nKey="manager.applist.sort.name_desc" />,
-    },
-    {
-      key: "marketcap_desc",
-      sort: { type: "marketcap", order: "desc" },
-      label: <Trans i18nKey="manager.applist.sort.marketcap_desc" />,
     },
   ];
 

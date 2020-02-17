@@ -19,6 +19,7 @@ import Progress from "~/renderer/screens/manager/AppsList/Progress";
 
 import { colors } from "~/renderer/styles/theme";
 
+import AccountAdd from "~/renderer/icons/AccountAdd";
 import IconCheck from "~/renderer/icons/Check";
 import IconTrash from "~/renderer/icons/Trash";
 import IconArrowDown from "~/renderer/icons/ArrowDown";
@@ -44,10 +45,6 @@ const SuccessInstall = styled.div`
   }
 `;
 
-const SuccessUpdate = styled(SuccessInstall)`
-  color: ${p => p.theme.colors.palette.primary.main};
-`;
-
 type Props = {
   state: State,
   app: App,
@@ -61,6 +58,8 @@ type Props = {
   progress: number,
   setAppInstallDep?: (*) => void,
   setAppUninstallDep?: (*) => void,
+  isLiveSupported: boolean,
+  addAccount?: () => void,
 };
 
 // eslint-disable-next-line react/display-name
@@ -78,6 +77,8 @@ const AppActions: React$ComponentType<Props> = React.memo(
     progress,
     setAppInstallDep,
     setAppUninstallDep,
+    isLiveSupported,
+    addAccount,
   }: Props) => {
     const { name } = app;
     const { installedAvailable, installQueue, uninstallQueue } = state;
@@ -96,8 +97,17 @@ const AppActions: React$ComponentType<Props> = React.memo(
       else dispatch({ type: "uninstall", name });
     }, [dispatch, name, needsUninstallDeps, setAppUninstallDep]);
 
+    const onAddAccount = useCallback(() => {
+      if (addAccount) addAccount();
+    }, [addAccount]);
+
     const installing = useMemo(() => installQueue.includes(name), [installQueue, name]);
     const uninstalling = useMemo(() => uninstallQueue.includes(name), [uninstallQueue, name]);
+
+    const canAddAccount = useMemo(
+      () => installed && installQueue.length <= 0 && uninstallQueue.length <= 0,
+      [installQueue.length, installed, uninstallQueue.length],
+    );
 
     return (
       <AppActionsWrapper>
@@ -106,21 +116,42 @@ const AppActions: React$ComponentType<Props> = React.memo(
         ) : (
           showActions && (
             <>
-              {appStoreView && installed && installed.updated ? (
+              {isLiveSupported && !appStoreView && (
+                <Tooltip
+                  content={
+                    canAddAccount ? null : <Trans i18nKey="manager.applist.item.addAccountWarn" />
+                  }
+                >
+                  <Button
+                    color={canAddAccount ? "palette.primary.main" : "palette.text.shade40"}
+                    inverted
+                    style={{ display: "flex", background: "transparent" }}
+                    fontSize={3}
+                    disabled={!canAddAccount}
+                    onClick={onAddAccount}
+                    event="Manager AddAccount Click"
+                    eventProperties={{
+                      appName: name,
+                      appVersion: app.version,
+                    }}
+                  >
+                    <AccountAdd size={16} />
+                    <Text style={{ marginLeft: 8 }}>
+                      <Trans i18nKey="manager.applist.item.addAccount" />
+                    </Text>
+                  </Button>
+                </Tooltip>
+              )}
+              {appStoreView && installed && (
                 <SuccessInstall>
                   <IconCheck size={16} />
                   <Text ff="Inter|SemiBold" fontSize={4}>
                     <Trans i18nKey="manager.applist.item.installed" />
                   </Text>
                 </SuccessInstall>
-              ) : null}
-              {installed && !installed.updated ? (
-                <SuccessUpdate>
-                  <Text ff="Inter|SemiBold" fontSize={4}>
-                    <Trans i18nKey="manager.applist.item.update" />
-                  </Text>
-                </SuccessUpdate>
-              ) : !installed ? (
+              )}
+
+              {!installed && (
                 <Tooltip
                   content={
                     notEnoughMemoryToInstall ? (
@@ -132,7 +163,7 @@ const AppActions: React$ComponentType<Props> = React.memo(
                     style={{ display: "flex" }}
                     lighterPrimary
                     disabled={notEnoughMemoryToInstall}
-                    onClick={notEnoughMemoryToInstall ? null : onInstall}
+                    onClick={onInstall}
                     event="Manager Install Click"
                     eventProperties={{
                       appName: name,
@@ -145,11 +176,11 @@ const AppActions: React$ComponentType<Props> = React.memo(
                     </Text>
                   </Button>
                 </Tooltip>
-              ) : null}
-              {((installed || !installedAvailable) && !appStoreView && !onlyUpdate) ||
-              forceUninstall ? (
+              )}
+              {(((installed || !installedAvailable) && !appStoreView && !onlyUpdate) ||
+                forceUninstall) && (
                 <Button
-                  style={{ padding: 12 }}
+                  style={{ padding: 13 }}
                   onClick={onUninstall}
                   event="Manager Uninstall Click"
                   eventProperties={{
@@ -159,7 +190,7 @@ const AppActions: React$ComponentType<Props> = React.memo(
                 >
                   <IconTrash color={colors.grey} size={14} />
                 </Button>
-              ) : null}
+              )}
             </>
           )
         )}

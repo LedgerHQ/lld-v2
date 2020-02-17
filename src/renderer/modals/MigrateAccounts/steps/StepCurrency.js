@@ -11,8 +11,6 @@ import type { Account } from "@ledgerhq/live-common/lib/types";
 
 import logger from "~/logger";
 import Box from "~/renderer/components/Box";
-import IconExclamationCircleThin from "~/renderer/icons/ExclamationCircleThin";
-import TranslatedError from "~/renderer/components/TranslatedError";
 import { getCurrencyBridge } from "~/renderer/bridge/proxy";
 import { colors } from "~/renderer/styles/theme";
 import TrackPage from "~/renderer/analytics/TrackPage";
@@ -23,41 +21,9 @@ import Text from "~/renderer/components/Text";
 import ExternalLinkButton from "~/renderer/components/ExternalLinkButton";
 import RetryButton from "~/renderer/components/RetryButton";
 import Button from "~/renderer/components/Button";
+import ErrorDisplay from "~/renderer/components/ErrorDisplay";
 import { urls } from "~/config/urls";
-
 import type { StepProps } from "~/renderer/modals/MigrateAccounts";
-
-const MigrationError = ({ error }: { error: Error }) => (
-  <Box style={{ height: 200 }} px={5} justifyContent="center">
-    <Box color="alertRed" alignItems="center">
-      <IconExclamationCircleThin size={43} />
-    </Box>
-    <Title>
-      <TranslatedError error={error} field="title" />
-    </Title>
-    <Desc>
-      <TranslatedError error={error} field="description" />
-    </Desc>
-  </Box>
-);
-
-const Title = styled(Box).attrs(() => ({
-  ff: "Inter",
-  fontSize: 5,
-  mt: 2,
-  color: "palette.text.shade100",
-}))`
-  text-align: center;
-`;
-
-const Desc = styled(Box).attrs(() => ({
-  ff: "Inter",
-  fontSize: 4,
-  mt: 2,
-  color: "palette.text.shade80",
-}))`
-  text-align: center;
-`;
 
 const Exclamation = styled.div`
   align-self: center;
@@ -152,7 +118,7 @@ class StepCurrency extends PureComponent<StepProps> {
     const pending = !["finished", "finished-empty"].includes(scanStatus);
 
     if (err) {
-      return <MigrationError error={err} />;
+      return <ErrorDisplay error={err} withExportLogs />;
     }
 
     return (

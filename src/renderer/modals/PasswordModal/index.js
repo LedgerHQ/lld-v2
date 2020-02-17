@@ -4,14 +4,14 @@ import React, { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { PasswordIncorrectError } from "@ledgerhq/errors";
-import { saveSettings } from "~/renderer/actions/settings";
-import { hasPasswordSelector } from "~/renderer/reducers/settings";
 import { closeModal } from "~/renderer/actions/modals";
 import Box from "~/renderer/components/Box";
 import Button from "~/renderer/components/Button";
 import Modal, { ModalBody } from "~/renderer/components/Modal";
 import PasswordForm from "./PasswordForm";
 import { setEncryptionKey, removeEncryptionKey, isEncryptionKeyCorrect } from "~/renderer/storage";
+import { hasPasswordSelector } from "~/renderer/reducers/application";
+import { setHasPassword } from "~/renderer/actions/application";
 
 type MaybePasswordIncorrectError = ?PasswordIncorrectError;
 
@@ -32,10 +32,10 @@ const PasswordModal = () => {
   const setPassword = useCallback(
     async (password: ?string) => {
       if (password) {
-        dispatch(saveSettings({ hasPassword: true }));
+        dispatch(setHasPassword(true));
         await setEncryptionKey("app", "accounts", password);
       } else {
-        dispatch(saveSettings({ hasPassword: false }));
+        dispatch(setHasPassword(false));
         await removeEncryptionKey("app", "accounts");
       }
     },

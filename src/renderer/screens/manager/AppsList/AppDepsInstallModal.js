@@ -12,14 +12,13 @@ import ConfirmModal from "~/renderer/modals/ConfirmModal/index";
 import LinkIcon from "~/renderer/icons/LinkIcon";
 
 const IconsSection = styled.div`
-  padding-top: ${p => p.theme.space[5]}px;
   height: ${p => p.theme.space[7]}px;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   align-content: center;
-  margin: ${p => p.theme.space[2]}px 0px;
+  margin: ${p => -p.theme.space[6]}px 0px ${p => p.theme.space[6]}px 0;
 `;
 
 const Separator = styled.div`
@@ -66,22 +65,22 @@ const AppDepsInstallModal = ({ app, dependencies, appList, dispatch, onClose }: 
       onClose={onClose}
       onConfirm={onConfirm}
       centered
-      title={
-        <IconsSection>
-          <img alt="" src={manager.getIconUrl(app.icon)} width={40} height={40} />
-          <Separator />
-          <LinkIconWrapper>
-            <LinkIcon size={20} />
-          </LinkIconWrapper>
-          <Separator />
-          {<img alt="" src={manager.getIconUrl(dependencies[0].icon)} width={40} height={40} />}
-        </IconsSection>
-      }
       subTitle={
-        <Trans
-          i18nKey="manager.apps.dependencyInstall.title"
-          values={{ dependency: dependencies[0].name }}
-        />
+        <>
+          <IconsSection>
+            <img alt="" src={manager.getIconUrl(app.icon)} width={40} height={40} />
+            <Separator />
+            <LinkIconWrapper>
+              <LinkIcon size={20} />
+            </LinkIconWrapper>
+            <Separator />
+            {<img alt="" src={manager.getIconUrl(dependencies[0].icon)} width={40} height={40} />}
+          </IconsSection>
+          <Trans
+            i18nKey="manager.apps.dependencyInstall.title"
+            values={{ dependency: dependencies[0].name }}
+          />
+        </>
       }
       desc={
         <Trans

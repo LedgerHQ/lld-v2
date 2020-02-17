@@ -17,7 +17,7 @@ import Box from "~/renderer/components/Box";
 import AccountContextMenu from "~/renderer/components/ContextMenu/AccountContextMenu";
 import { accountsSelector } from "~/renderer/reducers/accounts";
 import IconDots from "~/renderer/icons/Dots";
-import Bar from "./Bar";
+import Bar from "~/renderer/components/AssetDistribution/Bar";
 import ToolTip from "~/renderer/components/Tooltip";
 
 import { useHistory } from "react-router-dom";
@@ -34,6 +34,7 @@ export type AccountDistributionItem = {
 
 type Props = {
   item: AccountDistributionItem,
+  isVisible: boolean,
 };
 
 const Wrapper: ThemedComponent<{}> = styled.div`
@@ -97,7 +98,7 @@ const Dots: ThemedComponent<{}> = styled.div`
   }
 `;
 
-const Row = ({ item: { currency, amount, distribution, account } }: Props) => {
+const Row = ({ item: { currency, amount, distribution, account }, isVisible }: Props) => {
   const accounts = useSelector(accountsSelector);
   const theme = useTheme();
   const history = useHistory();
@@ -142,7 +143,7 @@ const Row = ({ item: { currency, amount, distribution, account } }: Props) => {
               <Text ff="Inter" color="palette.text.shade100" fontSize={3}>
                 {`${percentage}%`}
               </Text>
-              <Bar progress={percentage} progressColor={color} />
+              <Bar progress={isVisible ? percentage : "0"} progressColor={color} />
             </>
           )}
         </Distribution>

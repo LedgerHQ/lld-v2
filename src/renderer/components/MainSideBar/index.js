@@ -54,7 +54,7 @@ const Tag = styled(Link)`
   font-family: "Inter";
   font-weight: bold;
   font-size: 10px;
-  padding: 2px ${p => p.theme.space[3]}px;
+  padding: 2px ${p => p.theme.space[3] - 1}px;
   min-height: 32px;
   border-radius: 4px;
   margin: ${p => p.theme.space[3]}px;

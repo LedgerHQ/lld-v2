@@ -4,7 +4,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { EXPERIMENTAL_MARKET_INDICATOR_SETTINGS } from "~/config/constants";
-import { hasPasswordSelector, langAndRegionSelector } from "~/renderer/reducers/settings";
+import { langAndRegionSelector } from "~/renderer/reducers/settings";
 import TrackPage from "~/renderer/analytics/TrackPage";
 import IconDisplay from "~/renderer/icons/Display";
 import {
@@ -22,6 +22,7 @@ import PasswordButton from "./PasswordButton";
 import PasswordAutoLockSelect from "./PasswordAutoLockSelect";
 import SentryLogsButton from "./SentryLogsButton";
 import ShareAnalyticsButton from "./ShareAnalyticsButton";
+import { hasPasswordSelector } from "~/renderer/reducers/application";
 
 const SectionGeneral = () => {
   const { useSystem } = useSelector(langAndRegionSelector);

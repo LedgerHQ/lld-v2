@@ -7,6 +7,7 @@ import type { LangAndRegion } from "~/renderer/reducers/settings";
 
 export type ApplicationState = {
   isLocked?: boolean,
+  hasPassword?: boolean,
   osDarkMode?: boolean,
   osLanguage?: LangAndRegion,
   navigationLocked?: boolean,
@@ -23,6 +24,7 @@ const state: ApplicationState = {
     region: osLangSupported ? region : "US",
     useSystem: true,
   },
+  hasPassword: false,
 };
 
 const handlers = {
@@ -37,6 +39,8 @@ const handlers = {
 // Selectors
 
 export const isLocked = (state: Object) => state.application.isLocked === true;
+
+export const hasPasswordSelector = (state: Object) => state.application.hasPassword === true;
 
 export const osDarkModeSelector = (state: Object) => state.application.osDarkMode;
 
