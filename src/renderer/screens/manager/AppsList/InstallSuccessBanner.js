@@ -1,12 +1,12 @@
 // @flow
-import React, { useState, useEffect, useCallback, useRef, memo } from "react";
+import React, { useState, useEffect, useCallback, useRef, memo, useMemo } from "react";
 
 import styled, { keyframes } from "styled-components";
 
 import { Trans } from "react-i18next";
 
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
-import { isCurrencySupported } from "@ledgerhq/live-common/lib/data/cryptocurrencies";
+import { isLiveSupportedApp } from "@ledgerhq/live-common/lib/apps";
 
 import type { State, Action } from "@ledgerhq/live-common/lib/apps/types";
 
@@ -69,56 +69,32 @@ type Props = {
   addAccount: (*) => void,
 };
 
-let installs = new Set([]);
-
 const InstallSuccessBanner = ({ state, isIncomplete, dispatch, addAccount }: Props) => {
   const cardRef = useRef();
-  const [installSuccess, setInstallSuccess] = useState([]);
-  const { installQueue, uninstallQueue, installed, appByName } = state;
+  const [hasBeenShown, setHasBeenShown] = useState(false);
+  const { installQueue, uninstallQueue, recentlyInstalledApps, appByName } = state;
+
+  const installedSupportedApps = useMemo(() => {
+    return installQueue.length <= 0 && uninstallQueue.length <= 0
+      ? recentlyInstalledApps.map(appName => appByName[appName]).filter(isLiveSupportedApp)
+      : [];
+  }, [installQueue.length, uninstallQueue.length, recentlyInstalledApps, appByName]);
 
   const onAddAccount = useCallback(() => {
-    if (installSuccess[0].currencyId)
-      addAccount(getCryptoCurrencyById(installSuccess[0].currencyId));
-  }, [addAccount, installSuccess]);
-
-  const onInstallSuccess = useCallback(() => {
-    const installArray = Array.from(installs)
-      .map(n => appByName[n])
-      .filter(
-        app =>
-          app &&
-          app.currencyId &&
-          isCurrencySupported(getCryptoCurrencyById(app.currencyId)) &&
-          installed.findIndex(ins => ins.name === app.name) >= 0,
-      );
-    setInstallSuccess(installArray || []);
-    installs = new Set([]);
-    if (installArray.length && cardRef && cardRef.current) {
-      cardRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    const app = installedSupportedApps[0];
+    if (app.currencyId) {
+      addAccount(getCryptoCurrencyById(app.currencyId));
+      setHasBeenShown(true);
     }
-  }, [appByName, installed]);
+  }, [addAccount, installedSupportedApps]);
 
-  useEffect(() => {
-    if (installQueue.length > 0) {
-      installs = new Set([...installs, ...installQueue]);
-      setInstallSuccess([]);
-    } else {
-      setTimeout(onInstallSuccess, 200);
-    }
-  }, [installQueue, onInstallSuccess]);
+  const onClose = useCallback(() => setHasBeenShown(true), []);
 
-  useEffect(() => {
-    if (uninstallQueue.length > 0 && installSuccess.length > 0) {
-      setInstallSuccess([]);
-      installs = new Set([]);
-    }
-  }, [installSuccess.length, uninstallQueue]);
-
-  const onClose = useCallback(() => setInstallSuccess([]), [setInstallSuccess]);
+  const visible = !hasBeenShown && installedSupportedApps.length > 0;
 
   return (
     <Container ref={cardRef}>
-      <FadeInOutBox in={installSuccess.length > 0} color="palette.primary.contrastText">
+      <FadeInOutBox in={visible} color="palette.primary.contrastText">
         <Box horizontal my={4} pt={1} overflow="hidden">
           <Box
             borderRadius={1}
@@ -136,14 +112,14 @@ const InstallSuccessBanner = ({ state, isIncomplete, dispatch, addAccount }: Pro
             <Box style={{ zIndex: 10 }} flex={1} justifyContent="space-between">
               <Box mb={3}>
                 <Text ff="Inter|SemiBold" fontSize={6} color="palette.primary.contrastText">
-                  {installSuccess.length === 1 ? (
+                  {installedSupportedApps.length === 1 ? (
                     <Trans
                       i18nKey="manager.applist.installSuccess.title"
-                      values={{ app: installSuccess[0].name }}
+                      values={{ app: installedSupportedApps[0].name }}
                     />
                   ) : (
-                    <Trans i18nKey="manager.applist.installSuccess.title_plural" />
-                  )}
+                      <Trans i18nKey="manager.applist.installSuccess.title_plural" />
+                    )}
                 </Text>
               </Box>
               <Box horizontal>
@@ -155,7 +131,7 @@ const InstallSuccessBanner = ({ state, isIncomplete, dispatch, addAccount }: Pro
                 </Button>
               </Box>
             </Box>
-            <LogoContainer in={installSuccess.length > 0}>
+            <LogoContainer in={visible}>
               <AccountsIllustration size={130} />
             </LogoContainer>
           </Box>
