@@ -1,14 +1,10 @@
 // @flow
-import React, { useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import { Trans } from "react-i18next";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import { getAccountCurrency } from "@ledgerhq/live-common/lib/account";
-import { starredAccountsEnforceHideEmptyTokenSelector } from "~/renderer/reducers/accounts";
-import { dragDropStarAction } from "~/renderer/actions/settings";
-
 import Hide from "~/renderer/components/MainSideBar/Hide";
 import Text from "~/renderer/components/Text";
 import Tooltip from "~/renderer/components/Tooltip";
@@ -17,6 +13,7 @@ import emptyBookmarksDark from "~/renderer/images/dark-empty-bookmarks.png";
 import emptyBookmarksLight from "~/renderer/images/light-empty-bookmarks.png";
 
 import Item from "./Item";
+import { starredAccountsSelector } from "~/renderer/reducers/accounts";
 
 const Container: ThemedComponent<{}> = styled.div`
   display: flex;
@@ -40,54 +37,30 @@ type Props = {
 };
 
 const Stars = ({ pathname, collapsed }: Props) => {
-  const starredAccounts = useSelector(starredAccountsEnforceHideEmptyTokenSelector);
-  const dispatch = useDispatch();
-
-  const onDragEnd = useCallback(
-    ({ source, destination }) => {
-      if (destination) {
-        const from = source.index;
-        const to = destination.index;
-
-        dispatch(
-          dragDropStarAction({ from: starredAccounts[from].id, to: starredAccounts[to].id }),
-        );
-      }
-    },
-    [dispatch, starredAccounts],
-  );
+  const starredAccounts = useSelector(starredAccountsSelector);
 
   return starredAccounts && starredAccounts.length ? (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="starred-account-list" direction="vertical">
-        {(provided, snapshot) => (
-          <Container key={pathname} ref={provided.innerRef} {...provided.droppableProps}>
-            {starredAccounts.map((account, i) => (
-              <Tooltip
-                content={
-                  account.type === "Account" ? account.name : getAccountCurrency(account).name
-                }
-                delay={collapsed ? 0 : 1200}
-                key={account.id}
-                placement={collapsed ? "right" : "top"}
-                boundary={collapsed ? "window" : undefined}
-                enabled={!snapshot.isDraggingOver}
-                flip={!collapsed}
-              >
-                <Item
-                  index={i}
-                  key={account.id}
-                  account={account}
-                  pathname={pathname}
-                  collapsed={collapsed}
-                />
-              </Tooltip>
-            ))}
-            {provided.placeholder}
-          </Container>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <Container key={pathname}>
+      {starredAccounts.map((account, i) => (
+        <Tooltip
+          content={account.type === "Account" ? account.name : getAccountCurrency(account).name}
+          delay={collapsed ? 0 : 1200}
+          key={account.id}
+          placement={collapsed ? "right" : "top"}
+          boundary={collapsed ? "window" : undefined}
+          enabled
+          flip={!collapsed}
+        >
+          <Item
+            index={i}
+            key={account.id}
+            account={account}
+            pathname={pathname}
+            collapsed={collapsed}
+          />
+        </Tooltip>
+      ))}
+    </Container>
   ) : (
     <Hide visible={!collapsed}>
       <Placeholder>

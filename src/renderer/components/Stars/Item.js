@@ -1,7 +1,6 @@
 // @flow
 import React, { useCallback } from "react";
 import { useHistory } from "react-router-dom";
-import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import {
@@ -28,7 +27,7 @@ const ParentCryptoCurrencyIconWrapper: ThemedComponent<{}> = styled.div`
   width: 20px;
 `;
 
-const ItemWrapper = styled.div.attrs(p => ({
+const ItemWrapper: ThemedComponent<{ active: boolean }> = styled.div.attrs(p => ({
   style: {
     backgroundColor: p.active
       ? p.theme.colors.palette.action.hover
@@ -45,15 +44,6 @@ const ItemWrapper = styled.div.attrs(p => ({
   &:hover ${AccountName},&:active ${AccountName} {
     color: ${p => p.theme.colors.palette.text.shade100};
   }
-  ${p =>
-    p.isDragging
-      ? `
-    z-index: 1;
-    border-color: ${p.active ? p.theme.colors.palette.divider : p.theme.colors.sliderGrey};
-    box-shadow: 0 12px 17px 0 rgba(0, 0, 0, 0.1);
-    width: ${p.collapsed ? "200px" : ""} !important;
-        `
-      : ""}
 `;
 
 type Props = {
@@ -77,42 +67,30 @@ const Item = ({ account, index, pathname, collapsed }: Props) => {
   const unit = getAccountUnit(account);
 
   return (
-    <Draggable index={index} draggableId={account.id}>
-      {(provided, snapshot) => (
-        <ItemWrapper
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          isDragging={snapshot.isDragging}
+    <ItemWrapper collapsed={collapsed} active={active} onClick={onAccountClick}>
+      <Box horizontal ff="Inter|SemiBold" flex={1} flow={3} alignItems="center">
+        <ParentCryptoCurrencyIconWrapper
           collapsed={collapsed}
-          ref={provided.innerRef}
-          active={active && !snapshot.isDragging}
-          onClick={onAccountClick}
+          isToken={account.type === "TokenAccount"}
         >
-          <Box horizontal ff="Inter|SemiBold" flex={1} flow={3} alignItems="center">
-            <ParentCryptoCurrencyIconWrapper
-              collapsed={collapsed}
-              isToken={account.type === "TokenAccount"}
-            >
-              <ParentCryptoCurrencyIcon inactive={!active} currency={getAccountCurrency(account)} />
-            </ParentCryptoCurrencyIconWrapper>
-            <Box vertical flex={1}>
-              <Hide visible={snapshot.isDragging || !collapsed}>
-                <Ellipsis color="palette.text.shade80">{getAccountName(account)}</Ellipsis>
-                <FormattedVal
-                  alwaysShowSign={false}
-                  animateTicker={false}
-                  ellipsis
-                  color="palette.text.shade60"
-                  unit={unit}
-                  showCode
-                  val={account.balance}
-                />
-              </Hide>
-            </Box>
-          </Box>
-        </ItemWrapper>
-      )}
-    </Draggable>
+          <ParentCryptoCurrencyIcon inactive={!active} currency={getAccountCurrency(account)} />
+        </ParentCryptoCurrencyIconWrapper>
+        <Box vertical flex={1}>
+          <Hide visible={!collapsed}>
+            <Ellipsis color="palette.text.shade80">{getAccountName(account)}</Ellipsis>
+            <FormattedVal
+              alwaysShowSign={false}
+              animateTicker={false}
+              ellipsis
+              color="palette.text.shade60"
+              unit={unit}
+              showCode
+              val={account.balance}
+            />
+          </Hide>
+        </Box>
+      </Box>
+    </ItemWrapper>
   );
 };
 

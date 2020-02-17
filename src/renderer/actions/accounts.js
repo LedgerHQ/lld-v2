@@ -47,4 +47,12 @@ export const updateAccount: UpdateAccount = payload => ({
   },
 });
 
+export const toggleStarAction: UpdateAccount = id => ({
+  type: "DB:UPDATE_ACCOUNT",
+  payload: {
+    updater: (account: Account) => ({ ...account, starred: !account.starred }),
+    accountId: id,
+  },
+});
+
 export const cleanAccountsCache = () => ({ type: "DB:CLEAN_ACCOUNTS_CACHE" });

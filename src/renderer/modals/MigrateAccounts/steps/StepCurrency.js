@@ -63,8 +63,6 @@ class StepCurrency extends PureComponent<StepProps> {
       setScanStatus,
       accounts,
       replaceAccounts,
-      starredAccountIds,
-      replaceStarAccountId,
       addMigratedAccount,
     } = this.props;
 
@@ -90,9 +88,6 @@ class StepCurrency extends PureComponent<StepProps> {
             const maybeMigration = findAccountMigration(a, scannedAccounts);
             if (maybeMigration) {
               totalMigratedAccounts++;
-              if (starredAccountIds.includes(a.id)) {
-                replaceStarAccountId({ oldId: a.id, newId: maybeMigration.id });
-              }
             }
           });
 

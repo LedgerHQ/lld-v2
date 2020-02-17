@@ -4,7 +4,7 @@ import React, { useCallback } from "react";
 import styled, { keyframes } from "styled-components";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
-import { toggleStarAction } from "~/renderer/actions/settings";
+import { toggleStarAction } from "~/renderer/actions/accounts";
 import { isStarredAccountSelector } from "~/renderer/reducers/accounts";
 import { rgba } from "~/renderer/styles/helpers";
 import starAnim from "~/renderer/images/starAnim.png";
