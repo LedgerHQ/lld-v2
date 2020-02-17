@@ -135,7 +135,7 @@ export const isStarredAccountSelector: OutputSelector<
   State,
   { accountId: string },
   boolean,
-> = createSelector(accountSelector, account => account.starred);
+> = createSelector(accountSelector, account => (account ? account.starred : false));
 
 export const accountNeedsMigrationSelector: OutputSelector<
   State,

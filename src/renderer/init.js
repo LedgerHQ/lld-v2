@@ -28,7 +28,7 @@ import dbMiddleware from "~/renderer/middlewares/db";
 import createStore from "~/renderer/createStore";
 import events from "~/renderer/events";
 import { setAccounts } from "~/renderer/actions/accounts";
-import { fetchSettings } from "~/renderer/actions/settings";
+import { fetchSettings, saveSettings } from "~/renderer/actions/settings";
 import { lock, setOSDarkMode } from "~/renderer/actions/application";
 
 import {
@@ -83,8 +83,15 @@ async function init() {
 
   const isMainWindow = remote.getCurrentWindow().name === "MainWindow";
 
-  const accounts = await getKey("app", "accounts", []);
+  let accounts = await getKey("app", "accounts", []);
   if (accounts) {
+    const { starredAccountIds } = state.settings;
+    if (starredAccountIds && starredAccountIds.length) {
+      await store.dispatch(saveSettings({ starredAccountIds: undefined }));
+      accounts = accounts.map(a =>
+        starredAccountIds.includes(a.id) ? { ...a, starred: true } : a,
+      );
+    }
     await store.dispatch(setAccounts(accounts));
   } else {
     store.dispatch(lock());

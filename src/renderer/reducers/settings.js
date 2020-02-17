@@ -92,6 +92,7 @@ export type SettingsState = {
   hideEmptyTokenAccounts: boolean,
   sidebarCollapsed: boolean,
   discreetMode: boolean,
+  starredAccountIds?: string[],
 };
 
 const defaultsForCurrency: Currency => CurrencySettings = crypto => {
