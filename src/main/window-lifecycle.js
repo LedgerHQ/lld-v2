@@ -51,14 +51,7 @@ export async function createMainWindow({ dimensions, positions }: any) {
     ...defaultWindowOptions,
     x: windowPosition.x,
     y: windowPosition.y,
-    /* eslint-disable indent */
-    ...(process.platform === "darwin"
-      ? {
-          frame: false,
-          titleBarStyle: "hiddenInset",
-        }
-      : {}),
-    /* eslint-enable indent */
+    titleBarStyle: process.platform === "darwin" ? "customButtonsOnHover" : undefined,
     width,
     height,
     minWidth: MIN_WIDTH,
