@@ -79,10 +79,12 @@ const AppDepsUninstallModal = ({
           <IconsSection>
             <AppTree uri={manager.getIconUrl(app.icon)} />
           </IconsSection>
-          <Trans i18nKey="manager.apps.dependencyUninstall.title" values={{ app: name }} />
+          <Trans i18nKey="manager.apps.dependencyUninstall.title" values={{ app: app.name }} />
         </>
       }
-      desc={<Trans i18nKey="manager.apps.dependencyUninstall.description" values={{ app: name }} />}
+      desc={
+        <Trans i18nKey="manager.apps.dependencyUninstall.description" values={{ app: app.name }} />
+      }
       confirmText={
         <Trans i18nKey="manager.apps.dependencyUninstall.confirm" values={{ app: app.name }} />
       }
