@@ -1,11 +1,16 @@
 // @flow
-import React, { useCallback, memo, useState } from "react";
+import React, { useCallback, memo, useState, useMemo } from "react";
 
 import styled from "styled-components";
 
 import { Trans } from "react-i18next";
 
-import { updateAllProgress } from "@ledgerhq/live-common/lib/apps";
+import {
+  updateAllProgress,
+  isOutOfMemoryState,
+  predictOptimisticState,
+  reducer,
+} from "@ledgerhq/live-common/lib/apps";
 
 import type { App } from "@ledgerhq/live-common/lib/types/manager";
 import type { State, Action } from "@ledgerhq/live-common/lib/apps/types";
@@ -20,6 +25,8 @@ import IconLoader from "~/renderer/icons/Loader";
 
 import Item from "./Item";
 import Progress from "~/renderer/components/Progress";
+
+import ToolTip from "~/renderer/components/Tooltip";
 
 const UpdatableHeader = styled.div`
   display: flex;
@@ -60,6 +67,11 @@ type Props = {
 const UpdateAllApps = ({ update, state, dispatch, isIncomplete, progress }: Props) => {
   const [open, setIsOpen] = useState();
   const { updateAllQueue } = state;
+
+  const outOfMemory = useMemo(
+    () => isOutOfMemoryState(predictOptimisticState(reducer(state, { type: "updateAll" }))),
+    [state],
+  );
 
   const visible = update.length > 0;
 
@@ -115,12 +127,24 @@ const UpdateAllApps = ({ update, state, dispatch, isIncomplete, progress }: Prop
           {update.length}
         </Badge>
         <Box flex={1} />
-        <Button primary onClick={onUpdateAll} fontSize={3} event="Manager Update All">
-          <IconLoader size={14} />
-          <Text style={{ marginLeft: 8 }}>
-            <Trans i18nKey="manager.applist.item.updateAll" />
-          </Text>
-        </Button>
+        <ToolTip
+          content={
+            outOfMemory ? <Trans i18nKey="manager.applist.item.updateAllOutOfMemory" /> : null
+          }
+        >
+          <Button
+            primary
+            disabled={outOfMemory}
+            onClick={onUpdateAll}
+            fontSize={3}
+            event="Manager Update All"
+          >
+            <IconLoader size={14} />
+            <Text style={{ marginLeft: 8 }}>
+              <Trans i18nKey="manager.applist.item.updateAll" />
+            </Text>
+          </Button>
+        </ToolTip>
       </>
     );
 
@@ -143,9 +167,8 @@ const UpdateAllApps = ({ update, state, dispatch, isIncomplete, progress }: Prop
   );
 
   return (
-    <FadeInOutBox in={visible}>
+    <FadeInOutBox in={visible} mt={4}>
       <CollapsibleCard
-        mt={20}
         header={<UpdatableHeader>{visible && updateHeader}</UpdatableHeader>}
         onOpen={setIsOpen}
       >

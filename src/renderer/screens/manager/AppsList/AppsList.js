@@ -26,6 +26,7 @@ import UninstallAllButton from "./UninstallAllButton";
 import { openModal } from "~/renderer/actions/modals";
 
 import debounce from "lodash/debounce";
+import InstallSuccessBanner from "./InstallSuccessBanner";
 
 // sticky top bar with extra width to cover card boxshadow underneath
 const StickyTabBar = styled.div`
@@ -151,13 +152,22 @@ const AppsList = ({
 
   return (
     <>
-      <UpdateAllApps
-        update={update}
-        state={state}
-        dispatch={dispatch}
-        isIncomplete={isIncomplete}
-        progress={progress}
-      />
+      {update.length <= 0 ? (
+        <InstallSuccessBanner
+          state={state}
+          dispatch={dispatch}
+          isIncomplete={isIncomplete}
+          addAccount={addAccount}
+        />
+      ) : (
+        <UpdateAllApps
+          update={update}
+          state={state}
+          dispatch={dispatch}
+          isIncomplete={isIncomplete}
+          progress={progress}
+        />
+      )}
       {isIncomplete ? null : (
         <StickyTabBar>
           <TabBar

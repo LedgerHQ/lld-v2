@@ -12,6 +12,9 @@ import type { State, Action, InstalledItem } from "@ledgerhq/live-common/lib/app
 import styled from "styled-components";
 import { Trans } from "react-i18next";
 
+import { openURL } from "~/renderer/linking";
+import { urls } from "~/config/urls";
+
 import Text from "~/renderer/components/Text";
 import Tooltip from "~/renderer/components/Tooltip";
 import Button from "~/renderer/components/Button";
@@ -23,6 +26,7 @@ import AccountAdd from "~/renderer/icons/AccountAdd";
 import IconCheck from "~/renderer/icons/Check";
 import IconTrash from "~/renderer/icons/Trash";
 import IconArrowDown from "~/renderer/icons/ArrowDown";
+import LinkIcon from "~/renderer/icons/LinkIcon";
 
 const AppActionsWrapper = styled.div`
   display: flex;
@@ -101,6 +105,10 @@ const AppActions: React$ComponentType<Props> = React.memo(
       if (addAccount) addAccount();
     }, [addAccount]);
 
+    const onSupportLink = useCallback(() => {
+      openURL(urls.appSupport);
+    }, []);
+
     const installing = useMemo(() => installQueue.includes(name), [installQueue, name]);
     const uninstalling = useMemo(() => uninstallQueue.includes(name), [uninstallQueue, name]);
 
@@ -116,32 +124,67 @@ const AppActions: React$ComponentType<Props> = React.memo(
         ) : (
           showActions && (
             <>
-              {isLiveSupported && !appStoreView && (
-                <Tooltip
-                  content={
-                    canAddAccount ? null : <Trans i18nKey="manager.applist.item.addAccountWarn" />
-                  }
-                >
-                  <Button
-                    color={canAddAccount ? "palette.primary.main" : "palette.text.shade40"}
-                    inverted
-                    style={{ display: "flex", background: "transparent" }}
-                    fontSize={3}
-                    disabled={!canAddAccount}
-                    onClick={onAddAccount}
-                    event="Manager AddAccount Click"
-                    eventProperties={{
-                      appName: name,
-                      appVersion: app.version,
-                    }}
+              {installed ? (
+                isLiveSupported ? (
+                  <Tooltip
+                    content={
+                      canAddAccount ? (
+                        <Trans
+                          i18nKey="manager.applist.item.addAccountTooltip"
+                          values={{ appName: name }}
+                        />
+                      ) : (
+                        <Trans i18nKey="manager.applist.item.addAccountWarn" />
+                      )
+                    }
                   >
-                    <AccountAdd size={16} />
-                    <Text style={{ marginLeft: 8 }}>
-                      <Trans i18nKey="manager.applist.item.addAccount" />
-                    </Text>
-                  </Button>
-                </Tooltip>
-              )}
+                    <Button
+                      color={canAddAccount ? "palette.primary.main" : "palette.text.shade40"}
+                      inverted
+                      style={{ display: "flex", backgroundColor: "rgba(0,0,0,0)" }}
+                      fontSize={3}
+                      disabled={!canAddAccount}
+                      onClick={onAddAccount}
+                      event="Manager AddAccount Click"
+                      eventProperties={{
+                        appName: name,
+                        appVersion: app.version,
+                      }}
+                    >
+                      <AccountAdd size={16} />
+                      <Text style={{ marginLeft: 8 }}>
+                        <Trans i18nKey="manager.applist.item.addAccount" />
+                      </Text>
+                    </Button>
+                  </Tooltip>
+                ) : (
+                  <Tooltip
+                    content={
+                      <Trans
+                        i18nKey="manager.applist.item.learnMoreTooltip"
+                        values={{ appName: name }}
+                      />
+                    }
+                  >
+                    <Button
+                      inverted
+                      style={{ display: "flex" }}
+                      fontSize={3}
+                      onClick={onSupportLink}
+                      event="Manager SupportLink Click"
+                      eventProperties={{
+                        appName: name,
+                        appVersion: app.version,
+                      }}
+                    >
+                      <LinkIcon size={16} />
+                      <Text ff="Inter" style={{ marginLeft: 8 }}>
+                        <Trans i18nKey="manager.applist.item.learnMore" />
+                      </Text>
+                    </Button>
+                  </Tooltip>
+                )
+              ) : null}
               {appStoreView && installed && (
                 <SuccessInstall>
                   <IconCheck size={16} />
@@ -179,17 +222,26 @@ const AppActions: React$ComponentType<Props> = React.memo(
               )}
               {(((installed || !installedAvailable) && !appStoreView && !onlyUpdate) ||
                 forceUninstall) && (
-                <Button
-                  style={{ padding: 13 }}
-                  onClick={onUninstall}
-                  event="Manager Uninstall Click"
-                  eventProperties={{
-                    appName: name,
-                    appVersion: app.version,
-                  }}
+                <Tooltip
+                  content={
+                    <Trans
+                      i18nKey="manager.applist.item.removeTooltip"
+                      values={{ appName: name }}
+                    />
+                  }
                 >
-                  <IconTrash color={colors.grey} size={14} />
-                </Button>
+                  <Button
+                    style={{ padding: 13 }}
+                    onClick={onUninstall}
+                    event="Manager Uninstall Click"
+                    eventProperties={{
+                      appName: name,
+                      appVersion: app.version,
+                    }}
+                  >
+                    <IconTrash color={colors.grey} size={14} />
+                  </Button>
+                </Tooltip>
               )}
             </>
           )

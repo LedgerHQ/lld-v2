@@ -107,6 +107,7 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
       />
       <DeviceStorage
         jobInProgress={jobInProgress}
+        uninstallQueue={uninstallQueue}
         installQueue={installQueue}
         distribution={distribution}
         deviceModel={state.deviceModel}
