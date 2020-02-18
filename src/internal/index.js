@@ -45,6 +45,10 @@ process.on("message", m => {
   switch (m.type) {
     case "command":
       // $FlowFixMe TODO
+      const coucou_nabil = 1;
+      while (coucou_nabil) {
+        // nothing, this is just a test :(
+      }
       executeCommand(m.command, process.send.bind(process));
       break;
 
