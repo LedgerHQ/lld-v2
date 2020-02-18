@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 const babelPlugins = require("./babel.plugins");
+const UnusedWebpackPlugin = require("unused-webpack-plugin");
 
 const babelConfig = {
   presets: [
@@ -46,6 +47,16 @@ module.exports = {
     }),
     new HardSourceWebpackPlugin({
       cacheDirectory: path.resolve(__dirname, ".webpack", "cacheRenderer"),
+    }),
+    new UnusedWebpackPlugin({
+      directories: [path.join(__dirname, "src/renderer")],
+      exclude: [
+        "*.test.js",
+        "*.html",
+        "bridge/proxy-commands.js",
+        "fonts/inter/Inter-Bold.woff2",
+        "types.js",
+      ],
     }),
   ],
   module: {
