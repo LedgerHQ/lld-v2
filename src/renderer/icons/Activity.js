@@ -9,8 +9,15 @@ const path = (
   />
 );
 
-const Activity = ({ size }: { size: number }) => (
-  <svg viewBox="0 0 16 16" height={size} width={size}>
+type Props = {
+  size: number,
+  style?: {
+    [key: string]: ?(string | number),
+  },
+};
+
+const Activity = ({ size, style }: Props) => (
+  <svg viewBox="0 0 16 16" height={size} width={size} style={style}>
     {path}
   </svg>
 );
