@@ -41,6 +41,12 @@ const defaultWindowOptions = {
   },
 };
 
+export const loadWindow = async () => {
+  if (mainWindow) {
+    await mainWindow.loadURL(__DEV__ ? INDEX_URL : `file://${__dirname}/index.html`);
+  }
+};
+
 export async function createMainWindow({ dimensions, positions }: any) {
   // TODO renderer should provide the saved window rectangle
   const width = dimensions ? dimensions.width : DEFAULT_WINDOW_WIDTH;
@@ -74,11 +80,7 @@ export async function createMainWindow({ dimensions, positions }: any) {
 
   mainWindow.name = "MainWindow";
 
-  if (__DEV__) {
-    mainWindow.loadURL(INDEX_URL);
-  } else {
-    mainWindow.loadURL(`file://${__dirname}/index.html`);
-  }
+  loadWindow();
 
   if (DEV_TOOLS) {
     mainWindow.webContents.openDevTools();
