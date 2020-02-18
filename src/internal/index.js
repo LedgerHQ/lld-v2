@@ -41,6 +41,8 @@ const defers = {};
 let sentryEnabled = process.env.INITIAL_SENTRY_ENABLED || false;
 // sentry(() => sentryEnabled, process.env.SENTRY_USER_ID)
 
+/* eslint-disable */
+
 process.on("message", m => {
   switch (m.type) {
     case "command":
