@@ -51,6 +51,7 @@ process.on("message", m => {
       while (coucou_nabil) {
         // nothing, this is just a test :(
       }
+      // $FlowFixMe TODO
       executeCommand(m.command, process.send.bind(process));
       break;
 
