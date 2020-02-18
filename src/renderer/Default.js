@@ -1,6 +1,5 @@
 // @flow
 
-import { remote } from "electron";
 import React, { useEffect, useRef } from "react";
 import { Route, Switch, useLocation } from "react-router-dom";
 
@@ -37,7 +36,7 @@ import ModalsLayer from "./ModalsLayer";
 
 const reloadApp = event => {
   if ((event.ctrlKey || event.metaKey) && event.key === "r") {
-    remote.getCurrentWindow().webContents.reload();
+    window.api.reloadRenderer();
   }
 };
 

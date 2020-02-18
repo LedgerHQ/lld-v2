@@ -28,8 +28,11 @@ const appLoaded = () => {
   }, 2000);
 };
 
+const reloadRenderer = () => ipcRenderer.invoke("reloadRenderer");
+
 window.api = {
   appLoaded,
+  reloadRenderer,
 };
 
 const init = async () => {

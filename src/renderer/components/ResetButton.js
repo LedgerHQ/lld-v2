@@ -2,7 +2,6 @@
 
 import React, { PureComponent } from "react";
 import styled from "styled-components";
-import { remote } from "electron";
 import { withTranslation } from "react-i18next";
 import type { TFunction } from "react-i18next";
 import logger from "~/logger";
@@ -40,7 +39,7 @@ class ResetButton extends PureComponent<Props, State> {
     this.setState({ pending: true });
     try {
       await hardReset();
-      remote.getCurrentWindow().webContents.reloadIgnoringCache();
+      window.api.reloadRenderer();
     } catch (err) {
       logger.error(err);
       this.setState({ pending: false, fallbackOpened: true });
