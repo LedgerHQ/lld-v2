@@ -8,7 +8,6 @@ import Button from "~/renderer/components/Button";
 import Text from "~/renderer/components/Text";
 import ConfirmModal from "~/renderer/modals/ConfirmModal/index";
 import Trash from "~/renderer/icons/Trash";
-import Box from "~/renderer/components/Box/Box";
 
 const IconWrapper = styled.div`
   display: flex;
@@ -20,7 +19,7 @@ const IconWrapper = styled.div`
   color: ${p => p.theme.colors.palette.primary.main};
   background-color: ${p => p.theme.colors.palette.action.hover};
   border-radius: 100%;
-  margin-top: ${p => p.theme.space[5]}px;
+  margin: ${p => -p.theme.space[5]}px auto ${p => p.theme.space[6]}px auto;
 `;
 
 type Props = {
@@ -65,16 +64,17 @@ const UninstallAllButton = ({ installedApps, uninstallQueue, dispatch }: Props) 
         onConfirm={onConfirm}
         onClose={closeModal}
         onReject={closeModal}
-        title={
-          <Box flex horizontal justifyContent="center">
+        subTitle={
+          <>
             <IconWrapper>
               <Trash size={30} />
             </IconWrapper>
-          </Box>
+            <Trans i18nKey="manager.applist.uninstall.subtitle" />
+          </>
         }
-        subTitle={<Trans i18nKey="manager.applist.uninstall.subtitle" />}
         desc={<Trans i18nKey="manager.applist.uninstall.description" />}
         confirmText={<Trans i18nKey="manager.applist.item.uninstall" />}
+        centered
       />
     </>
   );

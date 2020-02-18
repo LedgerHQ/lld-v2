@@ -75,6 +75,10 @@ app.on("ready", async () => {
     return db.resetAll();
   });
 
+  ipcMain.handle("reload", () => {
+    return db.reload();
+  });
+
   ipcMain.handle("cleanCache", () => {
     return db.cleanCache();
   });

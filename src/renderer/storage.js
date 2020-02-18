@@ -13,7 +13,11 @@ import debounce from "lodash/debounce";
 const transforms = {};
 
 transforms.accounts = {
-  get: (raws: *) => (raws || []).map(accountModel.decode),
+  get: (raws: *) => {
+    // NB to prevent parsing encrypted string as JSON
+    if (typeof raws === "string") return null;
+    return (raws || []).map(accountModel.decode);
+  },
   set: (accounts: *) => (accounts || []).map(accountModel.encode),
 };
 
@@ -61,5 +65,7 @@ export const hasBeenDecrypted = (ns: string, keyPath: string) =>
   ipcRenderer.invoke("hasBeenDecrypted", { ns, keyPath });
 
 export const resetAll = () => ipcRenderer.invoke("resetAll");
+
+export const reload = () => ipcRenderer.invoke("reload");
 
 export const cleanCache = () => ipcRenderer.invoke("cleanCache");

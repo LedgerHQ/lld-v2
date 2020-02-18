@@ -214,8 +214,8 @@
   "currentAddress": {
     "title": "Current address",
     "for": "Address for <1><0>{{name}}</0></1>",
-    "messageIfUnverified": "Verify that the sender has the same {{currencyName}} address as shown on your device",
-    "messageIfSkipped": "Your {{currencyName}} address has not been confirmed on your Ledger device. Please verify it for optimal security."
+    "messageIfUnverified": "Verify that the shared address matches the one on your device",
+    "messageIfSkipped": "Your {{name}} address has not been confirmed on your Ledger device. Please verify it for optimal security."
   },
   "emptyState": {
     "sidebar": {
@@ -441,6 +441,12 @@
         "name_desc": "Name Z-A",
         "marketcap_desc": "Marketcap"
       },
+      "installSuccess": {
+        "title": "App successfully installed, you can now add your {{app}} accounts",
+        "title_plural": "Apps successfully installed, you can now add your accounts",
+        "manageAccount": "Manage my accounts",
+        "later": "Do it later"
+      },
       "updatable": {
         "title": "Updates available",
         "progressTitle": "{{number}} app updates",
@@ -449,18 +455,25 @@
       },
       "item": {
         "version": "Version {{version}}",
-        "versionNew": "Version {{version}} (NEW)",
+        "versionNew": "Version {{version}} (NEW{{newVersion}})",
         "installing": "Installing...",
         "uninstalling": "Uninstalling...",
         "scheduled": "Scheduled",
         "cancel": "Cancel",
         "update": "Update available",
         "updateAll": "Update All",
+        "updateAllOutOfMemory": "Not enough space to update, please uninstall some apps",
         "install": "Install",
         "installed": "Installed",
         "uninstall": "Uninstall",
         "notEnoughSpace": "Not enough space",
-        "supported": "Supported"
+        "supported": "Ledger Live supported",
+        "addAccount": "Add account",
+        "addAccountTooltip": "Add {{appName}} account",
+        "addAccountWarn": "Please wait for the app updates to finish",
+        "learnMore": "Learn more",
+        "learnMoreTooltip": "Learn more about {{appName}}",
+        "removeTooltip": "Uninstall {{appName}}"
       },
       "uninstall": {
         "title": "Uninstall all",
@@ -475,13 +488,13 @@
       "install": "Install",
       "dependencyInstall": {
         "title": "{{dependency}} app is required",
-        "description": "The {{app}} app will also be installed because the {{dependency}} app needs it.",
+        "description": "The {{dependency}} app will also be installed because the {{app}} app needs it.",
         "confirm": "Install apps"
       },
       "dependencyUninstall": {
         "title": "Other apps need the {{app}} app",
         "showAll": "Show apps to uninstall",
-        "description": "Apps on your device that are dependent on the {{app}} app will be uninstalled too.",
+        "description": "Some of your installed apps are linked to {{app}} app. They will be uninstalled aswell.",
         "confirm": "Uninstall {{app}} and other apps"
       },
       "all": "App catalog",
@@ -566,7 +579,6 @@
   "receive": {
     "title": "Receive",
     "successTitle": "Address shared securely",
-    "shareWithSender": "Share address with sender",
     "steps": {
       "chooseAccount": {
         "title": "Account",
@@ -697,6 +709,7 @@
     "howItWorks": "How delegation works",
     "delegationEarn": "You can now earn Tezos staking rewards by delegating your account.",
     "earnRewards": "Earn rewards",
+    "overdelegated": "Overdelegated",
     "flow": {
       "steps": {
         "starter": {

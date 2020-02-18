@@ -23,7 +23,7 @@ import {
 import GenuineCheck from "~/renderer/screens/onboarding/steps/GenuineCheck";
 import { saveSettings } from "~/renderer/actions/settings";
 import { openModal } from "~/renderer/actions/modals";
-import { unlock } from "~/renderer/actions/application";
+import { setHasPassword, unlock } from "~/renderer/actions/application";
 import Box from "~/renderer/components/Box";
 import IconCross from "~/renderer/icons/Cross";
 import Start from "./steps/Start";
@@ -67,6 +67,7 @@ const mapDispatchToProps = {
   openModal,
   relaunchOnboarding,
   updateGenuineCheck,
+  setHasPassword,
 };
 
 type Props = {
@@ -84,6 +85,7 @@ type Props = {
   openModal: string => void,
   relaunchOnboarding: boolean => void,
   updateGenuineCheck: (*) => void,
+  setHasPassword: Function,
 };
 
 export type StepProps = {
@@ -95,12 +97,12 @@ export type StepProps = {
   jumpStep: Function,
   finish: Function,
   saveSettings: Function,
-  savePassword: Function,
   getDeviceInfo: Function,
   updateGenuineCheck: Function,
   openModal: Function,
   deviceModelId: DeviceModelId => *,
   flowType: Function,
+  setHasPassword: Function,
 };
 
 const CloseContainer = styled(Box).attrs(() => ({
@@ -132,16 +134,6 @@ class OnboardingC extends PureComponent<Props> {
     this.props.relaunchOnboarding(false);
   };
 
-  savePassword = hash => {
-    this.props.saveSettings({
-      password: {
-        isEnabled: hash !== undefined,
-        value: hash,
-      },
-    });
-    this.props.unlock();
-  };
-
   render() {
     const {
       onboarding,
@@ -152,6 +144,7 @@ class OnboardingC extends PureComponent<Props> {
       t,
       onboardingRelaunched,
       updateGenuineCheck,
+      setHasPassword,
     } = this.props;
 
     const StepComponent = STEPS[onboarding.stepName];
@@ -174,9 +167,9 @@ class OnboardingC extends PureComponent<Props> {
       nextStep,
       jumpStep,
       finish: this.finish,
-      savePassword: this.savePassword,
       getDeviceInfo: this.getDeviceInfo,
       saveSettings,
+      setHasPassword,
     };
 
     return (

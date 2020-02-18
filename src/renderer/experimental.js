@@ -47,19 +47,17 @@ export const experimentalFeatures: Feature[] = [
   },
   {
     type: "toggle",
+    name: "EXPERIMENTAL_DEVICE_FLOW",
+    title: "Experimental device flow",
+    description: "Automatically asks an Open App device permission in device flows",
+  },
+  {
+    type: "toggle",
     name: "LEDGER_COUNTERVALUES_API",
     valueOn: "http://countervalue-service.dev.aws.ledger.fr",
     valueOff: "https://countervalues.api.live.ledger.com",
     title: "Experimental Countervalues API",
     description: "Changing this value may break the countervalues displayed for your accounts.",
-  },
-  {
-    type: "toggle",
-    name: "BASE_SOCKET_URL",
-    valueOn: "wss://scriptrunner-k8s.dev.aws.ledger.fr:443/update",
-    valueOff: "wss://api.ledgerwallet.com/update",
-    title: "Experimental Script Runner API",
-    description: "Uses an experimental implementation of Manager script runner",
   },
   {
     type: "integer",

@@ -1,13 +1,13 @@
 // @flow
 
 import React, { memo } from "react";
-import { distribute, isIncompleteState } from "@ledgerhq/live-common/lib/apps";
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import { Trans } from "react-i18next";
 import { Transition, TransitionGroup } from "react-transition-group";
 
 import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
-import type { State } from "@ledgerhq/live-common/lib/apps/types";
+import type { AppsDistribution } from "@ledgerhq/live-common/lib/apps";
+import type { DeviceModel } from "@ledgerhq/devices";
 import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 
 import ByteSize from "~/renderer/components/ByteSize";
@@ -33,10 +33,12 @@ const illustrations = {
 export const DeviceIllustration: ThemedComponent<{}> = styled.img.attrs(p => ({
   src: illustrations[p.deviceModel.id],
 }))`
-  max-height: 153px;
-  margin-left: 36px;
-  margin-right: 56px;
-  filter: drop-shadow(0px 10px 10px rgba(0, 0, 0, 0.2));
+  position: absolute;
+  top: 0;
+  left: 50%;
+  max-height: 100%;
+  filter: drop-shadow(0px 5px 7px ${p => p.theme.colors.palette.text.shade10});
+  transform: translateX(-50%);
 `;
 
 const Separator = styled.div`
@@ -63,12 +65,25 @@ const Info = styled.div`
   }
 `;
 
-const StorageBarWrapper: ThemedComponent<{}> = styled.div`
+const blinkOpacity = keyframes`
+	0% {
+		opacity: 0.6;
+  }
+  50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0.6;
+	}
+`;
+
+const StorageBarWrapper: ThemedComponent<{ installing: boolean }> = styled.div`
   width: 100%;
   border-radius: 3px;
   height: 23px;
   background: ${p => p.theme.colors.palette.text.shade10};
   overflow: hidden;
+  position: relative;
 `;
 
 const StorageBarGraph = styled.div`
@@ -91,7 +106,7 @@ const transitionStyles = {
 /** each device storage bar will grow of 0.5% if the space is available or just fill its given percent basis if the bar is filled */
 const StorageBarItem: ThemedComponent<{ ratio: number }> = styled.div.attrs(props => ({
   style: {
-    backgroundColor: props.color,
+    backgroundColor: props.installing ? props.theme.colors.palette.text.shade30 : props.color,
     ...transitionStyles[props.state](`${(props.ratio * 1e2).toFixed(3)}%`),
   },
 }))`
@@ -104,13 +119,21 @@ const StorageBarItem: ThemedComponent<{ ratio: number }> = styled.div.attrs(prop
   transform-origin: left;
   opacity: 1;
   transition: all 0.33s ease-in-out;
+  position: relative;
+  overflow: hidden;
+  ${p =>
+    p.installing
+      ? css`
+          animation: ${blinkOpacity} 2s ease infinite;
+        `
+      : ""};
   & > * {
     width: 100%;
   }
 `;
 
 const FreeInfo = styled.div`
-  padding: 10px 0;
+  padding: 10px 0 0 0;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -137,7 +160,7 @@ const TooltipContent = ({
 }: {
   name: string,
   bytes: number,
-  deviceModel: *,
+  deviceModel: DeviceModel,
 }) => (
   <TooltipContentWrapper>
     <Text>{name}</Text>
@@ -151,12 +174,18 @@ export const StorageBar = ({
   distribution,
   deviceModel,
   isIncomplete,
+  installQueue,
+  uninstallQueue,
+  jobInProgress,
 }: {
-  distribution: *,
-  deviceModel: *,
+  distribution: AppsDistribution,
+  deviceModel: DeviceModel,
   isIncomplete: boolean,
+  installQueue: string[],
+  uninstallQueue: string[],
+  jobInProgress: boolean,
 }) => (
-  <StorageBarWrapper>
+  <StorageBarWrapper installing={jobInProgress}>
     {!isIncomplete && (
       <TransitionGroup component={StorageBarGraph}>
         {distribution.apps.map(({ name, currency, bytes, blocks }, index) => (
@@ -164,10 +193,12 @@ export const StorageBar = ({
             {state => (
               <StorageBarItem
                 state={state}
+                installing={installQueue.includes(name) || uninstallQueue.includes(name)}
                 color={currency && currency.color}
                 ratio={blocks / (distribution.totalBlocks - distribution.osBlocks)}
               >
                 <Tooltip
+                  hideOnClick={false}
                   content={<TooltipContent name={name} bytes={bytes} deviceModel={deviceModel} />}
                 />
               </StorageBarItem>
@@ -180,22 +211,35 @@ export const StorageBar = ({
 );
 
 type Props = {
-  state: State,
+  deviceModel: DeviceModel,
   deviceInfo: DeviceInfo,
+  distribution: AppsDistribution,
+  isIncomplete: boolean,
+  installQueue: string[],
+  uninstallQueue: string[],
+  jobInProgress: boolean,
 };
 
-const DeviceStorage = ({ state, deviceInfo }: Props) => {
-  const distribution = distribute(state);
-  const isIncomplete = isIncompleteState(state);
+const DeviceStorage = ({
+  deviceModel,
+  deviceInfo,
+  distribution,
+  isIncomplete,
+  installQueue,
+  uninstallQueue,
+  jobInProgress,
+}: Props) => {
   const shouldWarn = distribution.shouldWarnMemory || isIncomplete;
 
   return (
     <Card p={20} mb={4} horizontal>
-      <DeviceIllustration deviceModel={state.deviceModel} />
+      <Box position="relative" flex="0 0 140px" mr={20}>
+        <DeviceIllustration deviceModel={deviceModel} />
+      </Box>
       <div style={{ flex: 1 }}>
         <Box horizontal alignItems="center">
           <Text ff="Inter|SemiBold" color="palette.text.shade100" fontSize={5}>
-            {state.deviceModel.productName}
+            {deviceModel.productName}
           </Text>
           <Box ml={2}>
             <Tooltip content={<Trans i18nKey="manager.deviceStorage.genuine" />}>
@@ -216,7 +260,7 @@ const DeviceStorage = ({ state, deviceInfo }: Props) => {
               <Trans i18nKey="manager.deviceStorage.used" />
             </Text>
             <Text color="palette.text.shade100" ff="Inter|Bold" fontSize={4}>
-              <ByteSize deviceModel={state.deviceModel} value={distribution.totalAppsBytes} />
+              <ByteSize deviceModel={deviceModel} value={distribution.totalAppsBytes} />
             </Text>
           </div>
           <div>
@@ -224,7 +268,7 @@ const DeviceStorage = ({ state, deviceInfo }: Props) => {
               <Trans i18nKey="manager.deviceStorage.capacity" />
             </Text>
             <Text color="palette.text.shade100" ff="Inter|Bold" fontSize={4}>
-              <ByteSize deviceModel={state.deviceModel} value={distribution.appsSpaceBytes} />
+              <ByteSize deviceModel={deviceModel} value={distribution.appsSpaceBytes} />
             </Text>
           </div>
           <div>
@@ -238,8 +282,11 @@ const DeviceStorage = ({ state, deviceInfo }: Props) => {
         </Info>
         <StorageBar
           distribution={distribution}
-          deviceModel={state.deviceModel}
+          deviceModel={deviceModel}
           isIncomplete={isIncomplete}
+          installQueue={installQueue}
+          uninstallQueue={uninstallQueue}
+          jobInProgress={jobInProgress}
         />
         <FreeInfo danger={shouldWarn}>
           {shouldWarn ? <IconTriangleWarning /> : ""}{" "}
@@ -249,8 +296,9 @@ const DeviceStorage = ({ state, deviceInfo }: Props) => {
                 <Trans i18nKey="manager.deviceStorage.incomplete" />
               ) : distribution.freeSpaceBytes > 0 ? (
                 <>
-                  <Trans i18nKey="manager.deviceStorage.freeSpace">
-                    <ByteSize value={distribution.freeSpaceBytes} deviceModel={state.deviceModel} />
+                  <Trans i18nKey="manager.deviceStorage.freeSpace" values={{ space: 0 }}>
+                    <ByteSize value={distribution.freeSpaceBytes} deviceModel={deviceModel} />
+                    {"free"}
                   </Trans>
                 </>
               ) : (

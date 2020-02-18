@@ -42,7 +42,6 @@ const ItemWrapper = styled.div.attrs(p => ({
   width: 200px;
   border-radius: 4px;
   border: 1px solid transparent;
-  margin-bottom: 10px;
   &:hover ${AccountName},&:active ${AccountName} {
     color: ${p => p.theme.colors.palette.text.shade100};
   }

@@ -1,5 +1,5 @@
 // @flow
-import React, { memo, useCallback, useMemo } from "react";
+import React, { memo, useCallback } from "react";
 import styled from "styled-components";
 import { Trans } from "react-i18next";
 
@@ -12,14 +12,13 @@ import ConfirmModal from "~/renderer/modals/ConfirmModal/index";
 import LinkIcon from "~/renderer/icons/LinkIcon";
 
 const IconsSection = styled.div`
-  padding-top: ${p => p.theme.space[5]}px;
   height: ${p => p.theme.space[7]}px;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   align-content: center;
-  margin: ${p => p.theme.space[2]}px 0px;
+  margin: ${p => -p.theme.space[6]}px 0px ${p => p.theme.space[6]}px 0;
 `;
 
 const Separator = styled.div`
@@ -43,27 +42,20 @@ const LinkIconWrapper = styled.div`
 
 type Props = {
   app?: App,
+  dependencies?: App[],
   appList: App[],
   dispatch: Action => void,
   onClose: () => void,
 };
 
-const AppDepsInstallModal = ({ app, appList, dispatch, onClose }: Props) => {
-  const name = useMemo(() => app && app.name, [app]);
-  const dependencies = useMemo(() => app && app.dependencies, [app]);
-
+const AppDepsInstallModal = ({ app, dependencies, appList, dispatch, onClose }: Props) => {
   const onConfirm = useCallback(() => {
-    if (name) dispatch({ type: "install", name });
+    if (app && app.name) dispatch({ type: "install", name: app.name });
     onClose();
-  }, [dispatch, name, onClose]);
-
-  const dependentApp = useMemo(
-    () => dependencies && appList.find(a => dependencies.includes(a.name)),
-    [appList, dependencies],
-  );
+  }, [app, dispatch, onClose]);
 
   /** if no app with dependencies was triggered to be installed we dont show anything */
-  if (!app || !dependentApp) return null;
+  if (!app || !dependencies || !dependencies.length) return null;
 
   return (
     <ConfirmModal
@@ -73,27 +65,27 @@ const AppDepsInstallModal = ({ app, appList, dispatch, onClose }: Props) => {
       onClose={onClose}
       onConfirm={onConfirm}
       centered
-      title={
-        <IconsSection>
-          <img alt="" src={manager.getIconUrl(app.icon)} width={40} height={40} />
-          <Separator />
-          <LinkIconWrapper>
-            <LinkIcon size={20} />
-          </LinkIconWrapper>
-          <Separator />
-          {<img alt="" src={manager.getIconUrl(dependentApp.icon)} width={40} height={40} />}
-        </IconsSection>
-      }
       subTitle={
-        <Trans
-          i18nKey="manager.apps.dependencyInstall.title"
-          values={{ dependency: dependentApp.name }}
-        />
+        <>
+          <IconsSection>
+            <img alt="" src={manager.getIconUrl(app.icon)} width={40} height={40} />
+            <Separator />
+            <LinkIconWrapper>
+              <LinkIcon size={20} />
+            </LinkIconWrapper>
+            <Separator />
+            {<img alt="" src={manager.getIconUrl(dependencies[0].icon)} width={40} height={40} />}
+          </IconsSection>
+          <Trans
+            i18nKey="manager.apps.dependencyInstall.title"
+            values={{ dependency: dependencies[0].name }}
+          />
+        </>
       }
       desc={
         <Trans
           i18nKey="manager.apps.dependencyInstall.description"
-          values={{ app: name, dependency: dependentApp.name }}
+          values={{ app: app.name, dependency: dependencies[0].name }}
         />
       }
       confirmText={<Trans i18nKey="manager.apps.dependencyInstall.confirm" />}

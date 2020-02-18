@@ -10,7 +10,7 @@ import i18n from "i18next";
 import { remote, webFrame } from "electron";
 import { render } from "react-dom";
 import moment from "moment";
-import { getKey } from "~/renderer/storage";
+import { reload, getKey } from "~/renderer/storage";
 
 import "~/renderer/styles/global";
 import "~/renderer/live-common-setup";
@@ -61,7 +61,7 @@ async function init() {
 
   const store = createStore({ dbMiddleware });
 
-  const initialSettings = window.settings;
+  const initialSettings = await getKey("app", "settings", {});
 
   store.dispatch(fetchSettings(initialSettings));
 
@@ -83,11 +83,11 @@ async function init() {
 
   const isMainWindow = remote.getCurrentWindow().name === "MainWindow";
 
-  if (initialSettings.hasPassword) {
-    store.dispatch(lock());
-  } else {
-    const accounts = await getKey("app", "accounts", []);
+  const accounts = await getKey("app", "accounts", []);
+  if (accounts) {
     await store.dispatch(setAccounts(accounts));
+  } else {
+    store.dispatch(lock());
   }
 
   r(<ReactRoot store={store} language={language} />);
@@ -113,6 +113,11 @@ async function init() {
 
     window.addEventListener("click", () => {
       if (isGlobalTabEnabled()) disableGlobalTab();
+    });
+
+    window.addEventListener("beforeunload", async () => {
+      // This event is triggered when we reload the app, we want it to forget what it knows
+      reload();
     });
   }
 

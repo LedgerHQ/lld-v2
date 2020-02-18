@@ -2,12 +2,12 @@
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { hasPasswordSelector } from "~/renderer/reducers/settings";
 import { openModal } from "~/renderer/actions/modals";
 import Switch from "~/renderer/components/Switch";
 import Box from "~/renderer/components/Box";
 import Button from "~/renderer/components/Button";
 import Track from "~/renderer/analytics/Track";
+import { hasPasswordSelector } from "~/renderer/reducers/application";
 
 const PasswordButton = () => {
   const dispatch = useDispatch();

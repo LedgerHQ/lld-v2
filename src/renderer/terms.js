@@ -1,7 +1,7 @@
 // @flow
 import { useEffect, useState } from "react";
 
-import network from "~/network";
+import network from "@ledgerhq/live-common/lib/network";
 
 const rawURL = "https://raw.githubusercontent.com/LedgerHQ/ledger-live-desktop/master/TERMS.md";
 export const url = "https://github.com/LedgerHQ/ledger-live-desktop/blob/master/TERMS.md";

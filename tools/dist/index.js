@@ -13,6 +13,7 @@ const healthChecksTasks = require("./health-checks");
 
 require("dotenv").config();
 
+const rootFolder = "../../";
 let verbose = false;
 
 const exec = async (file, args, options = {}) => {
@@ -21,17 +22,28 @@ const exec = async (file, args, options = {}) => {
   return execa(file, args, opts);
 };
 
+const rmDir = dir =>
+  new Promise((resolve, reject) => {
+    const fullPath = path.resolve(__dirname, rootFolder, dir);
+
+    rimraf(fullPath, error => {
+      if (error) return reject(error);
+      resolve();
+    });
+  });
+
 const cleaningTasks = args => [
   {
-    title: "Cleaning dist/ folder",
-    task: () =>
-      new Promise((resolve, reject) => {
-        const distDir = path.resolve(__dirname, "../../", "dist");
-        rimraf(distDir, error => {
-          if (error) return reject(error);
-          resolve();
-        });
-      }),
+    title: "Remove `node_modules/.cache` folder",
+    task: () => rmDir("node_modules/.cache"),
+  },
+  {
+    title: "Remove `.webpack` folder",
+    task: () => rmDir(".webpack"),
+  },
+  {
+    title: "Remove `dist` folder",
+    task: () => rmDir("dist"),
   },
 ];
 
@@ -58,7 +70,11 @@ const buildTasks = args => [
     task: async () => {
       const commands = ["-s", "--frozen-lockfile", "dist:internal"];
       if (args.dir) commands.push("--dir");
-      if (args.publish) commands.push("--publish", "always");
+      if (args.publish) {
+        commands.push("--publish", "always");
+      } else {
+        commands.push("-c.afterSign='lodash/noop'");
+      }
       if (args.n) {
         commands.push("--config");
         commands.push("electron-builder-nightly.yml");

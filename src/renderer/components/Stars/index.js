@@ -72,6 +72,7 @@ const Stars = ({ pathname, collapsed }: Props) => {
                 placement={collapsed ? "right" : "top"}
                 boundary={collapsed ? "window" : undefined}
                 enabled={!snapshot.isDraggingOver}
+                flip={!collapsed}
               >
                 <Item
                   index={i}
