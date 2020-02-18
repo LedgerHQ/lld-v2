@@ -442,8 +442,8 @@
         "marketcap_desc": "Marketcap"
       },
       "installSuccess": {
-        "title": "App succesfully installed you can now add your {{app}} accounts",
-        "title_plural": "Apps succesfully installed you can now add your accounts",
+        "title": "App successfully installed, you can now add your {{app}} accounts",
+        "title_plural": "Apps successfully installed, you can now add your accounts",
         "manageAccount": "Manage my accounts",
         "later": "Do it later"
       },
