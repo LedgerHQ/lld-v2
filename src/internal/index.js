@@ -10,6 +10,8 @@ import LoggerTransport from "~/logger/logger-transport-internal";
 
 import { executeCommand, unsubscribeCommand, unsubscribeAllCommands } from "./commandHandler";
 
+/* eslint-disable */
+// $FlowFixMe
 coucou_arnaud = 1;
 
 process.on("exit", () => {
