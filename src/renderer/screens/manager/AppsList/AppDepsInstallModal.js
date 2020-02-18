@@ -1,5 +1,5 @@
 // @flow
-import React, { memo, useCallback, useMemo } from "react";
+import React, { memo, useCallback } from "react";
 import styled from "styled-components";
 import { Trans } from "react-i18next";
 
@@ -42,27 +42,20 @@ const LinkIconWrapper = styled.div`
 
 type Props = {
   app?: App,
+  dependencies?: App[],
   appList: App[],
   dispatch: Action => void,
   onClose: () => void,
 };
 
-const AppDepsInstallModal = ({ app, appList, dispatch, onClose }: Props) => {
-  const name = useMemo(() => app && app.name, [app]);
-  const dependencies = useMemo(() => app && app.dependencies, [app]);
-
+const AppDepsInstallModal = ({ app, dependencies, appList, dispatch, onClose }: Props) => {
   const onConfirm = useCallback(() => {
-    if (name) dispatch({ type: "install", name });
+    if (app && app.name) dispatch({ type: "install", name: app.name });
     onClose();
-  }, [dispatch, name, onClose]);
-
-  const dependentApp = useMemo(
-    () => dependencies && appList.find(a => dependencies.includes(a.name)),
-    [appList, dependencies],
-  );
+  }, [app, dispatch, onClose]);
 
   /** if no app with dependencies was triggered to be installed we dont show anything */
-  if (!app || !dependentApp) return null;
+  if (!app || !dependencies || !dependencies.length) return null;
 
   return (
     <ConfirmModal
@@ -81,18 +74,18 @@ const AppDepsInstallModal = ({ app, appList, dispatch, onClose }: Props) => {
               <LinkIcon size={20} />
             </LinkIconWrapper>
             <Separator />
-            {<img alt="" src={manager.getIconUrl(dependentApp.icon)} width={40} height={40} />}
+            {<img alt="" src={manager.getIconUrl(dependencies[0].icon)} width={40} height={40} />}
           </IconsSection>
           <Trans
             i18nKey="manager.apps.dependencyInstall.title"
-            values={{ dependency: dependentApp.name }}
+            values={{ dependency: dependencies[0].name }}
           />
         </>
       }
       desc={
         <Trans
           i18nKey="manager.apps.dependencyInstall.description"
-          values={{ app: name, dependency: dependentApp.name }}
+          values={{ app: app.name, dependency: dependencies[0].name }}
         />
       }
       confirmText={<Trans i18nKey="manager.apps.dependencyInstall.confirm" />}

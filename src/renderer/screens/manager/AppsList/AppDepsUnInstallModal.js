@@ -1,5 +1,5 @@
 // @flow
-import React, { memo, useCallback, useMemo } from "react";
+import React, { memo, useCallback } from "react";
 import styled from "styled-components";
 import { Trans } from "react-i18next";
 
@@ -43,28 +43,28 @@ const ListIcon = styled(Box)`
 
 type Props = {
   app?: App,
+  dependents?: App[],
   appList: App[],
   installed: *,
   dispatch: Action => void,
   onClose: () => void,
 };
 
-const AppDepsUninstallModal = ({ app, appList, installed, dispatch, onClose }: Props) => {
-  const name = useMemo(() => app && app.name, [app]);
-  const dependentApps = useMemo(
-    () =>
-      app &&
-      appList.filter(a => installed.some(i => i.name === a.name) && a.dependencies.includes(name)),
-    [app, appList, installed, name],
-  );
-
+const AppDepsUninstallModal = ({
+  app,
+  dependents,
+  appList,
+  installed,
+  dispatch,
+  onClose,
+}: Props) => {
   const onConfirm = useCallback(() => {
-    if (name) dispatch({ type: "uninstall", name });
+    if (app && app.name) dispatch({ type: "uninstall", name: app.name });
     onClose();
-  }, [dispatch, name, onClose]);
+  }, [app, dispatch, onClose]);
 
   /** if no app with dependencies was triggered to be uninstalled we dont show anything */
-  if (!app || !dependentApps) return null;
+  if (!app || !dependents || !dependents.length) return null;
 
   return (
     <ConfirmModal
@@ -79,12 +79,14 @@ const AppDepsUninstallModal = ({ app, appList, installed, dispatch, onClose }: P
           <IconsSection>
             <AppTree uri={manager.getIconUrl(app.icon)} />
           </IconsSection>
-          <Trans i18nKey="manager.apps.dependencyUninstall.title" values={{ app: name }} />
+          <Trans i18nKey="manager.apps.dependencyUninstall.title" values={{ app: app.name }} />
         </>
       }
-      desc={<Trans i18nKey="manager.apps.dependencyUninstall.description" values={{ app: name }} />}
+      desc={
+        <Trans i18nKey="manager.apps.dependencyUninstall.description" values={{ app: app.name }} />
+      }
       confirmText={
-        <Trans i18nKey="manager.apps.dependencyUninstall.confirm" values={{ app: name }} />
+        <Trans i18nKey="manager.apps.dependencyUninstall.confirm" values={{ app: app.name }} />
       }
     >
       <CollapsibleCard
@@ -98,7 +100,7 @@ const AppDepsUninstallModal = ({ app, appList, installed, dispatch, onClose }: P
           </ItemLine>
         }
       >
-        {dependentApps.map(a => (
+        {dependents.map(a => (
           <ItemLine px={4} key={`APP_DEPS_${a.name}`}>
             <ListIcon color="grey">
               <ListTreeLine size={55} />

@@ -1,11 +1,19 @@
 // @flow
-import React, { useState, useEffect, useCallback, useMemo, memo } from "react";
+import React, { useCallback, memo, useState, useMemo } from "react";
 
 import styled from "styled-components";
 
 import { Trans } from "react-i18next";
 
-import type { State, Action, AppOp } from "@ledgerhq/live-common/lib/apps/types";
+import {
+  updateAllProgress,
+  isOutOfMemoryState,
+  predictOptimisticState,
+  reducer,
+} from "@ledgerhq/live-common/lib/apps";
+
+import type { App } from "@ledgerhq/live-common/lib/types/manager";
+import type { State, Action } from "@ledgerhq/live-common/lib/apps/types";
 
 import CollapsibleCard from "~/renderer/components/CollapsibleCard";
 import Text from "~/renderer/components/Text";
@@ -17,7 +25,8 @@ import IconLoader from "~/renderer/icons/Loader";
 
 import Item from "./Item";
 import Progress from "~/renderer/components/Progress";
-import get from "lodash/get";
+
+import ToolTip from "~/renderer/components/Tooltip";
 
 const UpdatableHeader = styled.div`
   display: flex;
@@ -48,51 +57,42 @@ const ProgressHolder = styled.div`
 `;
 
 type Props = {
+  update: App[],
   state: State,
   dispatch: Action => void,
   isIncomplete: boolean,
-  progress: ?{ appOp: AppOp, progress: number },
+  progress: number,
 };
 
-const UpdateAllApps = ({ state, dispatch, isIncomplete, progress }: Props) => {
+const UpdateAllApps = ({ update, state, dispatch, isIncomplete, progress }: Props) => {
   const [open, setIsOpen] = useState();
-  const [appsUpdating, setAppsUpdating] = useState([]);
+  const { updateAllQueue } = state;
 
-  const { apps, installed, installQueue, uninstallQueue } = state;
-
-  const updatableAppList = useMemo(
-    () => apps.filter(({ name }) => installed.some(i => i.name === name && !i.updated)),
-    [apps, installed],
+  const outOfMemory = useMemo(
+    () => isOutOfMemoryState(predictOptimisticState(reducer(state, { type: "updateAll" }))),
+    [state],
   );
 
-  const updateProgress = useMemo(() => {
-    return (
-      (appsUpdating.length * 2 - (uninstallQueue.length + installQueue.length)) /
-        (appsUpdating.length * 2) || 0
-    );
-  }, [appsUpdating, uninstallQueue, installQueue]);
+  const visible = update.length > 0;
 
-  useEffect(() => {
-    if (updateProgress >= 1) setAppsUpdating([]);
-  }, [updateProgress]);
+  const updateProgress = updateAllProgress(state);
 
   const onUpdateAll = useCallback(
     e => {
       if (open) e.stopPropagation();
-      setAppsUpdating(updatableAppList);
       dispatch({ type: "updateAll" });
     },
-    [dispatch, setAppsUpdating, updatableAppList, open],
+    [dispatch, open],
   );
 
   const updateHeader =
-    appsUpdating.length > 0 ? (
+    updateAllQueue.length > 0 ? (
       <>
         <Box vertical>
           <Text ff="Inter|SemiBold" fontSize={5} color="palette.primary.main">
             <Trans
               i18nKey="manager.applist.updatable.progressTitle"
-              values={{ number: appsUpdating.length }}
+              values={{ number: updateAllQueue.length }}
             />
           </Text>
           <Text ff="Inter|SemiBold" fontSize={2} color="palette.text.shade60">
@@ -124,47 +124,55 @@ const UpdateAllApps = ({ state, dispatch, isIncomplete, progress }: Props) => {
           <Trans i18nKey="manager.applist.updatable.title" />
         </Text>
         <Badge ff="Inter|Bold" fontSize={3} color="palette.text.shade100">
-          {updatableAppList.length}
+          {update.length}
         </Badge>
         <Box flex={1} />
-        <Button primary onClick={onUpdateAll} fontSize={3} event="Manager Update All">
-          <IconLoader size={14} />
-          <Text style={{ marginLeft: 8 }}>
-            <Trans i18nKey="manager.applist.item.updateAll" />
-          </Text>
-        </Button>
+        <ToolTip
+          content={
+            outOfMemory ? <Trans i18nKey="manager.applist.item.updateAllOutOfMemory" /> : null
+          }
+        >
+          <Button
+            primary
+            disabled={outOfMemory}
+            onClick={onUpdateAll}
+            fontSize={3}
+            event="Manager Update All"
+          >
+            <IconLoader size={14} />
+            <Text style={{ marginLeft: 8 }}>
+              <Trans i18nKey="manager.applist.item.updateAll" />
+            </Text>
+          </Button>
+        </ToolTip>
       </>
     );
 
   const mapApp = useCallback(
-    app => (
+    (app, i) => (
       <Item
         state={state}
         installed={state.installed.find(({ name }) => name === app.name)}
-        key={`UPDATE_${app.name}`}
+        key={`UPDATE_${app.name}_${i}`}
         app={app}
         dispatch={dispatch}
         forceUninstall={isIncomplete}
         appStoreView={false}
         onlyUpdate={true}
         showActions={false}
-        progress={get(progress, ["appOp", "name"]) === app.name ? progress : undefined}
+        progress={progress}
       />
     ),
     [state, dispatch, isIncomplete, progress],
   );
 
-  const appsToShow = appsUpdating.length > 0 ? appsUpdating : updatableAppList;
-  const visible = appsToShow.length > 0;
-
   return (
-    <FadeInOutBox in={visible}>
+    <FadeInOutBox in={visible} mt={4}>
       <CollapsibleCard
-        mt={20}
         header={<UpdatableHeader>{visible && updateHeader}</UpdatableHeader>}
         onOpen={setIsOpen}
       >
-        {appsToShow.map(mapApp)}
+        {update.map(mapApp)}
       </CollapsibleCard>
     </FadeInOutBox>
   );

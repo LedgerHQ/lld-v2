@@ -1,5 +1,5 @@
 // @flow
-import React, { memo, useState, useEffect, useCallback, useMemo } from "react";
+import React, { memo, useState, useCallback, useMemo } from "react";
 import styled from "styled-components";
 import { withTranslation } from "react-i18next";
 import type { TFunction } from "react-i18next";
@@ -11,19 +11,17 @@ import {
   isIncompleteState,
   distribute,
 } from "@ledgerhq/live-common/lib/apps";
-import { useAppsRunner } from "@ledgerhq/live-common/lib/apps/react";
+import { useAppsRunner, useAppInstallProgress } from "@ledgerhq/live-common/lib/apps/react";
 
 import NavigationGuard from "~/renderer/components/NavigationGuard";
 import Quit from "~/renderer/icons/Quit";
 
 import AppList from "./AppsList";
 import DeviceStorage from "../DeviceStorage/index";
-import UpdateAllApps from "./UpdateAllApps";
 
 import AppDepsInstallModal from "./AppDepsInstallModal";
 import AppDepsUnInstallModal from "./AppDepsUnInstallModal";
 
-import omit from "lodash/omit";
 import ErrorModal from "~/renderer/modals/ErrorModal/index";
 
 const Container = styled.div`
@@ -54,22 +52,22 @@ type Props = {
 
 const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
   const [state, dispatch] = useAppsRunner(result, exec);
-  const [error, setError] = useState();
   const [appInstallDep, setAppInstallDep] = useState(undefined);
   const [appUninstallDep, setAppUninstallDep] = useState(undefined);
-  const filteredState = omit(state, "currentProgress");
-  const progress = state.currentProgress;
-  const isIncomplete = isIncompleteState(filteredState);
+  const isIncomplete = isIncompleteState(state);
 
-  const { installQueue, uninstallQueue, currentError } = filteredState;
+  const { installQueue, uninstallQueue, currentError } = state;
+
+  const progress = useAppInstallProgress(state, installQueue[0]);
+
   const jobInProgress = installQueue.length > 0 || uninstallQueue.length > 0;
 
   const distribution = useMemo(() => {
     const newState = installQueue.length
-      ? predictOptimisticState(reducer(filteredState, { type: "install", name: installQueue[0] }))
-      : filteredState;
+      ? predictOptimisticState(reducer(state, { type: "install", name: installQueue[0] }))
+      : state;
     return distribute(newState);
-  }, [filteredState, installQueue]);
+  }, [state, installQueue]);
 
   const onCloseDepsInstallModal = useCallback(() => setAppInstallDep(undefined), [
     setAppInstallDep,
@@ -82,20 +80,15 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
   const installState =
     installQueue.length > 0 ? (uninstallQueue.length > 0 ? "update" : "install") : "uninstall";
 
-  // FIXME I think we do not need to have a local error state but just uses the currentError
-  // and "close" it with a "recover" event.
-  useEffect(() => {
-    if (currentError) setError(currentError.error);
-  }, [currentError]);
-
   const onCloseError = useCallback(() => {
     dispatch({ type: "recover" });
-    setError();
-  }, [dispatch, setError]);
+  }, [dispatch]);
 
   return (
     <Container>
-      <ErrorModal isOpened={!!error} error={error} onClose={onCloseError} />
+      {currentError && (
+        <ErrorModal isOpened={!!currentError} error={currentError.error} onClose={onCloseError} />
+      )}
       <NavigationGuard
         analyticsName="ManagerGuardModal"
         when={jobInProgress}
@@ -114,21 +107,16 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
       />
       <DeviceStorage
         jobInProgress={jobInProgress}
+        uninstallQueue={uninstallQueue}
         installQueue={installQueue}
         distribution={distribution}
-        deviceModel={filteredState.deviceModel}
+        deviceModel={state.deviceModel}
         deviceInfo={deviceInfo}
         isIncomplete={isIncomplete}
-      />
-      <UpdateAllApps
-        state={filteredState}
-        dispatch={dispatch}
-        isIncomplete={isIncomplete}
-        progress={progress}
       />
       <AppList
         deviceInfo={deviceInfo}
-        state={filteredState}
+        state={state}
         dispatch={dispatch}
         isIncomplete={isIncomplete}
         progress={progress}
@@ -138,15 +126,17 @@ const AppsList = ({ deviceInfo, result, exec, t }: Props) => {
         distribution={distribution}
       />
       <AppDepsInstallModal
-        app={appInstallDep}
-        appList={filteredState.apps}
+        app={appInstallDep && appInstallDep.app}
+        dependencies={appInstallDep && appInstallDep.dependencies}
+        appList={state.apps}
         dispatch={dispatch}
         onClose={onCloseDepsInstallModal}
       />
       <AppDepsUnInstallModal
-        app={appUninstallDep}
-        appList={filteredState.apps}
-        installed={filteredState.installed}
+        app={appUninstallDep && appUninstallDep.app}
+        dependents={appUninstallDep && appUninstallDep.dependents}
+        appList={state.apps}
+        installed={state.installed}
         dispatch={dispatch}
         onClose={onCloseDepsUninstallModal}
       />

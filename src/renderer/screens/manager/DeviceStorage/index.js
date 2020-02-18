@@ -65,15 +65,15 @@ const Info = styled.div`
   }
 `;
 
-const gradient = keyframes`
+const blinkOpacity = keyframes`
 	0% {
-		background-position: 0% 50%;
+		opacity: 0.6;
   }
   50% {
-		background-position: 100% 50%;
+		opacity: 1;
 	}
 	100% {
-		background-position: 0% 50%;
+		opacity: 0.6;
 	}
 `;
 
@@ -84,28 +84,6 @@ const StorageBarWrapper: ThemedComponent<{ installing: boolean }> = styled.div`
   background: ${p => p.theme.colors.palette.text.shade10};
   overflow: hidden;
   position: relative;
-  ${p =>
-    p.installing
-      ? css`
-          &:before {
-            content: "";
-            position: absolute;
-            pointer-events: none;
-            background: linear-gradient(
-              -45deg,
-              rgba(0, 0, 0, 0),
-              ${p.theme.colors.palette.text.shade20},
-              rgba(0, 0, 0, 0)
-            );
-            background-size: 400% 400%;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            animation: ${gradient} 3s ease infinite;
-          }
-        `
-      : ""};
 `;
 
 const StorageBarGraph = styled.div`
@@ -143,6 +121,12 @@ const StorageBarItem: ThemedComponent<{ ratio: number }> = styled.div.attrs(prop
   transition: all 0.33s ease-in-out;
   position: relative;
   overflow: hidden;
+  ${p =>
+    p.installing
+      ? css`
+          animation: ${blinkOpacity} 2s ease infinite;
+        `
+      : ""};
   & > * {
     width: 100%;
   }
@@ -191,12 +175,14 @@ export const StorageBar = ({
   deviceModel,
   isIncomplete,
   installQueue,
+  uninstallQueue,
   jobInProgress,
 }: {
   distribution: AppsDistribution,
   deviceModel: DeviceModel,
   isIncomplete: boolean,
   installQueue: string[],
+  uninstallQueue: string[],
   jobInProgress: boolean,
 }) => (
   <StorageBarWrapper installing={jobInProgress}>
@@ -207,7 +193,7 @@ export const StorageBar = ({
             {state => (
               <StorageBarItem
                 state={state}
-                installing={installQueue.includes(name)}
+                installing={installQueue.includes(name) || uninstallQueue.includes(name)}
                 color={currency && currency.color}
                 ratio={blocks / (distribution.totalBlocks - distribution.osBlocks)}
               >
@@ -230,6 +216,7 @@ type Props = {
   distribution: AppsDistribution,
   isIncomplete: boolean,
   installQueue: string[],
+  uninstallQueue: string[],
   jobInProgress: boolean,
 };
 
@@ -239,6 +226,7 @@ const DeviceStorage = ({
   distribution,
   isIncomplete,
   installQueue,
+  uninstallQueue,
   jobInProgress,
 }: Props) => {
   const shouldWarn = distribution.shouldWarnMemory || isIncomplete;
@@ -297,6 +285,7 @@ const DeviceStorage = ({
           deviceModel={deviceModel}
           isIncomplete={isIncomplete}
           installQueue={installQueue}
+          uninstallQueue={uninstallQueue}
           jobInProgress={jobInProgress}
         />
         <FreeInfo danger={shouldWarn}>
@@ -307,8 +296,9 @@ const DeviceStorage = ({
                 <Trans i18nKey="manager.deviceStorage.incomplete" />
               ) : distribution.freeSpaceBytes > 0 ? (
                 <>
-                  <Trans i18nKey="manager.deviceStorage.freeSpace">
+                  <Trans i18nKey="manager.deviceStorage.freeSpace" values={{ space: 0 }}>
                     <ByteSize value={distribution.freeSpaceBytes} deviceModel={deviceModel} />
+                    {"free"}
                   </Trans>
                 </>
               ) : (

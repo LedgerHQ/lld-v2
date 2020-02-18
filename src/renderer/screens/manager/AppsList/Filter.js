@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useCallback, Fragment, memo } from "react";
+import React, { useCallback, memo } from "react";
 import { Trans } from "react-i18next";
 
 import IconAngleDown from "~/renderer/icons/AngleDown";
@@ -10,17 +10,17 @@ import BoldToggle from "~/renderer/components/BoldToggle";
 import Text from "~/renderer/components/Text";
 
 type Props = {
-  onFiltersChange: Function,
-  filters: *,
+  onFilterChange: Function,
+  filter: *,
 };
 
-const Filter = ({ onFiltersChange, filters }: Props) => {
+const Filter = ({ onFilterChange, filter }: Props) => {
   const onFilterChangeWrapper = useCallback(
     ({ selectedItem: item }) => {
       if (!item) return;
-      onFiltersChange([item.key]);
+      onFilterChange(item.key);
     },
-    [onFiltersChange],
+    [onFilterChange],
   );
 
   const filterItems = [
@@ -68,20 +68,15 @@ const Filter = ({ onFiltersChange, filters }: Props) => {
       items={filterItems}
       renderItem={renderItem}
       onStateChange={onFilterChangeWrapper}
-      value={filterItems.find(item => item.key === filters[0])}
+      value={filterItems.find(item => item.key === filter)}
     >
       <Text color="palette.text.shade60" ff="Inter|SemiBold" fontSize={4}>
         <Trans i18nKey="manager.applist.filter.title" />
       </Text>
       <Box alignItems="center" color="wallet" ff="Inter|SemiBold" flow={1} fontSize={4} horizontal>
         <Text color="wallet">
-          {filters.length > 0 ? (
-            filters.map((filter, i) => (
-              <Fragment key={i}>
-                {i > 0 && " + "}
-                <Trans i18nKey={`manager.applist.filter.${filter}`} />
-              </Fragment>
-            ))
+          {filter ? (
+            <Trans i18nKey={`manager.applist.filter.${filter}`} />
           ) : (
             <Trans i18nKey="manager.applist.filter.all" />
           )}

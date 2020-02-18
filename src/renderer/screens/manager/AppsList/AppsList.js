@@ -4,13 +4,13 @@ import { useLocation, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { Trans } from "react-i18next";
+
+import { useAppsSections } from "@ledgerhq/live-common/lib/apps/react";
+
 import type { TFunction } from "react-i18next";
 import type { DeviceInfo } from "@ledgerhq/live-common/lib/types/manager";
-import type { State, Action, AppOp, AppsDistribution } from "@ledgerhq/live-common/lib/apps/types";
-import { useSortedFilteredApps } from "@ledgerhq/live-common/lib/apps/filtering";
-
-import { openModal } from "~/renderer/actions/modals";
-
+import type { State, Action, AppsDistribution } from "@ledgerhq/live-common/lib/apps/types";
+import UpdateAllApps from "./UpdateAllApps";
 import Placeholder from "./Placeholder";
 import Card from "~/renderer/components/Box/Card";
 import Box from "~/renderer/components/Box";
@@ -23,8 +23,10 @@ import Filter from "./Filter";
 import Sort from "./Sort";
 import UninstallAllButton from "./UninstallAllButton";
 
-import get from "lodash/get";
+import { openModal } from "~/renderer/actions/modals";
+
 import debounce from "lodash/debounce";
+import InstallSuccessBanner from "./InstallSuccessBanner";
 
 // sticky top bar with extra width to cover card boxshadow underneath
 const StickyTabBar = styled.div`
@@ -62,9 +64,9 @@ type Props = {
   state: State,
   dispatch: Action => void,
   isIncomplete: boolean,
-  progress: ?{ appOp: AppOp, progress: number },
-  setAppInstallDep: () => void,
-  setAppUninstallDep: () => void,
+  progress?: number,
+  setAppInstallDep: (*) => void,
+  setAppUninstallDep: (*) => void,
   t: TFunction,
   distribution: AppsDistribution,
 };
@@ -86,15 +88,16 @@ const AppsList = ({
 
   const inputRef = useRef();
   const [query, setQuery] = useState("");
-  const [filters, setFilters] = useState(["all"]);
+  const [appFilter, setFilter] = useState("all");
   const [sort, setSort] = useState({ type: "marketcap", order: "desc" });
   const [activeTab, setActiveTab] = useState(0);
+
   /** clear search field on tab change */
   useEffect(() => {
     if (inputRef && inputRef.current) inputRef.current.value = "";
     setQuery("");
   }, [activeTab]);
-  const onDeviceTab = activeTab === 1;
+  const isDeviceTab = activeTab === 1;
 
   /** retrieve search query from router location search params */
   useEffect(() => {
@@ -108,6 +111,8 @@ const AppsList = ({
     }
   }, [search]);
 
+  const { installed: installedApps, uninstallQueue } = state;
+
   const addAccount = useCallback(
     currency => {
       push("/accounts");
@@ -116,34 +121,13 @@ const AppsList = ({
     [push, reduxDispatch],
   );
 
-  const { apps, installed: installedApps, uninstallQueue, installQueue } = state;
+  const { update, device, catalog } = useAppsSections(state, {
+    query,
+    appFilter,
+    sort,
+  });
 
-  const appList = useSortedFilteredApps(apps, { query, installedApps, type: filters }, sort);
-
-  const installedAppList = useSortedFilteredApps(
-    apps,
-    {
-      query,
-      installedApps,
-      installQueue,
-      type: ["installed"],
-    },
-    { type: "default", order: "asc" },
-  );
-
-  const distributionOrder = distribution.apps.map(({ name }) => name);
-
-  const displayedAppList = onDeviceTab
-    ? installedAppList
-        .sort(
-          ({ name: _name }, { name }) =>
-            distributionOrder.indexOf(_name) > distributionOrder.indexOf(name) ? -1 : 0, // order by distribution in device
-        )
-        .sort(
-          ({ name: _name }, { name }) =>
-            installQueue.indexOf(_name) > installQueue.indexOf(name) ? -1 : 0, // place install queue on top of list
-        )
-    : appList;
+  const displayedAppList = isDeviceTab ? device : catalog;
 
   const mapApp = useCallback(
     (app, appStoreView, onlyUpdate, showActions) => (
@@ -157,7 +141,7 @@ const AppsList = ({
         appStoreView={appStoreView}
         onlyUpdate={onlyUpdate}
         showActions={showActions}
-        progress={get(progress, ["appOp", "name"]) === app.name ? progress : undefined}
+        progress={progress}
         setAppInstallDep={setAppInstallDep}
         setAppUninstallDep={setAppUninstallDep}
         addAccount={addAccount}
@@ -168,6 +152,22 @@ const AppsList = ({
 
   return (
     <>
+      {update.length <= 0 ? (
+        <InstallSuccessBanner
+          state={state}
+          dispatch={dispatch}
+          isIncomplete={isIncomplete}
+          addAccount={addAccount}
+        />
+      ) : (
+        <UpdateAllApps
+          update={update}
+          state={state}
+          dispatch={dispatch}
+          isIncomplete={isIncomplete}
+          progress={progress}
+        />
+      )}
       {isIncomplete ? null : (
         <StickyTabBar>
           <TabBar
@@ -177,7 +177,7 @@ const AppsList = ({
         </StickyTabBar>
       )}
       <Card mt={0}>
-        {onDeviceTab && !installedApps.length ? (
+        {isDeviceTab && !installedApps.length ? (
           <Box py={8}>
             <Text textAlign="center" ff="Inter|SemiBold" fontSize={6}>
               <Trans i18nKey="manager.applist.placeholderNoAppsInstalled" />
@@ -194,13 +194,13 @@ const AppsList = ({
                 renderLeft={<IconSearch size={16} />}
                 onChange={debounce(setQuery, 100)}
                 placeholder={t(
-                  !onDeviceTab ? "manager.tabs.appCatalogSearch" : "manager.tabs.appOnDeviceSearch",
+                  !isDeviceTab ? "manager.tabs.appCatalogSearch" : "manager.tabs.appOnDeviceSearch",
                 )}
                 ref={inputRef}
               />
-              {!onDeviceTab ? (
+              {!isDeviceTab ? (
                 <>
-                  <Filter onFiltersChange={debounce(setFilters, 100)} filters={filters} />
+                  <Filter onFilterChange={debounce(setFilter, 100)} filter={appFilter} />
                   <Box ml={3}>
                     <Sort onSortChange={debounce(setSort, 100)} sort={sort} />
                   </Box>
@@ -214,7 +214,7 @@ const AppsList = ({
               )}
             </FilterHeader>
             {displayedAppList.length ? (
-              displayedAppList.map(app => mapApp(app, !onDeviceTab))
+              displayedAppList.map(app => mapApp(app, !isDeviceTab))
             ) : (
               <Placeholder />
             )}

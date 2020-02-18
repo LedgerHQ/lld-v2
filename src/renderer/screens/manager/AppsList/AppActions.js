@@ -1,11 +1,19 @@
 // @flow
 import React, { useCallback, useMemo, memo } from "react";
 
+import {
+  useAppInstallNeedsDeps,
+  useAppUninstallNeedsDeps,
+} from "@ledgerhq/live-common/lib/apps/react";
+
 import type { App } from "@ledgerhq/live-common/lib/types/manager";
-import type { State, Action, InstalledItem, AppOp } from "@ledgerhq/live-common/lib/apps/types";
+import type { State, Action, InstalledItem } from "@ledgerhq/live-common/lib/apps/types";
 
 import styled from "styled-components";
 import { Trans } from "react-i18next";
+
+import { openURL } from "~/renderer/linking";
+import { urls } from "~/config/urls";
 
 import Text from "~/renderer/components/Text";
 import Tooltip from "~/renderer/components/Tooltip";
@@ -18,6 +26,7 @@ import AccountAdd from "~/renderer/icons/AccountAdd";
 import IconCheck from "~/renderer/icons/Check";
 import IconTrash from "~/renderer/icons/Trash";
 import IconArrowDown from "~/renderer/icons/ArrowDown";
+import LinkIcon from "~/renderer/icons/LinkIcon";
 
 const AppActionsWrapper = styled.div`
   display: flex;
@@ -50,9 +59,9 @@ type Props = {
   forceUninstall?: boolean,
   notEnoughMemoryToInstall: boolean,
   showActions?: boolean,
-  progress: ?{ appOp: AppOp, progress: number },
-  setAppInstallDep?: App => void,
-  setAppUninstallDep?: App => void,
+  progress: number,
+  setAppInstallDep?: (*) => void,
+  setAppUninstallDep?: (*) => void,
   isLiveSupported: boolean,
   addAccount?: () => void,
 };
@@ -75,45 +84,30 @@ const AppActions: React$ComponentType<Props> = React.memo(
     isLiveSupported,
     addAccount,
   }: Props) => {
-    const { name, dependencies } = app;
-    const {
-      apps,
-      installed: installedList,
-      installedAvailable,
-      installQueue,
-      uninstallQueue,
-    } = state;
+    const { name } = app;
+    const { installedAvailable, installQueue, uninstallQueue } = state;
 
-    const needsInstallDeps = useMemo(
-      () =>
-        dependencies &&
-        dependencies.some(
-          dep => installedList.every(app => app.name !== dep) && !installQueue.includes(dep),
-        ),
-      [dependencies, installQueue, installedList],
-    );
+    const needsInstallDeps = useAppInstallNeedsDeps(state, app);
 
-    const needsUninstallDeps = useMemo(
-      () =>
-        apps
-          .filter(a => installedList.some(i => i.name === a.name))
-          .some(({ dependencies }) => dependencies.includes(name)),
-      [apps, installedList, name],
-    );
+    const needsUninstallDeps = useAppUninstallNeedsDeps(state, app);
 
     const onInstall = useCallback(() => {
-      if (needsInstallDeps && setAppInstallDep) setAppInstallDep(app);
+      if (needsInstallDeps && setAppInstallDep) setAppInstallDep(needsInstallDeps);
       else dispatch({ type: "install", name });
-    }, [app, dispatch, name, needsInstallDeps, setAppInstallDep]);
+    }, [dispatch, name, needsInstallDeps, setAppInstallDep]);
 
     const onUninstall = useCallback(() => {
-      if (needsUninstallDeps && setAppUninstallDep) setAppUninstallDep(app);
+      if (needsUninstallDeps && setAppUninstallDep) setAppUninstallDep(needsUninstallDeps);
       else dispatch({ type: "uninstall", name });
-    }, [app, dispatch, name, needsUninstallDeps, setAppUninstallDep]);
+    }, [dispatch, name, needsUninstallDeps, setAppUninstallDep]);
 
     const onAddAccount = useCallback(() => {
       if (addAccount) addAccount();
     }, [addAccount]);
+
+    const onSupportLink = useCallback(() => {
+      openURL(urls.appSupport);
+    }, []);
 
     const installing = useMemo(() => installQueue.includes(name), [installQueue, name]);
     const uninstalling = useMemo(() => uninstallQueue.includes(name), [uninstallQueue, name]);
@@ -126,36 +120,71 @@ const AppActions: React$ComponentType<Props> = React.memo(
     return (
       <AppActionsWrapper>
         {installing || uninstalling ? (
-          <Progress currentProgress={progress} />
+          <Progress installing={installing} uninstalling={uninstalling} progress={progress} />
         ) : (
           showActions && (
             <>
-              {isLiveSupported && !appStoreView && (
-                <Tooltip
-                  content={
-                    canAddAccount ? null : <Trans i18nKey="manager.applist.item.addAccountWarn" />
-                  }
-                >
-                  <Button
-                    color={canAddAccount ? "palette.primary.main" : "palette.text.shade40"}
-                    inverted
-                    style={{ display: "flex", background: "transparent" }}
-                    fontSize={3}
-                    disabled={!canAddAccount}
-                    onClick={onAddAccount}
-                    event="Manager AddAccount Click"
-                    eventProperties={{
-                      appName: name,
-                      appVersion: app.version,
-                    }}
+              {installed ? (
+                isLiveSupported ? (
+                  <Tooltip
+                    content={
+                      canAddAccount ? (
+                        <Trans
+                          i18nKey="manager.applist.item.addAccountTooltip"
+                          values={{ appName: name }}
+                        />
+                      ) : (
+                        <Trans i18nKey="manager.applist.item.addAccountWarn" />
+                      )
+                    }
                   >
-                    <AccountAdd size={16} />
-                    <Text style={{ marginLeft: 8 }}>
-                      <Trans i18nKey="manager.applist.item.addAccount" />
-                    </Text>
-                  </Button>
-                </Tooltip>
-              )}
+                    <Button
+                      color={canAddAccount ? "palette.primary.main" : "palette.text.shade40"}
+                      inverted
+                      style={{ display: "flex", backgroundColor: "rgba(0,0,0,0)" }}
+                      fontSize={3}
+                      disabled={!canAddAccount}
+                      onClick={onAddAccount}
+                      event="Manager AddAccount Click"
+                      eventProperties={{
+                        appName: name,
+                        appVersion: app.version,
+                      }}
+                    >
+                      <AccountAdd size={16} />
+                      <Text style={{ marginLeft: 8 }}>
+                        <Trans i18nKey="manager.applist.item.addAccount" />
+                      </Text>
+                    </Button>
+                  </Tooltip>
+                ) : (
+                  <Tooltip
+                    content={
+                      <Trans
+                        i18nKey="manager.applist.item.learnMoreTooltip"
+                        values={{ appName: name }}
+                      />
+                    }
+                  >
+                    <Button
+                      inverted
+                      style={{ display: "flex" }}
+                      fontSize={3}
+                      onClick={onSupportLink}
+                      event="Manager SupportLink Click"
+                      eventProperties={{
+                        appName: name,
+                        appVersion: app.version,
+                      }}
+                    >
+                      <LinkIcon size={16} />
+                      <Text ff="Inter" style={{ marginLeft: 8 }}>
+                        <Trans i18nKey="manager.applist.item.learnMore" />
+                      </Text>
+                    </Button>
+                  </Tooltip>
+                )
+              ) : null}
               {appStoreView && installed && (
                 <SuccessInstall>
                   <IconCheck size={16} />
@@ -193,17 +222,26 @@ const AppActions: React$ComponentType<Props> = React.memo(
               )}
               {(((installed || !installedAvailable) && !appStoreView && !onlyUpdate) ||
                 forceUninstall) && (
-                <Button
-                  style={{ padding: 13 }}
-                  onClick={onUninstall}
-                  event="Manager Uninstall Click"
-                  eventProperties={{
-                    appName: name,
-                    appVersion: app.version,
-                  }}
+                <Tooltip
+                  content={
+                    <Trans
+                      i18nKey="manager.applist.item.removeTooltip"
+                      values={{ appName: name }}
+                    />
+                  }
                 >
-                  <IconTrash color={colors.grey} size={14} />
-                </Button>
+                  <Button
+                    style={{ padding: 13 }}
+                    onClick={onUninstall}
+                    event="Manager Uninstall Click"
+                    eventProperties={{
+                      appName: name,
+                      appVersion: app.version,
+                    }}
+                  >
+                    <IconTrash color={colors.grey} size={14} />
+                  </Button>
+                </Tooltip>
               )}
             </>
           )
