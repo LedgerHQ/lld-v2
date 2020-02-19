@@ -1,6 +1,5 @@
 // @flow
 import React, { useCallback, useState } from "react";
-import { remote } from "electron";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
@@ -118,7 +117,7 @@ const IsUnlocked = ({ children }: Props) => {
     setIsHardResetting(true);
     try {
       await hardReset();
-      remote.getCurrentWindow().webContents.reloadIgnoringCache();
+      window.api.reloadRenderer();
     } catch (error) {
       setIsHardResetting(false);
     }

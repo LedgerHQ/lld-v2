@@ -1,6 +1,7 @@
 const path = require("path");
 const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 const babelPlugins = require("./babel.plugins");
+const UnusedWebpackPlugin = require("unused-webpack-plugin");
 
 const babelConfig = {
   presets: [
@@ -30,6 +31,10 @@ module.exports = {
   plugins: [
     new HardSourceWebpackPlugin({
       cacheDirectory: path.resolve(__dirname, ".webpack", "cacheMain"),
+    }),
+    new UnusedWebpackPlugin({
+      directories: [path.join(__dirname, "src/main"), path.join(__dirname, "src/internal")],
+      exclude: ["*.test.js", "*.html", "updater/*"],
     }),
   ],
   module: {

@@ -2,7 +2,6 @@
 
 import React, { PureComponent } from "react";
 import styled from "styled-components";
-import { remote } from "electron";
 import { withTranslation } from "react-i18next";
 import type { TFunction } from "react-i18next";
 import { openURL } from "~/renderer/linking";
@@ -94,14 +93,14 @@ class RenderError extends PureComponent<
   };
 
   handleRestart = () => {
-    remote.getCurrentWindow().webContents.reloadIgnoringCache();
+    window.api.reloadRenderer();
   };
 
   handleHardReset = async () => {
     this.setState({ isHardResetting: true });
     try {
       await hardReset();
-      remote.getCurrentWindow().webContents.reloadIgnoringCache();
+      window.api.reloadRenderer();
     } catch (err) {
       this.setState({ isHardResetting: false });
     }

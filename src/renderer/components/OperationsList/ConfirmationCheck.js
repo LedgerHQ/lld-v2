@@ -75,6 +75,11 @@ const iconsComponent = {
   REVEAL: IconEye,
   CREATE: IconPlus,
   NONE: IconSend,
+  // TODO
+  FREEZE: IconSend,
+  UNFREEZE: IconSend,
+  VOTE: IconSend,
+  REWARD: IconReceive,
 };
 
 class ConfirmationCheck extends PureComponent<{

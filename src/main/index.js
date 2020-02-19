@@ -2,7 +2,7 @@
 import "./setup";
 import { app, Menu, ipcMain } from "electron";
 import menu from "./menu";
-import { createMainWindow, getMainWindow } from "./window-lifecycle";
+import { createMainWindow, getMainWindow, loadWindow } from "./window-lifecycle";
 import "./internal-lifecycle";
 import resolveUserDataDirectory from "~/helpers/resolveUserDataDirectory";
 import db from "./db";
@@ -24,10 +24,6 @@ if (!gotLock) {
     }
   });
 }
-
-app.on("window-all-closed", () => {
-  app.quit();
-});
 
 app.on("activate", () => {
   const w = getMainWindow();
@@ -81,6 +77,11 @@ app.on("ready", async () => {
 
   ipcMain.handle("cleanCache", () => {
     return db.cleanCache();
+  });
+
+  ipcMain.handle("reloadRenderer", () => {
+    console.log("reloading renderer ...");
+    loadWindow();
   });
 
   Menu.setApplicationMenu(menu);

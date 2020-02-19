@@ -86,7 +86,7 @@ const Rates = () => {
             </TooltipButtonWrapper>
           </Box>
           <Box ff="Inter|SemiBold" color="palette.text.shade100" fontSize={4}>
-            <Trans i18nKey="settings.rates.rpice" />
+            <Trans i18nKey="settings.rates.price" />
           </Box>
           <Box ff="Inter|SemiBold" color="palette.text.shade100" fontSize={4}>
             <Trans i18nKey={`settings.rates.last`} values={{ days }} />
