@@ -2,12 +2,14 @@
 import React from "react";
 import ExclamationCircleThin from "~/renderer/icons/ExclamationCircleThin";
 import CrossCircle from "~/renderer/icons/CrossCircle";
+import Lock from "~/renderer/icons/LockCircle";
 
 import {
   UserRefusedAllowManager,
   UserRefusedFirmwareUpdate,
   UserRefusedOnDevice,
   UserRefusedAddress,
+  ManagerDeviceLockedError,
 } from "@ledgerhq/errors";
 
 export type ErrorIconProps = {
@@ -16,18 +18,21 @@ export type ErrorIconProps = {
 };
 
 const ErrorIcon = ({ error, size = 44 }: ErrorIconProps) => {
-  if (!error) return null;
+  switch (true) {
+    case !error:
+      return null;
+    case error instanceof UserRefusedAllowManager:
+    case error instanceof UserRefusedFirmwareUpdate:
+    case error instanceof UserRefusedOnDevice:
+    case error instanceof UserRefusedAddress:
+      return <CrossCircle size={size} />;
 
-  if (
-    error instanceof UserRefusedAllowManager ||
-    error instanceof UserRefusedFirmwareUpdate ||
-    error instanceof UserRefusedOnDevice ||
-    error instanceof UserRefusedAddress
-  ) {
-    return <CrossCircle size={size} />;
+    case error instanceof ManagerDeviceLockedError:
+      return <Lock size={size} />;
+
+    default:
+      return <ExclamationCircleThin size={size} />;
   }
-
-  return <ExclamationCircleThin size={size} />;
 };
 
 export default ErrorIcon;
