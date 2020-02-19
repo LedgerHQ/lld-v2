@@ -29,11 +29,11 @@ const PageScroller: ThemedComponent<{}> = styled.div`
 `;
 
 const PageScrollerContainer: ThemedComponent<{}> = styled.div`
+  overflow: hidden;
   position: relative;
   display: flex;
   flex-direction: column;
   flex: 1;
-  height: 100%;
 `;
 
 const PageScrollTopSeparator: ThemedComponent<{ isAtUpperBound: boolean }> = styled.div.attrs(
