@@ -1459,7 +1459,7 @@
       "description": null
     },
     "WrongDeviceForAccount": {
-      "title": "Wrong keys for ‘{{accountName}}’",
+      "title": "Something went wrong",
       "description": "Please check that your hardware wallet is set up with the recovery phrase or passphrase that belongs to the selected account."
     },
     "DeviceAppVerifyNotSupported": {
