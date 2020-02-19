@@ -1,6 +1,4 @@
-import cluster from "cluster";
-
-if (cluster.isMaster) {
+if (!process.env.IS_INTERNAL_PROCESS) {
   // Main electron thread
   require("./main");
 } else {

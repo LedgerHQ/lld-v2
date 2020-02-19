@@ -25,10 +25,6 @@ if (!gotLock) {
   });
 }
 
-app.on("window-all-closed", () => {
-  app.quit();
-});
-
 app.on("activate", () => {
   const w = getMainWindow();
   if (w) {
