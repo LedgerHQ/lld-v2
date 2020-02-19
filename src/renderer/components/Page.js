@@ -45,15 +45,20 @@ const PageScrollTopSeparator: ThemedComponent<{ isAtUpperBound: boolean }> = sty
 )`
   position: absolute;
   pointer-events: none;
-  top: -1px;
   left: 0;
   right: 0;
   height: 12px;
-  border-top: 1px solid ${p => p.theme.colors.palette.text.shade10};
   box-sizing: border-box;
   z-index: 20;
   transition: opacity 250ms ease-in-out;
   background: linear-gradient(${p => p.theme.colors.palette.background.default}, rgba(0, 0, 0, 0));
+  &:after {
+    content: "";
+    width: 100%;
+    height: 1px;
+    display: block;
+    background-color: ${p => p.theme.colors.palette.text.shade10};
+  }
 `;
 
 const PageContentContainer = styled.div`
