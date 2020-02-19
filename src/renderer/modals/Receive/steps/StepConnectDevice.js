@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { getMainAccount } from "@ledgerhq/live-common/lib/account/helpers";
 import Box from "~/renderer/components/Box";
 import Button from "~/renderer/components/Button";
@@ -32,13 +32,7 @@ export default function StepConnectDevice({
 }
 
 export function StepConnectDeviceFooter({ t, transitionTo, onSkipConfirm, device }: StepProps) {
-  const [deviceSeen, setDeviceSeen] = useState(!!device);
-  useEffect(() => {
-    if (!deviceSeen && device) {
-      setDeviceSeen(true);
-    }
-  }, [deviceSeen, device]);
-  return deviceSeen ? null : (
+  return (
     <Box horizontal flow={2}>
       <TrackPage category="Receive Flow" name="Step 2" />
       <Button event="Receive Flow Without Device Clicked" onClick={onSkipConfirm}>
