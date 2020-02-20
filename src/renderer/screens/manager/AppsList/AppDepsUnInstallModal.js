@@ -83,7 +83,14 @@ const AppDepsUninstallModal = ({
         </>
       }
       desc={
-        <Trans i18nKey="manager.apps.dependencyUninstall.description" values={{ app: app.name }} />
+        <>
+          <Trans
+            i18nKey="manager.apps.dependencyUninstall.description"
+            values={{ app: app.name }}
+          />
+          <br />
+          <Trans i18nKey="manager.applist.uninstall.description" />
+        </>
       }
       confirmText={
         <Trans i18nKey="manager.apps.dependencyUninstall.confirm" values={{ app: app.name }} />
@@ -100,7 +107,7 @@ const AppDepsUninstallModal = ({
           </ItemLine>
         }
       >
-        {dependents.map(a => (
+        {[app, ...dependents].map(a => (
           <ItemLine px={4} key={`APP_DEPS_${a.name}`}>
             <ListIcon color="grey">
               <ListTreeLine size={55} />

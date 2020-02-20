@@ -355,9 +355,9 @@
   },
   "manager": {
     "tabs": {
-      "appCatalog": "App Catalog",
+      "appCatalog": "App catalog",
       "appCatalogSearch": "Search app in catalog...",
-      "appsOnDevice": "Apps Installed",
+      "appsOnDevice": "Apps installed",
       "appOnDeviceSearch": "Search installed apps..."
     },
     "deviceStorage": {
@@ -379,15 +379,15 @@
       "filter": {
         "title": "Show",
         "all": "All",
-        "supported": "Live Supported",
+        "supported": "Supported in Live",
         "installed": "Installed",
-        "not_installed": "Not Installed"
+        "not_installed": "Not installed"
       },
       "sort": {
         "title": "Sort",
         "name_asc": "Name A-Z",
         "name_desc": "Name Z-A",
-        "marketcap_desc": "Marketcap"
+        "marketcap_desc": "Market cap"
       },
       "installSuccess": {
         "title": "App successfully installed, you can now add your {{app}} accounts",
@@ -424,8 +424,8 @@
       },
       "uninstall": {
         "title": "Uninstall all",
-        "subtitle": "Uninstall all apps",
-        "description": "You can reinstall apps in the App catalog."
+        "subtitle": "Uninstall all apps?",
+        "description": "Don’t worry, uninstalling apps does not affect your crypto assets. You can reinstall apps in the App catalog"
       }
     },
     "apps": {
@@ -435,7 +435,7 @@
         "confirm": "Install apps"
       },
       "dependencyUninstall": {
-        "title": "Other apps need the {{app}} app",
+        "title": " Uninstall {{app}} and its related apps?",
         "showAll": "Show apps to uninstall",
         "description": "Some of your installed apps are linked to {{app}} app. They will be uninstalled aswell.",
         "confirm": "Uninstall {{app}} and other apps"
@@ -1361,7 +1361,7 @@
       "description": null
     },
     "WrongDeviceForAccount": {
-      "title": "Wrong keys for ‘{{accountName}}’",
+      "title": "Something went wrong",
       "description": "Please check that your hardware wallet is set up with the recovery phrase or passphrase that belongs to the selected account."
     },
     "DeviceAppVerifyNotSupported": {
