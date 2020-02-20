@@ -85,12 +85,17 @@ async function init() {
 
   let accounts = await getKey("app", "accounts", []);
   if (accounts) {
-    const { starredAccountIds } = state.settings;
-    if (starredAccountIds && starredAccountIds.length) {
+    const { starredAccountIds: ids } = state.settings;
+    if (ids && ids.length) {
+      // NB old settings.starredAccountIds migration, eventually we could drop it
       await store.dispatch(saveSettings({ starredAccountIds: undefined }));
-      accounts = accounts.map(a =>
-        starredAccountIds.includes(a.id) ? { ...a, starred: true } : a,
-      );
+      accounts = accounts.map(a => {
+        const starred = ids.includes(a.id);
+        const subAccounts = a.subAccounts
+          ? a.subAccounts.map(sa => (ids.includes(sa.id) ? { ...sa, starred: true } : sa))
+          : a.subAccounts;
+        return { ...a, starred, subAccounts };
+      });
     }
     await store.dispatch(setAccounts(accounts));
   } else {

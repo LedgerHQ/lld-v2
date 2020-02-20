@@ -3,7 +3,7 @@
 import { createSelector } from "reselect";
 import type { OutputSelector } from "reselect";
 import { handleActions } from "redux-actions";
-import type { Account } from "@ledgerhq/live-common/lib/types";
+import type { Account, AccountLike } from "@ledgerhq/live-common/lib/types";
 import {
   flattenAccounts,
   clearAccount,
@@ -129,13 +129,14 @@ export const accountSelector: OutputSelector<
 
 export const migratableAccountsSelector = (s: *): Account[] => s.accounts.filter(canBeMigrated);
 
-export const starredAccountsSelector = (s: *): Account[] => s.accounts.filter(a => a.starred);
-
-export const isStarredAccountSelector: OutputSelector<
+export const starredAccountsSelector: OutputSelector<
   State,
-  { accountId: string },
-  boolean,
-> = createSelector(accountSelector, account => (account ? account.starred : false));
+  void,
+  AccountLike[],
+> = createSelector(accountsSelector, accounts => flattenAccounts(accounts).filter(a => a.starred));
+
+export const isStarredAccountSelector = (s: *, { accountId }: { accountId: string }): boolean =>
+  flattenAccounts(s.accounts).some(a => a.id === accountId && a.starred);
 
 export const accountNeedsMigrationSelector: OutputSelector<
   State,

@@ -61,7 +61,7 @@ class AccountContextMenu extends PureComponent<Props> {
         label: "accounts.contextMenu.star",
         Icon: IconStar,
         callback: () => {
-          toggleStarAction(account.id);
+          toggleStarAction(account.id, account.type !== "Account" ? account.parentId : undefined);
           refreshAccountsOrdering();
         },
       });

@@ -83,6 +83,7 @@ const mapDispatchToProps = {
 
 type OwnProps = {
   accountId: string,
+  parentId?: string,
   yellow?: boolean,
 };
 
@@ -95,6 +96,7 @@ type Props = {
 
 const Star = ({
   accountId,
+  parentId,
   isAccountStarred,
   toggleStarAction,
   yellow,
@@ -103,10 +105,10 @@ const Star = ({
   const toggleStar = useCallback(
     e => {
       e.stopPropagation();
-      toggleStarAction(accountId);
+      toggleStarAction(accountId, parentId);
       refreshAccountsOrdering();
     },
-    [toggleStarAction, accountId, refreshAccountsOrdering],
+    [toggleStarAction, accountId, refreshAccountsOrdering, parentId],
   );
   const MaybeButtonWrapper = yellow ? ButtonWrapper : FloatingWrapper;
 
