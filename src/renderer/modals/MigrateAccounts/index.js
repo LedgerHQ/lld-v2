@@ -21,9 +21,7 @@ import StepCurrency, {
 import { createStructuredSelector } from "reselect";
 import { getCurrentDevice } from "~/renderer/reducers/devices";
 import { accountsSelector, migratableAccountsSelector } from "~/renderer/reducers/accounts";
-import { starredAccountIdsSelector } from "~/renderer/reducers/settings";
 import { replaceAccounts } from "~/renderer/actions/accounts";
-import { replaceStarAccountId } from "~/renderer/actions/settings";
 import { closeModal } from "~/renderer/actions/modals";
 import type { Account, CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 import type { Device } from "~/renderer/reducers/devices";
@@ -32,7 +30,6 @@ type ScanStatus = "idle" | "scanning" | "error" | "finished" | "finished-empty";
 export type StepProps = {
   t: TFunction,
   transitionTo: string => void,
-  starredAccountIds: string[],
   replaceAccounts: (Account[]) => void,
   replaceStarAccountId: ({ oldId: string, newId: string }) => void,
   currencyIds: string[],
@@ -141,21 +138,11 @@ class MigrateAccounts extends PureComponent<*, State> {
     });
 
   render() {
-    const {
-      device,
-      migratableAccounts,
-      currencyIds,
-      accounts,
-      starredAccountIds,
-      replaceAccounts,
-      replaceStarAccountId,
-    } = this.props;
+    const { device, migratableAccounts, currencyIds, accounts, replaceAccounts } = this.props;
     const { stepId, err, scanStatus, currency } = this.state;
 
     const stepperProps = {
-      starredAccountIds,
       replaceAccounts,
-      replaceStarAccountId,
       migratableAccounts,
       currencyIds,
       accounts,
@@ -200,7 +187,6 @@ class MigrateAccounts extends PureComponent<*, State> {
 const mapStateToProps = createStructuredSelector({
   device: getCurrentDevice,
   accounts: accountsSelector,
-  starredAccountIds: starredAccountIdsSelector,
   migratableAccounts: migratableAccountsSelector,
   currencyIds: state =>
     migratableAccountsSelector(state)
@@ -210,7 +196,6 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = {
   replaceAccounts,
-  replaceStarAccountId,
   closeModal,
 };
 

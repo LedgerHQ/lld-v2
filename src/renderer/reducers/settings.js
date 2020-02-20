@@ -66,7 +66,6 @@ export type LangAndRegion = { language: string, region: ?string, useSystem: bool
 export type SettingsState = {
   loaded: boolean, // is the settings loaded from db (it not we don't save them)
   hasCompletedOnboarding: boolean,
-  starredAccountIds: string[],
   counterValue: string,
   preferredDeviceModel: DeviceModelId,
   language: ?string,
@@ -93,6 +92,7 @@ export type SettingsState = {
   hideEmptyTokenAccounts: boolean,
   sidebarCollapsed: boolean,
   discreetMode: boolean,
+  starredAccountIds?: string[],
 };
 
 const defaultsForCurrency: Currency => CurrencySettings = crypto => {
@@ -104,7 +104,6 @@ const defaultsForCurrency: Currency => CurrencySettings = crypto => {
 
 const INITIAL_STATE: SettingsState = {
   hasCompletedOnboarding: false,
-  starredAccountIds: [],
   counterValue: "USD",
   preferredDeviceModel: "nanoS",
   language: null,
@@ -170,30 +169,6 @@ const handlers: Object = {
   SETTINGS_DISMISS_BANNER: (state: SettingsState, { payload: bannerId }) => ({
     ...state,
     dismissedBanners: [...state.dismissedBanners, bannerId],
-  }),
-  SETTINGS_TOGGLE_STAR: (state: SettingsState, { accountId }) => ({
-    ...state,
-    starredAccountIds: state.starredAccountIds.includes(accountId)
-      ? state.starredAccountIds.filter(e => e !== accountId)
-      : [...state.starredAccountIds, accountId],
-  }),
-  SETTINGS_DRAG_DROP_STAR: (state: SettingsState, { payload: { from, to } }) => {
-    const ids = [...state.starredAccountIds];
-    const fromIndex = ids.indexOf(from);
-    const toIndex = ids.indexOf(to);
-
-    ids.splice(toIndex, 0, ids.splice(fromIndex, 1)[0]);
-
-    return {
-      ...state,
-      starredAccountIds: ids,
-    };
-  },
-  SETTINGS_REPLACE_STAR_ID: (state: SettingsState, { payload: { oldId, newId } }) => ({
-    ...state,
-    starredAccountIds: state.starredAccountIds.map(starredAccountId =>
-      starredAccountId === oldId ? newId : starredAccountId,
-    ),
   }),
   // used to debug performance of redux updates
   DEBUG_TICK: state => ({ ...state }),
@@ -332,7 +307,5 @@ export const exportSettingsSelector: OutputSelector<State, void, *> = createSele
     developerModeEnabled,
   }),
 );
-
-export const starredAccountIdsSelector = (state: State) => state.settings.starredAccountIds;
 
 export default handleActions(handlers, INITIAL_STATE);

@@ -4,7 +4,7 @@ import React, { useCallback } from "react";
 import styled, { keyframes } from "styled-components";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
-import { toggleStarAction } from "~/renderer/actions/settings";
+import { toggleStarAction } from "~/renderer/actions/accounts";
 import { isStarredAccountSelector } from "~/renderer/reducers/accounts";
 import { rgba } from "~/renderer/styles/helpers";
 import starAnim from "~/renderer/images/starAnim.png";
@@ -73,7 +73,7 @@ const StarIcon: ThemedComponent<{
 `;
 
 const mapStateToProps = createStructuredSelector({
-  isAccountStared: isStarredAccountSelector,
+  isAccountStarred: isStarredAccountSelector,
 });
 
 const mapDispatchToProps = {
@@ -88,14 +88,14 @@ type OwnProps = {
 
 type Props = {
   ...OwnProps,
-  isAccountStared: boolean,
+  isAccountStarred: boolean,
   toggleStarAction: Function,
   refreshAccountsOrdering: Function,
 };
 
 const Star = ({
   accountId,
-  isAccountStared,
+  isAccountStarred,
   toggleStarAction,
   yellow,
   refreshAccountsOrdering,
@@ -111,10 +111,12 @@ const Star = ({
   const MaybeButtonWrapper = yellow ? ButtonWrapper : FloatingWrapper;
 
   return (
-    <MaybeButtonWrapper filled={isAccountStared}>
+    <MaybeButtonWrapper filled={isAccountStarred}>
       <StarWrapper onClick={toggleStar}>
-        <Transition in={isAccountStared} timeout={isAccountStared ? startBurstTiming : 0}>
-          {className => <StarIcon yellow={yellow} filled={isAccountStared} className={className} />}
+        <Transition in={isAccountStarred} timeout={isAccountStarred ? startBurstTiming : 0}>
+          {className => (
+            <StarIcon yellow={yellow} filled={isAccountStarred} className={className} />
+          )}
         </Transition>
       </StarWrapper>
     </MaybeButtonWrapper>

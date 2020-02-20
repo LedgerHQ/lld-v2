@@ -14,7 +14,6 @@ import { getEnv } from "@ledgerhq/live-common/lib/env";
 import logger from "./../../logger/logger";
 import accountModel from "./../../helpers/accountModel";
 import { currenciesStatusSelector, currencyDownStatusLocal } from "./currenciesStatus";
-import { starredAccountIdsSelector } from "./settings";
 import type { State } from ".";
 
 export type AccountsState = Account[];
@@ -128,45 +127,15 @@ export const accountSelector: OutputSelector<
   (accounts, accountId) => accounts.find(a => a.id === accountId),
 );
 
-const flattenFilterAndSort = (accounts, ids, flattenOptions) =>
-  flattenAccounts(accounts, flattenOptions)
-    .filter(e => ids.includes(e.id))
-    .sort((a, b) => {
-      const posA = ids.indexOf(a.id);
-      const posB = ids.indexOf(b.id);
-      return posA > posB ? 1 : posA === posB ? 0 : -1;
-    });
-
 export const migratableAccountsSelector = (s: *): Account[] => s.accounts.filter(canBeMigrated);
 
-// TODO: FIX RETURN TYPE
-export const starredAccountsSelector: OutputSelector<State, void, any[]> = createSelector(
-  accountsSelector,
-  starredAccountIdsSelector,
-  flattenFilterAndSort,
-);
-
-// TODO: FIX RETURN TYPE
-export const starredAccountsEnforceHideEmptyTokenSelector: OutputSelector<
-  State,
-  void,
-  any[],
-> = createSelector(
-  accountsSelector,
-  starredAccountIdsSelector,
-  () => getEnv("HIDE_EMPTY_TOKEN_ACCOUNTS"), // The result of this func is not used but it allows the input params to be different so that reselect recompute the output
-  (accounts, ids) => flattenFilterAndSort(accounts, ids, { enforceHideEmptySubAccounts: true }),
-);
+export const starredAccountsSelector = (s: *): Account[] => s.accounts.filter(a => a.starred);
 
 export const isStarredAccountSelector: OutputSelector<
   State,
   { accountId: string },
   boolean,
-> = createSelector(
-  starredAccountIdsSelector,
-  (_, { accountId }: { accountId: string }) => accountId,
-  (ids, accountId) => ids.includes(accountId),
-);
+> = createSelector(accountSelector, account => (account ? account.starred : false));
 
 export const accountNeedsMigrationSelector: OutputSelector<
   State,

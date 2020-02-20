@@ -9,7 +9,7 @@ import IconSend from "~/renderer/icons/Send";
 import IconStar from "~/renderer/icons/Star";
 import IconAccountSettings from "~/renderer/icons/AccountSettings";
 import ContextMenuItem from "./ContextMenuItem";
-import { toggleStarAction } from "~/renderer/actions/settings";
+import { toggleStarAction } from "~/renderer/actions/accounts";
 import { refreshAccountsOrdering } from "~/renderer/actions/general";
 
 type OwnProps = {

@@ -70,20 +70,5 @@ export const dismissBanner = (bannerKey: string) => ({
   payload: bannerKey,
 });
 
-export const toggleStarAction = (accountId: string) => ({
-  type: "SETTINGS_TOGGLE_STAR",
-  accountId,
-});
-
-export const dragDropStarAction = (payload: { from: string, to: string }) => ({
-  type: "SETTINGS_DRAG_DROP_STAR",
-  payload,
-});
-
-export const replaceStarAccountId = (payload: { oldId: string, newId: string }) => ({
-  type: "SETTINGS_REPLACE_STAR_ID",
-  payload,
-});
-
 export const setPreferredDeviceModel = (preferredDeviceModel: DeviceModelId) =>
   saveSettings({ preferredDeviceModel });
