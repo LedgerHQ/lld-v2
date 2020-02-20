@@ -80,7 +80,11 @@ const AccountHeaderActions = ({ account, parentAccount, openModal, t }: Props) =
         </>
       ) : null}
       <Tooltip content={t("stars.tooltip")}>
-        <Star accountId={account.id} account={account} yellow />
+        <Star
+          accountId={account.id}
+          parentId={account.type !== "Account" ? account.parentId : undefined}
+          yellow
+        />
       </Tooltip>
       {account.type === "Account" ? (
         <Tooltip content={t("account.settings.title")}>

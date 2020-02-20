@@ -47,12 +47,22 @@ export const updateAccount: UpdateAccount = payload => ({
   },
 });
 
-export const toggleStarAction: UpdateAccount = id => ({
-  type: "DB:UPDATE_ACCOUNT",
-  payload: {
-    updater: (account: Account) => ({ ...account, starred: !account.starred }),
-    accountId: id,
-  },
-});
+export const toggleStarAction: UpdateAccount = (id, parentId) => {
+  return {
+    type: "DB:UPDATE_ACCOUNT",
+    payload: {
+      updater: (account: Account) => {
+        if (parentId && account.subAccounts) {
+          const subAccounts = account.subAccounts.map(sa =>
+            sa.id === id ? { ...sa, starred: !sa.starred } : sa,
+          );
+          return { ...account, subAccounts };
+        }
+        return { ...account, starred: !account.starred };
+      },
+      accountId: parentId || id,
+    },
+  };
+};
 
 export const cleanAccountsCache = () => ({ type: "DB:CLEAN_ACCOUNTS_CACHE" });
