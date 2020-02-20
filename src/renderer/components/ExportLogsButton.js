@@ -1,5 +1,4 @@
 // @flow
-import fs from "fs";
 import moment from "moment";
 import { ipcRenderer, webFrame, remote } from "electron";
 import React, { useState, useCallback } from "react";
@@ -10,20 +9,10 @@ import logger from "~/logger";
 import getUser from "~/helpers/user";
 import Button from "~/renderer/components/Button";
 
-const queryLogs = () =>
-  new Promise(resolve => {
-    ipcRenderer.once("logs", (event: any, { logs }) => {
-      resolve(logs);
-    });
-    ipcRenderer.send("queryLogs");
-  });
-
-const writeToFile = (file, data) =>
-  new Promise((resolve, reject) => {
-    fs.writeFile(file, data, error => {
-      return error ? reject(error) : resolve();
-    });
-  });
+const saveLogs = async (path: { canceled: boolean, filePath: string }) => {
+  const res = await ipcRenderer.invoke("save-logs", path);
+  console.log("res", res);
+};
 
 type RestProps = {|
   icon?: boolean,
@@ -79,9 +68,7 @@ const ExportLogsBtn = ({ hookToShortcut, primary = true, small = true, title, ..
     });
 
     if (path) {
-      const logs = await queryLogs();
-      const json = JSON.stringify(logs);
-      await writeToFile(path.filePath, json);
+      await saveLogs(path);
     }
   }, []);
 
