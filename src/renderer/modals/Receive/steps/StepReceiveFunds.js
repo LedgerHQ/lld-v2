@@ -33,7 +33,10 @@ const Separator = styled.div`
 `;
 
 const QRCodeWrapper = styled.div`
-  border: 6px solid white;
+  border: 24px solid white;
+  height: 208px;
+  width: 208px;
+  background: white;
 `;
 
 const Receive1ShareAddress = ({
@@ -246,7 +249,7 @@ const StepReceiveFunds = ({
           render={() => (
             <Box alignItems="center">
               <QRCodeWrapper>
-                <QRCode size={211} data={address} />
+                <QRCode size={160} data={address} />
               </QRCodeWrapper>
               <Box mt={6}>
                 <ReadOnlyAddressField address={address} />
